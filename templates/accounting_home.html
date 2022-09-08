@@ -1,0 +1,255 @@
+
+
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+
+
+<body>
+    <div class="container">
+        <form method="POST">
+            <div class="container mt-3">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Chart of Account
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Chart of Accounts</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+    
+                        
+                        <div class="modal-body">
+    
+                           
+    
+                            <label for="Last Name"
+                            >Last Name</label>
+                            
+                            <input 
+                            type="text"
+                            name="lastName"
+                            id="lastName"
+                            
+                            class="form-control"
+                            >
+    
+                            <label for="First Name"
+                            >First Name</label>
+                            
+                            <input 
+                            type="text"
+                            name="firstName"
+                            id="firstName"
+                            
+                            class="form-control"
+                            >
+    
+                            <label for="Address">Address</label>
+                                    <textarea 
+                                    
+                                        type="text"
+                                        name="Address"
+                                        id="Address"
+                                        class="form-control"
+                                    >
+                                    </textarea>
+    
+    
+                            <label for="BirthDay"
+                            >BirthDay</label>
+                            
+                            <input 
+                            type="date"
+                            name="BirthDay"
+                            id="BirthDay"
+                            
+                            
+                            >  
+                            
+    
+                            <button type="button" class="btn btn-warning" onclick="getAge()">Compute Age</button>
+                            <br>
+    
+                            <label for="Age"
+                            >Age</label>
+                            
+                            <input 
+                            type="number"
+                            name="age"
+                            id="age"
+                            
+                            class="form-control"
+                            ><br>
+                                
+                            <label for="ministry" >Ministry</label>
+                                <select name="ministry" id="ministry" class="filter-selectbox">
+                                    {% for result in allMinistry %}
+                                        <option value="{{ result.ministry }}">{{ result.ministry}}</option>
+                                    {% endfor %} 
+                                
+                                </select><br><br>
+                            
+                            <label for="Contact Number"
+                            >Contact Number</label>
+                            
+                            <input 
+                            type="text"
+                            name="contact_number"
+                            id="contact_number"
+                            
+                            class="form-control"
+                            >
+                            
+                            <p>Dob: <input type="text" id="nu_datebirth" name="nu_datebirth"></p>
+                            <p>Age: <input type="text" name="a_ge" id="a_ge" class="nu_field" readonly/></p>
+                            
+                            
+                            
+    
+                        
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+    
+                <div class="container mt-3">
+                    <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                        <thead class="border-bottom font-weight-bold">
+                        
+                                <td>Series No.</td>
+                                <td>Member ID</td>
+                                <td>Last Name</td>
+                                <td>First Name</td>
+                                <td>Address</td> 
+                                <td>BirthDay</td> 
+                                <td>Age</td> 
+                                <td>Ministry</td> 
+                                <td>Contact Number</td>
+                                <td>Action</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for list in allMembers%}
+                
+                                <tr>
+                                    
+                                    <td>{{loop.index}}</td>
+                                    <td>{{list.members_id}}</td>
+                                    <td>{{list.lname}}</td>
+                                    <td>{{list.fname}}</td>
+                                    <td>{{list.address}}</td>
+                                    <td>{{list.birthday}}</td>
+                                    <td>{{list.age}}</td>
+                                    <td>{{list.ministry}}</td>
+                                    <td>{{list.contact_num}}</td>
+                                    
+                                    <td>
+                                        <a href="/update-members2/{{list.id}}"
+                                        <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-database"></i> Edit</button></a>
+                                    </td>
+        
+                                    <td>
+                                        <a href="/attendance/{{list.id}}"
+                                        <button type="button" class="btn btn-warning">
+                                        <i class="fas fa-database"></i>Attendance</button></a>
+                                    </td>
+                                   
+        
+                                    
+                                </tr>
+                               
+                            {% endfor %}
+                        </tbody>
+                    </table>
+    
+                </div>
+    
+    
+                
+            </div>
+    
+
+    </div>
+    
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+        <!-- <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script> -->
+
+       <!-- This is for jquery Date picker -->
+
+       
+       
+
+        <script>
+             $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script>
+
+
+
+        
+
+        <!-- This is for computation of Age -->
+        <script>
+            $(function() {
+            $("#nu_datebirth").datepicker({
+            onSelect: function(value, ui) {
+                var today = new Date(),
+                    age = today.getFullYear() - ui.selectedYear;
+                $('#a_ge').val(age);
+            },
+                
+            dateFormat: 'mm-dd-yy',changeMonth: true,changeYear: true,yearRange:"c-100:c+0"
+            });
+                
+        });
+
+            
+
+        </script>
+
+   
+
+   
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+
+
+    
+
+    </form> 
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+
+          
+   
+    
+</body>
+
+
+
+{% endblock %}
+
