@@ -48,7 +48,7 @@ oauth_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def authenticate_user(username, password):
     user = mydb.login.find({"username":username})
-    
+
     for i in user:
         username = i['username']
         password1 = i['password']
@@ -58,6 +58,15 @@ def authenticate_user(username, password):
             return password_check
         else :
             False
+
+    # user = json.loads(mydb.login.find({"username":username}))
+    
+   
+    # if user:
+    #     password_check = pwd_context.verify(password,user['password'])
+    #     return password_check
+    # else :
+    #     False
         
 
 
