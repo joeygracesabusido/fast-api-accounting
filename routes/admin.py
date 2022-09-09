@@ -67,7 +67,8 @@ def authenticate_user(username, password):
     #     return password_check
     # else :
     #     False
-        
+
+  
 
 
 @admin.post('/token')
@@ -89,7 +90,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
 @admin.get('/') 
-def home(token: str = Depends(oauth_scheme)):
+async def home(token: str = Depends(oauth_scheme)):
     return {"token": token}
     
 

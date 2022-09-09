@@ -13,7 +13,7 @@
             <div class="container mt-3">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Chart of Account
+                     Add Chart of Account
                 </button>
                 
                 <!-- Modal -->
@@ -32,86 +32,42 @@
     
                            
     
-                            <label for="Last Name"
-                            >Last Name</label>
+                            <label for="Account Number"
+                            >Account Number</label>
                             
                             <input 
                             type="text"
-                            name="lastName"
-                            id="lastName"
+                            name="account_number"
+                            id="account_number"
                             
                             class="form-control"
                             >
     
-                            <label for="First Name"
-                            >First Name</label>
+                            <label for="Account Title"
+                            >Account Title</label>
                             
                             <input 
                             type="text"
-                            name="firstName"
-                            id="firstName"
+                            name="account_title"
+                            id="account_title"
+                            
+                            class="form-control"
+                            >
+
+                            <label for="Balance Sheet Class"
+                            >Balance Sheet Type</label>
+                            
+                            <input 
+                            type="text"
+                            name="bsClass"
+                            id="bsClass"
                             
                             class="form-control"
                             >
     
-                            <label for="Address">Address</label>
-                                    <textarea 
-                                    
-                                        type="text"
-                                        name="Address"
-                                        id="Address"
-                                        class="form-control"
-                                    >
-                                    </textarea>
-    
-    
-                            <label for="BirthDay"
-                            >BirthDay</label>
-                            
-                            <input 
-                            type="date"
-                            name="BirthDay"
-                            id="BirthDay"
                             
                             
-                            >  
-                            
-    
-                            <button type="button" class="btn btn-warning" onclick="getAge()">Compute Age</button>
-                            <br>
-    
-                            <label for="Age"
-                            >Age</label>
-                            
-                            <input 
-                            type="number"
-                            name="age"
-                            id="age"
-                            
-                            class="form-control"
-                            ><br>
-                                
-                            <label for="ministry" >Ministry</label>
-                                <select name="ministry" id="ministry" class="filter-selectbox">
-                                    {% for result in allMinistry %}
-                                        <option value="{{ result.ministry }}">{{ result.ministry}}</option>
-                                    {% endfor %} 
-                                
-                                </select><br><br>
-                            
-                            <label for="Contact Number"
-                            >Contact Number</label>
-                            
-                            <input 
-                            type="text"
-                            name="contact_number"
-                            id="contact_number"
-                            
-                            class="form-control"
-                            >
-                            
-                            <p>Dob: <input type="text" id="nu_datebirth" name="nu_datebirth"></p>
-                            <p>Age: <input type="text" name="a_ge" id="a_ge" class="nu_field" readonly/></p>
+                           
                             
                             
                             
@@ -120,7 +76,7 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                     </div>
@@ -131,32 +87,24 @@
                         <thead class="border-bottom font-weight-bold">
                         
                                 <td>Series No.</td>
-                                <td>Member ID</td>
-                                <td>Last Name</td>
-                                <td>First Name</td>
-                                <td>Address</td> 
-                                <td>BirthDay</td> 
-                                <td>Age</td> 
-                                <td>Ministry</td> 
-                                <td>Contact Number</td>
+                                <td>Account No</td>
+                                <td>Account Title</td>
+                                <td>Balance Sheet Type</td>
                                 <td>Action</td>
-                                <td></td>
+                                
                             </tr>
                         </thead>
                         <tbody>
-                            {% for list in allMembers%}
+                            {% for list in all_chart_of_account%}
                 
                                 <tr>
                                     
                                     <td>{{loop.index}}</td>
-                                    <td>{{list.members_id}}</td>
-                                    <td>{{list.lname}}</td>
-                                    <td>{{list.fname}}</td>
-                                    <td>{{list.address}}</td>
-                                    <td>{{list.birthday}}</td>
-                                    <td>{{list.age}}</td>
-                                    <td>{{list.ministry}}</td>
-                                    <td>{{list.contact_num}}</td>
+                                    <td>{{list.accountNum}}</td>
+                                    <td>{{list.accountTitle}}</td>
+                                    <td>{{list.bsClass}}</td>
+                                    
+                                   
                                     
                                     <td>
                                         <a href="/update-members2/{{list.id}}"
@@ -164,12 +112,7 @@
                                         <i class="fas fa-database"></i> Edit</button></a>
                                     </td>
         
-                                    <td>
-                                        <a href="/attendance/{{list.id}}"
-                                        <button type="button" class="btn btn-warning">
-                                        <i class="fas fa-database"></i>Attendance</button></a>
-                                    </td>
-                                   
+                                    
         
                                     
                                 </tr>
