@@ -23,6 +23,14 @@
             </div>
             
             <button type="submit" class="btn btn-primary">Submit</button> -->
+
+            <div class="container mt-3">
+              {% for i in msg %}
+              <div class="alert alert-danger" role="alert">
+                {{ i }}
+                </div>
+              {% endfor %}
+          </div>
             
             <label for="Username"
             >Username</label>
