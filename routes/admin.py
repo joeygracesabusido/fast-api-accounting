@@ -3,11 +3,14 @@ from fastapi import APIRouter, Body, HTTPException, Depends
 from typing import Union
 from datetime import datetime
 
+from bson import ObjectId
+
 
 
 from schemas.user import userEntity,usersEntity
 from schemas.chartofAccount import chartofAccount,chartofAccounts
-from models.model import User
+from schemas.bstype import bsType, bsTypes
+from models.model import User, balansheetType
 
 
 
@@ -99,6 +102,30 @@ async def home(token: str = Depends(oauth_scheme)):
 async def find_all_user(token: str = Depends(oauth_scheme)):
     """This function is querying all user account"""
     return usersEntity(mydb.login.find())
+
+#================================================balance sheet Type========================================
+@admin.post("/insert-bstype")
+def insert_bstype(item:balansheetType, token: str = Depends(oauth_scheme)):
+    dataInsert = dict()
+    dataInsert = {
+        "bstype": item.bstype,
+ 
+        }
+    mydb.balansheetType.insert_one(dataInsert)
+    return bsTypes(mydb.balansheetType.find())
+
+@admin.get('/bstype')
+async def get_all_bstye(token: str = Depends(oauth_scheme)):
+    """This function is querying all user account"""
+    return bsTypes(mydb.balansheetType.find())
+
+@admin.put('/update-bstype{id}')
+async def update_bstype(id,item:balansheetType):
+    """This function is to update user info"""
+    mydb.balansheetType.find_one_and_update({"_id":ObjectId(id)},{
+        "$set":dict(item)
+    })
+    return bsTypes(mydb.balansheetType.find())
 
 
 #================================================Chart of Account ==========================================

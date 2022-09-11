@@ -11,6 +11,13 @@
     <div class="container">
         <form method="POST">
             <div class="container mt-3">
+                <div class="container mt-3">
+                    {% for i in messeges %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ i }}
+                        </div>
+                    {% endfor %}
+                </div>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                      Add Chart of Account
@@ -29,9 +36,8 @@
     
                         
                         <div class="modal-body">
-    
-                           
-    
+                            
+                        
                             <label for="Account Number"
                             >Account Number</label>
                             
@@ -57,14 +63,12 @@
                             <label for="Balance Sheet Class"
                             >Balance Sheet Type</label>
                             
-                            <input 
-                            type="text"
-                            name="bsClass"
-                            id="bsClass"
+                            <select name="bstype" id="bstype" class="filter-selectbox">
+                                {% for result in all_bstype %}
+                                    <option value="{{ result.bstype}}">{{ result.bstype}}</option>
+                                {% endfor %} 
                             
-                            class="form-control"
-                            >
-    
+                            </select><br><br>
                             
                             
                            

@@ -5,8 +5,12 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from config.db import mydb
 
+
+from datetime import timedelta, datetime
+
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.user import userEntity,usersEntity
+from schemas.bstype import bsTypes
 
 JWT_SECRET = 'myjwtsecret'
 ALGORITHM = "HS256"
@@ -62,6 +66,27 @@ def cookie(response: Response):
     response.set_cookie(key="mysession", value="1242r")
     return {"message": "Wanna cookie?"}
 
+def create_access_token(data: dict, expires_delta: timedelta):
+    to_encode = data.copy()
+
+    expire = datetime.utcnow() + expires_delta
+
+    to_encode.update({"exp": expire})
+
+   
+    return to_encode
+
+    # print(to_encode)
+
+    # token = jwt.encode(to_encode, JWT_SECRET,algorithm=ALGORITHM)
+    #         # print(token)
+    # msg ='Login Succesful'
+    # response = templates.TemplateResponse("login.html", {"request":request,"msg":msg})
+    # response.set_cookie(key="access_token", value=f'Bearer {token}',httponly=True)
+    # return response
+
+
+
 @client.post('/login')
 # def login(request: Request,response: Response,form_data: OAuth2PasswordRequestForm = Depends()):
 async def login(response: Response, request:Request):
@@ -76,7 +101,13 @@ async def login(response: Response, request:Request):
     msg = []
     try:
         if authenticate_user(username, password):
-            data = {"sub":username}
+            access_token = create_access_token(
+                data = {"sub": username}, 
+                expires_delta=timedelta(minutes=1)
+                                    )
+            # data = create_access_token
+            # data = {"sub":username}
+            
 
             # data={}
             # user =  mydb.login.find({"username":username})
@@ -93,15 +124,14 @@ async def login(response: Response, request:Request):
             #     })
             
                 
-            token = jwt.encode(data, JWT_SECRET,algorithm=ALGORITHM)
+            token = jwt.encode(access_token, JWT_SECRET,algorithm=ALGORITHM)
             # print(token)
             msg.append('Login Succesful')
             response = templates.TemplateResponse("login.html", {"request":request,"msg":msg})
             response.set_cookie(key="access_token", value=f'Bearer {token}',httponly=True)
             return response
             
-            # msg.append('Login Succesful')
-            # return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
+           
 
         else :
             raise HTTPException(status_code=400, detail="Incorrect username or password")
@@ -124,12 +154,13 @@ async def login(request: Request):
 
 
 @client.get("/chart-of-account/", response_class=HTMLResponse)
-def index(request: Request):
+def chart_of_account_view(request: Request):
+    """This function is for openting navbar of accounting"""
     # response.set_cookie(key="access_token",value=f'Bearer {password1}',HttpOnly=True)
     token = request.cookies.get('access_token')
     # print(token)
 
-    if token:
+    if token is not None:
         scheme, _, param = token.partition(" ")
         payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
        
@@ -140,11 +171,65 @@ def index(request: Request):
 
         if user is not None:
             all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
+            all_bstype = bsTypes(mydb.balansheetType.find())
             return templates.TemplateResponse("accounting_home.html", {"request":request,
-                                                    "all_chart_of_account":all_chart_of_account})
+                                                    "all_chart_of_account":all_chart_of_account,
+                                                    "all_bstype":all_bstype})
         else:
             return {"Details":"Kindly Login"}
         
         # return templates.TemplateResponse("login.html", {"request":request})
         
-   
+@client.post("/chart-of-account/", response_class=HTMLResponse)
+async def insert_chart_of_account(request: Request):
+    """This function is for inserting Chart of account"""
+    form =  await request.form()
+    account_number = form.get('account_number')
+    account_title = form.get('account_title')
+    bstype = form.get('bstype')
+
+    messeges = []
+    
+    query = {'accountNum':account_number}
+                   
+    agg_result= mydb.chart_of_account.count_documents(query)
+
+    all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
+    all_bstype = bsTypes(mydb.balansheetType.find())
+
+    if agg_result > 0:
+        messeges.append("Account Number already Taken")
+        return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                    "all_chart_of_account":all_chart_of_account,
+                                                    "all_bstype":all_bstype,"messeges":messeges})
+
+    else:
+        token = request.cookies.get('access_token')
+    # print(token)
+
+        if token is not None:
+            scheme, _, param = token.partition(" ")
+            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+            username = payload.get("sub")
+        
+
+            user =  mydb.login.find({"username":username})
+
+            if user is not None:
+
+                dataInsert = {
+                    'accountNum': account_number,
+                    'accountTitle': account_title,
+                    'bsClass': bstype,
+                    'user': '',
+                    'created': datetime.now()
+                    
+                    }
+
+                mydb.chart_of_account.insert_one(dataInsert)
+
+                messeges.append("Your Account Title has been Save")
+        return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                    "all_chart_of_account":all_chart_of_account,
+                                                    "all_bstype":all_bstype,"messeges":messeges})

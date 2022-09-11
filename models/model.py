@@ -8,3 +8,6 @@ class User(BaseModel):
     password: str
     status: str
     created: datetime
+
+class balansheetType(BaseModel):
+    bstype: str
