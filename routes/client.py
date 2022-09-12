@@ -156,27 +156,34 @@ async def login(request: Request):
 @client.get("/chart-of-account/", response_class=HTMLResponse)
 def chart_of_account_view(request: Request):
     """This function is for openting navbar of accounting"""
+    all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
+    all_bstype = bsTypes(mydb.balansheetType.find())
+    return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                            "all_chart_of_account":all_chart_of_account,
+                                            "all_bstype":all_bstype})
+
+
     # response.set_cookie(key="access_token",value=f'Bearer {password1}',HttpOnly=True)
-    token = request.cookies.get('access_token')
-    # print(token)
+    # token = request.cookies.get('access_token')
+    # # print(token)
 
-    if token is not None:
-        scheme, _, param = token.partition(" ")
-        payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+    # if token is not None:
+    #     scheme, _, param = token.partition(" ")
+    #     payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
        
-        username = payload.get("sub")
+    #     username = payload.get("sub")
        
 
-        user =  mydb.login.find({"username":username})
+    #     user =  mydb.login.find({"username":username})
 
-        if user is not None:
-            all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
-            all_bstype = bsTypes(mydb.balansheetType.find())
-            return templates.TemplateResponse("accounting_home.html", {"request":request,
-                                                    "all_chart_of_account":all_chart_of_account,
-                                                    "all_bstype":all_bstype})
-        else:
-            return {"Details":"Kindly Login"}
+    #     if user is not None:
+    #         all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
+    #         all_bstype = bsTypes(mydb.balansheetType.find())
+    #         return templates.TemplateResponse("accounting_home.html", {"request":request,
+    #                                                 "all_chart_of_account":all_chart_of_account,
+    #                                                 "all_bstype":all_bstype})
+        # else:
+        #     return {"Details":"Kindly Login"}
         
         # return templates.TemplateResponse("login.html", {"request":request})
         
@@ -230,6 +237,6 @@ async def insert_chart_of_account(request: Request):
                 mydb.chart_of_account.insert_one(dataInsert)
 
                 messeges.append("Your Account Title has been Save")
-        return templates.TemplateResponse("accounting_home.html", {"request":request,
-                                                    "all_chart_of_account":all_chart_of_account,
-                                                    "all_bstype":all_bstype,"messeges":messeges})
+            return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                        "all_chart_of_account":all_chart_of_account,
+                                                        "all_bstype":all_bstype,"messeges":messeges})

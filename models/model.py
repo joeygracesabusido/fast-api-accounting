@@ -11,3 +11,6 @@ class User(BaseModel):
 
 class balansheetType(BaseModel):
     bstype: str
+
+class ChartofAccount(BaseModel):
+    pass

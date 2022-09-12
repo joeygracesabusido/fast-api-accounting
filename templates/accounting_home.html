@@ -9,7 +9,7 @@
 
 <body>
     <div class="container">
-        <form method="POST">
+        <form >
             <div class="container mt-3">
                 <div class="container mt-3">
                     {% for i in messeges %}
@@ -80,7 +80,8 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <!-- <button type="submit" class="btn btn-primary">Save</button> -->
+                        <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button>
                         </div>
                     </div>
                     </div>
@@ -190,6 +191,38 @@
     </form> 
     <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+
+    <script>
+
+        $("#save_button").click(function(e) {
+            e.preventDefault()
+                //        id = this.id
+                account_title = $("#account_title").val();
+                account_number = $("#account_number").val();
+                bstype = $("#bstype").val();
+            
+                $.ajax({
+                    url: "/notes/" + id,
+                    type: "put",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        account_title: account_title,
+                        account_number: account_number,
+                        bstype: bstype
+                        }),
+                    success: function(data) {
+                        console.log("success",data);
+                    },
+                    error: function() {
+                        console.log("error", data);
+                        alert('error loading from database...');
+                        }
+                });
+            });
+
+            </script>
+            
 
           
    

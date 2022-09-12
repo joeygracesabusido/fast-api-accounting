@@ -133,3 +133,7 @@ async def update_bstype(id,item:balansheetType):
 async def find_chart_of_account():
     """This function is for querying chart of account"""
     return chartofAccounts(mydb.chart_of_account.find())
+@admin.post("/chart-of-account")
+async def insert_chart_of_account():
+    """This function is for querying chart of account"""
+    return chartofAccounts(mydb.chart_of_account.find())
