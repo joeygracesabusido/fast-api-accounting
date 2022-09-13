@@ -10,7 +10,7 @@ from bson import ObjectId
 from schemas.user import userEntity,usersEntity
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.bstype import bsType, bsTypes
-from models.model import User, balansheetType
+from models.model import User, balansheetType, ChartofAccount
 
 
 
@@ -133,7 +133,30 @@ async def update_bstype(id,item:balansheetType):
 async def find_chart_of_account():
     """This function is for querying chart of account"""
     return chartofAccounts(mydb.chart_of_account.find())
-@admin.post("/chart-of-account")
-async def insert_chart_of_account():
+
+
+@admin.post("/insert-chart-of-account/")
+def insert_chart_of_account(item:ChartofAccount):
     """This function is for querying chart of account"""
+    dataInsert = dict()
+    dataInsert = {
+        "accountNum": item.accountNum,
+        "accountTitle": item.accountTitle,
+        "bsClass": item.bsClass,
+        "user": "",
+        "created": datetime.now()
+ 
+        }
+    mydb.chart_of_account.insert_one(dataInsert)
+   
+
     return chartofAccounts(mydb.chart_of_account.find())
+
+
+@admin.put('/update-chart-of-account/{id}')
+async def update_user(id,item:ChartofAccount):
+    """This function is to update user info"""
+    mydb.chart_of_account.find_one_and_update({"_id":ObjectId(id)},{
+        "$set":dict(item)
+    })
+    return chartofAccounts(mydb.chart_of_account.find({"_id":ObjectId(id)}))

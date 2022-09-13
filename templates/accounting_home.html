@@ -9,7 +9,7 @@
 
 <body>
     <div class="container">
-        <form >
+        <form method="post" >
             <div class="container mt-3">
                 <div class="container mt-3">
                     {% for i in messeges %}
@@ -80,8 +80,8 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <!-- <button type="submit" class="btn btn-primary">Save</button> -->
-                        <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                         </div>
                     </div>
                     </div>
@@ -112,7 +112,7 @@
                                    
                                     
                                     <td>
-                                        <a href="/update-members2/{{list.id}}"
+                                        <a href="/update-chart-of-account/{{list.id}}"
                                         <button type="button" class="btn btn-primary">
                                         <i class="fas fa-database"></i> Edit</button></a>
                                     </td>
@@ -162,7 +162,8 @@
         
 
         <!-- This is for computation of Age -->
-        <script>
+
+        <!-- <script>
             $(function() {
             $("#nu_datebirth").datepicker({
             onSelect: function(value, ui) {
@@ -178,7 +179,7 @@
 
             
 
-        </script>
+        </script> -->
 
    
 
@@ -197,19 +198,21 @@
         $("#save_button").click(function(e) {
             e.preventDefault()
                 //        id = this.id
+               
                 account_title = $("#account_title").val();
                 account_number = $("#account_number").val();
                 bstype = $("#bstype").val();
             
                 $.ajax({
-                    url: "/notes/" + id,
-                    type: "put",
+                    url: "/insert-chart-of-account/",
+                    type: "POST",
                     dataType: "json",
                     contentType: "application/json",
                     data: JSON.stringify({
-                        account_title: account_title,
-                        account_number: account_number,
-                        bstype: bstype
+                        accountNum: account_title,
+                        accountTitle: account_number,
+                        bsClass: bstype,
+                        user: "",
                         }),
                     success: function(data) {
                         console.log("success",data);

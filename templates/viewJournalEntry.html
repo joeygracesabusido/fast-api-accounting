@@ -1,0 +1,194 @@
+
+
+{% extends 'index.html' %}
+
+
+
+
+
+{% block content %}
+
+
+<body>
+    
+    <div class="container">
+        <div class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="border-bottom font-weight-bold">
+                
+                        <td>Series No.</td>
+                        <td>Date</td>
+                        <td>Journal</td>
+                        <td>Reference</td>
+                        <td>Memo</td>
+                        <td>Acct No.</td>
+                        <td>Account Name</td>
+                        <td>Debit</td>
+                        <td>Credit</td>
+                        <td>Action</td>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for list in all_journalEntry%}
+                        
+                        <tr>
+                            
+                            <td>{{loop.index}}</td>
+                            <td>{{list.date_entry}}</td>
+                            <td>{{list.journal}}</td>
+                            <td>{{list.ref}}</td>
+                            <td>{{list.descriptions}}</td>
+                            <td>{{list.acoount_number}}</td>
+                            <td>{{list.account_disc}}</td>
+                            <td>{{list.debit_amount}}</td>
+                            
+                            <td>{{list.credit_amount}}</td>
+                            
+                           
+                            
+                            <td>
+                                <a href="/update-chart-of-account/{{list.id}}"
+                                <button type="button" class="btn btn-primary">
+                                <i class="fas fa-database"></i> Edit</button></a>
+                            </td>
+
+                            
+
+                            
+                        </tr>
+                       
+                    {% endfor %}
+                </tbody>
+
+                <tfoot>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    
+                </tfoot>
+
+            </table>
+
+        </div>
+
+    </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
+
+       <!-- This is for jquery Date picker -->
+
+       
+       
+
+        <!-- <script>
+             $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script> -->
+        <script type="text/javascript">
+
+                
+
+            // $(document).ready(function () {
+            //     $('#myTable').DataTable();
+            // });
+            $(document).ready(function () {
+
+
+                $("#myTable").DataTable({
+                   
+
+                    drawCallback: function () {
+                    var api = this.api();
+                    var sum = 0;
+                    var formated = 0;
+                    //to show first th
+                    $(api.column(0).footer()).html('Total');
+
+                    for(var i=7; i<=8;i++)
+                    {
+                        sum = api.column(i).data().sum();
+
+                        //to format this sum
+                        formated = parseFloat(sum).toLocaleString(undefined, {minimumFractionDigits:2});
+                        $(api.column(i).footer()).html(''+formated);
+                    }
+                    
+                },
+
+                                // Refilter the table
+               
+                    // configuration
+                    paging: true,
+                    pageLength: 10,
+                    lengthChange: true,
+                    autowidth: true,
+                    searching: true,
+                    bInfo: true,
+                    bsort: true,
+                    
+
+                    dom: 'LBfrtip',
+                    buttons: [
+                        { // COPY
+                            extend : 'copy',
+                            text: 'Copy',
+                            className: 'btn btn-secondary',
+                            titleArttr: 'Copy',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5,6,7,8]
+                            },
+                        },
+                        { // EXCEL
+                            extend : 'excel',
+                            text: 'Export Excel',
+                            className: 'btn btn-success',
+                            titleArttr: 'Excel',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5,6,7,8]
+                            },
+                        },
+                        { // Print
+                            extend : 'print',
+                            text: 'Print',
+                            className: 'btn btn-danger',
+                            titleArttr: 'Print',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5,6,7,8]
+                            },
+                        },
+
+                    
+                    ]
+
+                })
+           
+
+        });
+            
+        </script>
+        
+
+    
+</body>
+
+
+
+{% endblock %}
+

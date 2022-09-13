@@ -1,4 +1,4 @@
-import jwt
+# import jwt
 # from urllib import response
 from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response
 from fastapi.templating import Jinja2Templates
@@ -6,11 +6,17 @@ from fastapi.responses import HTMLResponse
 from config.db import mydb
 
 
+from bson import ObjectId
+
+
 from datetime import timedelta, datetime
 
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.user import userEntity,usersEntity
 from schemas.bstype import bsTypes
+from schemas.journalEntry import journalEntry,journalEntrys
+
+from jose import jwt
 
 JWT_SECRET = 'myjwtsecret'
 ALGORITHM = "HS256"
@@ -73,7 +79,7 @@ def create_access_token(data: dict, expires_delta: timedelta):
 
     to_encode.update({"exp": expire})
 
-   
+    
     return to_encode
 
     # print(to_encode)
@@ -96,6 +102,8 @@ async def login(response: Response, request:Request):
 
     # username = form_data.username
     # password = form_data.password
+
+    
     
     errors =[]
     msg = []
@@ -103,7 +111,7 @@ async def login(response: Response, request:Request):
         if authenticate_user(username, password):
             access_token = create_access_token(
                 data = {"sub": username}, 
-                expires_delta=timedelta(minutes=1)
+                expires_delta=timedelta(minutes=30)
                                     )
             # data = create_access_token
             # data = {"sub":username}
@@ -123,9 +131,9 @@ async def login(response: Response, request:Request):
                     
             #     })
             
-                
+            
             token = jwt.encode(access_token, JWT_SECRET,algorithm=ALGORITHM)
-            # print(token)
+            
             msg.append('Login Succesful')
             response = templates.TemplateResponse("login.html", {"request":request,"msg":msg})
             response.set_cookie(key="access_token", value=f'Bearer {token}',httponly=True)
@@ -163,29 +171,7 @@ def chart_of_account_view(request: Request):
                                             "all_bstype":all_bstype})
 
 
-    # response.set_cookie(key="access_token",value=f'Bearer {password1}',HttpOnly=True)
-    # token = request.cookies.get('access_token')
-    # # print(token)
-
-    # if token is not None:
-    #     scheme, _, param = token.partition(" ")
-    #     payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
-       
-    #     username = payload.get("sub")
-       
-
-    #     user =  mydb.login.find({"username":username})
-
-    #     if user is not None:
-    #         all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
-    #         all_bstype = bsTypes(mydb.balansheetType.find())
-    #         return templates.TemplateResponse("accounting_home.html", {"request":request,
-    #                                                 "all_chart_of_account":all_chart_of_account,
-    #                                                 "all_bstype":all_bstype})
-        # else:
-        #     return {"Details":"Kindly Login"}
-        
-        # return templates.TemplateResponse("login.html", {"request":request})
+   
         
 @client.post("/chart-of-account/", response_class=HTMLResponse)
 async def insert_chart_of_account(request: Request):
@@ -229,7 +215,7 @@ async def insert_chart_of_account(request: Request):
                     'accountNum': account_number,
                     'accountTitle': account_title,
                     'bsClass': bstype,
-                    'user': '',
+                    'user': username,
                     'created': datetime.now()
                     
                     }
@@ -237,6 +223,93 @@ async def insert_chart_of_account(request: Request):
                 mydb.chart_of_account.insert_one(dataInsert)
 
                 messeges.append("Your Account Title has been Save")
+                return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                            "all_chart_of_account":all_chart_of_account,
+                                                            "all_bstype":all_bstype,"messeges":messeges})
+
+       
+        messeges.append("Please Log in to Transact")
+        return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                            "all_chart_of_account":all_chart_of_account,
+                                                            "all_bstype":all_bstype,"messeges":messeges})
+
+@client.get("/update-chart-of-account/{id}", response_class=HTMLResponse)
+def update_chart_of_account(id,request: Request):
+    """This function is for showing Form for Updating Chart of Account"""
+    token = request.cookies.get('access_token')
+    
+    scheme, _, param = token.partition(" ")
+    payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+
+    username = payload.get("sub")
+
+    
+
+    search_coa = chartofAccounts(mydb.chart_of_account.find({"_id":ObjectId(id)}))
+    
+    return templates.TemplateResponse("update_coa.html", {"request":request,'search_coa': search_coa,
+                                                        'username':username})
+
+
+@client.post("/update-chart-of-account/{id}", response_class=HTMLResponse)
+async def update_chart_of_account(id,request: Request):
+    """This function is for inserting Chart of account"""
+    form =  await request.form()
+    account_number = form.get('account_number')
+    account_title = form.get('account_title')
+    bstype = form.get('bsClass')
+    user_search = form.get('user')
+
+    messeges = []
+     
+    token = request.cookies.get('access_token')
+
+
+    if token is not None:
+        scheme, _, param = token.partition(" ")
+        payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+    
+        username = payload.get("sub")
+    
+
+        user =  mydb.login.find({"username":username})
+
+        if user is not None:
+
+            query = {'_id':ObjectId(id)}
+
+            newValue = { "$set": {  
+                                        
+                                        'accountTitle': account_title,
+                                        'bsClass': bstype,
+                                        'user': user_search,
+                                        'created': datetime.now()
+                                        
+                                    }           
+                                }
+
+
+            mydb.chart_of_account.update_one(query, newValue)
+
+            messeges.append("Your Account Title has been Save")
+            all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
+            all_bstype = bsTypes(mydb.balansheetType.find())
             return templates.TemplateResponse("accounting_home.html", {"request":request,
                                                         "all_chart_of_account":all_chart_of_account,
+                                                        "messeges":messeges})
+
+    
+    messeges.append("Please Log in to Transact")
+    all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
+    all_bstype = bsTypes(mydb.balansheetType.find())
+    return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                        "all_chart_of_account":all_chart_of_account,
                                                         "all_bstype":all_bstype,"messeges":messeges})
+
+@client.get("/insert-journal-entry/", response_class=HTMLResponse)
+def insert_journal_entry(request: Request):
+    """This function is for openting navbar of accounting"""
+   
+    
+    return templates.TemplateResponse("journal_entry.html", {"request":request})
+

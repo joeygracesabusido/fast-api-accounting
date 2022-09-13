@@ -1,0 +1,149 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<body>
+    
+    <form method="POST">
+        <div class="container mt-3">
+           
+                <label for="User"
+                >User</label><br>
+                
+                <input 
+                type="text"
+                name="user"
+                id="user"
+                value="{{username}}"
+                class="form-control"
+                >
+            
+
+            {% for list in search_coa%}
+                <label for="Trans ID"
+                >Trans ID</label><br>
+                
+                <input 
+                type="text"
+                name="trans_id"
+                id="trans_id"
+                value="{{list.id}}"
+                class="form-control"
+                >
+
+
+                <label for="Account Number"
+                >Account Number</label><br>
+                
+                <input 
+                type="text"
+                name="account_number"
+                id="account_number"
+                value="{{list.accountNum}}"
+                class="form-control"
+                >
+
+                <label for="Account Title"
+                >Account Title</label><br>
+                
+                <input 
+                type="text"
+                name="account_title"
+                id="account_title"
+                value="{{list.accountTitle}}"
+                class="form-control"
+                >
+                <label for="Balance Sheet Class"
+                >Balance Sheet Type</label>
+                
+                <input 
+                type="text"
+                name="bsClass"
+                id="bsClass"
+                value="{{list.bsClass}}"
+                class="form-control"
+                >
+                
+               
+             {% endfor %}
+                <!-- <button  type="button" name="update_button" id="update_button" class="btn btn-primary mt-4" ">
+                    Save Changes</button> -->
+                <button  type="submit"  class="btn btn-primary mt-4" ">
+                    Save Changes</button>
+
+                <!-- <button  type="submit" class="btn btn-primary mt-4" onclick="update_coa()">Save Changes</button> -->
+                <!-- <button  type="submit" class="btn btn-danger mt-4">Test</button> -->
+            
+        </div>
+
+    </form>  
+    
+
+    
+    
+</body>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+            function update_coa(){
+                var data = {}
+                var id = document.getElementById("trans_id").value
+                data["account_number"] = document.getElementById("account_number").value
+                data["account_title"] = document.getElementById("account_title").value
+                data["bsClass"] = document.getElementById("bsClass").value
+                data["user"] = document.getElementById("user").value
+                
+                console.log(data)
+
+                fetch("/update-chart-of-account/"+ id, {
+                method:'put', 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+                    })
+            }
+            
+
+        </script>
+
+
+        <script>
+            $("#update_button").click(function() {
+                //        id = this.id
+                id = $("#trans_id").val();
+                accountNum = $("#account_number").val();
+                accountTitle = $("#account_title").val();
+                bsClass = $("#bsClass").val();
+                user = $("#user").val();
+
+                $.ajax({
+                    url: "/update-chart-of-account/" + id,
+                    type: "put",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        accountNum: accountNum,
+                        accountTitle: accountTitle,
+                        bsClass: bsClass,
+                        user: user
+                        }),
+                    success: function(data) {
+                        console.log("success",data);
+                    },
+                    // error: function() {
+                    //     console.log("error", data);
+                    //     alert('error loading from database...');
+                    //     }
+                });
+            });
+        </script>
+
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+        
+
+{% endblock %}
