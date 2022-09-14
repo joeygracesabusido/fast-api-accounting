@@ -334,10 +334,10 @@ async def insert_journal_entry(request: Request):
    
 
     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
-    return templates.TemplateResponse("journal_entry2.html", 
+    return templates.TemplateResponse("journal_entry.html", 
                                         {"request":request,"all_chart_of_account":all_chart_of_account})
 
-@client.post("/insert-journal-entry/", response_class=HTMLResponse)
+@client.post("/insert-journal-entry-2/", response_class=HTMLResponse)
 async def insert_journal_entry(request: Request):
     """This function is to post Journal Entry"""
     form = await request.form()
@@ -398,7 +398,7 @@ async def insert_journal_entry(request: Request):
 
                 all_journalEntry  = journalEntrys(mydb.journal_entry.find({'ref':reference}))
                 
-                return templates.TemplateResponse("journal_entry2.html", 
+                return templates.TemplateResponse("journal_entry.html", 
                                                 {"request":request,'all_journalEntry':all_journalEntry})
 
     #     return templates.TemplateResponse("journal_entry2.html", 
@@ -409,36 +409,36 @@ async def insert_journal_entry(request: Request):
 
 
 
-# @client.post("/insert-journal-entry/", response_class=HTMLResponse)
-# async def insert_journal_entry(request: Request):
-#     """This function is for openting navbar of accounting"""
-#     form = await request.form()
-#     accountTile = form.get('accountTitle')
+@client.post("/insert-journal-entry/", response_class=HTMLResponse)
+async def insert_journal_entry(request: Request):
+    """This function is for posting accounting"""
+    form = await request.form()
+    accountTile = form.get('accountTitle')
 
     
-
-#     data_ = form
-
     
-#     # data_.pop('BalanceSheetType')
-#     # data_.pop('reference')
-#     # data_.pop('journal_memo')
-#     # data_.pop('submit')
-#     entry = len(form)
-#     print(entry)
+    data_ = form
 
-#     for i in range(entry):
-#         result = []
-#         d={}
-#         for j,k in enumerate(data_.items()):
+    print(data_)
+    # data_.pop('BalanceSheetType')
+    # data_.pop('reference')
+    # data_.pop('journal_memo')
+    # data_.pop('submit')
+    
+    # print(entry)
 
-#             if j == 8:
-#                 d['accountTitle']= (k[8][i])
-#             result.append(d)
-#         print(result)
+    # for i in range(entry):
+    #     result = []
+    #     d={}
+    #     for j,k in enumerate(data_.items()):
 
-#     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
-#     return templates.TemplateResponse("journal_entry.html", 
-#                                         {"request":request,"all_chart_of_account":all_chart_of_account})
+    #         if j == 8:
+    #             d['accountTitle']= (k[8][i])
+    #         result.append(d)
+    #     print(result)
+
+    all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
+    return templates.TemplateResponse("journal_entry.html", 
+                                        {"request":request,"all_chart_of_account":all_chart_of_account})
 
 

@@ -10,7 +10,8 @@ from bson import ObjectId
 from schemas.user import userEntity,usersEntity
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.bstype import bsType, bsTypes
-from models.model import User, balansheetType, ChartofAccount
+from schemas.journalEntry import journalEntry,journalEntrys
+from models.model import User, balansheetType, ChartofAccount,JournalEntry
 
 
 
@@ -160,3 +161,10 @@ async def update_user(id,item:ChartofAccount):
         "$set":dict(item)
     })
     return chartofAccounts(mydb.chart_of_account.find({"_id":ObjectId(id)}))
+
+
+#==============================================Insert Journal Entry================================
+@admin.delete('/delete-journal-entry/{id}')
+def delete_journal_entry(id, item:JournalEntry):
+    """This function is to delete journal Entry"""
+

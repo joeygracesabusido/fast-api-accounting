@@ -1,6 +1,6 @@
 from lib2to3.pytree import Base
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 
 class User(BaseModel):
     fullname: str
@@ -18,3 +18,19 @@ class ChartofAccount(BaseModel):
     bsClass: str
     user: str
     created: datetime
+
+class JournalEntry(BaseModel):
+    date_entry: date
+    journal: str
+    ref: str
+    descriptions: str
+    acoount_number: str
+    account_disc: str
+    bsClass: str
+    debit_amount: float
+    credit_amount: float
+    due_date_apv: date
+    terms_days: int
+    supplier_Client: str
+    user: str
+    created:datetime

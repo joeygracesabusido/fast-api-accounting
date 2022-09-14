@@ -142,7 +142,7 @@
                                     </td>
 
                                     <td>
-                                        <select name="accountTitle" id="accountTitle${x}"class="filter-selectbox"
+                                        <select name="accountTitle${x}" id="accountTitle${x}"class="filter-selectbox"
                                         
                                             >
 
@@ -208,29 +208,29 @@
                             </script>
             
                             <script>
-                            // function myFunction() {
-                            // let button = document.querySelector("#submitBtn");
-                            // let elements = [...document.getElementsByName('mySelect')];
-                            // button.disabled = true;
-                            // let sumCredit = 0.0;
-                            // let sumDebit = 0.0;
-                            // elements.forEach((el) => {
-                            //     let txType = el.options[el.selectedIndex].text;
-                            //     let myID = (el.id).replace('mySelect', '');
+                            function myFunction() {
+                            let button = document.querySelector("#submitBtn");
+                            let elements = [...document.getElementsByName('mySelect')];
+                            button.disabled = true;
+                            let sumCredit = 0.0;
+                            let sumDebit = 0.0;
+                            elements.forEach((el) => {
+                                let txType = el.options[el.selectedIndex].text;
+                                let myID = (el.id).replace('mySelect', '');
                                 
-                            //     cAmount = document.getElementById('credit_amount' + myID).value;
-                            //     sumCredit = sumCredit + parseFloat(cAmount);
+                                cAmount = document.getElementById('credit_amount' + myID).value;
+                                sumCredit = sumCredit + parseFloat(cAmount);
                             
-                            //     dAmount = document.getElementById('amount' + myID).value;
-                            //     sumDebit = sumDebit + parseFloat(dAmount);
+                                dAmount = document.getElementById('amount' + myID).value;
+                                sumDebit = sumDebit + parseFloat(dAmount);
 
                                 
                                 
-                            //     })
-                            // if((sumCredit - sumDebit) === 0.0 && elements.length >= 2){
-                            //     button.disabled = false;
-                            // }
-                            // }
+                                })
+                            if((sumCredit - sumDebit) === 0.0 && elements.length >= 2){
+                                button.disabled = false;
+                            }
+                            }
                             </script>
 
                             <script>
