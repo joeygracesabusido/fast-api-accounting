@@ -7,7 +7,7 @@ from config.db import mydb
 
 
 from bson import ObjectId
-
+from typing import Optional
 
 from datetime import timedelta, datetime
 
@@ -307,9 +307,21 @@ async def update_chart_of_account(id,request: Request):
                                                         "all_bstype":all_bstype,"messeges":messeges})
 
 @client.get("/insert-journal-entry/", response_class=HTMLResponse)
-def insert_journal_entry(request: Request):
+async def insert_journal_entry(request: Request):
     """This function is for openting navbar of accounting"""
-   
+    form =  await request.form()
+
+    term = form.get('term','')
+    
+
+
     
     return templates.TemplateResponse("journal_entry.html", {"request":request})
 
+@client.get("/autocomplete/")
+def autocomplete(term: Optional[str]):
+    items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':term}))
+    suggestions = []
+    for item in items:
+        suggestions.append(item['accountTitle'])
+    return suggestions

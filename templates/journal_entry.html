@@ -93,6 +93,36 @@
     
                             <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
                             <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+                            <script>
+                                $("#reference").autocomplete({
+                                        source: function (request,response){
+                                            $.ajax({
+                                                url: "/autocomplete/",
+                                                dataType: "json",
+                                                data: {term: request.term},
+                                                success: function(data) {
+                                                    console.log(data);
+                                                    response ($.map(data, function(item){
+                                                        return {
+                                                            value: item.reference,
+                                                           
+                                                        }
+                                                    }))
+                                                },
+                                                error: function(e){
+                                                    console.log(e)
+                                                }
+                                            });
+                                        },
+                                        select: function(event, ui){
+                                            $(this).val(ui.item.value);
+                                           
+                                        },
+                                        minLength: 2
+                                    });
+                            </script>
+
             
                             <script  type="text/javascript">
             
