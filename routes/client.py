@@ -306,22 +306,139 @@ async def update_chart_of_account(id,request: Request):
                                                         "all_chart_of_account":all_chart_of_account,
                                                         "all_bstype":all_bstype,"messeges":messeges})
 
-@client.get("/insert-journal-entry/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request):
-    """This function is for openting navbar of accounting"""
-    form =  await request.form()
 
-    term = form.get('term','')
+@client.get("/view-journal-entry/", response_class=HTMLResponse)
+async def view_journal_entry(request: Request):
+    """This function is for displaying journal Entry"""
+   
+    all_journalEntry  = journalEntrys(mydb.journal_entry.find())
     
+    return templates.TemplateResponse("viewJournalEntry.html", {"request":request,"all_journalEntry":all_journalEntry})
 
-
-    
-    return templates.TemplateResponse("journal_entry.html", {"request":request})
 
 @client.get("/autocomplete/")
 def autocomplete(term: Optional[str]):
-    items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':term}))
+    items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':{"$regex":term,'$options':'i'}}))
+
     suggestions = []
     for item in items:
         suggestions.append(item['accountTitle'])
     return suggestions
+
+@client.get("/insert-journal-entry/", response_class=HTMLResponse)
+async def insert_journal_entry(request: Request):
+    """This function is for openting navbar of accounting"""
+    form = await request.form()
+    accountTile = form.get('accountTitle')
+
+   
+
+    all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
+    return templates.TemplateResponse("journal_entry2.html", 
+                                        {"request":request,"all_chart_of_account":all_chart_of_account})
+
+@client.post("/insert-journal-entry/", response_class=HTMLResponse)
+async def insert_journal_entry(request: Request):
+    """This function is to post Journal Entry"""
+    form = await request.form()
+
+    trans_date = form.get('trans_date')
+    journal = form.get('journal')
+    reference = form.get('reference')
+    journal_memo = form.get('journal_memo')
+    accountTitle = form.get('accountTitle')
+    debit_amount = form.get('debit_amount')
+    credit_amount = form.get('credit_amount')
+
+    
+
+    
+
+    messeges = []
+     
+    token = request.cookies.get('access_token')
+
+
+    if token is not None:
+        scheme, _, param = token.partition(" ")
+        payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+    
+        username = payload.get("sub")
+    
+
+        user =  mydb.login.find({"username":username})
+
+        if user is not None:
+            items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':accountTitle}))
+            for i in items:
+                accountNumber = i['accountNum']
+                bsType = i['bsClass']
+
+                dataInsert = {
+                    # 'date_entry': journalEntryInsert_datefrom.get(),
+                    'date_entry': trans_date,
+                    'journal': journal,
+                    'ref': reference,
+                    'descriptions': journal_memo,
+                    'acoount_number': accountNumber,
+                    'account_disc': accountTitle,
+                    'bsClass': bsType,
+                    'debit_amount': float(debit_amount),
+                    'credit_amount': float(credit_amount),
+                    'due_date_apv': "",
+                    'terms_days': "",
+                    'supplier/Client': "",
+                    'user': username,
+                    'created':datetime.now()
+                    
+                    }
+
+                messeges.append("Entry Has been Save")
+                mydb.journal_entry.insert_one(dataInsert)
+
+                all_journalEntry  = journalEntrys(mydb.journal_entry.find({'ref':reference}))
+                
+                return templates.TemplateResponse("journal_entry2.html", 
+                                                {"request":request,'all_journalEntry':all_journalEntry})
+
+    #     return templates.TemplateResponse("journal_entry2.html", 
+    #                                             {"request":request,'all_journalEntry':all_journalEntry})
+
+    # return templates.TemplateResponse("journal_entry2.html", 
+    #                                             {"request":request,'all_journalEntry':all_journalEntry})
+
+
+
+# @client.post("/insert-journal-entry/", response_class=HTMLResponse)
+# async def insert_journal_entry(request: Request):
+#     """This function is for openting navbar of accounting"""
+#     form = await request.form()
+#     accountTile = form.get('accountTitle')
+
+    
+
+#     data_ = form
+
+    
+#     # data_.pop('BalanceSheetType')
+#     # data_.pop('reference')
+#     # data_.pop('journal_memo')
+#     # data_.pop('submit')
+#     entry = len(form)
+#     print(entry)
+
+#     for i in range(entry):
+#         result = []
+#         d={}
+#         for j,k in enumerate(data_.items()):
+
+#             if j == 8:
+#                 d['accountTitle']= (k[8][i])
+#             result.append(d)
+#         print(result)
+
+#     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
+#     return templates.TemplateResponse("journal_entry.html", 
+#                                         {"request":request,"all_chart_of_account":all_chart_of_account})
+
+
