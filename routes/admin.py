@@ -31,20 +31,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-@admin.post('/sign-up')
-def sign_up(fullname: str, username: str, password: str, status: str,created: Union[datetime, None] = Body(default=None)):
-    """This function is for inserting """
-    dataInsert = dict()
-    dataInsert = {
-        "fullname": fullname,
-        "username": username,
-        "password": get_password_hash(password),
-        "status": status,
-        "created": created
-        
-        }
-    mydb.login.insert_one(dataInsert)
-    return {"message":"User has been save"}
+
 
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
@@ -72,7 +59,20 @@ def authenticate_user(username, password):
     # else :
     #     False
 
-  
+@admin.post('/sign-up')
+def sign_up(fullname: str, username: str, password: str, status: str,created: Union[datetime, None] = Body(default=None),token: str = Depends(oauth_scheme)):
+    """This function is for inserting """
+    dataInsert = dict()
+    dataInsert = {
+        "fullname": fullname,
+        "username": username,
+        "password": get_password_hash(password),
+        "status": status,
+        "created": created
+        
+        }
+    mydb.login.insert_one(dataInsert)
+    return {"message":"User has been save"} 
 
 
 @admin.post('/token')
@@ -164,7 +164,13 @@ async def update_user(id,item:ChartofAccount):
 
 
 #==============================================Insert Journal Entry================================
-@admin.delete('/delete-journal-entry/{id}')
-def delete_journal_entry(id, item:JournalEntry):
-    """This function is to delete journal Entry"""
+@admin.get("/show-journal-entry")
+async def find_journal_entry(token: str = Depends(oauth_scheme)):
+    """This function is for querying chart of account"""
+    return journalEntrys(mydb.journal_entry.find())
 
+@admin.delete('/delete-journal-entry/{id}')
+def delete_journal_entry(id,token: str = Depends(oauth_scheme)):
+    """This function is to delete journal Entry"""
+    mydb.journal_entry.find_one_and_delete({"_id":ObjectId(id)})
+    return  {'Messeges':'Data has been deleted'}

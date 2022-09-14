@@ -325,7 +325,7 @@ def autocomplete(term: Optional[str]):
         suggestions.append(item['accountTitle'])
     return suggestions
 
-@client.get("/insert-journal-entry/", response_class=HTMLResponse)
+@client.get("/insert-journal-entry-2/", response_class=HTMLResponse)
 async def insert_journal_entry(request: Request):
     """This function is for openting navbar of accounting"""
     form = await request.form()
@@ -334,7 +334,7 @@ async def insert_journal_entry(request: Request):
    
 
     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
-    return templates.TemplateResponse("journal_entry.html", 
+    return templates.TemplateResponse("journal_entry2.html", 
                                         {"request":request,"all_chart_of_account":all_chart_of_account})
 
 @client.post("/insert-journal-entry-2/", response_class=HTMLResponse)
@@ -349,6 +349,8 @@ async def insert_journal_entry(request: Request):
     accountTitle = form.get('accountTitle')
     debit_amount = form.get('debit_amount')
     credit_amount = form.get('credit_amount')
+
+    date_time_obj_to = datetime.strptime(trans_date, '%Y-%m-%d')
 
     
 
@@ -376,7 +378,7 @@ async def insert_journal_entry(request: Request):
 
                 dataInsert = {
                     # 'date_entry': journalEntryInsert_datefrom.get(),
-                    'date_entry': trans_date,
+                    'date_entry': date_time_obj_to,
                     'journal': journal,
                     'ref': reference,
                     'descriptions': journal_memo,
@@ -398,7 +400,7 @@ async def insert_journal_entry(request: Request):
 
                 all_journalEntry  = journalEntrys(mydb.journal_entry.find({'ref':reference}))
                 
-                return templates.TemplateResponse("journal_entry.html", 
+                return templates.TemplateResponse("journal_entry2.html", 
                                                 {"request":request,'all_journalEntry':all_journalEntry})
 
     #     return templates.TemplateResponse("journal_entry2.html", 
@@ -407,6 +409,18 @@ async def insert_journal_entry(request: Request):
     # return templates.TemplateResponse("journal_entry2.html", 
     #                                             {"request":request,'all_journalEntry':all_journalEntry})
 
+#=============================================This is need for debugging==================================
+@client.get("/insert-journal-entry/", response_class=HTMLResponse)
+async def insert_journal_entry(request: Request):
+    """This function is for openting navbar of accounting"""
+    form = await request.form()
+    accountTile = form.get('accountTitle')
+
+   
+
+    all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
+    return templates.TemplateResponse("journal_entry.html", 
+                                        {"request":request,"all_chart_of_account":all_chart_of_account})
 
 
 @client.post("/insert-journal-entry/", response_class=HTMLResponse)
