@@ -3,6 +3,15 @@
 {% block content %}
 <body>
     <form method="POST">
+
+            <div class="container mt-3">
+                {% for messege in messeges %}
+                <div class="alert alert-danger" role="alert">
+                {{ messege }}
+                </div>
+                {% endfor %}
+            </div>
+
             <div  class="container mt-3">
                 <label for="TransactionDate" >Transaction Date</label><br>
                     <input

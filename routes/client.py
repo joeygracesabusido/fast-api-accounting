@@ -15,6 +15,7 @@ from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.user import userEntity,usersEntity
 from schemas.bstype import bsTypes
 from schemas.journalEntry import journalEntry,journalEntrys
+from schemas.journalEntry_incomeStatmement import journalEntry_incomeStatement,journalEntry_incomeStatements
 
 from jose import jwt
 
@@ -357,57 +358,140 @@ async def insert_journal_entry(request: Request):
     
 
     messeges = []
-     
-    token = request.cookies.get('access_token')
-
-
-    if token is not None:
-        scheme, _, param = token.partition(" ")
-        payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
     
-        username = payload.get("sub")
-    
+    try:
 
-        user =  mydb.login.find({"username":username})
+        token = request.cookies.get('access_token')
 
-        if user is not None:
-            items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':accountTitle}))
-            for i in items:
-                accountNumber = i['accountNum']
-                bsType = i['bsClass']
+        all_journalEntry = ''
+        if token is None:
 
-                dataInsert = {
-                    # 'date_entry': journalEntryInsert_datefrom.get(),
-                    'date_entry': date_time_obj_to,
-                    'journal': journal,
-                    'ref': reference,
-                    'descriptions': journal_memo,
-                    'acoount_number': accountNumber,
-                    'account_disc': accountTitle,
-                    'bsClass': bsType,
-                    'debit_amount': float(debit_amount),
-                    'credit_amount': float(credit_amount),
-                    'due_date_apv': "",
-                    'terms_days': "",
-                    'supplier/Client': "",
-                    'user': username,
-                    'created':datetime.now()
+            messeges.append("Please log in first to validated credentials ")
+            return templates.TemplateResponse("journal_entry2.html", 
+                                                    {"request":request,'all_journalEntry':all_journalEntry,
+                                                    "messeges":messeges})
+
+            
+        else:
+            scheme, _, param = token.partition(" ")
+            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+            username = payload.get("sub")
+        
+
+            user =  mydb.login.find({"username":username})
+
+            if user is not None:
+                items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':accountTitle}))
+                for i in items:
+                    accountNumber = i['accountNum']
+                    bsType = i['bsClass']
+
+                    dataInsert = {
+                        # 'date_entry': journalEntryInsert_datefrom.get(),
+                        'date_entry': date_time_obj_to,
+                        'journal': journal,
+                        'ref': reference,
+                        'descriptions': journal_memo,
+                        'acoount_number': accountNumber,
+                        'account_disc': accountTitle,
+                        'bsClass': bsType,
+                        'debit_amount': float(debit_amount),
+                        'credit_amount': float(credit_amount),
+                        'due_date_apv': "",
+                        'terms_days': "",
+                        'supplier/Client': "",
+                        'user': username,
+                        'created':datetime.now()
+                        
+                        }
+
+                    messeges.append("Entry Has been Save")
+                    mydb.journal_entry.insert_one(dataInsert)
+
+                    all_journalEntry  = journalEntrys(mydb.journal_entry.find({'ref':reference}))
                     
-                    }
+                    return templates.TemplateResponse("journal_entry2.html", 
+                                                    {"request":request,'all_journalEntry':all_journalEntry})
+                    # return response.RedirectResponse(f'/insert-journal-entry-2/')
+            messeges.append("Please log in first to validated credentials ")
+            return templates.TemplateResponse("journal_entry2.html", 
+                                                    {"request":request,'all_journalEntry':all_journalEntry,
+                                                   "messeges":messeges})
 
-                messeges.append("Entry Has been Save")
-                mydb.journal_entry.insert_one(dataInsert)
+            
+    
+    except Exception as e:
+        print(e)
+#=============================================This ksi for Income Statement Router========================
+@client.get("/income-statement/", response_class=HTMLResponse)
+async def get_income_statement(request:Request):
+    """This function is for querying income statement"""
+    return templates.TemplateResponse("incomestatement.html",{'request':request})
 
-                all_journalEntry  = journalEntrys(mydb.journal_entry.find({'ref':reference}))
-                
-                return templates.TemplateResponse("journal_entry2.html", 
-                                                {"request":request,'all_journalEntry':all_journalEntry})
+@client.post("/income-statement/", response_class=HTMLResponse)
+async def get_income_statement(request:Request):
+    """This function is for querying income statement"""
+    form = await request.form()
 
-    #     return templates.TemplateResponse("journal_entry2.html", 
-    #                                             {"request":request,'all_journalEntry':all_journalEntry})
+    dateFrom = form.get('trans_date_from')
+    date_time_obj_from = datetime.strptime(dateFrom, '%Y-%m-%d')
 
-    # return templates.TemplateResponse("journal_entry2.html", 
-    #                                             {"request":request,'all_journalEntry':all_journalEntry})
+    dateTo = form.get('trans_date_to')
+    date_time_obj_to = datetime.strptime(dateTo, '%Y-%m-%d')
+
+    agg_result= mydb.journal_entry.aggregate(
+        [
+        {"$match":{'date_entry': {'$gte':date_time_obj_from, '$lte':date_time_obj_to},
+            '$or': [
+            {'acoount_number': {"$regex": "^5"}},
+            {'acoount_number': {"$regex": "^4"}}
+        ] }},
+        # {"$match": { "cut_off_period": date } },
+        # {'$sort' : { '$meta': "textScore" }, '$account_disc': -1 },
+        {"$group" : 
+            {"_id" :  '$acoount_number',
+            "accountName": {'$first':'$account_disc'},
+            "totalDebit" : {"$sum" : '$debit_amount'},
+            "totalCredit" : {"$sum" : '$credit_amount'},
+            
+            }},
+        {'$sort':{'_id': 1}}
+            
+        ])
+    agg_result_list = []
+    for x in agg_result:
+
+        accountNumber = x['_id']
+        account_title = x['accountName']
+        debit_amount = x['totalDebit']
+        debit_amount2 = '{:,.2f}'.format(debit_amount)
+        credit_amount = x['totalCredit']
+        credit_amount2 = '{:,.2f}'.format(credit_amount)
+        totalIncome =   float(credit_amount) - float(debit_amount)
+        totalIncome2 = '{:,.2f}'.format(totalIncome)
+
+        
+
+        data={}   
+        
+        data.update({
+            
+            
+            'acoount_number': accountNumber,
+            'accountTitle': account_title,
+            'debit_amount': debit_amount2,
+            'credit_amount': credit_amount2,
+            'totalAmount': totalIncome2,
+        })
+
+        agg_result_list.append(data)
+
+
+    
+
+    return templates.TemplateResponse("incomestatement.html",{'request':request,'agg_result_list':agg_result_list})
+    
 
 #=============================================This is need for debugging==================================
 @client.get("/insert-journal-entry/", response_class=HTMLResponse)
