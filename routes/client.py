@@ -198,58 +198,59 @@ async def insert_chart_of_account(request: Request):
                                                     "all_bstype":all_bstype,"messeges":messeges})
 
     else:
-        token = request.cookies.get('access_token')
-    # print(token)
+        try:
+            token = request.cookies.get('access_token')
+        # print(token)
 
-        if token is not None:
-            scheme, _, param = token.partition(" ")
-            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
-        
-            username = payload.get("sub")
-        
+            if token is None:
 
-            user =  mydb.login.find({"username":username})
-
-            if user is not None:
-
-                dataInsert = {
-                    'accountNum': account_number,
-                    'accountTitle': account_title,
-                    'bsClass': bstype,
-                    'user': username,
-                    'created': datetime.now()
-                    
-                    }
-
-                mydb.chart_of_account.insert_one(dataInsert)
-
-                messeges.append("Your Account Title has been Save")
+                messeges.append("Please Log in to Transact")
                 return templates.TemplateResponse("accounting_home.html", {"request":request,
-                                                            "all_chart_of_account":all_chart_of_account,
-                                                            "all_bstype":all_bstype,"messeges":messeges})
+                                                                    "all_chart_of_account":all_chart_of_account,
+                                                                    "all_bstype":all_bstype,"messeges":messeges})
 
-       
-        messeges.append("Please Log in to Transact")
-        return templates.TemplateResponse("accounting_home.html", {"request":request,
-                                                            "all_chart_of_account":all_chart_of_account,
-                                                            "all_bstype":all_bstype,"messeges":messeges})
+                
+            else:
+                scheme, _, param = token.partition(" ")
+                payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+            
+                username = payload.get("sub")
+            
+
+                user =  mydb.login.find({"username":username})
+
+                if user is not None:
+
+                    dataInsert = {
+                        'accountNum': account_number,
+                        'accountTitle': account_title,
+                        'bsClass': bstype,
+                        'user': username,
+                        'created': datetime.now()
+                        
+                        }
+
+                    mydb.chart_of_account.insert_one(dataInsert)
+
+                    messeges.append("Your Account Title has been Save")
+                    return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                                "all_chart_of_account":all_chart_of_account,
+                                                                "all_bstype":all_bstype,"messeges":messeges})
+            
+        except Exception as e:
+            messeges.append(e)
+            return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                                "all_chart_of_account":all_chart_of_account,
+                                                                "all_bstype":all_bstype,"messeges":messeges})
 
 @client.get("/update-chart-of-account/{id}", response_class=HTMLResponse)
 def update_chart_of_account(id,request: Request):
     """This function is for showing Form for Updating Chart of Account"""
     token = request.cookies.get('access_token')
     
-    scheme, _, param = token.partition(" ")
-    payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
-
-    username = payload.get("sub")
-
-    
-
     search_coa = chartofAccounts(mydb.chart_of_account.find({"_id":ObjectId(id)}))
     
-    return templates.TemplateResponse("update_coa.html", {"request":request,'search_coa': search_coa,
-                                                        'username':username})
+    return templates.TemplateResponse("update_coa.html", {"request":request,'search_coa':search_coa})
 
 
 @client.post("/update-chart-of-account/{id}", response_class=HTMLResponse)
@@ -262,51 +263,58 @@ async def update_chart_of_account(id,request: Request):
     user_search = form.get('user')
 
     messeges = []
+
+    try:
      
-    token = request.cookies.get('access_token')
+        token = request.cookies.get('access_token')
+        if token is None:
 
-
-    if token is not None:
-        scheme, _, param = token.partition(" ")
-        payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+            messeges.append("Please Log in to Transact")
+            search_coa = chartofAccounts(mydb.chart_of_account.find({"_id":ObjectId(id)}))
     
-        username = payload.get("sub")
-    
+            return templates.TemplateResponse("update_coa.html", {"request":request,'search_coa':search_coa,
+                                                'messeges':messeges})
+            
+        else:
+            scheme, _, param = token.partition(" ")
+            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+            username = payload.get("sub")
+        
 
-        user =  mydb.login.find({"username":username})
+            user =  mydb.login.find({"username":username})
 
-        if user is not None:
+            if user is not None:
 
-            query = {'_id':ObjectId(id)}
+                query = {'_id':ObjectId(id)}
 
-            newValue = { "$set": {  
-                                        
-                                        'accountTitle': account_title,
-                                        'bsClass': bstype,
-                                        'user': user_search,
-                                        'created': datetime.now()
-                                        
-                                    }           
-                                }
+                newValue = { "$set": {  
+                                            
+                                            'accountTitle': account_title,
+                                            'bsClass': bstype,
+                                            'user': user_search,
+                                            'created': datetime.now()
+                                            
+                                        }           
+                                    }
 
 
-            mydb.chart_of_account.update_one(query, newValue)
+                mydb.chart_of_account.update_one(query, newValue)
 
-            messeges.append("Your Account Title has been Save")
-            all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
-            all_bstype = bsTypes(mydb.balansheetType.find())
-            return templates.TemplateResponse("accounting_home.html", {"request":request,
-                                                        "all_chart_of_account":all_chart_of_account,
-                                                        "messeges":messeges})
+                messeges.append("Your Account Title has been Save")
+                all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
+                all_bstype = bsTypes(mydb.balansheetType.find())
+                return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                            "all_chart_of_account":all_chart_of_account,
+                                                            "messeges":messeges})
 
-    
-    messeges.append("Please Log in to Transact")
-    all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
-    all_bstype = bsTypes(mydb.balansheetType.find())
-    return templates.TemplateResponse("accounting_home.html", {"request":request,
-                                                        "all_chart_of_account":all_chart_of_account,
-                                                        "all_bstype":all_bstype,"messeges":messeges})
-
+        
+        
+    except Exception as e:
+        messeges.append(e)
+        return templates.TemplateResponse("accounting_home.html", {"request":request,
+                                                            "all_chart_of_account":all_chart_of_account,
+                                                            "all_bstype":all_bstype,"messeges":messeges})
 
 @client.get("/view-journal-entry/", response_class=HTMLResponse)
 async def view_journal_entry(request: Request):
@@ -422,7 +430,10 @@ async def insert_journal_entry(request: Request):
             
     
     except Exception as e:
-        print(e)
+        messeges.append(e)
+        return templates.TemplateResponse("journal_entry2.html", 
+                                                {"request":request,'all_journalEntry':all_journalEntry,
+                                                "messeges":messeges})
 #=============================================This ksi for Income Statement Router========================
 @client.get("/income-statement/", response_class=HTMLResponse)
 async def get_income_statement(request:Request):
@@ -538,5 +549,7 @@ async def insert_journal_entry(request: Request):
     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
     return templates.TemplateResponse("journal_entry.html", 
                                         {"request":request,"all_chart_of_account":all_chart_of_account})
+
+
 
 

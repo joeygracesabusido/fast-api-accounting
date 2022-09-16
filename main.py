@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routes.admin import admin
 from routes.client import client
+from routes.zamboanga_client import zamboanga_client
 
 app = FastAPI()
 
@@ -18,3 +19,4 @@ app.add_middleware(
 
 app.include_router(admin)
 app.include_router(client)
+app.include_router(zamboanga_client)

@@ -10,7 +10,7 @@ from bson import ObjectId
 from schemas.user import userEntity,usersEntity
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.bstype import bsType, bsTypes
-from schemas.journalEntry import journalEntry,journalEntrys
+from schemas.journalEntry import journalEntry,journalEntrys,journalEntryZambo,journalEntryZambos
 from models.model import User, balansheetType, ChartofAccount,JournalEntry
 
 
@@ -173,4 +173,17 @@ async def find_journal_entry(token: str = Depends(oauth_scheme)):
 def delete_journal_entry(id,token: str = Depends(oauth_scheme)):
     """This function is to delete journal Entry"""
     mydb.journal_entry.find_one_and_delete({"_id":ObjectId(id)})
+    return  {'Messeges':'Data has been deleted'}
+
+
+#==============================================Zamboanga Data===================================
+@admin.get('/journal-entry-zambo/')
+def get_journal_entry_zambo(token: str = Depends(oauth_scheme)):
+    """This is for queryong journal entry for Zamboanga"""
+    return journalEntryZambos(mydb.journal_entry_zambo.find())
+
+@admin.delete('/delete-journal-entry-zambo/{id}')
+def delete_journal_entry_zambo(id,token: str = Depends(oauth_scheme)):
+    """This function is to delete journal Entry for Zambo"""
+    mydb.journal_entry_zambo.find_one_and_delete({"_id":ObjectId(id)})
     return  {'Messeges':'Data has been deleted'}

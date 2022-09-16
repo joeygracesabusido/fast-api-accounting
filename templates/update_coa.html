@@ -7,7 +7,14 @@
     
     <form method="POST">
         <div class="container mt-3">
-           
+            <div class="container mt-3">
+                {% for i in messeges %}
+                <div class="alert alert-danger" role="alert">
+                    {{ i }}
+                    </div>
+                {% endfor %}
+            </div>
+        <div class="container mt-3">
                 <label for="User"
                 >User</label><br>
                 

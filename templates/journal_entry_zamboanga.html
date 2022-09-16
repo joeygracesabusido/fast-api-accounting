@@ -1,0 +1,238 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<body>
+    <form method="POST">
+
+            <div class="container mt-3">
+               <h3>JOURNAL ENTRY ZAMBOAGA PROJECT</h3>
+            </div>
+
+            <div class="container mt-3">
+                {% for messege in messeges %}
+                <div class="alert alert-danger" role="alert">
+                {{ messege }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div  class="container mt-3">
+                <label for="TransactionDate" >Transaction Date</label><br>
+                    <input
+                        type="date"
+                        name="trans_date"
+                        id="trans_date"
+                        >
+                    </input>  
+                    <br>
+            </div>
+
+            <div class="container mt-3">
+                <label for="Journal" >Journal</label><br>
+                <select name="journal" id="journal"class="filter-selectbox">
+                        <option value="Payment">Payments</option>
+                        <option value="Receipts">Receipts</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Purchases">Purchases</option>
+                        <option value="General">General</option>
+                
+                    </select>  <br>  
+            </div>
+
+            <div  class="container mt-3">
+                <label >Reference</label><br>
+                    <input 
+                        type="text"
+                        name="reference"
+                        id="reference"
+                        style="width: 300px;"
+                        
+                        >
+                    </input><br>
+
+                    
+            </div>
+
+
+
+            <div  class="container mt-3">
+                <label >Journal Memo</label><br>
+                    <textarea
+                        type="input"
+                        name="journal_memo" cols="35" rows="3"
+                        id="journal_memo"
+                        >
+                    </textarea><br>
+                
+            </div>
+            
+            <div class="container mt-3">
+                <table class="table table-borderless">
+                    <thead class="border-bottom font-weight-bold">
+                        <tr>
+                            
+                            <td>AccounTitle</td>
+                            <td>Debit</td>
+                            <td>Credit</td>
+                            <td>Action</td>
+                        
+                          
+
+                        
+                        </tr>
+                    </thead>
+                    <tbody >
+
+                        
+
+                        <td>
+                            <input
+                                type="text"
+                                name="accountTitle"
+                                id="accountTitle"
+                                class="accountTitle"
+                                style="width: 400px;"
+                               
+                            >
+                            </input>
+                            
+                           
+                        </td>
+
+
+                        <!-- <td>
+                            <select name="accountTitle" id="accountTitle"class="filter-selectbox"
+                            
+                                >
+
+                                {% for result in all_chart_of_account %}
+                                    <option value="{{ result.accountTitle }}">{{ result.accountTitle }}</option>
+                                {% endfor %} 
+
+                            </select>
+                            
+                        </td> -->
+
+                        <td>
+                            <input
+                                type="number"
+                                name="debit_amount"
+                                id="debit_amount"
+                                class="debit_amount"
+                                style="width: 150px;"
+                               
+                            >
+                            </input>
+                        </td>
+
+                        <td>
+                            <input
+                                type="number"
+                                name="credit_amount"
+                                id="credit_amount"
+                                class="credit_amount"
+                                style="width: 150px;"
+                               
+                            >
+                        </input>
+                        </td>
+
+                        <td>
+                            <input type=text hidden  id="balancesheetType"  
+                            style="width: 200px;"
+                            />
+                           
+                        </td>
+
+                        <td>
+                            <button type="submit" name='submit' id='submitBtn' class="btn btn-success">
+                                Save
+                                <i class="fas fa-database"> 
+                           
+                        </td>
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="container mt-4">
+
+                <table class="table table-borderless">
+                    <thead class="border-bottom font-weight-bold">
+                        <tr>
+                            
+                            <td>Date</td>
+                            <td>Journal</td>
+                            <td>Reference</td>
+                            <td>Memo</td>
+                            <td>Account No.</td>
+                            <td>Account Title</td>
+                            <td>Debit</td>
+                            <td>Credit</td>
+                            <td>Action</td>
+                          
+
+                        
+                        </tr>
+                    </thead>
+                    <tbody >
+
+                        {% for list in all_journalEntry%}
+                
+                                <tr>
+                                    
+                                    <td>{{list.date_entry}}</td>
+                                    <td>{{list.journal}}</td>
+                                    <td>{{list.ref}}</td>
+                                    <td>{{list.descriptions}}</td>
+                                    <td>{{list.acoount_number}}</td>
+                                    <td>{{list.account_disc}}</td>
+                                    <td>{{list.debit_amount}}</td>
+                                    <td>{{list.credit_amount}}</td>
+                                    
+                                   
+                                    
+                                    <td>
+                                        <a href="#"
+                                        <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-database"></i> Edit</button></a>
+                                    </td>
+        
+                                    
+        
+                                    
+                                </tr>
+                               
+                            {% endfor %}
+
+                       
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+
+
+            <script>
+
+                $( function() {
+                    
+                    $( "#accountTitle" ).autocomplete({
+                    source: "/autocomplete/"
+                    });
+                } );
+
+
+            </script>
+
+    </form>
+
+</body>
+
+            
+{% endblock %}

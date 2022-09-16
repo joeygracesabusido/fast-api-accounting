@@ -1,0 +1,218 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<body>
+    <form method="POST">
+            <div class="container mt-3">
+                <h3>INCOME STATEMENT ZAMBOAGA PROJECT</h3>
+            </div>
+
+            <div class="container mt-3">
+                {% for messege in messeges %}
+                <div class="alert alert-danger" role="alert">
+                {{ messege }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div  class="container mt-3">
+                <label for="TransactionDate" >Date From</label>
+                    <input
+                        type="date"
+                        name="trans_date_from"
+                        id="trans_date_from"
+                        >
+                    </input>  
+
+                <label for="TransactionDate" >Date To</label>
+                    <input
+                        type="date"
+                        name="trans_date_to"
+                        id="trans_date_to"
+                        >
+                    </input>  
+
+                    <button type="submit" name='submit' id='submitBtn' class="btn btn-success">
+                        Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
+                    
+            </div>
+
+            
+
+        
+
+            <div  class="container mt-3">
+               
+                
+            </div>
+
+            <div  class="container mt-3">
+               
+                
+            </div>
+            
+            
+            <div class="container mt-4">
+
+                <table id="myTable" class="table table-borderless">
+                    <thead class="border-bottom font-weight-bold">
+                        <tr>
+                            
+                            
+                            <td>Account No.</td>
+                            <td>Account Title</td>
+                            
+                            <td>Total Amount</td>
+                                   
+                        </tr>
+                    </thead>
+                    <tbody >
+
+                        {% for list in agg_result_list%}
+                
+                                <tr>
+                                    
+                                    
+                                    <td>{{list.acoount_number}}</td>
+                                    <td>{{list.accountTitle}}</td>
+                                    
+                                    <td>{{list.totalAmount}}</td>
+                                    
+                                </tr>
+                               
+                            {% endfor %}
+
+                       
+
+
+                    </tbody>
+
+                    <tfoot>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        
+                        
+                    </tfoot>
+
+                </table>
+
+
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
+
+       <!-- This is for jquery Date picker -->
+
+       
+       
+
+        <!-- <script>
+             $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script> -->
+        <script type="text/javascript">
+
+                
+
+            // $(document).ready(function () {
+            //     $('#myTable').DataTable();
+            // });
+            $(document).ready(function () {
+
+
+                $("#myTable").DataTable({
+                   
+
+                    drawCallback: function () {
+                    var api = this.api();
+                    var sum = 0;
+                    var formated = 0;
+                    //to show first th
+                    $(api.column(0).footer()).html('Total Income(-Loss)');
+
+                    for(var i=2; i<=3;i++)
+                    {
+                        sum = api.column(i).data().sum();
+
+                        //to format this sum
+                        formated = parseFloat(sum).toLocaleString(undefined, {minimumFractionDigits:2});
+                        $(api.column(i).footer()).html(''+formated);
+                    }
+                    
+                },
+
+                                // Refilter the table
+               
+                    // configuration
+                    paging: true,
+                    pageLength: 10,
+                    lengthChange: true,
+                    autowidth: true,
+                    searching: true,
+                    bInfo: true,
+                    bsort: true,
+                    
+
+                    dom: 'LBfrtip',
+                    buttons: [
+                        { // COPY
+                            extend : 'copy',
+                            text: 'Copy',
+                            className: 'btn btn-secondary',
+                            titleArttr: 'Copy',
+                            exportOptions: {
+                                columns: [0,1,2]
+                            },
+                        },
+                        { // EXCEL
+                            extend : 'excel',
+                            text: 'Export Excel',
+                            className: 'btn btn-success',
+                            titleArttr: 'Excel',
+                            exportOptions: {
+                                columns: [0,1,2]
+                            },
+                        },
+                        { // Print
+                            extend : 'print',
+                            text: 'Print',
+                            className: 'btn btn-danger',
+                            titleArttr: 'Print',
+                            exportOptions: {
+                                columns: [0,1,2]
+                            },
+                        },
+
+                    
+                    ]
+
+                })
+           
+
+        });
+            
+        </script>
+
+
+
+           
+
+    </form>
+
+</body>
+
+            
+{% endblock %}
