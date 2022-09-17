@@ -487,8 +487,6 @@ async def get_income_statement(request:Request):
         data={}   
         
         data.update({
-            
-            
             'acoount_number': accountNumber,
             'accountTitle': account_title,
             'debit_amount': debit_amount2,
@@ -522,29 +520,84 @@ async def insert_journal_entry(request: Request):
 async def insert_journal_entry(request: Request):
     """This function is for posting accounting"""
     form = await request.form()
-    accountTile = form.get('accountTitle')
+    
+    accountTile = form.get('accountTitle1')
+    accountTile2 = form.get('accountTitle2')
+    accountTile3 = form.get('accountTitle3')
+    accountTile4 = form.get('accountTitle4')
+    accountTile5 = form.get('accountTitle5')
+    accountTile6 = form.get('accountTitle6')
+
+
+    debitAmount = form.get('amount1')
+    debitAmount2 = form.get('amount2')
+    debitAmount3 = form.get('amount3')
+    debitAmount4 = form.get('amount4')
+    debitAmount5 = form.get('amount5')
+    debitAmount6 = form.get('amount6')
 
     
-    
-    data_ = form
 
-    print(data_)
-    # data_.pop('BalanceSheetType')
-    # data_.pop('reference')
-    # data_.pop('journal_memo')
-    # data_.pop('submit')
+    # print(accountTile,accountTile2,accountTile3)
     
+    
+    # data_ = form
+
+    # listItems = (dict(data_))
+    # entry = len(listItems)
     # print(entry)
 
-    # for i in range(entry):
-    #     result = []
-    #     d={}
-    #     for j,k in enumerate(data_.items()):
-
-    #         if j == 8:
-    #             d['accountTitle']= (k[8][i])
+    # for k in listItems.items():
+    #         print(k)
+   
+    # # for i in range(entry):
+    
+   
+    
+   
+    
+    # result =[]
+    
+    # for j,k in enumerate(listItems.items()):
+    #     d={}  
+    #     if j == 4 :
+    #         d['accounttile'] = (k[1])
+            
+    #         result.append(d) 
+    #     elif j == 7:
+    #         d['accounttile'] = (k[1])
     #         result.append(d)
-    #     print(result)
+    #     elif j == 10:
+    #         d['accounttile'] = (k[1])
+    #         result.append(d)
+
+    #     elif j == 13:
+    #         d['accounttile'] = (k[1])
+    #         result.append(d)
+
+    #     # if j == 5:
+    #     #     d['debit'] = (k[1])
+    #     #     result.append(d)
+
+    # print(result)
+    # for r in result:
+    #     accountTitle = r['accounttile']
+    #     # debitAcct = r['debit']
+    #     print(accountTitle) 
+        
+    #         # if j == count + 4:
+    #         #     d = k[1]
+                
+    #         # if j == count + 7:
+    #         #     d = k[1]
+                
+    #         # if j == count + 10:
+    #         #     d = k[1]
+                
+    #         # if j == count + 13:
+    #         #     d = k[1]
+   
+    
 
     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
     return templates.TemplateResponse("journal_entry.html", 

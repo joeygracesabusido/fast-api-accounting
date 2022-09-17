@@ -86,7 +86,7 @@
                     
     
                         
-                        <button type="submit" name='submit' id='submitBtn' class="btn btn-success">
+                        <button type="submit" name='submit' id='submiBTN' class="btn btn-success">
                         <i class="fas fa-database"> 
 
                        
@@ -143,7 +143,6 @@
 
                                     <td>
                                         <select name="accountTitle${x}" id="accountTitle${x}"class="filter-selectbox"
-                                        
                                             >
 
                                             {% for result in all_chart_of_account %}
@@ -159,7 +158,7 @@
                                     <td>
                                         <input
                                             type="number"
-                                            name="amount"
+                                            name="amount${x}"
                                             id="amount${x}"
                                             class="amount"
                                             style="width: 150px;"
@@ -171,7 +170,7 @@
                                     <td>
                                         <input
                                             type="number"
-                                            name="credit_amount"
+                                            name="credit_amount${x}"
                                             id="credit_amount${x}"
                                             class="credit_amount"
                                             style="width: 150px;"
@@ -180,12 +179,7 @@
                                         </input
                                     </td>
 
-                                    <td>
-                                        <input type=text hidden  id="balancesheetType${x}"  
-                                        style="width: 200px;"
-                                        />
-                                       
-                                    </td>
+                                   
             
                                     <td>
                                         <button type="button"  id="remove_button" class="btn btn-danger"><i class="fas fa-database">
