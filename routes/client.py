@@ -1,5 +1,6 @@
 # import jwt
 # from urllib import response
+from traceback import format_list
 from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -520,82 +521,222 @@ async def insert_journal_entry(request: Request):
 async def insert_journal_entry(request: Request):
     """This function is for posting accounting"""
     form = await request.form()
-    
-    accountTile = form.get('accountTitle1')
-    accountTile2 = form.get('accountTitle2')
-    accountTile3 = form.get('accountTitle3')
-    accountTile4 = form.get('accountTitle4')
-    accountTile5 = form.get('accountTitle5')
-    accountTile6 = form.get('accountTitle6')
 
-
-    debitAmount = form.get('amount1')
-    debitAmount2 = form.get('amount2')
-    debitAmount3 = form.get('amount3')
-    debitAmount4 = form.get('amount4')
-    debitAmount5 = form.get('amount5')
-    debitAmount6 = form.get('amount6')
-
+    trans_date = form.get('trans_date')
+    journal = form.get('trasactionType')
+    reference = form.get('reference')
+    journal_memo = form.get('journal_memo')
     
 
-    # print(accountTile,accountTile2,accountTile3)
+    date_time_obj_to = datetime.strptime(trans_date, '%Y-%m-%d')
+
     
+    account_title =[
+        form.get('accountTitle1'),
+        form.get('accountTitle2'),
+        form.get('accountTitle3'),
+        form.get('accountTitle4'),
+        form.get('accountTitle5'),
+        form.get('accountTitle6'),
+        form.get('accountTitle7'),
+        form.get('accountTitle8'),
+        form.get('accountTitle9'),
+        form.get('accountTitle10')
+    ]
+
+   
     
+
+    debitAmount = [
+        form.get('amount1'),
+        form.get('amount2'),
+        form.get('amount3'),
+        form.get('amount4'),
+        form.get('amount5'),
+        form.get('amount6'),
+        form.get('amount7'),
+        form.get('amount8'),
+        form.get('amount9'),
+        form.get('amount10')
+    ]
+    
+
+    craditAmount = [
+        form.get('credit_amount1'),
+        form.get('credit_amount2'),
+        form.get('credit_amount3'),
+        form.get('credit_amount4'),
+        form.get('credit_amount5'),
+        form.get('credit_amount6'),
+        form.get('credit_amount7'),
+        form.get('credit_amount8'),
+        form.get('credit_amount9'),
+        form.get('credit_amount10')
+
+    ]
+
+    
+
+    res = []
+    
+    for val in account_title:
+        if val != None :
+            res.append(val)
+
+
+    res2 = []
+   
+    for val in debitAmount:
+        if val != None :
+            res2.append(val)
+
+    res3 = []
+   
+    for val in craditAmount:
+        if val != None :
+            res3.append(val)
+            
+   
+    data= {}
+
+    data.update({
+        "accountTitle":res,
+        "debit":res2,
+        "credit":res3
+    })
+
+    entry = len(data['accountTitle'])
+    # print(entry)
+
+    # for k in data.items():
+        # print(k)
+
+    result = []
+    for i in range(entry):
+        # print(i)
+        d={}
+        for j,k in enumerate(data.items()):
+            if j == 0:
+                d['accountTitle']= (k[1][i])
+
+            if j == 1:
+                d['debit']= (k[1][i])
+               
+            if j == 2:   
+                d['credit']= (k[1][i])
+
+        result.append(d)
+    print(result)
+    for r in result:
+        
+        accountTitle2 = r['accountTitle']
+        debit2 = r['debit']
+        credit2 = r['credit']
+
+       
+
+
+
+        messeges = []
+    
+        try:
+
+            token = request.cookies.get('access_token')
+
+            all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
+            if token is None:
+
+                messeges.append("Please log in first to validated credentials ")
+                return templates.TemplateResponse("journal_entry.html", 
+                                                        {"request":request,'all_chart_of_account':all_chart_of_account,
+                                                        "messeges":messeges})
+
+                
+            else:
+                scheme, _, param = token.partition(" ")
+                payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+            
+                username = payload.get("sub")
+            
+
+                user =  mydb.login.find({"username":username})
+
+                if user is not None:
+                    items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':accountTitle2}))
+                    for i in items:
+                        accountNumber = i['accountNum']
+                        bsType = i['bsClass']
+
+
+
+                        dataInsert = [{
+                            # 'date_entry': journalEntryInsert_datefrom.get(),
+                            'date_entry': date_time_obj_to,
+                            'journal': journal,
+                            'ref': reference,
+                            'descriptions': journal_memo,
+                            'acoount_number': accountNumber,
+                            'account_disc': accountTitle2,
+                            'bsClass': bsType,
+                            'debit_amount': float(debit2),
+                            'credit_amount': float(credit2),
+                            'due_date_apv': "",
+                            'terms_days': "",
+                            'supplier/Client': "",
+                            'user': username,
+                            'created':datetime.now()
+                            
+                            }]
+
+                        # print(dataInsert)
+
+                        messeges.append("Entry Has been Save")
+                        mydb.journal_entry.insert_many(dataInsert)
+
+                    # all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
+                    
+                    # return templates.TemplateResponse("journal_entry.html", 
+                    #                                 {"request":request,'all_chart_of_account':all_chart_of_account})
+                 
+        except Exception as e:
+            messeges.append(e)
+            return templates.TemplateResponse("journal_entry.html", 
+                                                    {"request":request,'all_chart_of_account':all_chart_of_account,
+                                                    "messeges":messeges})
+
+
     # data_ = form
 
-    # listItems = (dict(data_))
+    # listItems = (dict(data_._list))
+    
+    # listItems.pop('trans_date')
+    # listItems.pop('trasactionType')
+    # listItems.pop('reference')
+    # listItems.pop('journal_memo')
+
+
+    # print(listItems)
     # entry = len(listItems)
     # print(entry)
 
     # for k in listItems.items():
     #         print(k)
-   
-    # # for i in range(entry):
-    
-   
-    
-   
-    
+
     # result =[]
     
+    # d={}
     # for j,k in enumerate(listItems.items()):
-    #     d={}  
-    #     if j == 4 :
-    #         d['accounttile'] = (k[1])
-            
-    #         result.append(d) 
-    #     elif j == 7:
-    #         d['accounttile'] = (k[1])
-    #         result.append(d)
-    #     elif j == 10:
-    #         d['accounttile'] = (k[1])
-    #         result.append(d)
-
-    #     elif j == 13:
-    #         d['accounttile'] = (k[1])
-    #         result.append(d)
-
-    #     # if j == 5:
-    #     #     d['debit'] = (k[1])
-    #     #     result.append(d)
-
+    #     if j == 0:
+    #         d['accountTitle']= (k[1])
+    # result.append(d)
+    
     # print(result)
-    # for r in result:
-    #     accountTitle = r['accounttile']
-    #     # debitAcct = r['debit']
-    #     print(accountTitle) 
         
-    #         # if j == count + 4:
-    #         #     d = k[1]
-                
-    #         # if j == count + 7:
-    #         #     d = k[1]
-                
-    #         # if j == count + 10:
-    #         #     d = k[1]
-                
-    #         # if j == count + 13:
-    #         #     d = k[1]
+   
+    
+    
+    
+   
    
     
 
