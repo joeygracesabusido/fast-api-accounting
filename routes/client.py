@@ -503,7 +503,7 @@ async def get_income_statement(request:Request):
     return templates.TemplateResponse("incomestatement.html",{'request':request,'agg_result_list':agg_result_list})
     
 
-#=============================================This is need for debugging==================================
+#=============================================This is need for debugging insert Journal Entry==================================
 @client.get("/insert-journal-entry/", response_class=HTMLResponse)
 async def insert_journal_entry(request: Request):
     """This function is for openting navbar of accounting"""
@@ -606,10 +606,7 @@ async def insert_journal_entry(request: Request):
     })
 
     entry = len(data['accountTitle'])
-    # print(entry)
-
-    # for k in data.items():
-        # print(k)
+   
 
     result = []
     for i in range(entry):
@@ -626,84 +623,109 @@ async def insert_journal_entry(request: Request):
                 d['credit']= (k[1][i])
 
         result.append(d)
-    print(result)
+    # print(result)
+    
+    totalD = 0
+    totalC = 0
+    accountTitle2 = ''
+    debit2 = ''
+    credit2 = ''
+    totalAmount = 0
+    messeges = []
     for r in result:
+       
         
         accountTitle2 = r['accountTitle']
         debit2 = r['debit']
         credit2 = r['credit']
+        totalD += float(debit2)
+        totalC += float(credit2)
 
-       
+    totalAmount = totalD-totalC
+    print(totalAmount)
 
+    if totalAmount == 0:
+        for r in result:
+           
+        
+            accountTitle2 = r['accountTitle']
+            debit2 = r['debit']
+            credit2 = r['credit']
+            totalD += float(debit2)
+            totalC += float(credit2)
 
+            try:
 
-        messeges = []
-    
-        try:
+                token = request.cookies.get('access_token')
 
-            token = request.cookies.get('access_token')
+                all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
+                if token is None:
 
-            all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
-            if token is None:
+                    messeges.append("Please log in first to validated credentials ")
+                    return templates.TemplateResponse("journal_entry.html", 
+                                                            {"request":request,'all_chart_of_account':all_chart_of_account,
+                                                            "messeges":messeges})
 
-                messeges.append("Please log in first to validated credentials ")
+                    
+                else:
+                    scheme, _, param = token.partition(" ")
+                    payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+                
+                    username = payload.get("sub")
+                
+
+                    user =  mydb.login.find({"username":username})
+
+                    if user is not None:
+                        items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':accountTitle2}))
+                        for i in items:
+                            accountNumber = i['accountNum']
+                            bsType = i['bsClass']
+
+                            
+
+                            dataInsert = [{
+                                
+                                'date_entry': date_time_obj_to,
+                                'journal': journal,
+                                'ref': reference,
+                                'descriptions': journal_memo,
+                                'acoount_number': accountNumber,
+                                'account_disc': accountTitle2,
+                                'bsClass': bsType,
+                                'debit_amount': float(debit2),
+                                'credit_amount': float(credit2),
+                                'due_date_apv': "",
+                                'terms_days': "",
+                                'supplier/Client': "",
+                                'user': username,
+                                'created':datetime.now()
+                                
+                                }]
+
+                            
+                                
+                            # print(dataInsert)
+
+                            
+                            mydb.journal_entry.insert_many(dataInsert)
+
+                    
+            
+            except Exception as e:
+                messeges.append(e)
                 return templates.TemplateResponse("journal_entry.html", 
                                                         {"request":request,'all_chart_of_account':all_chart_of_account,
                                                         "messeges":messeges})
-
-                
-            else:
-                scheme, _, param = token.partition(" ")
-                payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
-            
-                username = payload.get("sub")
-            
-
-                user =  mydb.login.find({"username":username})
-
-                if user is not None:
-                    items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':accountTitle2}))
-                    for i in items:
-                        accountNumber = i['accountNum']
-                        bsType = i['bsClass']
+    else:
+        messeges.append("Debit and Credit Not Balance")
+        all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
+        return templates.TemplateResponse("journal_entry.html", 
+                                            {"request":request,"all_chart_of_account":all_chart_of_account,
+                                            "messeges":messeges})
 
 
-
-                        dataInsert = [{
-                            # 'date_entry': journalEntryInsert_datefrom.get(),
-                            'date_entry': date_time_obj_to,
-                            'journal': journal,
-                            'ref': reference,
-                            'descriptions': journal_memo,
-                            'acoount_number': accountNumber,
-                            'account_disc': accountTitle2,
-                            'bsClass': bsType,
-                            'debit_amount': float(debit2),
-                            'credit_amount': float(credit2),
-                            'due_date_apv': "",
-                            'terms_days': "",
-                            'supplier/Client': "",
-                            'user': username,
-                            'created':datetime.now()
-                            
-                            }]
-
-                        # print(dataInsert)
-
-                        messeges.append("Entry Has been Save")
-                        mydb.journal_entry.insert_many(dataInsert)
-
-                    # all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
-                    
-                    # return templates.TemplateResponse("journal_entry.html", 
-                    #                                 {"request":request,'all_chart_of_account':all_chart_of_account})
-                 
-        except Exception as e:
-            messeges.append(e)
-            return templates.TemplateResponse("journal_entry.html", 
-                                                    {"request":request,'all_chart_of_account':all_chart_of_account,
-                                                    "messeges":messeges})
-
+    
 
     # data_ = form
 
@@ -733,16 +755,12 @@ async def insert_journal_entry(request: Request):
     # print(result)
         
    
-    
-    
-    
-   
-   
-    
 
+    messeges.append("Data has been save")
     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountTitle', 1))
     return templates.TemplateResponse("journal_entry.html", 
-                                        {"request":request,"all_chart_of_account":all_chart_of_account})
+                                        {"request":request,"all_chart_of_account":all_chart_of_account,
+                                        "messeges":messeges})
 
 
 
