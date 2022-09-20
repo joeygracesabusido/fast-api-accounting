@@ -642,7 +642,7 @@ async def insert_journal_entry(request: Request):
         totalC += float(credit2)
 
     totalAmount = totalD-totalC
-    print(totalAmount)
+    # print(totalAmount)
 
     if totalAmount == 0:
         for r in result:
