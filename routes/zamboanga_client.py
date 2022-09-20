@@ -269,8 +269,8 @@ async def insert_journal_entry(request: Request):
     totalD = 0
     totalC = 0
     accountTitle2 = ''
-    debit2 = ''
-    credit2 = ''
+    debit2 = 0
+    credit2 = 0
     totalAmount = 0
     messeges = []
     for r in result:
@@ -281,11 +281,12 @@ async def insert_journal_entry(request: Request):
         credit2 = r['credit']
         totalD += float(debit2)
         totalC += float(credit2)
+        total_debit = '{:.2f}'.format(totalD)
+        total_credit = '{:.2f}'.format(totalC)
 
-    totalAmount = totalD-totalC
-    print(totalAmount)
-
+    totalAmount = float(total_debit)-float(total_credit)
     if totalAmount == 0:
+   
         for r in result:
            
         
