@@ -2,6 +2,11 @@ from lib2to3.pytree import Base
 from pydantic import BaseModel
 from datetime import datetime, date
 
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+
+from config.database import Base
+
 class User(BaseModel):
     fullname: str
     username: str
@@ -34,3 +39,9 @@ class JournalEntry(BaseModel):
     supplier_Client: str
     user: str
     created:datetime
+
+#=============================================SQL Alchemy================================================
+
+
+    
+

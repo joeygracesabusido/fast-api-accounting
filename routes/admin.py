@@ -1,4 +1,5 @@
 import json
+from pyexpat import model
 from fastapi import APIRouter, Body, HTTPException, Depends
 from typing import Union
 from datetime import datetime
@@ -14,8 +15,22 @@ from schemas.journalEntry import journalEntry,journalEntrys,journalEntryZambo,jo
 from models.model import User, balansheetType, ChartofAccount,JournalEntry
 
 
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+
+from config.database import Base
+
+
+from sqlalchemy.orm import Session
+
+
+from pydantic import BaseModel
+from datetime import datetime, date
+
+
 
 from config.db import mydb
+from config.database import engine,sessionLocal,Base
 
 admin = APIRouter()
 
@@ -187,3 +202,30 @@ def delete_journal_entry_zambo(id,token: str = Depends(oauth_scheme)):
     """This function is to delete journal Entry for Zambo"""
     mydb.journal_entry_zambo.find_one_and_delete({"_id":ObjectId(id)})
     return  {'Messeges':'Data has been deleted'}
+
+
+
+#=============================================SQL Alchemy=======================================
+class UserLogin(Base):
+    __tablename__ = "admin_login"
+    id = Column(Integer, primary_key=True, index=True)
+    fullname = Column(String)
+    username = Column(String)
+    password_admin = Column(String)
+    admin_status = Column(String)
+
+class UserLogin_pydantic(BaseModel):
+    
+    id: int
+    fullname = str
+    username = str
+    password_admin = str
+    admin_status = str
+
+
+@admin.get('/diesel-consuption')
+async def get_diesel_consumption():
+    """This function is for querying diesel Consumption"""
+    
+    return {"messege":'Hello World'}
+    # return db.query(UserLogin)
