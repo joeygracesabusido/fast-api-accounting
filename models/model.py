@@ -5,7 +5,7 @@ from datetime import datetime, date
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from config.database import Base
+# from config.database import Base
 
 class User(BaseModel):
     fullname: str
@@ -42,6 +42,12 @@ class JournalEntry(BaseModel):
 
 #=============================================SQL Alchemy================================================
 
-
+class UserLogin(BaseModel):
+    
+    id: int
+    fullname = str
+    username = str
+    password_admin = str
+    admin_status = str
     
 

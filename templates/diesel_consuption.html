@@ -1,0 +1,190 @@
+
+
+{% extends 'index.html' %}
+
+
+
+
+
+{% block content %}
+
+
+<body>
+    
+    <div class="container">
+        <div class="container mt-3">
+            <h3> DIESEL CONSUMPTION SURIGAO PROJECT</h3>
+         </div>
+        <div class="container mt-3">
+        <div class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="border-bottom font-weight-bold">
+                
+                        <td>Series No.</td>
+                        <td>Date</td>
+                        <td>Equipment ID</td>
+                        <td>Liter</td>
+                        <td>Price</td>
+                        <td>Amount</td>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for list in agg_result_list%}
+                        
+                        <tr>
+                            
+                            <td>{{loop.index}}</td>
+                            <td>{{list.transaction_date}}</td>
+                            <td>{{list.equipment_id}}</td>
+                            <td>{{list.use_liter}}</td>
+                            <td>{{list.price}}</td>
+                            <td>{{list.amount}}</td>
+                          
+                            
+                           
+                            
+                            <!-- <td>
+                                <a href="/update-chart-of-account/{{list.id}}"
+                                <button type="button" class="btn btn-primary">
+                                <i class="fas fa-database"></i> Edit</button></a>
+                            </td> -->
+
+                            
+
+                            
+                        </tr>
+                       
+                    {% endfor %}
+                </tbody>
+
+                <tfoot>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    
+                    
+                </tfoot>
+
+            </table>
+
+        </div>
+
+    </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
+
+       <!-- This is for jquery Date picker -->
+
+       
+       
+
+        <!-- <script>
+             $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script> -->
+        <script type="text/javascript">
+
+                
+
+            // $(document).ready(function () {
+            //     $('#myTable').DataTable();
+            // });
+            $(document).ready(function () {
+
+
+                $("#myTable").DataTable({
+                   
+
+                    drawCallback: function () {
+                    var api = this.api();
+                    var sum = 0;
+                    var formated = 0;
+                    //to show first th
+                    $(api.column(0).footer()).html('Total');
+
+                    for(var i=3; i<=5;i++)
+                    {
+                        sum = api.column(i,{page:'current'}).data().sum();
+
+                        //to format this sum
+                        formated = parseFloat(sum).toLocaleString(undefined, {minimumFractionDigits:2});
+                        $(api.column(i).footer()).html(''+formated);
+                    }
+                    
+                },
+
+                                // Refilter the table
+               
+                    // configuration
+                    paging: true,
+                    pageLength: 25,
+                    lengthChange: true,
+                    autowidth: true,
+                    searching: true,
+                    bInfo: true,
+                    bsort: true,
+                    
+
+                    dom: 'LBfrtip',
+                    buttons: [
+                        { // COPY
+                            extend : 'copy',
+                            text: 'Copy',
+                            className: 'btn btn-secondary',
+                            titleArttr: 'Copy',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5]
+                            },
+                        },
+                        { // EXCEL
+                            extend : 'excel',
+                            text: 'Export Excel',
+                            className: 'btn btn-success',
+                            titleArttr: 'Excel',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5]
+                            },
+                        },
+                        { // Print
+                            extend : 'print',
+                            text: 'Print',
+                            className: 'btn btn-danger',
+                            titleArttr: 'Print',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5]
+                            },
+                        },
+
+                    
+                    ]
+
+                })
+           
+
+        });
+            
+        </script>
+        
+
+    
+</body>
+
+
+
+{% endblock %}
+

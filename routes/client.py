@@ -766,4 +766,42 @@ async def insert_journal_entry(request: Request):
 
 
 
+from config.database import Database
+db = Database()
+@client.get("/diesel-consumption/", response_class=HTMLResponse)
+def get_record(request: Request):
+    allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
+    
+    allconsuption2 = allConsumption['result']
+
+    agg_result_list = []
+    for x in allconsuption2:
+
+        transaction_date = x['transaction_date']
+        equipment_id = x['equipment_id']
+        use_liter = x['use_liter']
+        use_liter2 = '{:,.2f}'.format(use_liter)
+        price = x['price']
+        amount = x['amount']
+        amount2 = '{:,.2f}'.format(amount)
+        
+        
+
+        data={}   
+        
+        data.update({
+            'transaction_date': transaction_date,
+            'equipment_id': equipment_id,
+            'use_liter': use_liter2,
+            'price': price,
+            'amount': amount2,
+        })
+
+        agg_result_list.append(data)
+
+
+    
+    return  templates.TemplateResponse("diesel_consuption.html", 
+                                        {"request":request,"agg_result_list":agg_result_list})
+
 

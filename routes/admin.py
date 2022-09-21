@@ -1,7 +1,7 @@
 import json
 from pyexpat import model
 from fastapi import APIRouter, Body, HTTPException, Depends
-from typing import Union
+from typing import Union, List
 from datetime import datetime
 
 from bson import ObjectId
@@ -12,16 +12,20 @@ from schemas.user import userEntity,usersEntity
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.bstype import bsType, bsTypes
 from schemas.journalEntry import journalEntry,journalEntrys,journalEntryZambo,journalEntryZambos
-from models.model import User, balansheetType, ChartofAccount,JournalEntry
+from models.model import User, balansheetType, ChartofAccount,JournalEntry,UserLogin
 
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from config.database import Base
+# from config.database import Base
 
 
 from sqlalchemy.orm import Session
+
+
+import sqlalchemy
+# from config.database import metadata,database
 
 
 from pydantic import BaseModel
@@ -30,7 +34,7 @@ from datetime import datetime, date
 
 
 from config.db import mydb
-from config.database import engine,sessionLocal,Base
+# from config.database import engine,sessionLocal,Base
 
 admin = APIRouter()
 
@@ -203,29 +207,32 @@ def delete_journal_entry_zambo(id,token: str = Depends(oauth_scheme)):
     mydb.journal_entry_zambo.find_one_and_delete({"_id":ObjectId(id)})
     return  {'Messeges':'Data has been deleted'}
 
-
+# admin_login = sqlalchemy.Table(
+#     "admin_login",
+#     metadata,
+#     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+#     sqlalchemy.Column("fullname", sqlalchemy.String),
+#     sqlalchemy.Column("username", sqlalchemy.String),
+#     sqlalchemy.Column("password_admin", sqlalchemy.String),
+#     sqlalchemy.Column("admin_status", sqlalchemy.String),
+# )
 
 #=============================================SQL Alchemy=======================================
-class UserLogin(Base):
-    __tablename__ = "admin_login"
-    id = Column(Integer, primary_key=True, index=True)
-    fullname = Column(String)
-    username = Column(String)
-    password_admin = Column(String)
-    admin_status = Column(String)
 
-class UserLogin_pydantic(BaseModel):
+# @admin.get("/notes/", response_model=List[UserLogin])
+# async def read_notes():
+#     query = admin.select()
+#     return await database.fetch_all(query)
+
+from config.database import Database
+db = Database()
+@admin.get("/admin-user/")
+def get_record():
+    allConsumption = db.query(query=f"SELECT * FROM diesel_consumption LIMIT 10000")
     
-    id: int
-    fullname = str
-    username = str
-    password_admin = str
-    admin_status = str
-
-
-@admin.get('/diesel-consuption')
-async def get_diesel_consumption():
-    """This function is for querying diesel Consumption"""
+    allconsuption2 = allConsumption['result']
     
-    return {"messege":'Hello World'}
-    # return db.query(UserLogin)
+    return  allconsuption2
+
+
+
