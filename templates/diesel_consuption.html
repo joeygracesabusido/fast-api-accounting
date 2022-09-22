@@ -65,6 +65,7 @@
                         name="liter"
                         id="liter"
                         step="0.01"
+                       
                         >
                     </input>  
                     
@@ -77,6 +78,7 @@
                         name="price"
                         id="price"
                         step="0.01"
+                        onblur="getAmount()"
                         >
                     </input>  
                     
@@ -89,6 +91,7 @@
                         name="amount"
                         id="amount"
                         step="0.01"
+                        
                         >
                     </input>  
                     
@@ -341,6 +344,13 @@
                        }
 
                 })
+        </script>
+        <script>
+             function getAmount(){
+                var liter = $('#liter').val();
+                var price = $('#price').val();
+                $('#amount').val(liter*price);
+             }
         </script>
         
 

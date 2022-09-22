@@ -111,20 +111,15 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
    
     username = username
 
-    # dataInsert = db.query(
-    #                 query=f"""INSERT INTO diesel_consumption (transaction_date, equipment_id, 
-    #                 withdrawal_slip, use_liter, price,amount, username)
-    #                  VALUES ({trans_date}, {equipment}, {withdrawalSlip}, {liter}, {price},{amount}, {user_name})
-    #     """,
-    #     autoCommit=True,
-    # )
    
-    # return dataInsert
     try:
 
         Database2.insert_diesel_consuption(transaction_date=trans_date,
                                         equipment_id=equipment,withdrawal_slip=withdrawalSlip,
                                     use_liter=liter,price=price,amount=amount,username=user_name)
+                                    
+        return  templates.TemplateResponse("diesel_consuption.html", 
+                                        {"request":request,"username":username})
     except Exception as e:
         print(e)
 
