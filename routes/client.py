@@ -1,7 +1,8 @@
 # import jwt
 # from urllib import response
+from distutils.command.config import config
 from traceback import format_list
-from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response
+from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from config.db import mydb
@@ -10,7 +11,7 @@ from config.db import mydb
 from bson import ObjectId
 from typing import Optional
 
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime,date
 
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.user import userEntity,usersEntity
@@ -541,7 +542,9 @@ async def insert_journal_entry(request: Request):
         form.get('accountTitle7'),
         form.get('accountTitle8'),
         form.get('accountTitle9'),
-        form.get('accountTitle10')
+        form.get('accountTitle10'),
+        form.get('accountTitle11'),
+        form.get('accountTitle12')
     ]
 
    
@@ -557,7 +560,9 @@ async def insert_journal_entry(request: Request):
         form.get('amount7'),
         form.get('amount8'),
         form.get('amount9'),
-        form.get('amount10')
+        form.get('amount10'),
+        form.get('amount11'),
+        form.get('amount12')
     ]
     
 
@@ -571,7 +576,9 @@ async def insert_journal_entry(request: Request):
         form.get('credit_amount7'),
         form.get('credit_amount8'),
         form.get('credit_amount9'),
-        form.get('credit_amount10')
+        form.get('credit_amount10'),
+        form.get('credit_amount11'),
+        form.get('credit_amount12')
 
     ]
 
@@ -763,5 +770,179 @@ async def insert_journal_entry(request: Request):
     return templates.TemplateResponse("journal_entry.html", 
                                         {"request":request,"all_chart_of_account":all_chart_of_account,
                                         "messeges":messeges})
+
+
+#========================================Surigao MYSQL DATA Base=======================================
+from config.surigaoDB import SurigaoDB
+SurigaoDB.initialize()
+def validateLogin(request:Request):
+    
+    try :
+        token = request.cookies.get('access_token')
+        if token is None:
+            raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized",
+            headers={"WWW-Authenticate": "Basic"},
+            )
+        else:
+            scheme, _, param = token.partition(" ")
+            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+            username = payload.get("sub")
+        
+
+            user =  mydb.login.find({"username":username})
+
+            if user is not None:
+
+                return username
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= e,
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
+@client.get("/dollar-bill/", response_class=HTMLResponse)
+def get_dollarBill_records(request: Request):
+    """This function is for querying diesel consuption from Rizal Project"""
+   
+    myresult = SurigaoDB.select_all_from_dollarBill()
+   
+
+    agg_result_list = []
+    for x in myresult:
+        id = x[0]
+        trans_date = x[1]
+        equipment_id = x[2]
+        trackFactor = x[3]
+        no_trips = x[4]
+        totalVolume = x[5]
+        usd_pmt = x[6]
+        usd_totalAmount = x[7]
+        convertion_rate = x[8]
+        php_amount = x[9]
+        usd_pmt2 = '{:,.2f}'.format(usd_pmt)
+        usd_totalAmount2 = '{:,.2f}'.format(usd_totalAmount)
+        php_amount2 = '{:,.2f}'.format(php_amount)
+       
+        
+        
+
+        data={}   
+        
+        data.update({
+            'id': id,
+            'trans_date': trans_date,
+            'equipment_id': equipment_id,
+            'trackFactor': trackFactor,
+            'no_trips': no_trips,
+            'totalVolume': totalVolume,
+            'usd_pmt': usd_pmt2,
+            'usd_totalAmount': usd_totalAmount2,
+            'convertion_rate': convertion_rate,
+            'php_amount': php_amount2,
+        })
+
+        agg_result_list.append(data)
+
+    equipmentResult = SurigaoDB.select_all_equipment()
+   
+
+    agg_result_list_eqp = []
+    for x in equipmentResult:
+        id_eqp = x[0]
+        equipment_id = x[1]
+
+        data={}   
+        
+        data.update({
+            'id': id_eqp,
+            'equipment_id': equipment_id,
+            
+        })
+
+        agg_result_list_eqp.append(data)
+    
+    
+    return  templates.TemplateResponse("dollar_bill.html", 
+                                        {"request":request,"agg_result_list":agg_result_list,
+                                        "agg_result_list_eqp":agg_result_list_eqp})
+
+
+@client.post("/dollar-bill/", response_class=HTMLResponse)
+async def insert_dollarBill(request: Request, username: str = Depends(validateLogin)):
+    """This function is to insert Data to dollar Bill Table"""
+    form = await request.form()
+
+    trans_date = form.get('trans_date')
+    equipment_id = form.get('equipment_id')
+    no_trips = form.get('no_trips')
+    trackFactor = form.get('trackFactor')
+    usd_pmt = form.get('usd_pmt')
+    convertion_rate = form.get('convertion_rate')
+    
+    date_credited = date.today()
+   
+    username = username
+
+   
+    try:
+
+        SurigaoDB.insert_production(trans_date=trans_date,equipment_id=equipment_id,trackFactor=trackFactor,
+                                no_trips=no_trips,usd_pmt=usd_pmt,convertion_rate=convertion_rate,
+                                date_credited=date_credited)
+
+        myresult = SurigaoDB.select_all_from_dollarBill()
+   
+
+        agg_result_list = []
+        for x in myresult:
+            id = x[0]
+            trans_date = x[1]
+            equipment_id = x[2]
+            trackFactor = x[3]
+            no_trips = x[4]
+            totalVolume = x[5]
+            usd_pmt = x[6]
+            usd_totalAmount = x[7]
+            convertion_rate = x[8]
+            php_amount = x[9]
+            usd_pmt2 = '{:,.2f}'.format(usd_pmt)
+            usd_totalAmount2 = '{:,.2f}'.format(usd_totalAmount)
+            php_amount2 = '{:,.2f}'.format(php_amount)
+        
+            
+            
+
+            data={}   
+            
+            data.update({
+                'id': id,
+                'trans_date': trans_date,
+                'equipment_id': equipment_id,
+                'trackFactor': trackFactor,
+                'no_trips': no_trips,
+                'totalVolume': totalVolume,
+                'usd_pmt': usd_pmt2,
+                'usd_totalAmount': usd_totalAmount2,
+                'convertion_rate': convertion_rate,
+                'php_amount': php_amount2,
+            })
+
+            agg_result_list.append(data)
+
+            return  templates.TemplateResponse("dollar_bill.html", 
+                                        {"request":request,
+                                        "agg_result_list":agg_result_list})
+
+    except Exception as e:
+        print(e)
+
+    return  templates.TemplateResponse("dollar_bill.html", 
+                                        {"request":request,
+                                        "username":username})
 
 

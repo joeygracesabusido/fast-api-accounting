@@ -7,21 +7,9 @@
 <body>
     <div class="form">
         <form method="POST">
+            
             <div  class="container mt-3">
-                
-                <label for="Username" >Username</label><br>
-                    <input
-                        type="text"
-                        name="username"
-                        id="username"
-                        value="{{username}}"
-                        >
-                    </input>  
-                  
-            </div>
-
-            <div  class="container mt-3">
-                <label for="TransactionDate" >Transaction Date</label><br>
+                <label for="trans_date" >Transaction Date</label><br>
                     <input
                         type="date"
                         name="trans_date"
@@ -33,32 +21,46 @@
 
             <div  class="container mt-3">
                 <label for="Equipment" >Equipment</label><br>
-                    <input
-                        type="text"
-                        name="equipment"
-                        id="equipment"
-                        >
-                    </input>  
+                <select name="equipment_id" id="equipment_id" class="filter-selectbox"
+                >
+
+                {% for result in agg_result_list_eqp %}
+                    <option value="{{ result.equipment_id }}">{{ result.equipment_id }}</option>
+                {% endfor %} 
+
+            </select> 
                     
             </div>
             <div  class="container mt-3">
-                <label for="withdrawalSlip" >WithdrawalSlip</label><br>
+                <label for="TracFactor" >Track Factor</label><br>
                     <input
-                        type="text"
-                        name="withdrawalSlip"
-                        id="withdrawalSlip"
-                        
+                        type="number"
+                        name="trackFactor"
+                        id="trackFactor"
+                        step="0.01"
                         >
                     </input>  
                     
             </div>
 
             <div  class="container mt-3">
-                <label for="Liter" >Liter</label><br>
+                <label for="No Trips" >No of Trips</label><br>
                     <input
                         type="number"
-                        name="liter"
-                        id="liter"
+                        name="no_trips"
+                        id="no_trips"
+                        step="0.01"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Dollar" >USD Rate</label><br>
+                    <input
+                        type="number"
+                        name="usd_pmt"
+                        id="usd_pmt"
                         step="0.01"
                        
                         >
@@ -67,30 +69,19 @@
             </div>
 
             <div  class="container mt-3">
-                <label for="Price" >Price</label><br>
+                <label for="Convertion Rate" >ConverTion Rate</label><br>
                     <input
                         type="number"
-                        name="price"
-                        id="price"
-                        step="0.01"
-                        onblur="getAmount()"
-                        >
-                    </input>  
-                    
-            </div>
-
-            <div  class="container mt-3">
-                <label for="amount" >Amount</label><br>
-                    <input
-                        type="number"
-                        name="amount"
-                        id="amount"
+                        name="convertion_rate"
+                        id="convertion_rate"
                         step="0.01"
                         
                         >
                     </input>  
                     
             </div>
+
+           
 
             <div  class="container mt-3">
                 <button type="button" id="buttonSave" class="btn btn-primary">
@@ -107,7 +98,7 @@
     
     <div class="container">
         <div class="container mt-3">
-            <h3> DIESEL CONSUMPTION RIZAL PROJECT</h3>
+            <h3>DOLLAR EQUIPMENT BILL</h3>
          </div>
         <div class="container mt-3">
         <div class="container mt-3">
@@ -116,10 +107,14 @@
                 
                         <td>Series No.</td>
                         <td>Date</td>
-                        <td>Equipment ID</td>
-                        <td>Liter</td>
-                        <td>Price</td>
-                        <td>Amount</td>
+                        <td>Equipment</td>
+                        <td>Track Factor</td>
+                        <td>Trips</td>
+                        <td>Volume</td>
+                        <td>USD PMT</td>
+                        <td>USD Amount</td>
+                        <td>Con Rate</td>
+                        <td>PHP Amount</td>
                        
                         
                     </tr>
@@ -130,11 +125,15 @@
                         <tr>
                             
                             <td>{{loop.index}}</td>
-                            <td>{{list.transaction_date}}</td>
+                            <td>{{list.trans_date}}</td>
                             <td>{{list.equipment_id}}</td>
-                            <td>{{list.use_liter}}</td>
-                            <td>{{list.price}}</td>
-                            <td>{{list.amount}}</td>
+                            <td>{{list.trackFactor}}</td>
+                            <td>{{list.no_trips}}</td>
+                            <td>{{list.totalVolume}}</td>
+                            <td>{{list.usd_pmt}}</td>
+                            <td>{{list.usd_totalAmount}}</td>
+                            <td>{{list.convertion_rate}}</td>
+                            <td>{{list.php_amount}}</td>
                           
                             
                            
@@ -154,6 +153,10 @@
                 </tbody>
 
                 <tfoot>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -211,7 +214,7 @@
                     //to show first th
                     $(api.column(0).footer()).html('Total');
 
-                    for(var i=3; i<=5;i++)
+                    for(var i=3; i<=10;i++)
                     {
                         sum = api.column(i,{page:'current'}).data().sum();
 
@@ -242,7 +245,7 @@
                             className: 'btn btn-secondary',
                             titleArttr: 'Copy',
                             exportOptions: {
-                                columns: [0,1,2,3,4,5]
+                                columns: [0,1,2,3,4,5,6,7,8,9]
                             },
                         },
                         { // EXCEL
@@ -251,7 +254,7 @@
                             className: 'btn btn-success',
                             titleArttr: 'Excel',
                             exportOptions: {
-                                columns: [0,1,2,3,4,5]
+                                columns: [0,1,2,3,4,5,6,7,8,9]
                             },
                         },
                         { // Print
@@ -260,7 +263,7 @@
                             className: 'btn btn-danger',
                             titleArttr: 'Print',
                             exportOptions: {
-                                columns: [0,1,2,3,4,5]
+                                columns: [0,1,2,3,4,5,6,7,8,9]
                             },
                         },
 
@@ -296,28 +299,29 @@
                        e.preventDefault()
                        // Making the AJAX Request
                        $trans_date = $('#trans_date').val();
-                       $equipment = $('#equipment').val();
-                       $withdrawalSlip = $('#withdrawalSlip').val();
-                       $liter = $('#liter').val();
-                       $price = $('#price').val();
-                       $amount = $('#amount').val();
-                       $username = $('#username').val();
+                       $equipment_id = $('#equipment_id').val();
+                       $no_trips = $('#no_trips').val();
+                       $trackFactor = $('#trackFactor').val();
+                       $usd_pmt = $('#usd_pmt').val();
+                       $convertion_rate = $('#convertion_rate').val();
+                       
                       
 
-                       if ($trans_date == '' | $equipment ==''){
+                       if ($trans_date == '' | $equipment_id =='' |$no_trips=='' |
+                       $trackFactor =='' | $usd_pmt =='' | $convertion_rate == '' ){
                         alert('Please fill up Blank Fields ');
                        }else{
                                 $.ajax({
-                                url: "/diesel-consumption/",
+                                url: "/dollar-bill/",
                                 type: "POST",
                                 data: {
                                     trans_date:   $trans_date,
-                                    equipment:  $equipment,
-                                    withdrawalSlip:  $withdrawalSlip,
-                                    liter:  $liter,
-                                    price:  $price,
-                                    amount:  $amount,
-                                    username:  $username
+                                    equipment_id:  $equipment_id,
+                                    no_trips:  $no_trips,
+                                    trackFactor:  $trackFactor,
+                                    usd_pmt:  $usd_pmt,
+                                    convertion_rate:  $convertion_rate,
+                                    
                                         
                                 },
                                 beforeSend: function (xhr) {
@@ -325,7 +329,7 @@
                                 },
                                 success: function (data) {
                                     console.log(data);
-                                    window.location.href = "/diesel-consumption/" 
+                                    window.location.href = "/dollar-bill/" 
                                     alert('Data has been save')
                                     
                                 },
@@ -341,11 +345,11 @@
                 })
         </script>
         <script>
-             function getAmount(){
-                var liter = $('#liter').val();
-                var price = $('#price').val();
-                $('#amount').val(liter*price);
-             }
+            //  function getAmount(){
+            //     var liter = $('#liter').val();
+            //     var price = $('#price').val();
+            //     $('#amount').val(liter*price);
+            //  }
         </script>
         
 
