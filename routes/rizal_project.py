@@ -58,16 +58,18 @@ def validateLogin(request:Request):
       
 
 from config.database import Database,Database2
+Database2.initialize()
 db = Database() # calling database function or connection for mysql data from Linode
 @rizal_project.get("/diesel-consumption/", response_class=HTMLResponse)
 def get_record(request: Request, username: str = Depends(validateLogin)):
     """This function is for querying diesel consuption from Rizal Project"""
-    allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
+    # allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
     
-    allconsuption2 = allConsumption['result']
+    # allconsuption2 = allConsumption['result']
+    myresult = Database2.select_all_from_dieselDB()
 
     agg_result_list = []
-    for x in allconsuption2:
+    for x in myresult:
 
         transaction_date = x['transaction_date']
         equipment_id = x['equipment_id']
@@ -96,7 +98,7 @@ def get_record(request: Request, username: str = Depends(validateLogin)):
     return  templates.TemplateResponse("diesel_consuption.html", 
                                         {"request":request,"agg_result_list":agg_result_list,"username":username})
 
-Database2.initialize()
+
 @rizal_project.post("/diesel-consumption/", response_class=HTMLResponse)
 async def insert_diesel(request: Request, username: str = Depends(validateLogin)):
     form = await request.form()

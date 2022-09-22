@@ -146,3 +146,20 @@ class Database2(object):
         finally:
 
             Database2.DATABASE.commit()
+            Database2.DATABASE.close()
+
+    @staticmethod
+    def select_all_from_dieselDB():
+        """This function is for querying to diesel Database with out parameters"""
+        Database2.DATABASE._open_connection()
+        try:
+            data = ('SELECT * FROM diesel_consumption')
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            Database2.DATABASE.commit()
+            Database2.DATABASE.close()
