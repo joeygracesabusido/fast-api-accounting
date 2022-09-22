@@ -228,9 +228,10 @@ from config.database import Database
 db = Database()
 @admin.get("/admin-user/")
 def get_record():
-    allConsumption = db.query(query=f"SELECT * FROM diesel_consumption LIMIT 10000")
+    allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
     
     allconsuption2 = allConsumption['result']
+    
     
     return  allconsuption2
 

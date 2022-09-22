@@ -102,3 +102,47 @@ class Database:
 #                 # self.__instance.cursor.close()
 #                 # self.__instance.close()
 #                 # logger.debug("Removendo instancia da Database... OK")
+
+from dataclasses import dataclass
+import mysql.connector
+from pickle import NONE
+
+class Database2(object):
+    
+    DATABASE = NONE
+
+    def initialize():
+
+        Database2.DATABASE = mysql.connector.connect(
+                                host="192.46.225.247",
+                                user="joeysabusido",
+                                password="Genesis@11",
+                                database="ldglobal",
+                                auth_plugin='mysql_native_password')
+        global cursor
+        cursor = Database2.DATABASE.cursor()
+
+        Database2.DATABASE._open_connection()
+
+    @staticmethod
+    def insert_diesel_consuption(transaction_date,equipment_id,withdrawal_slip,
+                                use_liter,price,amount,username):
+        """This is to insert to database Inventory and inventory_onhand Table"""
+        Database2.DATABASE._open_connection() # to open database connection
+
+        try:
+           
+            data = ( "INSERT INTO diesel_consumption (transaction_date,equipment_id,\
+                                withdrawal_slip,use_liter,price,amount,username)"
+                    "VALUES(%s,%s,%s,%s,%s,%s,%s)")
+            val = (transaction_date,equipment_id,withdrawal_slip,use_liter,
+                            price,amount,username)
+            #                  
+            # cursor.execute(data)              
+            cursor.execute(data,val) 
+           
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+
+            Database2.DATABASE.commit()

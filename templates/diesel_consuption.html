@@ -10,10 +10,106 @@
 
 
 <body>
+    <div class="form">
+        <form method="POST">
+            <div  class="container mt-3">
+                
+                <label for="Username" >Username</label><br>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        value="{{username}}"
+                        >
+                    </input>  
+                  
+            </div>
+
+            <div  class="container mt-3">
+                <label for="TransactionDate" >Transaction Date</label><br>
+                    <input
+                        type="date"
+                        name="trans_date"
+                        id="trans_date"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Equipment" >Equipment</label><br>
+                    <input
+                        type="text"
+                        name="equipment"
+                        id="equipment"
+                        >
+                    </input>  
+                    
+            </div>
+            <div  class="container mt-3">
+                <label for="withdrawalSlip" >WithdrawalSlip</label><br>
+                    <input
+                        type="text"
+                        name="withdrawalSlip"
+                        id="withdrawalSlip"
+                        
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Liter" >Liter</label><br>
+                    <input
+                        type="number"
+                        name="liter"
+                        id="liter"
+                        step="0.01"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Price" >Price</label><br>
+                    <input
+                        type="number"
+                        name="price"
+                        id="price"
+                        step="0.01"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="amount" >Amount</label><br>
+                    <input
+                        type="number"
+                        name="amount"
+                        id="amount"
+                        step="0.01"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <button type="button" id="buttonSave" class="btn btn-primary">
+                <i class="fas fa-database"></i> Save</button></a>
+
+                <!-- <button type="submit" id="TestSave" class="btn btn-danger">
+                    <i class="fas fa-database"></i> Save</button></a> -->
+                    
+            </div>
+
+        </form>
+
+    </div>
     
     <div class="container">
         <div class="container mt-3">
-            <h3> DIESEL CONSUMPTION SURIGAO PROJECT</h3>
+            <h3> DIESEL CONSUMPTION RIZAL PROJECT</h3>
          </div>
         <div class="container mt-3">
         <div class="container mt-3">
@@ -178,6 +274,73 @@
 
         });
             
+        </script>
+
+        <script>
+            function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                const csrftoken = getCookie('csrftoken');
+
+             $('#buttonSave').on('click', function (e) {
+                       e.preventDefault()
+                       // Making the AJAX Request
+                       $trans_date = $('#trans_date').val();
+                       $equipment = $('#equipment').val();
+                       $withdrawalSlip = $('#withdrawalSlip').val();
+                       $liter = $('#liter').val();
+                       $price = $('#price').val();
+                       $amount = $('#amount').val();
+                       $username = $('#username').val();
+                      
+
+                       if ($trans_date == '' | $equipment ==''){
+                        alert('Please fill up Blank Fields ');
+                       }else{
+                                $.ajax({
+                                url: "/diesel-consumption/",
+                                type: "POST",
+                                data: {
+                                    trans_date:   $trans_date,
+                                    equipment:  $equipment,
+                                    withdrawalSlip:  $withdrawalSlip,
+                                    liter:  $liter,
+                                    price:  $price,
+                                    amount:  $amount,
+                                    username:  $username
+                                        
+                                },
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                },
+                                success: function (data) {
+                                    console.log(data);
+                                    window.location.href = "/diesel-consumption/" 
+                                    alert('Data has been save')
+                                    
+                                },
+                                error: function (error) {
+                                        alert(error)
+                                    console.log(error);
+                                }
+                            });
+                    
+
+                       }
+
+                })
         </script>
         
 
