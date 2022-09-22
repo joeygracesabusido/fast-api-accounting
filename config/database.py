@@ -65,40 +65,40 @@ import databases
 # metadata.create_all(engine)
 
 
-import mysql.connector
-import logging as logger
-class Database:
-    __instance = None
-    def __init__(self):
-        if self.__instance is None or self.__instance.is_connected() == False:
-            self.__instance = mysql.connector.connect(
-              host="192.46.225.247",
-                user="joeysabusido",
-                password="Genesis@11",
-                database="ldglobal",
-            )
-            self.__instance.autocommit = False
-    def query(self, query, autoCommit=None, fetch="ALL"):
-        try:
-            cursor = self.__instance.cursor()
-            result = cursor.execute(query)
-            if autoCommit is not None:
-                self.__instance.commit()
-                operation = True if cursor.lastrowid == 0 else {"id": cursor.lastrowid}
-                return {"result": operation}
-            fields = [field_md[0] for field_md in cursor.description]
-            if fetch != "SINGLE":
-                result = [dict(zip(fields, row)) for row in cursor.fetchall()]
-                return {"result": result}
-            else:
-                result = [dict(zip(fields, row)) for row in cursor.fetchone()]
-                return {"result": result}
-        except Exception as e:
-            return {"result": None, "error": e, "query": query}
-            logger.error(e)
-        finally:
-            if self.__instance.is_connected():
-                logger.info("Mantendo conexão.")
+# import mysql.connector
+# import logging as logger
+# class Database:
+#     __instance = None
+#     def __init__(self):
+#         if self.__instance is None or self.__instance.is_connected() == False:
+#             self.__instance = mysql.connector.connect(
+#               host="192.46.225.247",
+#                 user="joeysabusido",
+#                 password="Genesis@11",
+#                 database="ldglobal",
+#             )
+#             self.__instance.autocommit = False
+#     def query(self, query, autoCommit=None, fetch="ALL"):
+#         try:
+#             cursor = self.__instance.cursor()
+#             result = cursor.execute(query)
+#             if autoCommit is not None:
+#                 self.__instance.commit()
+#                 operation = True if cursor.lastrowid == 0 else {"id": cursor.lastrowid}
+#                 return {"result": operation}
+#             fields = [field_md[0] for field_md in cursor.description]
+#             if fetch != "SINGLE":
+#                 result = [dict(zip(fields, row)) for row in cursor.fetchall()]
+#                 return {"result": result}
+#             else:
+#                 result = [dict(zip(fields, row)) for row in cursor.fetchone()]
+#                 return {"result": result}
+#         except Exception as e:
+#             return {"result": None, "error": e, "query": query}
+#             logger.error(e)
+#         finally:
+#             if self.__instance.is_connected():
+#                 logger.info("Mantendo conexão.")
 #                 # self.__instance.cursor.close()
 #                 # self.__instance.close()
 #                 # logger.debug("Removendo instancia da Database... OK")
@@ -107,28 +107,28 @@ from dataclasses import dataclass
 import mysql.connector
 from pickle import NONE
 
-class Database2(object):
+class Database(object):
     
     DATABASE = NONE
 
     def initialize():
 
-        Database2.DATABASE = mysql.connector.connect(
+        Database.DATABASE = mysql.connector.connect(
                                 host="192.46.225.247",
                                 user="joeysabusido",
                                 password="Genesis@11",
                                 database="ldglobal",
                                 auth_plugin='mysql_native_password')
         global cursor
-        cursor = Database2.DATABASE.cursor()
+        cursor = Database.DATABASE.cursor()
 
-        Database2.DATABASE._open_connection()
+        Database.DATABASE._open_connection()
 
     @staticmethod
     def insert_diesel_consuption(transaction_date,equipment_id,withdrawal_slip,
                                 use_liter,price,amount,username):
         """This is to insert to database Inventory and inventory_onhand Table"""
-        Database2.DATABASE._open_connection() # to open database connection
+        Database.DATABASE._open_connection() # to open database connection
 
         try:
            
@@ -145,13 +145,13 @@ class Database2(object):
             print("Error", f"Error due to :{str(ex)}")
         finally:
 
-            Database2.DATABASE.commit()
-            Database2.DATABASE.close()
+            Database.DATABASE.commit()
+            Database.DATABASE.close()
 
     @staticmethod
     def select_all_from_dieselDB():
         """This function is for querying to diesel Database with out parameters"""
-        Database2.DATABASE._open_connection()
+        Database.DATABASE._open_connection()
         try:
             data = ('SELECT * FROM diesel_consumption')
 
@@ -161,5 +161,5 @@ class Database2(object):
         except Exception as ex:
             print("Error", f"Error due to :{str(ex)}")
         finally:
-            Database2.DATABASE.commit()
-            Database2.DATABASE.close()
+           
+            Database.DATABASE.close()

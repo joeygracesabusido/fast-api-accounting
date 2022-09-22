@@ -57,8 +57,8 @@ def validateLogin(request:Request):
 
       
 
-from config.database import Database,Database2
-Database2.initialize()
+from config.database import Database
+Database.initialize()
 db = Database() # calling database function or connection for mysql data from Linode
 @rizal_project.get("/diesel-consumption/", response_class=HTMLResponse)
 def get_record(request: Request, username: str = Depends(validateLogin)):
@@ -66,17 +66,18 @@ def get_record(request: Request, username: str = Depends(validateLogin)):
     # allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
     
     # allconsuption2 = allConsumption['result']
-    myresult = Database2.select_all_from_dieselDB()
+    myresult = Database.select_all_from_dieselDB()
+   
 
     agg_result_list = []
     for x in myresult:
-
-        transaction_date = x['transaction_date']
-        equipment_id = x['equipment_id']
-        use_liter = x['use_liter']
+        id = x[0]
+        transaction_date = x[1]
+        equipment_id = x[2]
+        use_liter = x[4]
         use_liter2 = '{:,.2f}'.format(use_liter)
-        price = x['price']
-        amount = x['amount']
+        price = x[5]
+        amount = x[6]
         amount2 = '{:,.2f}'.format(amount)
         
         
@@ -84,6 +85,7 @@ def get_record(request: Request, username: str = Depends(validateLogin)):
         data={}   
         
         data.update({
+            'id': id,
             'transaction_date': transaction_date,
             'equipment_id': equipment_id,
             'use_liter': use_liter2,
@@ -116,16 +118,48 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
    
     try:
 
-        Database2.insert_diesel_consuption(transaction_date=trans_date,
+        Database.insert_diesel_consuption(transaction_date=trans_date,
                                         equipment_id=equipment,withdrawal_slip=withdrawalSlip,
                                     use_liter=liter,price=price,amount=amount,username=user_name)
-                                    
-        return  templates.TemplateResponse("diesel_consuption.html", 
-                                        {"request":request,"username":username})
+
+        myresult = Database.select_all_from_dieselDB()
+   
+
+        agg_result_list = []
+        for x in myresult:
+            id = x[0]
+            transaction_date = x[1]
+            equipment_id = x[2]
+            use_liter = x[4]
+            use_liter2 = '{:,.2f}'.format(use_liter)
+            price = x[5]
+            amount = x[6]
+            amount2 = '{:,.2f}'.format(amount)
+            
+            
+
+            data={}   
+            
+            data.update({
+                'id': id,
+                'transaction_date': transaction_date,
+                'equipment_id': equipment_id,
+                'use_liter': use_liter2,
+                'price': price,
+                'amount': amount2,
+            })
+
+            agg_result_list.append(data)
+
+                                        
+            return  templates.TemplateResponse("diesel_consuption.html", 
+                                            {"request":request,"username":username,
+                                            "agg_result_list":agg_result_list})
     except Exception as e:
         print(e)
 
     return  templates.TemplateResponse("diesel_consuption.html", 
-                                        {"request":request,"username":username})
+                                        {"request":request,
+                                        "username":username})
 
 
