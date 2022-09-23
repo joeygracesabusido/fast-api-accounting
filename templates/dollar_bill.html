@@ -81,7 +81,35 @@
                     
             </div>
 
-           
+            <div  class="container mt-3">
+                <label for="Tax" >Value Added Tax</label><br>
+
+                <input
+                    type="number"
+                    name="taxRate"
+                    id="taxRate"
+                    step="0.01"
+                    onblur="getAmount()"
+                    >
+                </input>  
+                
+
+            </div>
+
+            <div  class="container mt-3">
+                <label for="VAT OUTPUT" >VAT OUTPUT</label><br>
+
+                <input
+                    type="number"
+                    name="vat_output"
+                    id="vat_output"
+                    step="0.01"
+                    
+                    >
+                </input>  
+                
+
+            </div>
 
             <div  class="container mt-3">
                 <button type="button" id="buttonSave" class="btn btn-primary">
@@ -96,7 +124,7 @@
 
     </div>
     
-    <div class="container">
+    <div class="container mt-3">
         <div class="container mt-3">
             <h3>DOLLAR EQUIPMENT BILL</h3>
          </div>
@@ -115,6 +143,8 @@
                         <td>USD Amount</td>
                         <td>Con Rate</td>
                         <td>PHP Amount</td>
+                        <td>Vat Output</td>
+                        <td>Net of Vat</td>
                        
                         
                     </tr>
@@ -134,6 +164,8 @@
                             <td>{{list.usd_totalAmount}}</td>
                             <td>{{list.convertion_rate}}</td>
                             <td>{{list.php_amount}}</td>
+                            <td>{{list.vat_output}}</td>
+                            <td>{{list.net_of_vat}}</td>
                           
                             
                            
@@ -153,6 +185,8 @@
                 </tbody>
 
                 <tfoot>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -214,7 +248,7 @@
                     //to show first th
                     $(api.column(0).footer()).html('Total');
 
-                    for(var i=3; i<=10;i++)
+                    for(var i=3; i<=12;i++)
                     {
                         sum = api.column(i,{page:'current'}).data().sum();
 
@@ -245,7 +279,7 @@
                             className: 'btn btn-secondary',
                             titleArttr: 'Copy',
                             exportOptions: {
-                                columns: [0,1,2,3,4,5,6,7,8,9]
+                                columns: [0,1,2,3,4,5,6,7,8,9,10,11]
                             },
                         },
                         { // EXCEL
@@ -254,7 +288,7 @@
                             className: 'btn btn-success',
                             titleArttr: 'Excel',
                             exportOptions: {
-                                columns: [0,1,2,3,4,5,6,7,8,9]
+                                columns: [0,1,2,3,4,5,6,7,8,9,10,11]
                             },
                         },
                         { // Print
@@ -263,7 +297,7 @@
                             className: 'btn btn-danger',
                             titleArttr: 'Print',
                             exportOptions: {
-                                columns: [0,1,2,3,4,5,6,7,8,9]
+                                columns: [0,1,2,3,4,5,6,7,8,9,10,11]
                             },
                         },
 
@@ -304,7 +338,8 @@
                        $trackFactor = $('#trackFactor').val();
                        $usd_pmt = $('#usd_pmt').val();
                        $convertion_rate = $('#convertion_rate').val();
-                       
+                       $taxRate = $('#taxRate').val();
+                       $vat_output = $('#vat_output').val();
                       
 
                        if ($trans_date == '' | $equipment_id =='' |$no_trips=='' |
@@ -321,7 +356,8 @@
                                     trackFactor:  $trackFactor,
                                     usd_pmt:  $usd_pmt,
                                     convertion_rate:  $convertion_rate,
-                                    
+                                    taxRate:  $taxRate,
+                                    vat_output:  $vat_output,
                                         
                                 },
                                 beforeSend: function (xhr) {
@@ -345,11 +381,18 @@
                 })
         </script>
         <script>
-            //  function getAmount(){
-            //     var liter = $('#liter').val();
-            //     var price = $('#price').val();
-            //     $('#amount').val(liter*price);
-            //  }
+             function getAmount(){
+                var trackFactor = $('#trackFactor').val();
+                var no_trips = $('#no_trips').val();
+                var usd_pmt = $('#usd_pmt').val();
+                var convertion_rate = $('#convertion_rate').val();
+                var totalVolume = parseFloat(trackFactor) * parseFloat(no_trips)
+                var PHP_total = parseFloat(totalVolume) * parseFloat(usd_pmt) * parseFloat(convertion_rate)
+                
+                var taxRate = $('#taxRate').val();
+                var vatOutput = parseFloat(PHP_total)/1.12
+                $('#vat_output').val(parseFloat(vatOutput)*parseFloat(taxRate));
+             }
         </script>
         
 

@@ -776,6 +776,7 @@ async def insert_journal_entry(request: Request):
 from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
 def validateLogin(request:Request):
+    """This function is for Log In Authentication"""
     
     try :
         token = request.cookies.get('access_token')
@@ -805,6 +806,10 @@ def validateLogin(request:Request):
             headers={"WWW-Authenticate": "Basic"},
         )
 
+
+
+
+
 @client.get("/dollar-bill/", response_class=HTMLResponse)
 def get_dollarBill_records(request: Request):
     """This function is for querying diesel consuption from Rizal Project"""
@@ -824,11 +829,13 @@ def get_dollarBill_records(request: Request):
         usd_totalAmount = x[7]
         convertion_rate = x[8]
         php_amount = x[9]
+        vat_output = x[11]
+        net_of_vat = x[12]
         usd_pmt2 = '{:,.2f}'.format(usd_pmt)
         usd_totalAmount2 = '{:,.2f}'.format(usd_totalAmount)
         php_amount2 = '{:,.2f}'.format(php_amount)
-       
-        
+        vat_output2 = '{:,.2f}'.format(vat_output)
+        net_of_vat2 = '{:,.2f}'.format(net_of_vat)
         
 
         data={}   
@@ -844,6 +851,8 @@ def get_dollarBill_records(request: Request):
             'usd_totalAmount': usd_totalAmount2,
             'convertion_rate': convertion_rate,
             'php_amount': php_amount2,
+            'vat_output': vat_output2,
+            'net_of_vat': net_of_vat2,
         })
 
         agg_result_list.append(data)
@@ -865,11 +874,25 @@ def get_dollarBill_records(request: Request):
         })
 
         agg_result_list_eqp.append(data)
+
+    # tax_value = [['Vat','Non-Vat'],[.12 ,1]]
+
+    # val_result=[]
+    # data={}   
     
+    # data.update({
+    #     'val_text': tax_value[0],
+    #     'val':tax_value[1]
+        
+    # })
+    # val_result.append(data)
+
+    # print(val_result)
     
     return  templates.TemplateResponse("dollar_bill.html", 
                                         {"request":request,"agg_result_list":agg_result_list,
-                                        "agg_result_list_eqp":agg_result_list_eqp})
+                                        "agg_result_list_eqp":agg_result_list_eqp
+                                        })
 
 
 @client.post("/dollar-bill/", response_class=HTMLResponse)
@@ -883,6 +906,8 @@ async def insert_dollarBill(request: Request, username: str = Depends(validateLo
     trackFactor = form.get('trackFactor')
     usd_pmt = form.get('usd_pmt')
     convertion_rate = form.get('convertion_rate')
+    taxRate = form.get('taxRate')
+    vat_output = form.get('vat_output')
     
     date_credited = date.today()
    
@@ -892,8 +917,8 @@ async def insert_dollarBill(request: Request, username: str = Depends(validateLo
     try:
 
         SurigaoDB.insert_production(trans_date=trans_date,equipment_id=equipment_id,trackFactor=trackFactor,
-                                no_trips=no_trips,usd_pmt=usd_pmt,convertion_rate=convertion_rate,
-                                date_credited=date_credited)
+                                no_trips=no_trips,usd_pmt=usd_pmt,convertion_rate=convertion_rate,taxRate=taxRate,
+                                vat_output=vat_output,date_credited=date_credited)
 
         myresult = SurigaoDB.select_all_from_dollarBill()
    

@@ -54,14 +54,13 @@ def validateLogin(request:Request):
             headers={"WWW-Authenticate": "Basic"},
         )
 
-
-      
-
+from schemas.rizal import Equipment,Equipments 
 from config.database import Database
 Database.initialize()
-db = Database() # calling database function or connection for mysql data from Linode
+
+
 @rizal_project.get("/diesel-consumption/", response_class=HTMLResponse)
-def get_record(request: Request, username: str = Depends(validateLogin)):
+def get_record(request: Request):
     """This function is for querying diesel consuption from Rizal Project"""
     # allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
     
@@ -95,10 +94,11 @@ def get_record(request: Request, username: str = Depends(validateLogin)):
 
         agg_result_list.append(data)
 
-    username = username
+    # username = username
+    equipment = Equipments(Database.select_allEquipment())
     
     return  templates.TemplateResponse("diesel_consuption.html", 
-                                        {"request":request,"agg_result_list":agg_result_list,"username":username})
+                                        {"request":request,"agg_result_list":agg_result_list,"equipment":equipment})
 
 
 @rizal_project.post("/diesel-consumption/", response_class=HTMLResponse)
@@ -111,7 +111,9 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
     liter = form.get('liter')
     price = form.get('price')
     amount = form.get('amount')
-    user_name = form.get('username')
+    
+
+   
    
     username = username
 
@@ -120,7 +122,7 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
 
         Database.insert_diesel_consuption(transaction_date=trans_date,
                                         equipment_id=equipment,withdrawal_slip=withdrawalSlip,
-                                    use_liter=liter,price=price,amount=amount,username=user_name)
+                                    use_liter=liter,price=price,amount=amount,username=username)
 
         myresult = Database.select_all_from_dieselDB()
    
@@ -161,5 +163,36 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
     return  templates.TemplateResponse("diesel_consuption.html", 
                                         {"request":request,
                                         "username":username})
+
+
+from schemas.chartofAccount import chartofAccount,chartofAccounts
+@rizal_project.get("/autocomplete-surigao-equipment/")
+def autocomplete_surigao(term: Optional[str]):
+
+    items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':{"$regex":term,'$options':'i'}}))
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item['accountTitle'])
+    return suggestions
+   
+    # equipmentResult = Database.select_equipment(term)
+   
+    # agg_result_list_eqp = []
+    # for x in equipmentResult:
+        
+    #     equipment_id = x[1]
+
+    #     data={}   
+        
+    #     data.update({
+           
+    #         'equipment_id': equipment_id,
+            
+    #     })
+
+    #     agg_result_list_eqp.append(data)
+    # return agg_result_list_eqp
+
 
 

@@ -225,15 +225,51 @@ def delete_journal_entry_zambo(id,token: str = Depends(oauth_scheme)):
 #     return await database.fetch_all(query)
 
 from config.database import Database
-db = Database()
+Database.initialize()
 @admin.get("/admin-user/")
 def get_record():
-    allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
+    # allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
     
-    allconsuption2 = allConsumption['result']
+    # allconsuption2 = allConsumption['result']
+    myresult = Database.select_all_from_dieselDB()
+   
+
+    agg_result_list = []
+    for x in myresult:
+        id = x[0]
+        transaction_date = x[1]
+        equipment_id = x[2]
+        use_liter = x[4]
+        use_liter2 = '{:,.2f}'.format(use_liter)
+        price = x[5]
+        amount = x[6]
+        amount2 = '{:,.2f}'.format(amount)
+        
+        
+
+        data={}   
+        
+        data.update({
+            'id': id,
+            'transaction_date': transaction_date,
+            'equipment_id': equipment_id,
+            'use_liter': use_liter2,
+            'price': price,
+            'amount': amount2,
+        })
+
+        agg_result_list.append(data)
+
     
     
-    return  allconsuption2
+    return  agg_result_list
+
+from schemas.rizal import DieselConsumption,DieselConsumptions
+from config.database import Database
+Database.initialize()
+@admin.get("/diesel/")
+def get_diesels():
+    """This fucntion is for querying all diesel"""
 
 
-
+    return DieselConsumptions(Database.select_all_from_dieselDB())

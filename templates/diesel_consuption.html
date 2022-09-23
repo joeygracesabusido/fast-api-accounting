@@ -9,14 +9,14 @@
         <form method="POST">
             <div  class="container mt-3">
                 
-                <label for="Username" >Username</label><br>
+                <!-- <label for="Username" >Username</label><br>
                     <input
                         type="text"
                         name="username"
                         id="username"
                         value="{{username}}"
                         >
-                    </input>  
+                    </input>   -->
                   
             </div>
 
@@ -32,13 +32,27 @@
             </div>
 
             <div  class="container mt-3">
-                <label for="Equipment" >Equipment</label><br>
+                <label for="Equipment" >Equipment</label><br> 
+
+                
+                <select name="equipment" id="equipment"class="filter-selectbox"
+                    >
+
+                    {% for result in equipment %}
+                        <option value="{{ result.equipment_id }}">{{ result.equipment_id }}</option>
+                    {% endfor %} 
+
+                
+
+                </select>
+                <!-- <label for="Equipment" >Equipment</label><br>
                     <input
                         type="text"
                         name="equipment"
                         id="equipment"
+                        class="equipment"
                         >
-                    </input>  
+                    </input>   -->
                     
             </div>
             <div  class="container mt-3">
@@ -100,6 +114,18 @@
                     <i class="fas fa-database"></i> Save</button></a> -->
                     
             </div>
+
+            <!-- <script>
+
+                $( function() {
+                    
+                    $("#equipment").autocomplete({
+                    source: "/autocomplete-surigao-equipment/"
+                    });
+                } );
+    
+    
+            </script> -->
 
         </form>
 
@@ -347,6 +373,8 @@
                 $('#amount').val(liter*price);
              }
         </script>
+
+        
         
 
     

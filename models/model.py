@@ -51,3 +51,13 @@ class UserLogin(BaseModel):
     admin_status = str
     
 
+
+
+#==============================================Rizal=======================================================
+class DieselConsumption(BaseModel):
+    transaction_date: date
+    equipment_id: str
+    withdrawal_slip: str
+    price: float
+    amount: float
+    username: str

@@ -32,6 +32,9 @@ class SurigaoDB(object):
                             usd_totalAmount DECIMAL(9,2) GENERATED ALWAYS AS (totalVolume*usd_pmt) STORED,
                             convertion_rate DECIMAL(9,2),
                             php_amount DECIMAL(9,2) GENERATED ALWAYS AS (usd_totalAmount*convertion_rate) STORED,
+                            taxRate DECIMAL(3,2),
+                            vat_output DECIMAL(9,2),
+                            net_of_vat DECIMAL(9,2) GENERATED ALWAYS AS (php_amount-vat_output) STORED,
                             user VARCHAR(100),
                             date_credited date) """)
                     
@@ -44,17 +47,18 @@ class SurigaoDB(object):
     
     @staticmethod
     def insert_production(trans_date,equipment_id,trackFactor,
-                                no_trips,usd_pmt,convertion_rate,date_credited):
+                                no_trips,usd_pmt,convertion_rate,taxRate,
+                                vat_output,date_credited):
         """This is to insert to dollar_bill Table"""
         SurigaoDB.DATABASE._open_connection() # to open database connection
 
         try:
            
             data = ( "INSERT INTO dollar_bill (trans_date,equipment_id,trackFactor,\
-                                no_trips,usd_pmt,convertion_rate,date_credited)"
-                    "VALUES(%s,%s,%s,%s,%s,%s,%s)")
+                                no_trips,usd_pmt,convertion_rate,taxRate,vat_output,date_credited)"
+                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)")
             val = (trans_date,equipment_id,trackFactor,no_trips,
-                            usd_pmt,convertion_rate,date_credited)
+                            usd_pmt,convertion_rate,taxRate,vat_output,date_credited)
             #                  
             # cursor.execute(data)              
             cursor.execute(data,val) 

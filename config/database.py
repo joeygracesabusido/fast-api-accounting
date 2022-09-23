@@ -164,4 +164,45 @@ class Database(object):
            
             Database.DATABASE.close()
 
+
+    @staticmethod
+    def select_equipment(id):
+        """
+        This function is for querying with parameters of ID
+        """
+
+       
+        Database.DATABASE._open_connection()
+        try:
+            data = ("SELECT * FROM equipment_details \
+                WHERE equipment_id LIKE %s", ('%' + id + '%',))
+
+            cursor.execute(data)
+            return cursor.fetchone()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            Database.DATABASE.commit()
+            Database.DATABASE.close()
+
+    @staticmethod
+    def select_allEquipment():
+        """
+        This function is for querying for Equipment
+        """
+
+       
+        Database.DATABASE._open_connection()
+        try:
+            data = ("SELECT * FROM equipment_details")
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            Database.DATABASE.commit()
+            Database.DATABASE.close()
+
+    
 #=====================================Surigao DataBase======================================
