@@ -20,30 +20,30 @@ class SurigaoDB(object):
 
         SurigaoDB.DATABASE._open_connection()
 
-        try: 
-            cursor.execute(
-                """CREATE TABLE IF NOT EXISTS dollar_bill (id INT AUTO_INCREMENT PRIMARY KEY, 
-                            trans_date date,
-                            equipment_id VARCHAR(100), 
-                            trackFactor DECIMAL(9,2),
-                            no_trips DECIMAL(9,2),
-                            totalVolume DECIMAL(9,2) GENERATED ALWAYS AS (trackFactor*no_trips) STORED,
-                            usd_pmt DECIMAL(9,2),
-                            usd_totalAmount DECIMAL(9,2) GENERATED ALWAYS AS (totalVolume*usd_pmt) STORED,
-                            convertion_rate DECIMAL(9,2),
-                            php_amount DECIMAL(9,2) GENERATED ALWAYS AS (usd_totalAmount*convertion_rate) STORED,
-                            taxRate DECIMAL(3,2),
-                            vat_output DECIMAL(9,2),
-                            net_of_vat DECIMAL(9,2) GENERATED ALWAYS AS (php_amount-vat_output) STORED,
-                            user VARCHAR(100),
-                            date_credited date) """)
+        # try: 
+        #     cursor.execute(
+        #         """CREATE TABLE IF NOT EXISTS dollar_bill (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     trans_date date,
+        #                     equipment_id VARCHAR(100), 
+        #                     trackFactor DECIMAL(9,2),
+        #                     no_trips DECIMAL(9,2),
+        #                     totalVolume DECIMAL(9,2) GENERATED ALWAYS AS (trackFactor*no_trips) STORED,
+        #                     usd_pmt DECIMAL(9,2),
+        #                     usd_totalAmount DECIMAL(9,2) GENERATED ALWAYS AS (totalVolume*usd_pmt) STORED,
+        #                     convertion_rate DECIMAL(9,2),
+        #                     php_amount DECIMAL(9,2) GENERATED ALWAYS AS (usd_totalAmount*convertion_rate) STORED,
+        #                     taxRate DECIMAL(3,2),
+        #                     vat_output DECIMAL(9,2),
+        #                     net_of_vat DECIMAL(9,2) GENERATED ALWAYS AS (php_amount-vat_output) STORED,
+        #                     user VARCHAR(100),
+        #                     date_credited date) """)
                     
-        except Exception as ex:
-            print("Error", f"Error due to :{str(ex)}")
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
 
-        finally:
-            SurigaoDB.DATABASE.commit()
-            SurigaoDB.DATABASE.close()
+        # finally:
+        #     SurigaoDB.DATABASE.commit()
+        #     SurigaoDB.DATABASE.close()
     
     @staticmethod
     def insert_production(trans_date,equipment_id,trackFactor,

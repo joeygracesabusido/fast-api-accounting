@@ -1,0 +1,243 @@
+
+{% extends 'index.html' %}
+
+{% block content %}
+
+
+<body>
+    <div class="form">
+        <form method="POST">
+            <div  class="container mt-3">
+                
+                
+                  
+            </div>
+
+            <div  class="container mt-3">
+                <label for="TransactionDate" >Transaction Date</label><br>
+                    <input
+                        type="date"
+                        name="trans_date"
+                        id="trans_date"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                
+                <label for="Equipment" >Equipment</label><br>
+                    <input
+                        type="text"
+                        name="equipment"
+                        id="equipment"
+                        class="equipment"
+                        >
+                    </input>  
+                    
+            </div>
+            <div  class="container mt-3">
+                <label for="Total Hours" >Total Hours</label><br>
+                    <input
+                        type="number"
+                        name="total_rental_hour"
+                        id="total_rental_hour"
+                        step="0.01"
+                        
+                        >
+                    </input>  
+                    
+            </div>
+
+            <!-- <div  class="container mt-3">
+                <label for="Liter" >Liter</label><br>
+                    <input
+                        type="number"
+                        name="liter"
+                        id="liter"
+                        step="0.01"
+                       
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Price" >Price</label><br>
+                    <input
+                        type="number"
+                        name="price"
+                        id="price"
+                        step="0.01"
+                        onblur="getAmount()"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="amount" >Amount</label><br>
+                    <input
+                        type="number"
+                        name="amount"
+                        id="amount"
+                        step="0.01"
+                        
+                        >
+                    </input>  
+                    
+            </div> -->
+
+            <div  class="container mt-3">
+                <button type="button" id="buttonSave" class="btn btn-primary">
+                <i class="fas fa-database"></i> Save</button></a>
+
+                <!-- <button type="submit" id="TestSave" class="btn btn-danger">
+                    <i class="fas fa-database"></i> Save</button></a> -->
+                    
+            </div>
+
+            <script>
+
+                $( function() {
+                    
+                    $("#equipment").autocomplete({
+                    source: "/autocomplete-rizal-equipment/"
+                    });
+
+                } );
+
+                // $("#equipment").autocomplete({
+                //         source: function (request,response){
+                //             $.ajax({
+                //                 url: "/rental-transaction/",
+                //                 dataType: "json",
+                //                 data: {term: request.term},
+                //                 success: function(data) {
+                                    
+                //                     response ($.map(data, function(item){
+                //                         return {
+                //                             value: item.equipment,
+                //                             id: item.rental_rate,
+                                            
+                                            
+                //                         }
+                //                     }))
+                //                 }
+                //             });
+                //         },
+                //         select: function(event, ui){
+                //             $(this).val(ui.item.value);
+                //             $('#rental_rate').val(ui.item.id);
+                           
+                           
+                           
+                //         },
+                //         minLength: 2
+                //     }); 
+    
+    
+            </script>
+
+        </form>
+
+    </div>
+    
+    
+
+    
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+       
+
+       <!-- This is for jquery Date picker -->
+
+       
+       
+
+        <!-- <script>
+             $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script> -->
+        
+
+        <script>
+            function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                const csrftoken = getCookie('csrftoken');
+
+             $('#buttonSave').on('click', function (e) {
+                       e.preventDefault()
+                       // Making the AJAX Request
+                       $trans_date = $('#trans_date').val();
+                       $equipment = $('#equipment').val();
+                       $total_rental_hour = $('#total_rental_hour').val();
+                       
+                      
+
+                       if ($trans_date == '' | $equipment ==''){
+                        alert('Please fill up Blank Fields ');
+                       }else{
+                                $.ajax({
+                                url: "/rental-transaction/",
+                                type: "POST",
+                                data: {
+                                    trans_date:   $trans_date,
+                                    equipment:  $equipment,
+                                    total_rental_hour:  $total_rental_hour
+                                          
+                                },
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                },
+                                success: function (data) {
+                                    console.log(data); 
+                                    alert('Data has been save')
+                                    window.location.href = "/rental-transaction-list/" 
+                                },
+                                error: function (error) {
+                                        alert(error)
+                                    console.log(error);
+                                }
+                            });
+                    
+
+                       }
+
+                })
+        </script>
+        <script>
+             function getAmount(){
+                var liter = $('#liter').val();
+                var price = $('#price').val();
+                $('#amount').val(liter*price);
+             }
+        </script>
+
+        
+        
+
+    
+</body>
+
+
+
+{% endblock %}
+

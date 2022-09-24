@@ -174,11 +174,12 @@ class Database(object):
        
         Database.DATABASE._open_connection()
         try:
-            data = ("SELECT * FROM equipment_details \
-                WHERE equipment_id LIKE %s", ('%' + id + '%',))
+            data = ('SELECT * FROM equipment_details \
+                WHERE equipment_id LIKE %s')
 
-            cursor.execute(data)
-            return cursor.fetchone()
+            val = ('%' + id + '%',)
+            cursor.execute(data,(val),)
+            return cursor.fetchall()
         except Exception as ex:
             print("Error", f"Error due to :{str(ex)}")
         finally:
@@ -203,6 +204,50 @@ class Database(object):
         finally:
             Database.DATABASE.commit()
             Database.DATABASE.close()
+            
+
+    @staticmethod
+    def insert_rental_transaction(transaction_date,equipment_id,total_rental_hour,
+                                rental_rate,rental_amount,username):
+        """This is to insert to database rental to equipment_rental Table"""
+        Database.DATABASE._open_connection() # to open database connection
+
+        try:
+           
+            data = ( "INSERT INTO equipment_rental (transaction_date,equipment_id,total_rental_hour,\
+                                rental_rate,rental_amount,username)"
+                    "VALUES(%s,%s,%s,%s,%s,%s)")
+            val = (transaction_date,equipment_id,total_rental_hour,rental_rate,
+                            rental_amount,username)
+            #                  
+            # cursor.execute(data)              
+            cursor.execute(data,val) 
+           
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+
+            Database.DATABASE.commit()
+            Database.DATABASE.close()
+
+    @staticmethod
+    def select_all_from_rentalDB():
+        """This function is for querying to diesel Database with out parameters"""
+        Database.DATABASE._open_connection()
+        try:
+            data = ('SELECT * FROM equipment_rental')
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            Database.DATABASE.close()       
+
+
+
 
     
 #=====================================Surigao DataBase======================================

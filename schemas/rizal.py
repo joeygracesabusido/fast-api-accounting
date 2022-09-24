@@ -32,3 +32,20 @@ def Equipment(item) -> dict:
 
 def Equipments(entity) -> list:
     return [Equipment(item) for item in entity] 
+
+
+def RentalList(item) -> dict:
+    return {
+        "id": str(item[0]),
+        "transaction_date": str(item[2]),
+        "equipment_id": str(item[3]),
+        "total_rental_hour": float(item[4]),
+        "rental_rate": float(item[5]),
+        "rental_amount": float(item[6]),
+        "username": float(item[7]),
+        
+       
+    }
+
+def RentalLists(entity) -> list:
+    return [RentalList(item) for item in entity] 

@@ -166,33 +166,85 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
 
 
 from schemas.chartofAccount import chartofAccount,chartofAccounts
-@rizal_project.get("/autocomplete-surigao-equipment/")
-def autocomplete_surigao(term: Optional[str]):
+@rizal_project.get("/autocomplete-rizal-equipment/")
+def autocomplete_rizal_equipment(term: Optional[str]):
 
-    items = chartofAccounts(mydb.chart_of_account.find({'accountTitle':{"$regex":term,'$options':'i'}}))
-
-    suggestions = []
-    for item in items:
-        suggestions.append(item['accountTitle'])
-    return suggestions
-   
-    # equipmentResult = Database.select_equipment(term)
-   
-    # agg_result_list_eqp = []
-    # for x in equipmentResult:
+    equipmentResult = Database.select_equipment(id=term)
+    
+    agg_result_list_eqp = []
+    for x in equipmentResult:
         
-    #     equipment_id = x[1]
-
-    #     data={}   
+        equipment_id = x[1]
         
-    #     data.update({
-           
-    #         'equipment_id': equipment_id,
+        agg_result_list_eqp.append(equipment_id)
+       
+    return agg_result_list_eqp
+
+@rizal_project.get("/rental-transaction/", response_class=HTMLResponse)
+async def get_rental_transaction(request: Request):
+    """This function is for displaying rental page """
+    
+
+    return  templates.TemplateResponse("rizal_rental.html", 
+                                        {"request":request,
+                                        })
+
+
+@rizal_project.post("/rental-transaction/", response_class=HTMLResponse)
+async def post_rental_transaction(request: Request, username: str = Depends(validateLogin)):
+    """This function is for displaying rental page """
+
+    form = await request.form()
+    trans_date = form.get('trans_date')
+    term = form.get('equipment')
+    total_rental_hour = form.get('total_rental_hour')
+
+    equipmentResult = Database.select_equipment(id=term)
+    
+    
+    for x in equipmentResult:
+        rental_rate = x[5]
+        
+       
+        rental_amount = float(rental_rate) * float(total_rental_hour)
+
+        Database.insert_rental_transaction(transaction_date=trans_date,equipment_id=term,
+                                        total_rental_hour=total_rental_hour,
+                                        rental_rate=rental_rate,rental_amount=rental_amount,
+                                        username=username)
+        
+        
+    
+
+    return  templates.TemplateResponse("rizal_rental.html", 
+                                        {"request":request
+                                        })
+
+@rizal_project.get("/rental-transaction-list/", response_class=HTMLResponse)
+async def get_rental_transaction(request: Request):
+    """This function is for displaying rental list """
+
+    myresult = Database.select_all_from_rentalDB()
+
+
+    agg_result_list_eqp = []
+    for i in myresult:
+        data ={}
+
+        data.update({
+            "id": i[0],
+            "transaction_date": i[2],
+            "equipment_id": i[3],
+            "total_rental_hour": i[4],
+            "rental_rate": i[5],
+            "rental_amount": i[6],
+            "username": i[7],
             
-    #     })
+        })
+        agg_result_list_eqp.append(data)
+    
 
-    #     agg_result_list_eqp.append(data)
-    # return agg_result_list_eqp
-
-
+    return  templates.TemplateResponse("rizal_rental_list.html", 
+                                        {"request":request,"agg_result_list_eqp":agg_result_list_eqp
+                                        })
 
