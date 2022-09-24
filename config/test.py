@@ -32,4 +32,18 @@ def autocomplete_surigao():
     #     agg_result_list_eqp.append(data)
         print(equipmentID)
 
-autocomplete_surigao()
+
+@staticmethod
+def select_dieselTrans():
+    """
+    This function is for querying with parameters of ID
+    """
+
+    term = input("Enter Number: ")
+   
+    equipmentResult = Database.select_dieselTrans(id=term)
+   
+       
+    
+select_dieselTrans()
+

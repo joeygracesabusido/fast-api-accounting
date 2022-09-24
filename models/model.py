@@ -55,9 +55,12 @@ class UserLogin(BaseModel):
 
 #==============================================Rizal=======================================================
 class DieselConsumption(BaseModel):
+   
     transaction_date: date
     equipment_id: str
     withdrawal_slip: str
+    use_liter: float
     price: float
     amount: float
-    username: str
+   
+

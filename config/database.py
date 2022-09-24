@@ -166,6 +166,50 @@ class Database(object):
 
 
     @staticmethod
+    def select_dieselTrans(id):
+        """
+        This function is for querying with parameters of ID
+        """
+        Database.DATABASE._open_connection()
+        try:
+            data = 'SELECT * FROM diesel_consumption \
+                WHERE id LIKE %s'
+
+            val = ('%' + id + '%',)
+            cursor.execute(data,(val),)
+            return cursor.fetchone()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            
+            Database.DATABASE.close()
+
+    @staticmethod
+    def update_one_diesel(transaction_date,equipment_id,withdrawal_slip,
+                            use_liter,price,
+                            amount,username,id):
+        """
+        This function is to update Equipment with parameters of Trans ID
+        """
+        Database.DATABASE._open_connection()
+        try:
+            data = ('UPDATE diesel_consumption SET transaction_date=%s, equipment_id=%s,\
+                   withdrawal_slip=%s, \
+                     use_liter=%s,price=%s,amount=%s,username=%s \
+                        WHERE id = %s')
+            val =(transaction_date,equipment_id,withdrawal_slip,use_liter,
+                    price,amount,username,id)
+            cursor.execute(data,val)
+           
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            Database.DATABASE.commit()
+            Database.DATABASE.close()
+
+
+# ===============================================Equipment Rental Transaction===========================
+    @staticmethod
     def select_equipment(id):
         """
         This function is for querying with parameters of ID

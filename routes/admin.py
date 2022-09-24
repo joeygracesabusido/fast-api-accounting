@@ -265,11 +265,21 @@ def get_record():
     return  agg_result_list
 
 from schemas.rizal import DieselConsumption,DieselConsumptions
+from models.model import DieselConsumption
 from config.database import Database
 Database.initialize()
 @admin.get("/diesel/")
 def get_diesels():
     """This fucntion is for querying all diesel"""
 
-
     return DieselConsumptions(Database.select_all_from_dieselDB())
+
+@admin.put('/api-update-diesel/{id}')
+def update_diesel(id,item:DieselConsumption):
+    """This function is to update Diesel transactions info"""
+    Database.update_one_diesel(transaction_date=item.transaction_date,
+                            equipment_id=item.equipment_id,withdrawal_slip=item.withdrawal_slip,
+                            use_liter=item.use_liter,price=item.price,
+                            amount=item.amount,id=id)
+    return {"message":"data has been updated"}
+    

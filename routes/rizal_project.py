@@ -153,17 +153,110 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
 
             agg_result_list.append(data)
 
-                                        
+            equipment = Equipments(Database.select_allEquipment())                           
             return  templates.TemplateResponse("diesel_consuption.html", 
-                                            {"request":request,"username":username,
+                                            {"request":request,"username":username,"equipment":equipment,
                                             "agg_result_list":agg_result_list})
     except Exception as e:
         print(e)
-
+    equipment = Equipments(Database.select_allEquipment())
     return  templates.TemplateResponse("diesel_consuption.html", 
-                                        {"request":request,
+                                        {"request":request,'equipment':equipment,
                                         "username":username})
 
+@rizal_project.get("/update-diesel/{id}", response_class=HTMLResponse)
+def get_updateDiesel(request:Request,id):
+    """This function is for dispalying Diesel Transaction using ID"""
+    myresult = Database.select_dieselTrans(id=id)
+   
+    
+    agg_result_list = []
+    
+
+    id_update = myresult[0]
+    transaction_date = myresult[1]
+    equipment_id = myresult[2]
+    withdrawal_slip = myresult[3]
+    use_liter = myresult[4]
+    use_liter2 = '{:,.2f}'.format(use_liter)
+    price = myresult[5]
+    amount = myresult[6]
+    amount2 = '{:,.2f}'.format(amount)
+    
+    
+
+    data={}   
+    
+    data.update({
+        'id': id_update,
+        'transaction_date': transaction_date,
+        'equipment_id': equipment_id,
+        'withdrawal_slip': withdrawal_slip,
+        'use_liter': use_liter,
+        'price': price,
+        'amount': amount,
+    })
+
+    agg_result_list.append(data)
+
+    return  templates.TemplateResponse("rizal_diesel_consumption.html", 
+                                        {"request":request,"agg_result_list":agg_result_list
+                                        })
+
+@rizal_project.post("/update-diesel/{id}", response_class=HTMLResponse)
+async def get_updateDiesel(request:Request,username: str = Depends(validateLogin)):
+    """This function is for dispalying Diesel Transaction using ID"""
+    form = await request.form()
+    trans_id = form.get('trans_id')
+    trans_date = form.get('trans_date')
+    equipment_id = form.get('equipment_id')
+    withdrawal_slip = form.get('withdrawal_slip')
+    use_liter = form.get('use_liter')
+    price = form.get('price')
+    amount = form.get('amount')
+
+    
+
+    Database.update_one_diesel(transaction_date=trans_date,
+                            equipment_id=equipment_id,withdrawal_slip=withdrawal_slip,
+                            use_liter=use_liter,price=price,
+                            amount=amount,username=username, id=trans_id)
+
+    myresult = Database.select_all_from_dieselDB()
+   
+
+    agg_result_list = []
+    for x in myresult:
+        id = x[0]
+        transaction_date = x[1]
+        equipment_id = x[2]
+        use_liter = x[4]
+        use_liter2 = '{:,.2f}'.format(use_liter)
+        price = x[5]
+        amount = x[6]
+        amount2 = '{:,.2f}'.format(amount)
+        
+        
+
+        data={}   
+        
+        data.update({
+            'id': id,
+            'transaction_date': transaction_date,
+            'equipment_id': equipment_id,
+            'use_liter': use_liter2,
+            'price': price,
+            'amount': amount2,
+        })
+
+        agg_result_list.append(data)
+    equipment = Equipments(Database.select_allEquipment())
+    return  templates.TemplateResponse("diesel_consuption.html", 
+                                        {"request":request,"agg_result_list":agg_result_list,
+                                        'equipment':equipment})
+
+
+#=============================================Rental Transaction ==========================================
 
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 @rizal_project.get("/autocomplete-rizal-equipment/")
@@ -248,3 +341,6 @@ async def get_rental_transaction(request: Request):
                                         {"request":request,"agg_result_list_eqp":agg_result_list_eqp
                                         })
 
+
+
+    
