@@ -1,0 +1,448 @@
+
+{% extends 'index.html' %}
+
+{% block content %}
+
+
+<body>
+    <div class="form">
+        <form >
+            
+            <div  class="container mt-3">
+                <label for="trans_date" >Transaction Date</label><br>
+                    <input
+                        type="date"
+                        name="trans_date"
+                        id="trans_date"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Equipment" >Equipment</label><br>
+                <select name="equipment_id" id="equipment_id" class="filter-selectbox"
+                >
+
+                {% for result in agg_result_list_eqp %}
+                    <option value="{{ result.equipment_id }}">{{ result.equipment_id }}</option>
+                {% endfor %} 
+
+                </select> 
+                    
+            </div>
+            <div  class="container mt-3">
+                <label for="Ore Owner" >Ore Owner</label><br>
+                    <select name="ore_owner" id="ore_owner" class="filter-selectbox"
+                    >
+                        <option value="MRMJ ORE">MRMJ ORE</option>
+                        <option value="PGMC ORE">PGMC ORE</option>
+                        <option value="SKYLARK ORE">SKYLARK ORE</option>
+                        <option value="RAS ORE">RAS ORE</option>
+
+                    </select> 
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="TracFactor" >Track Factor</label><br>
+                    <input
+                        type="number"
+                        name="trackFactor"
+                        id="trackFactor"
+                        step="0.01"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="No Trips" >No of Trips</label><br>
+                    <input
+                        type="number"
+                        name="no_trips"
+                        id="no_trips"
+                        step="0.01"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Distance" >Distance</label><br>
+                    <input
+                        type="number"
+                        name="distance"
+                        id="distance"
+                        step="0.01"
+                       
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Rate" >Rate</label><br>
+                    <input
+                        type="number"
+                        name="rate"
+                        id="rate"
+                        step="0.01"
+                        
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Tax" >Value Added Tax</label><br>
+
+                <input
+                    type="number"
+                    name="taxRate"
+                    id="taxRate"
+                    step="0.01"
+                    onblur="getAmount()"
+                    >
+                </input>  
+                
+
+            </div>
+
+            <div  class="container mt-3">
+                <label for="VAT OUTPUT" >VAT OUTPUT</label><br>
+
+                <input
+                    type="number"
+                    name="vat_output"
+                    id="vat_output"
+                    step="0.01"
+                    >
+                </input>  
+                
+
+            </div>
+
+            
+
+        </form>
+
+        <div  class="container mt-3">
+               
+
+            <button  type="submit" class="btn btn-primary mt-4" onclick="insert_peso()">Save Changes</button> 
+                
+        </div>
+
+    </div>
+    
+    <div class="container mt-3">
+        <div class="container mt-3">
+            <h3>DOLLAR EQUIPMENT BILL</h3>
+         </div>
+        <div class="container mt-3">
+        <div class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="border-bottom font-weight-bold">
+                
+                        <td>Series No.</td>
+                        <td>Date</td>
+                        <td>Equipment</td>
+                        <td>ORE</td>
+                        <td>Track Factor</td>
+                        <td>No Trips</td>
+                        <td>Distance</td>
+                        <td>Total Volume</td>
+                        <td>Rate</td>
+                        <td>PHP Amount</td>
+                        <td>Vat Output</td>
+                        <td>Net of Vat</td>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for list in agg_result_list%}
+                        
+                        <tr>
+                            
+                            <td>{{loop.index}}</td>
+                            <td>{{list.transdate}}</td>
+                            <td>{{list.equipment_id}}</td>
+                            <td>{{list.ore_owner}}</td>
+                            <td>{{list.trackFactor}}</td>
+                            <td>{{list.no_trips}}</td>
+                            <td>{{list.distance}}</td>
+                            <td>{{list.totalVolume}}</td>
+                            <td>{{list.rate}}</td>
+                            <td>{{list.php_amount}}</td>
+                            <td>{{list.vat_output}}</td>
+                            <td>{{list.net_of_vat}}</td>
+                          
+                            
+                           
+                            
+                            <!-- <td>
+                                <a href="/update-chart-of-account/{{list.id}}"
+                                <button type="button" class="btn btn-primary">
+                                <i class="fas fa-database"></i> Edit</button></a>
+                            </td> -->
+
+                            
+
+                            
+                        </tr>
+                       
+                    {% endfor %}
+                </tbody>
+
+                <tfoot>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    
+                    
+                </tfoot>
+
+            </table>
+
+        </div>
+
+    </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
+
+       <!-- This is for jquery Date picker -->
+
+       
+       
+
+        <!-- <script>
+             $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script> -->
+        <script type="text/javascript">
+
+                
+
+            // $(document).ready(function () {
+            //     $('#myTable').DataTable();
+            // });
+            $(document).ready(function () {
+
+
+                $("#myTable").DataTable({
+                   
+
+                    drawCallback: function () {
+                    var api = this.api();
+                    var sum = 0;
+                    var formated = 0;
+                    //to show first th
+                    $(api.column(0).footer()).html('Total');
+
+                    for(var i=3; i<=12;i++)
+                    {
+                        sum = api.column(i,{page:'current'}).data().sum();
+
+                        //to format this sum
+                        formated = parseFloat(sum).toLocaleString(undefined, {minimumFractionDigits:2});
+                        $(api.column(i).footer()).html(''+formated);
+                    }
+                    
+                },
+
+                                // Refilter the table
+               
+                    // configuration
+                    paging: true,
+                    pageLength: 25,
+                    lengthChange: true,
+                    autowidth: true,
+                    searching: true,
+                    bInfo: true,
+                    bsort: true,
+                    
+
+                    dom: 'LBfrtip',
+                    buttons: [
+                        { // COPY
+                            extend : 'copy',
+                            text: 'Copy',
+                            className: 'btn btn-secondary',
+                            titleArttr: 'Copy',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+                            },
+                        },
+                        { // EXCEL
+                            extend : 'excel',
+                            text: 'Export Excel',
+                            className: 'btn btn-success',
+                            titleArttr: 'Excel',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+                            },
+                        },
+                        { // Print
+                            extend : 'print',
+                            text: 'Print',
+                            className: 'btn btn-danger',
+                            titleArttr: 'Print',
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+                            },
+                        },
+
+                    
+                    ]
+
+                })
+           
+
+        });
+            
+        </script>
+
+        <script type="text/javascript">
+            function insert_peso(){
+                var data = {}
+                // var id = document.getElementById("trans_id").value
+                data["trans_date"] = document.getElementById("trans_date").value
+                data["equipment_id"] = document.getElementById("equipment_id").value
+                data["ore_owner"] = document.getElementById("ore_owner").value
+                data["trackFactor"] = document.getElementById("trackFactor").value
+                data["no_trips"] = document.getElementById("no_trips").value
+                data["distance"] = document.getElementById("distance").value
+                data["rate"] = document.getElementById("rate").value
+                data["taxRate"] = document.getElementById("taxRate").value
+                data["vat_output"] = document.getElementById("vat_output").value
+                
+                console.log(data)
+
+                fetch("/api-insert-surigao-pesoBill/", {
+                method:'POST', 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+                    });
+                // window.location.assign("/peso-bill/");
+                window.alert("Your Data has been Save");
+                window.location.assign("/peso-bill/");
+            }
+            
+
+        </script>
+
+
+
+        <script>
+            function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                const csrftoken = getCookie('csrftoken');
+
+             $('#buttonSave').on('click', function (e) {
+                       e.preventDefault()
+                       // Making the AJAX Request
+                       $trans_date = $('#trans_date').val();
+                       $equipment_id = $('#equipment_id').val();
+                       $no_trips = $('#no_trips').val();
+                       $trackFactor = $('#trackFactor').val();
+                       $usd_pmt = $('#usd_pmt').val();
+                       $convertion_rate = $('#convertion_rate').val();
+                       $taxRate = $('#taxRate').val();
+                       $vat_output = $('#vat_output').val();
+                      
+
+                       if ($trans_date == '' | $equipment_id =='' |$no_trips=='' |
+                       $trackFactor =='' | $usd_pmt =='' | $convertion_rate == '' ){
+                        alert('Please fill up Blank Fields ');
+                       }else{
+                                $.ajax({
+                                url: "/dollar-bill/",
+                                type: "POST",
+                                data: {
+                                    trans_date:   $trans_date,
+                                    equipment_id:  $equipment_id,
+                                    no_trips:  $no_trips,
+                                    trackFactor:  $trackFactor,
+                                    usd_pmt:  $usd_pmt,
+                                    convertion_rate:  $convertion_rate,
+                                    taxRate:  $taxRate,
+                                    vat_output:  $vat_output,
+                                        
+                                },
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                },
+                                success: function (data) {
+                                    console.log(data);
+                                    window.location.href = "/dollar-bill/" 
+                                    alert('Data has been save')
+                                    
+                                },
+                                error: function (error) {
+                                        alert(error)
+                                    console.log(error);
+                                }
+                            });
+                    
+
+                       }
+
+                })
+        </script>
+        <script>
+             function getAmount(){
+                var trackFactor = $('#trackFactor').val();
+                var no_trips = $('#no_trips').val();
+                var distance = $('#distance').val();
+                var rate = $('#rate').val();
+                var totalVolume = parseFloat(trackFactor) * parseFloat(no_trips) * parseFloat(distance)
+                var PHP_total = parseFloat(totalVolume) * parseFloat(rate)
+                
+                var taxRate = $('#taxRate').val();
+                var vatOutput = parseFloat(PHP_total)/1.12
+                $('#vat_output').val(parseFloat(vatOutput)*parseFloat(taxRate));
+             }
+        </script>
+        
+
+    
+</body>
+
+
+
+{% endblock %}
+

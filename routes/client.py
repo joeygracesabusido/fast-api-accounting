@@ -971,3 +971,76 @@ async def insert_dollarBill(request: Request, username: str = Depends(validateLo
                                         "username":username})
 
 
+from config.surigaoDB import SurigaoDB
+SurigaoDB.initialize()
+@client.get("/peso-bill/", response_class=HTMLResponse)
+def get_peso_records(request: Request):
+    """This function is for showing Page for Peso Biling Surigao Project"""
+
+
+    equipmentResult = SurigaoDB.select_all_equipment()
+   
+
+    agg_result_list_eqp = []
+    for x in equipmentResult:
+        id_eqp = x[0]
+        equipment_id = x[1]
+
+        data={}   
+        
+        data.update({
+            'id': id_eqp,
+            'equipment_id': equipment_id,
+            
+        })
+
+        agg_result_list_eqp.append(data)
+
+    result = SurigaoDB.select_all_from_peso()
+   
+
+    agg_result_list = []
+    for x in result:
+        id_ = x[0]
+        transdate = x[1]
+        equipment_id = x[2]
+        ore_owner = x[3]
+        trackFactor = x[4]
+        no_trips = x[5]
+        distance = x[6]
+        totalVolume = x[7]
+        rate = x[8]
+        php_amount = x[9]
+        taxRate = x[10]
+        vat_output = x[11]
+        net_of_vat = x[12]
+
+
+        data={}   
+        
+        data.update({
+            'id': id_,
+            'transdate': transdate,
+            'equipment_id': equipment_id,
+            'ore_owner': ore_owner,
+            'trackFactor': trackFactor,
+            'no_trips': no_trips,
+            'distance': distance,
+            'totalVolume': totalVolume,
+            'rate': rate,
+            'php_amount': php_amount,
+            'taxRate': taxRate,
+            'vat_output': vat_output,
+            'net_of_vat': net_of_vat,
+            
+        })
+
+        agg_result_list.append(data)
+
+    
+
+
+    return  templates.TemplateResponse("surigao_pesoBill.html", 
+                                    {"request":request,"agg_result_list_eqp":agg_result_list_eqp,
+                                    "agg_result_list":agg_result_list})
+

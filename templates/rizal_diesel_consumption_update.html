@@ -4,7 +4,7 @@
 
 {% block content %}
 <body>
-    <form method="POST">
+    <form method="POST" >
         <div class="container mt-3">
             {% for list in agg_result_list%}
                 <label for="ID"
@@ -102,6 +102,12 @@
         
     </form>
 
+    <div class="container">
+       
+        <button  type="submit" class="btn btn-primary mt-4" onclick="update_diesel()">Save Changes</button>
+        <button id="update_button" type="submit" class="btn btn-success mt-4" onsubmit="True">Update</button>
+    </div>
+
     <script>
         function getCookie(name) {
                     let cookieValue = null;
@@ -135,7 +141,7 @@
                 
 
                 $.ajax({
-                    url: "/update-diesel/" +trans_id,
+                    url: "/api-update-diesel/" +trans_id,
                     type: "POST",
                     dataType: "json",
                     contentType: "application/json",
@@ -179,15 +185,15 @@
             var id = document.getElementById("trans_id").value
             data["trans_date"] = document.getElementById("trans_date").value
             data["equipment_id"] = document.getElementById("equipment_id").value
-            data["withdrawalSlip"] = document.getElementById("withdrawalSlip").value
-            data["liter"] = document.getElementById("liter").value
+            data["withdrawal_slip"] = document.getElementById("withdrawal_slip").value
+            data["use_liter"] = document.getElementById("use_liter").value
             data["price"] = document.getElementById("price").value
             data["amount"] = document.getElementById("amount").value
             
             console.log(data)
 
             fetch("/api-update-diesel/"+id, {
-            method:'PUT', 
+            method:'POST', 
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
                 })

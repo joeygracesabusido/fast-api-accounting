@@ -199,7 +199,7 @@ def get_updateDiesel(request:Request,id):
 
     agg_result_list.append(data)
 
-    return  templates.TemplateResponse("rizal_diesel_consumption.html", 
+    return  templates.TemplateResponse("rizal_diesel_consumption_update.html", 
                                         {"request":request,"agg_result_list":agg_result_list
                                         })
 

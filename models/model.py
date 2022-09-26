@@ -62,5 +62,20 @@ class DieselConsumption(BaseModel):
     use_liter: float
     price: float
     amount: float
+    username: str
    
+#===============================================Surigao Database==============================
+class InsertPesoBill(BaseModel):
+    """This is for Surigao Peso Bill Pydantic Model"""
+    trans_date: date
+    equipment_id: str
+    ore_owner: str
+    trackFactor: float
+    no_trips: float
+    distance: float
+    rate: float
+    taxRate: float
+    vat_output: float
+    
+
 

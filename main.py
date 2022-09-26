@@ -10,11 +10,13 @@ from routes.rizal_project import rizal_project
 
 app = FastAPI()
 
-origins = ['https://localhost:8000']
+# origins = [
+#     "*",
+# ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = origins,
+    allow_origins = ['*'],
     allow_credentials = True,
     allow_methods = ["*"],
     allow_headers = ["*"],

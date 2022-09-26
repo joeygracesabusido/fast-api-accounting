@@ -44,6 +44,33 @@ class SurigaoDB(object):
         # finally:
         #     SurigaoDB.DATABASE.commit()
         #     SurigaoDB.DATABASE.close()
+
+        # try: 
+        #     cursor.execute(
+        #         """CREATE TABLE IF NOT EXISTS peso_bill (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     trans_date date,
+        #                     equipment_id VARCHAR(100),
+        #                     ore_owner VARCHAR(100), 
+        #                     trackFactor DECIMAL(9,2),
+        #                     no_trips DECIMAL(9,2),
+        #                     distance DECIMAL(9,2),
+        #                     totalVolume DECIMAL(9,2) GENERATED ALWAYS AS (trackFactor*no_trips*distance) STORED,
+        #                     rate DECIMAL(9,2),
+        #                     php_amount DECIMAL(9,2) GENERATED ALWAYS AS (totalVolume*rate) STORED,
+        #                     taxRate DECIMAL(3,2),
+        #                     vat_output DECIMAL(9,2),
+        #                     net_of_vat DECIMAL(9,2) GENERATED ALWAYS AS (php_amount-vat_output) STORED,
+        #                     user VARCHAR(100),
+        #                     date_credited date) """)
+                    
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
+
+        # finally:
+        #     SurigaoDB.DATABASE.commit()
+        #     SurigaoDB.DATABASE.close()
+
+
     
     @staticmethod
     def insert_production(trans_date,equipment_id,trackFactor,
@@ -88,6 +115,67 @@ class SurigaoDB(object):
             SurigaoDB.DATABASE.close()
 
 
+#===============================================Peso Bill =============================================
+
+    @staticmethod
+    def insert_peso_production(trans_date,equipment_id,ore_owner,trackFactor,
+                                no_trips,distance,rate,taxRate,
+                                vat_output,date_credited):
+        """This is to insert to dollar_bill Table"""
+        SurigaoDB.DATABASE._open_connection() # to open database connection
+
+        try:
+            
+            data = ( "INSERT INTO peso_bill (trans_date,equipment_id,ore_owner,trackFactor,\
+                                no_trips,distance,rate,taxRate,vat_output,date_credited)"
+                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")
+            val = (trans_date,equipment_id,ore_owner,trackFactor,no_trips,
+                            distance,rate,taxRate,vat_output,date_credited)
+            #                  
+            # cursor.execute(data)              
+            cursor.execute(data,val) 
+            
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+
+            SurigaoDB.DATABASE.commit()
+            SurigaoDB.DATABASE.close()
+
+    @staticmethod
+    def select_all_from_peso():
+        """This function is for querying to diesel Database with out parameters"""
+        SurigaoDB.DATABASE._open_connection()
+        try:
+            data = ('SELECT * FROM peso_bill')
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            SurigaoDB.DATABASE.close()
+
+    @staticmethod
+    def delete_one_from_peso(id):
+        """This function is for querying to diesel Database with out parameters"""
+        SurigaoDB.DATABASE._open_connection()
+        try:
+            data = ('DELETE FROM peso_bill \
+                WHERE id = "'+id+'"')       
+                        
+            # cursor.execute(data)              
+            cursor.execute(data) 
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            SurigaoDB.DATABASE.commit()
+            SurigaoDB.DATABASE.close()
+
+# ======================================== Equipment transaction===============================
     @staticmethod
     def select_all_equipment():
         """This function is for querying to diesel Database with out parameters"""
@@ -101,5 +189,10 @@ class SurigaoDB(object):
         except Exception as ex:
             print("Error", f"Error due to :{str(ex)}")
         finally:
-           
+            
             SurigaoDB.DATABASE.close()
+            
+
+
+
+    

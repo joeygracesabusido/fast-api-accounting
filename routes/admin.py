@@ -280,6 +280,32 @@ def update_diesel(id,item:DieselConsumption):
     Database.update_one_diesel(transaction_date=item.transaction_date,
                             equipment_id=item.equipment_id,withdrawal_slip=item.withdrawal_slip,
                             use_liter=item.use_liter,price=item.price,
-                            amount=item.amount,id=id)
+                            amount=item.amount,username=item.username,id=id)
+                             
     return {"message":"data has been updated"}
+
+
+#=============================================Surigao Database =====================================
+from config.surigaoDB import SurigaoDB
+SurigaoDB.initialize()
+from models.model import InsertPesoBill
+@admin.post('/api-insert-surigao-pesoBill/')
+def insert_surigao_pesoBill(item:InsertPesoBill):
+    """This function is to update Diesel transactions info"""
+    date_credited = date.today()
+    SurigaoDB.insert_peso_production(trans_date=item.trans_date,
+                                equipment_id=item.equipment_id,ore_owner=item.ore_owner,
+                                trackFactor=item.trackFactor,no_trips=item.no_trips,
+                                distance=item.distance,rate=item.rate,taxRate=item.taxRate,
+                                vat_output=item.vat_output,date_credited=date_credited)
+                             
+    return {"message":"data has been updated"}
+
+
+@admin.delete('/api-delete-surigao-pesoBill/{id}')
+def delete_surigao_pesoBill(id,token: str = Depends(oauth_scheme)):
+    """This function is to delete journal Entry for Zambo"""
+    SurigaoDB.delete_one_from_peso(id)
+    return  {'Messeges':'Data has been deleted'}
+    
     
