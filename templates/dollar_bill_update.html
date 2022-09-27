@@ -1,0 +1,284 @@
+
+{% extends 'index.html' %}
+
+{% block content %}
+
+
+<body>
+    <div class="form">
+        <form >
+            {% for list in agg_result_list%}
+            <div  class="container mt-3">
+                
+                    <input
+                        type="text" hidden
+                        name="trans_id"
+                        id="trans_id"
+                        value="{{list.trans_id}}"
+                        >
+                    </input>  
+                    
+            </div>
+            <div  class="container mt-3">
+                
+                <input
+                    type="text" hidden
+                    name="user"
+                    id="user"
+                    value="{{username}}"
+                    >
+                </input>  
+                
+        </div>
+
+            <div  class="container mt-3">
+                <label for="trans_date" >Date Transact</label><br>
+                    <input
+                        type="date" 
+                        name="date_credited"
+                        id="date_credited"
+                        required
+                        >
+                    </input>  
+                    
+            </div>
+
+        
+            
+            <div  class="container mt-3">
+                <label for="trans_date" >Transaction Date</label><br>
+                    <input
+                        type="date"
+                        name="trans_date"
+                        id="trans_date"
+                        value="{{list.trans_date}}"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Equipment" >Equipment</label><br>
+                <input
+                type="text"
+                name="equipment_id"
+                id="equipment_id"
+               
+                value="{{list.equipment_id2}}"
+               
+                >
+            </input>  
+                
+                    
+            </div>
+            <div  class="container mt-3">
+                <label for="TracFactor" >Track Factor</label><br>
+                    <input
+                        type="number"
+                        name="trackFactor"
+                        id="trackFactor"
+                        step="0.01"
+                        value="{{list.trackFactor}}"
+                        onkeyup="getAverage();" 
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="No Trips" >No of Trips</label><br>
+                    <input
+                        type="number"
+                        name="no_trips"
+                        id="no_trips"
+                        step="0.01"
+                        value="{{list.no_trips}}"
+                        onkeyup="getAverage();" 
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Dollar" >USD Rate</label><br>
+                    <input
+                        type="number"
+                        name="usd_pmt"
+                        id="usd_pmt"
+                        step="0.01"
+                        value="{{list.usd_pmt}}"
+                        onkeyup="getAverage();" 
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Convertion Rate" >ConverTion Rate</label><br>
+                    <input
+                        type="number"
+                        name="convertion_rate"
+                        id="convertion_rate"
+                        step="0.01"
+                        value="{{list.convertion_rate}}"
+                        onkeyup="getAverage();" 
+                        >
+                    </input>  
+                    
+            </div>
+
+            <!-- onblur="getAmount()" -->
+            <div  class="container mt-3">
+                <label for="Tax" >Value Added Tax</label><br>
+
+                <input
+                    type="number"
+                    name="taxRate"
+                    id="taxRate"
+                    step="0.01"
+                    value="{{list.taxRate}}"
+                    onkeyup="getAverage();" 
+                    
+                    >
+                </input>  
+                
+
+            </div>
+
+            <div  class="container mt-3">
+                <label for="VAT OUTPUT" >VAT OUTPUT</label><br>
+
+                <input
+                    type="number"
+                    name="vat_output"
+                    id="vat_output"
+                    step="0.01"
+                    value="{{list.vat_output}}"
+                    >
+                </input>  
+                
+
+            </div>
+
+        {% endfor %}
+
+        </form>
+
+        <div  class="container mt-4">
+            <button  type="submit" class="btn btn-primary mt-4" onclick="update_dollar()">Save Changes</button> 
+            <!-- <button type="button" id="buttonSave" class="btn btn-primary">
+            <i class="fas fa-database"></i>Update</button></a> -->
+
+            <!-- <button type="submit" id="TestSave" class="btn btn-danger">
+                <i class="fas fa-database"></i> Save</button></a> -->
+                
+        </div>
+
+    </div>
+    
+    
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
+
+       <!-- This is for jquery Date picker -->
+
+       
+       
+
+                
+        <script>
+             function getAmount(){
+                var trackFactor = $('#trackFactor').val();
+                var no_trips = $('#no_trips').val();
+                var usd_pmt = $('#usd_pmt').val();
+                var convertion_rate = $('#convertion_rate').val();
+                var totalVolume = parseFloat(trackFactor) * parseFloat(no_trips)
+                var PHP_total = parseFloat(totalVolume) * parseFloat(usd_pmt) * parseFloat(convertion_rate)
+                
+                var taxRate = $('#taxRate').val();
+                var vatOutput = parseFloat(PHP_total)/1.12
+                $('#vat_output').val(parseFloat(vatOutput)*parseFloat(taxRate));
+             }
+        </script>
+
+        <script type="text/javascript">
+            function getAverage(){
+                var trackFactor=document.getElementById('trackFactor').value;
+                var no_trips=document.getElementById('no_trips').value;
+                var usd_pmt=document.getElementById('usd_pmt').value;
+                var convertion_rate=document.getElementById('convertion_rate').value;
+                var taxRate =document.getElementById('taxRate').value;
+                var totalVolume;
+                var PHP_total;
+                var vatOutput;
+               
+                
+            
+                if(trackFactor !="" && no_trips !="" && usd_pmt !="" && convertion_rate !=""){
+                    totalVolume = parseFloat(trackFactor) * parseFloat(no_trips);
+                    PHP_total = parseFloat(totalVolume) * parseFloat(usd_pmt) * parseFloat(convertion_rate)
+                    vatOutput = parseFloat(PHP_total)/1.12 * parseFloat(taxRate)
+                    // test = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    // console.log(test)
+            
+                    document.getElementById('vat_output').value=vatOutput.toFixed(2);	
+                   
+                    
+                }
+            
+            }
+
+        </script>
+
+        <script type="text/javascript">
+            function update_dollar(){
+                var data = {}
+                var id = document.getElementById("trans_id").value
+                
+                data["trans_date"] = document.getElementById("trans_date").value
+               
+                data["equipment_id"] = document.getElementById("equipment_id").value
+                data["trackFactor"] = document.getElementById("trackFactor").value
+                data["no_trips"] = document.getElementById("no_trips").value
+                data["usd_pmt"] = document.getElementById("usd_pmt").value
+                data["convertion_rate"] = document.getElementById("convertion_rate").value
+                data["taxRate"] = document.getElementById("taxRate").value
+                data["vat_output"] = document.getElementById("vat_output").value
+                data["user"] = document.getElementById("user").value
+                data["date_credited"] = document.getElementById("date_credited").value
+                
+                console.log(data)
+                
+                fetch("/api-update-dollarBill/"+ id, {
+                method:'PUT', 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+                    });
+                // window.location.assign("/peso-bill/");
+                window.alert("Your Data has been Updated");
+                window.location.assign("/dollar-bill/");
+            }
+            
+
+        </script>
+
+   
+
+
+        
+
+    
+</body>
+
+
+
+{% endblock %}
+

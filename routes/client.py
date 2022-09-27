@@ -971,6 +971,53 @@ async def insert_dollarBill(request: Request, username: str = Depends(validateLo
                                         "username":username})
 
 
+@client.get("/update-dollar-bill/{id}", response_class=HTMLResponse)
+async def update_dollarBill(id,request: Request, username: str = Depends(validateLogin)):
+    """This function is for Updating Dollar Bill"""
+
+    
+
+
+    myresult = SurigaoDB.select_one_from_dollarBill(id=id)
+   
+    
+    agg_result_list = []
+    
+
+    id_update = myresult[0]
+    trans_date = myresult[1]
+    equipment_id = myresult[2]
+    trackFactor = myresult[3]
+    no_trips = myresult[4]
+    usd_pmt = myresult[6]
+    convertion_rate = myresult[8]
+    taxRate = myresult[10]
+    vat_output = myresult[11]
+
+    username = username
+    
+    data={}   
+    
+    data.update({
+        'trans_id': id_update,
+        'trans_date': trans_date,
+        'equipment_id2': equipment_id,
+        'trackFactor': trackFactor,
+        'no_trips': no_trips,
+        'usd_pmt': usd_pmt,
+        'convertion_rate': convertion_rate,
+        'taxRate': taxRate,
+        'vat_output': vat_output,
+       
+    })
+
+    agg_result_list.append(data)
+
+
+    return templates.TemplateResponse("dollar_bill_update.html",{"request":request,
+                                            "agg_result_list":agg_result_list,
+                                            "username":username})
+
 from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
 @client.get("/peso-bill/", response_class=HTMLResponse)

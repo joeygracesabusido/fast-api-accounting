@@ -38,6 +38,7 @@
                         name="trackFactor"
                         id="trackFactor"
                         step="0.01"
+                        onkeyup="getAverage();" 
                         >
                     </input>  
                     
@@ -50,6 +51,7 @@
                         name="no_trips"
                         id="no_trips"
                         step="0.01"
+                        onkeyup="getAverage();" 
                         >
                     </input>  
                     
@@ -62,7 +64,7 @@
                         name="usd_pmt"
                         id="usd_pmt"
                         step="0.01"
-                       
+                        onkeyup="getAverage();" 
                         >
                     </input>  
                     
@@ -75,12 +77,13 @@
                         name="convertion_rate"
                         id="convertion_rate"
                         step="0.01"
-                        
+                        onkeyup="getAverage();" 
                         >
                     </input>  
                     
             </div>
 
+            <!-- onblur="getAmount()" -->
             <div  class="container mt-3">
                 <label for="Tax" >Value Added Tax</label><br>
 
@@ -89,7 +92,8 @@
                     name="taxRate"
                     id="taxRate"
                     step="0.01"
-                    onblur="getAmount()"
+                    onkeyup="getAverage();" 
+                    
                     >
                 </input>  
                 
@@ -145,6 +149,7 @@
                         <td>PHP Amount</td>
                         <td>Vat Output</td>
                         <td>Net of Vat</td>
+                        <td>Action</td>
                        
                         
                     </tr>
@@ -170,11 +175,11 @@
                             
                            
                             
-                            <!-- <td>
-                                <a href="/update-chart-of-account/{{list.id}}"
+                            <td>
+                                <a href="/update-dollar-bill/{{list.id}}"
                                 <button type="button" class="btn btn-primary">
                                 <i class="fas fa-database"></i> Edit</button></a>
-                            </td> -->
+                            </td>
 
                             
 
@@ -393,6 +398,36 @@
                 var vatOutput = parseFloat(PHP_total)/1.12
                 $('#vat_output').val(parseFloat(vatOutput)*parseFloat(taxRate));
              }
+        </script>
+
+        <script type="text/javascript">
+            function getAverage(){
+                var trackFactor=document.getElementById('trackFactor').value;
+                var no_trips=document.getElementById('no_trips').value;
+                var usd_pmt=document.getElementById('usd_pmt').value;
+                var convertion_rate=document.getElementById('convertion_rate').value;
+                var taxRate =document.getElementById('taxRate').value;
+                var totalVolume;
+                var PHP_total;
+                var vatOutput;
+               
+                test = 12456
+               
+            
+                if(trackFactor !="" && no_trips !="" && usd_pmt !="" && convertion_rate !=""){
+                    totalVolume = parseFloat(trackFactor) * parseFloat(no_trips);
+                    PHP_total = parseFloat(totalVolume) * parseFloat(usd_pmt) * parseFloat(convertion_rate)
+                    vatOutput = parseFloat(PHP_total)/1.12 * parseFloat(taxRate)
+                    // test = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    // console.log(test)
+            
+                    document.getElementById('vat_output').value=vatOutput.toFixed(2);	
+                   
+                    
+                }
+            
+            }
+
         </script>
         
 

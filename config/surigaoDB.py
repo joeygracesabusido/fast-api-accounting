@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import mysql.connector
 from pickle import NONE
+from datetime import date
 
 
 class SurigaoDB(object):
@@ -113,6 +114,57 @@ class SurigaoDB(object):
         finally:
            
             SurigaoDB.DATABASE.close()
+
+    @staticmethod
+    def select_one_from_dollarBill(id):
+        """This function is for querying to diesel Database with out parameters"""
+        SurigaoDB.DATABASE._open_connection()
+        try:
+            data = 'SELECT * FROM dollar_bill \
+                WHERE id LIKE %s'
+
+            val = ('%' + id + '%',)
+            cursor.execute(data,(val),)
+            
+            # data = ('SELECT FROM dollar_bill \
+            #     WHERE id = "'+id+'"')       
+                        
+            # # cursor.execute(data)              
+            # cursor.execute(data) 
+            return cursor.fetchone()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            SurigaoDB.DATABASE.commit()
+            SurigaoDB.DATABASE.close()
+
+
+    @staticmethod
+    def update_one_dollarBill(trans_date,equipment_id,trackFactor,\
+                        no_trips,usd_pmt,convertion_rate,taxRate,\
+                            vat_output,user,date_credited,id):
+        """
+        This function is to update Equipment with parameters of Trans ID
+        """
+        SurigaoDB.DATABASE._open_connection()
+        
+        try:
+            data = ('UPDATE dollar_bill SET trans_date=%s, equipment_id=%s,\
+                   trackFactor=%s,no_trips=%s, \
+                     usd_pmt=%s,convertion_rate=%s,taxRate=%s,\
+                       vat_output=%s, user=%s,date_credited=%s \
+                        WHERE id = %s')
+            val =(trans_date,equipment_id,trackFactor,no_trips,
+                    usd_pmt,convertion_rate,taxRate,vat_output,
+                    user,date_credited,id)
+            cursor.execute(data,val)
+           
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            SurigaoDB.DATABASE.commit()
+            SurigaoDB.DATABASE.close()
+           
 
 
 #===============================================Peso Bill =============================================

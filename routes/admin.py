@@ -288,7 +288,25 @@ def update_diesel(id,item:DieselConsumption):
 #=============================================Surigao Database =====================================
 from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
-from models.model import InsertPesoBill
+from models.model import InsertPesoBill, DollarBill
+
+@admin.put('/api-update-dollarBill/{id}')
+def update_dollarBill(id,item:DollarBill):
+    """This function is to update Diesel transactions info"""
+    
+    SurigaoDB.update_one_dollarBill(trans_date=item.trans_date,
+                                equipment_id=item.equipment_id,trackFactor=item.trackFactor,
+                                no_trips=item.no_trips,usd_pmt=item.usd_pmt,
+                                convertion_rate=item.convertion_rate,
+                                taxRate=item.taxRate,vat_output=item.vat_output,user=item.user,
+                                date_credited=item.date_credited,id=id)
+                             
+    return {"message":"data has been updated"}
+
+
+
+
+
 @admin.post('/api-insert-surigao-pesoBill/')
 def insert_surigao_pesoBill(item:InsertPesoBill):
     """This function is to update Diesel transactions info"""
