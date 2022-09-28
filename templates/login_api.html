@@ -63,11 +63,29 @@
             fetch("/token", {
             method:'POST', 
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: JSON.stringify('grant_type=&username=${data["username"]}&password=${data["password"]}&scope=&client_id=&client_secret=')
+            body: JSON.stringify('grant_type=&username=joeysabusido1&password=genesis%4011&scope=&client_id=joeysabusido1&client_secret=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2V5c2FidXNpZG8xIiwiZXhwIjoxNjY0MzU3MjkwfQ.1AuiYNvaL8xmLZySzPFT-zCnaRcbPqe8N9dVhi4_xNU')
+                })
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        // window.alert("Your Data has been Updated");
+                        // window.location.assign("/dollar-bill/");
+                        console.log(json);
+                    }
+                })
+                .catch(function (error){
+                    // Catch errors
+                    window.alert(error);
+                    console.log(error);
                 });
-            // window.location.assign("/peso-bill/");
-            window.alert("You are Now Login for API's");
-            // window.location.assign("/peso-bill/");
         }
         
 

@@ -1,6 +1,7 @@
 import json
 from pyexpat import model
-from fastapi import APIRouter, Body, HTTPException, Depends
+from urllib.request import Request
+from fastapi import APIRouter, Body, HTTPException, Depends,status
 from typing import Union, List
 from datetime import datetime
 
@@ -30,6 +31,15 @@ import sqlalchemy
 
 from pydantic import BaseModel
 from datetime import datetime, date
+from datetime import timedelta
+
+
+from jose import jwt
+
+SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+JWT_SECRET = 'myjwtsecret'
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 
@@ -55,6 +65,17 @@ def get_password_hash(password):
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
+    to_encode = data.copy()
+
+    expire = datetime.utcnow() + expires_delta
+
+    to_encode.update({"exp": expire})
+
+    
+    return to_encode
+
 
 def authenticate_user(username, password):
     user = mydb.login.find({"username":username})
@@ -99,23 +120,29 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
     username = form_data.username
     password = form_data.password
 
-    # user = mydb.login.find({"username":username})
+    # # user = mydb.login.find({"username":username})
 
-    # for i in user:
-    #     username = i['username']
-    #     password = i['password']
-    #     print(username, password)
+    # # for i in user:
+    # #     username = i['username']
+    # #     password = i['password']
+    # #     print(username, password)
 
-    if authenticate_user(username, password):
-        return {"access_token": username, "token_type": "bearer"}
+    # if authenticate_user(username, password):
+    #     return {"access_token": username, "token_type": "bearer"}
 
-    else :
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    # else :
+    #     raise HTTPException(status_code=400, detail="Incorrect username or password")
 
-# @admin.get('/') 
-# async def home(token: str = Depends(oauth_scheme)):
-#     return {"token": token}
     
+    user = authenticate_user(username,password)
+    if not user:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": username},
+        expires_delta=access_token_expires,
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @admin.get('/user')
@@ -292,16 +319,50 @@ from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
 from models.model import InsertPesoBill, DollarBill
 
-@admin.put('/api-update-dollarBill/{id}')
-def update_dollarBill(id,item:DollarBill):
-    """This function is to update Diesel transactions info"""
+def validateLogin(request:Request):
+    """This function is for Log In Authentication"""
     
+    try :
+        token = request.cookies.get('access_token')
+        if token is None:
+            raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized",
+            headers={"WWW-Authenticate": "Basic"},
+            )
+        else:
+            scheme, _, param = token.partition(" ")
+            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+            username = payload.get("sub")
+        
+
+            user =  mydb.login.find({"username":username})
+
+            if user is not None:
+
+                return username
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= e,
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
+
+@admin.put('/api-update-dollarBill/{id}')
+def update_dollarBill(id,item:DollarBill, token: str = Depends(oauth_scheme)):
+    """This function is to update Diesel transactions info"""
+
+    
+    date_credited = date.today()
     SurigaoDB.update_one_dollarBill(trans_date=item.trans_date,
                                 equipment_id=item.equipment_id,trackFactor=item.trackFactor,
                                 no_trips=item.no_trips,usd_pmt=item.usd_pmt,
                                 convertion_rate=item.convertion_rate,
                                 taxRate=item.taxRate,vat_output=item.vat_output,user=item.user,
-                                date_credited=item.date_credited,id=id)
+                                date_credited=date_credited,id=id)
                              
     return {"message":"data has been updated"}
 

@@ -256,15 +256,41 @@
                 data["date_credited"] = document.getElementById("date_credited").value
                 
                 console.log(data)
-                
-                fetch("/api-update-dollarBill/"+ id, {
+                if(data["date_credited"] != ''){
+                    fetch("/api-update-dollarBill/"+ id, {
                 method:'PUT', 
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
-                    });
+                    })
                 // window.location.assign("/peso-bill/");
-                window.alert("Your Data has been Updated");
-                window.location.assign("/dollar-bill/");
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Updated");
+                        window.location.assign("/dollar-bill/");
+                        console.log(json);
+                    }
+                })
+                .catch(function (error){
+                    // Catch errors
+                    window.alert(error);
+                    console.log(error);
+                });
+                
+                }
+                else{
+                    window.alert("Please fill up fields");
+                }
+                
+                
             }
             
 
