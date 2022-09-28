@@ -112,9 +112,9 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
     else :
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
-@admin.get('/') 
-async def home(token: str = Depends(oauth_scheme)):
-    return {"token": token}
+# @admin.get('/') 
+# async def home(token: str = Depends(oauth_scheme)):
+#     return {"token": token}
     
 
 
@@ -286,6 +286,8 @@ def update_diesel(id,item:DieselConsumption):
 
 
 #=============================================Surigao Database =====================================
+from routes.client import login
+from routes.rizal_project import validateLogin
 from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
 from models.model import InsertPesoBill, DollarBill

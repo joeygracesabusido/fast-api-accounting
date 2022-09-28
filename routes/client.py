@@ -145,15 +145,22 @@ async def login(response: Response, request:Request):
            
 
         else :
-            raise HTTPException(status_code=400, detail="Incorrect username or password")
+            msg.append('Incorrect username or password')
+            # raise HTTPException(status_code=400, detail="Incorrect username or password")
+            return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
     except:
         errors.append('Something wrong')
         return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
 
+#======================================Login for Front End or API Login=============================
+@client.get("/api-login/", response_class=HTMLResponse)
+async def api_login(request: Request):
+    return templates.TemplateResponse("login_api.html", {"request":request}) 
+
 
 #======================================Front End===================================================
 @client.get("/login", response_class=HTMLResponse)
-async def login(request: Request):
+async def login_show(request: Request):
     return templates.TemplateResponse("login.html", {"request":request}) 
 
 # @client.get("/login",response_class=HTMLResponse)
