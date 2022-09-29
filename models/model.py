@@ -91,6 +91,7 @@ class InsertPesoBill(BaseModel):
     taxRate: float
     vat_output: float
     date_credited: date
+    user: str
    
     
 

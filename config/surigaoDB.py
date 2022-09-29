@@ -135,7 +135,7 @@ class SurigaoDB(object):
         except Exception as ex:
             print("Error", f"Error due to :{str(ex)}")
         finally:
-            SurigaoDB.DATABASE.commit()
+            
             SurigaoDB.DATABASE.close()
 
 
@@ -209,6 +209,53 @@ class SurigaoDB(object):
         finally:
            
             SurigaoDB.DATABASE.close()
+
+
+    @staticmethod
+    def select_one_from_pesoBill(id):
+        """This function is for querying to diesel Database with out parameters"""
+        SurigaoDB.DATABASE._open_connection()
+        try:
+            data = 'SELECT * FROM peso_bill \
+                WHERE id LIKE %s'
+
+            val = ('%' + id + '%',)
+            cursor.execute(data,(val),)
+            
+            
+            return cursor.fetchone()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            SurigaoDB.DATABASE.close()
+
+
+    @staticmethod
+    def update_one_pesoBill(trans_date,equipment_id,ore_owner,trackFactor,\
+                                no_trips,distance,rate,taxRate,vat_output,user,date_credited,id):
+        """
+        This function is to update Equipment with parameters of Trans ID
+        """
+        SurigaoDB.DATABASE._open_connection()
+        
+        try:
+            data = ('UPDATE peso_bill SET trans_date=%s, equipment_id=%s,ore_owner=%s,\
+                   trackFactor=%s,no_trips=%s, \
+                     distance=%s,rate=%s,taxRate=%s,\
+                       vat_output=%s, user=%s,date_credited=%s \
+                        WHERE id = %s')
+            val =(trans_date,equipment_id,ore_owner,trackFactor,no_trips,
+                    distance,rate,taxRate,vat_output,
+                    user,date_credited,id)
+            cursor.execute(data,val)
+           
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            SurigaoDB.DATABASE.commit()
+            SurigaoDB.DATABASE.close()
+           
 
     @staticmethod
     def delete_one_from_peso(id):

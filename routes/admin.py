@@ -332,7 +332,7 @@ def get_diesels():
     return DieselConsumptions(Database.select_all_from_dieselDB())
 
 @admin.put('/api-update-diesel/{id}')
-def update_diesel(id,item:DieselConsumption):
+def update_diesel(id,item:DieselConsumption,token: str = Depends(oauth_scheme)):
     """This function is to update Diesel transactions info"""
     Database.update_one_diesel(transaction_date=item.transaction_date,
                             equipment_id=item.equipment_id,withdrawal_slip=item.withdrawal_slip,
@@ -379,7 +379,7 @@ def validateLogin(request:Request):
             detail= e,
             headers={"WWW-Authenticate": "Basic"},
         )
-
+#===============================================Surigao Peso==============================================
 
 @admin.put('/api-update-dollarBill/{id}')
 def update_dollarBill(id,item:DollarBill, token: str = Depends(oauth_scheme)):
@@ -401,7 +401,7 @@ def update_dollarBill(id,item:DollarBill, token: str = Depends(oauth_scheme)):
 
 
 
-
+#===============================================Surigao Peso==============================================
 
 @admin.post('/api-insert-surigao-pesoBill/')
 def insert_surigao_pesoBill(item:InsertPesoBill):
@@ -414,6 +414,34 @@ def insert_surigao_pesoBill(item:InsertPesoBill):
                                 vat_output=item.vat_output,date_credited=date_credited)
                              
     return {"message":"data has been updated"}
+
+@admin.put('/api-update-pesoBill/{id}')
+def update_dollarBill(id,item:InsertPesoBill, token: str = Depends(oauth_scheme)):
+    """This function is to update Diesel transactions info"""
+    
+    try:
+        # scheme, _, param = token.partition(" ")
+        # payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+    
+        # user = payload.get("sub")
+        
+        # payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        # user = payload.get('sub')
+        # print(user)
+
+        date_credited = date.today() 
+        SurigaoDB.update_one_pesoBill(trans_date=item.trans_date,
+                                    equipment_id=item.equipment_id,ore_owner=item.ore_owner,
+                                    trackFactor=item.trackFactor,no_trips=item.no_trips,
+                                    distance=item.distance,rate=item.rate,taxRate=item.taxRate,
+                                    vat_output=item.vat_output,user=item.user,date_credited=date_credited,id=id)
+                                
+        return {"message":"data has been updated"}
+        
+    except Exception as e:
+        print(e)
+    
+
 
 
 @admin.delete('/api-delete-surigao-pesoBill/{id}')

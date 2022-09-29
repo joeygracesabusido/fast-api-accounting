@@ -7,13 +7,49 @@
 <body>
     <div class="form">
         <form >
-            
+            {% for list in agg_result_list%}
+            <div  class="container mt-3">
+                
+                <input
+                    type="text" hidden
+                    name="user"
+                    id="user"
+                    value="{{user}}"
+                    >
+                </input>  
+                
+        </div>
+
+            <div  class="container mt-3">
+                
+                    <input
+                        type="text" hidden
+                        name="trans_id"
+                        id="trans_id"
+                        value="{{list.trans_id}}"
+                        >
+                    </input>  
+                    
+            </div>
+            <div  class="container mt-3">
+                <label for="trans_date" >Date-Update</label><br>
+                    <input
+                        type="date"
+                        name="date_credited"
+                        id="date_credited"
+                        
+                        >
+                    </input>  
+                    
+            </div>
+
             <div  class="container mt-3">
                 <label for="trans_date" >Transaction Date</label><br>
                     <input
                         type="date"
                         name="trans_date"
                         id="trans_date"
+                        value="{{list.trans_date}}"
                         >
                     </input>  
                     
@@ -21,26 +57,29 @@
 
             <div  class="container mt-3">
                 <label for="Equipment" >Equipment</label><br>
-                <select name="equipment_id" id="equipment_id" class="filter-selectbox"
-                >
-
-                {% for result in agg_result_list_eqp %}
-                    <option value="{{ result.equipment_id }}">{{ result.equipment_id }}</option>
-                {% endfor %} 
-
-                </select> 
+                    <input
+                    type="text"
+                    name="equipment_id"
+                    id="equipment_id"
+                    step="0.01"
+                    value="{{list.equipment_id}}"
+                    >
+                    </input>  
+                
                     
             </div>
             <div  class="container mt-3">
                 <label for="Ore Owner" >Ore Owner</label><br>
-                    <select name="ore_owner" id="ore_owner" class="filter-selectbox"
-                    >
-                        <option value="MRMJ ORE">MRMJ ORE</option>
-                        <option value="PGMC ORE">PGMC ORE</option>
-                        <option value="SKYLARK ORE">SKYLARK ORE</option>
-                        <option value="RAS ORE">RAS ORE</option>
 
-                    </select> 
+                    <input
+                    type="text"
+                    name="ore_owner"
+                    id="ore_owner"
+                    step="0.01"
+                    value="{{list.ore_owner}}"
+                    >
+                    </input>  
+                    
                     
             </div>
 
@@ -51,6 +90,8 @@
                         name="trackFactor"
                         id="trackFactor"
                         step="0.01"
+                        value="{{list.trackFactor}}"
+                        onkeyup="getAverage();" 
                         >
                     </input>  
                     
@@ -63,6 +104,8 @@
                         name="no_trips"
                         id="no_trips"
                         step="0.01"
+                        value="{{list.no_trips}}"
+                        onkeyup="getAverage();" 
                         >
                     </input>  
                     
@@ -75,7 +118,8 @@
                         name="distance"
                         id="distance"
                         step="0.01"
-                       
+                        value="{{list.distance}}"
+                        onkeyup="getAverage();" 
                         >
                     </input>  
                     
@@ -88,7 +132,8 @@
                         name="rate"
                         id="rate"
                         step="0.01"
-                        
+                        value="{{list.rate}}"
+                        onkeyup="getAverage();" 
                         >
                     </input>  
                     
@@ -102,7 +147,8 @@
                     name="taxRate"
                     id="taxRate"
                     step="0.01"
-                    onblur="getAmount()"
+                    value="{{list.taxRate}}"
+                    onkeyup="getAverage();" 
                     >
                 </input>  
                 
@@ -117,6 +163,7 @@
                     name="vat_output"
                     id="vat_output"
                     step="0.01"
+                    
                     >
                 </input>  
                 
@@ -124,7 +171,7 @@
             </div>
 
             
-
+            {% endfor %}
         </form>
 
         <div  class="container mt-3">
@@ -136,89 +183,7 @@
 
     </div>
     
-    <div class="container mt-3">
-        <div class="container mt-3">
-            <h3>DOLLAR EQUIPMENT BILL</h3>
-         </div>
-        <div class="container mt-3">
-        <div class="container mt-3">
-            <table id="myTable" class="table table-bordered"  style="text-align: center;">
-                <thead class="border-bottom font-weight-bold">
-                
-                        <td>Series No.</td>
-                        <td>Date</td>
-                        <td>Equipment</td>
-                        <td>ORE</td>
-                        <td>Track Factor</td>
-                        <td>No Trips</td>
-                        <td>Distance</td>
-                        <td>Total Volume</td>
-                        <td>Rate</td>
-                        <td>PHP Amount</td>
-                        <td>Vat Output</td>
-                        <td>Net of Vat</td>
-                        <td>Action</td>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for list in agg_result_list%}
-                        
-                        <tr>
-                            
-                            <td>{{loop.index}}</td>
-                            <td>{{list.transdate}}</td>
-                            <td>{{list.equipment_id}}</td>
-                            <td>{{list.ore_owner}}</td>
-                            <td>{{list.trackFactor}}</td>
-                            <td>{{list.no_trips}}</td>
-                            <td>{{list.distance}}</td>
-                            <td>{{list.totalVolume}}</td>
-                            <td>{{list.rate}}</td>
-                            <td>{{list.php_amount}}</td>
-                            <td>{{list.vat_output}}</td>
-                            <td>{{list.net_of_vat}}</td>
-                          
-                            
-                           
-                            
-                            <td>
-                                <a href="/update-peso-bill/{{list.id}}"
-                                <button type="button" class="btn btn-primary">
-                                <i class="fas fa-database"></i> Edit</button></a>
-                            </td>
-
-                            
-
-                            
-                        </tr>
-                       
-                    {% endfor %}
-                </tbody>
-
-                <tfoot>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    
-                    
-                </tfoot>
-
-            </table>
-
-        </div>
-
-    </div>
-
+   
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
@@ -230,16 +195,7 @@
 
         <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
 
-       <!-- This is for jquery Date picker -->
-
        
-       
-
-        <!-- <script>
-             $(document).ready(function () {
-                $('#myTable').DataTable();
-            });
-        </script> -->
         <script type="text/javascript">
 
                 
@@ -326,7 +282,7 @@
         <script type="text/javascript">
             function insert_peso(){
                 var data = {}
-                // var id = document.getElementById("trans_id").value
+                var id = document.getElementById("trans_id").value
                 data["trans_date"] = document.getElementById("trans_date").value
                 data["equipment_id"] = document.getElementById("equipment_id").value
                 data["ore_owner"] = document.getElementById("ore_owner").value
@@ -336,17 +292,44 @@
                 data["rate"] = document.getElementById("rate").value
                 data["taxRate"] = document.getElementById("taxRate").value
                 data["vat_output"] = document.getElementById("vat_output").value
+                data["date_credited"] = document.getElementById("date_credited").value
+                data["user"] = document.getElementById("user").value
                 
                 console.log(data)
 
-                fetch("/api-insert-surigao-pesoBill/", {
-                method:'POST', 
+                if(data["date_credited"] != '' | data["vat_output"] != ''){
+                    fetch("/api-update-pesoBill/"+ id, {
+                method:'PUT', 
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
-                    });
+                    })
                 // window.location.assign("/peso-bill/");
-                window.alert("Your Data has been Save");
-                window.location.assign("/peso-bill/");
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Updated");
+                        window.location.assign("/peso-bill/");
+                        console.log(json);
+                    }
+                })
+                .catch(function (error){
+                    // Catch errors
+                    window.alert(error);
+                    console.log(error);
+                });
+                
+                }
+                else{
+                    window.alert("Please fill up fields");
+                }
             }
             
 
@@ -354,75 +337,7 @@
 
 
 
-        <script>
-            function getCookie(name) {
-                    let cookieValue = null;
-                    if (document.cookie && document.cookie !== '') {
-                        const cookies = document.cookie.split(';');
-                        for (let i = 0; i < cookies.length; i++) {
-                            const cookie = cookies[i].trim();
-                            // Does this cookie string begin with the name we want?
-                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                break;
-                            }
-                        }
-                    }
-                    return cookieValue;
-                }
-                const csrftoken = getCookie('csrftoken');
-
-             $('#buttonSave').on('click', function (e) {
-                       e.preventDefault()
-                       // Making the AJAX Request
-                       $trans_date = $('#trans_date').val();
-                       $equipment_id = $('#equipment_id').val();
-                       $no_trips = $('#no_trips').val();
-                       $trackFactor = $('#trackFactor').val();
-                       $usd_pmt = $('#usd_pmt').val();
-                       $convertion_rate = $('#convertion_rate').val();
-                       $taxRate = $('#taxRate').val();
-                       $vat_output = $('#vat_output').val();
-                      
-
-                       if ($trans_date == '' | $equipment_id =='' |$no_trips=='' |
-                       $trackFactor =='' | $usd_pmt =='' | $convertion_rate == '' ){
-                        alert('Please fill up Blank Fields ');
-                       }else{
-                                $.ajax({
-                                url: "/dollar-bill/",
-                                type: "POST",
-                                data: {
-                                    trans_date:   $trans_date,
-                                    equipment_id:  $equipment_id,
-                                    no_trips:  $no_trips,
-                                    trackFactor:  $trackFactor,
-                                    usd_pmt:  $usd_pmt,
-                                    convertion_rate:  $convertion_rate,
-                                    taxRate:  $taxRate,
-                                    vat_output:  $vat_output,
-                                        
-                                },
-                                beforeSend: function (xhr) {
-                                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                                },
-                                success: function (data) {
-                                    console.log(data);
-                                    window.location.href = "/dollar-bill/" 
-                                    alert('Data has been save')
-                                    
-                                },
-                                error: function (error) {
-                                        alert(error)
-                                    console.log(error);
-                                }
-                            });
-                    
-
-                       }
-
-                })
-        </script>
+        
         <script>
              function getAmount(){
                 var trackFactor = $('#trackFactor').val();
@@ -436,6 +351,35 @@
                 var vatOutput = parseFloat(PHP_total)/1.12
                 $('#vat_output').val(parseFloat(vatOutput)*parseFloat(taxRate));
              }
+        </script>
+
+        <script type="text/javascript">
+            function getAverage(){
+                var trackFactor=document.getElementById('trackFactor').value;
+                var no_trips=document.getElementById('no_trips').value;
+                var distance=document.getElementById('distance').value;
+                var rate=document.getElementById('rate').value;
+                var taxRate =document.getElementById('taxRate').value;
+                var totalVolume;
+                var PHP_total;
+                var vatOutput;
+            
+                
+            
+                if(trackFactor !="" && no_trips !="" && distance !="" && rate !=""){
+                    totalVolume = parseFloat(trackFactor) * parseFloat(no_trips) * parseFloat(distance);
+                    PHP_total = parseFloat(totalVolume) * parseFloat(rate) 
+                    vatOutput = parseFloat(PHP_total)/1.12 * parseFloat(taxRate)
+                    // test = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    // console.log(test)
+            
+                    document.getElementById('vat_output').value=vatOutput.toFixed(2);	
+                
+                    
+                }
+            
+            }
+
         </script>
         
 

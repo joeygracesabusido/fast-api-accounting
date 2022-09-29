@@ -1099,3 +1099,48 @@ def get_peso_records(request: Request):
                                     {"request":request,"agg_result_list_eqp":agg_result_list_eqp,
                                     "agg_result_list":agg_result_list})
 
+@client.get("/update-peso-bill/{id}", response_class=HTMLResponse)
+async def update_pesoBill(id,request: Request,username: str = Depends(validateLogin)):
+    """This function is for Updating Dollar Bill"""
+
+    myresult = SurigaoDB.select_one_from_pesoBill(id=id)
+   
+    
+    agg_result_list = []
+    
+
+    id_update = myresult[0]
+    trans_date = myresult[1]
+    equipment_id = myresult[2]
+    ore_owner = myresult[3]
+    trackFactor = myresult[4]
+    no_trips = myresult[5]
+    distance = myresult[6]
+    rate = myresult[8]
+    taxRate = myresult[10]
+    vat_output = myresult[11]
+
+    user = username
+    
+    data={}   
+    
+    data.update({
+        'trans_id': id_update,
+        'trans_date': trans_date,
+        'equipment_id': equipment_id,
+        'ore_owner': ore_owner,
+        'trackFactor': trackFactor,
+        'no_trips': no_trips,
+        'distance': distance,
+        'rate': rate,
+        'taxRate': taxRate,
+        'vat_output': vat_output,
+       
+    })
+
+    agg_result_list.append(data)
+
+
+    return templates.TemplateResponse("surigao_pesoBill_update.html",{"request":request,
+                                            "agg_result_list":agg_result_list,"user":user
+                                            })
