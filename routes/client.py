@@ -1029,9 +1029,10 @@ async def update_dollarBill(id,request: Request, username: str = Depends(validat
 from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
 @client.get("/peso-bill/", response_class=HTMLResponse)
-def get_peso_records(request: Request):
+def get_peso_records(request: Request,username: str = Depends(validateLogin)):
     """This function is for showing Page for Peso Biling Surigao Project"""
 
+    user = username
 
     equipmentResult = SurigaoDB.select_all_equipment()
    
@@ -1097,7 +1098,7 @@ def get_peso_records(request: Request):
 
     return  templates.TemplateResponse("surigao_pesoBill.html", 
                                     {"request":request,"agg_result_list_eqp":agg_result_list_eqp,
-                                    "agg_result_list":agg_result_list})
+                                    "agg_result_list":agg_result_list,"user":user})
 
 @client.get("/update-peso-bill/{id}", response_class=HTMLResponse)
 async def update_pesoBill(id,request: Request,username: str = Depends(validateLogin)):

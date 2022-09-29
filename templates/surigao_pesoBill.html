@@ -7,6 +7,29 @@
 <body>
     <div class="form">
         <form >
+            <div  class="container mt-3">
+                
+                <input
+                    type="text" hidden
+                    name="user"
+                    id="user"
+                    value="{{user}}"
+                    >
+                </input>  
+                
+        </div>
+
+            <div  class="container mt-3">
+                <label for="trans_date" >Date-Update</label><br>
+                    <input
+                        type="date"
+                        name="date_created"
+                        id="date_created"
+                        
+                        >
+                    </input>  
+                    
+            </div>
             
             <div  class="container mt-3">
                 <label for="trans_date" >Transaction Date</label><br>
@@ -51,6 +74,7 @@
                         name="trackFactor"
                         id="trackFactor"
                         step="0.01"
+                        onkeyup="getAverage();"
                         >
                     </input>  
                     
@@ -63,6 +87,7 @@
                         name="no_trips"
                         id="no_trips"
                         step="0.01"
+                        onkeyup="getAverage();"
                         >
                     </input>  
                     
@@ -75,7 +100,7 @@
                         name="distance"
                         id="distance"
                         step="0.01"
-                       
+                        onkeyup="getAverage();"
                         >
                     </input>  
                     
@@ -88,7 +113,7 @@
                         name="rate"
                         id="rate"
                         step="0.01"
-                        
+                        onkeyup="getAverage();"
                         >
                     </input>  
                     
@@ -102,7 +127,7 @@
                     name="taxRate"
                     id="taxRate"
                     step="0.01"
-                    onblur="getAmount()"
+                    onkeyup="getAverage();"
                     >
                 </input>  
                 
@@ -336,6 +361,8 @@
                 data["rate"] = document.getElementById("rate").value
                 data["taxRate"] = document.getElementById("taxRate").value
                 data["vat_output"] = document.getElementById("vat_output").value
+                data["date_credited"] = document.getElementById("date_created").value
+                data["user"] = document.getElementById("user").value
                 
                 console.log(data)
 
@@ -437,6 +464,35 @@
                 $('#vat_output').val(parseFloat(vatOutput)*parseFloat(taxRate));
              }
         </script>
+
+<script type="text/javascript">
+    function getAverage(){
+        var trackFactor=document.getElementById('trackFactor').value;
+        var no_trips=document.getElementById('no_trips').value;
+        var distance=document.getElementById('distance').value;
+        var rate=document.getElementById('rate').value;
+        var taxRate =document.getElementById('taxRate').value;
+        var totalVolume;
+        var PHP_total;
+        var vatOutput;
+    
+        
+    
+        if(trackFactor !="" && no_trips !="" && distance !="" && rate !=""){
+            totalVolume = parseFloat(trackFactor) * parseFloat(no_trips) * parseFloat(distance);
+            PHP_total = parseFloat(totalVolume) * parseFloat(rate) 
+            vatOutput = parseFloat(PHP_total)/1.12 * parseFloat(taxRate)
+            // test = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            // console.log(test)
+    
+            document.getElementById('vat_output').value=vatOutput.toFixed(2);	
+        
+            
+        }
+    
+    }
+
+</script>
         
 
     
