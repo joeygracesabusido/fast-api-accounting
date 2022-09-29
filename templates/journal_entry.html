@@ -1,6 +1,25 @@
 {% extends 'index.html' %}
 
 {% block content %}
+<style>
+        table {
+    width: 65%;
+    }
+
+    th {
+    height: 70px;
+    text-align: Center;
+    }
+
+    tr {
+    text-align: Center;
+    }
+
+    td {
+    height: 10px;
+    }
+
+</style>
 <body>
     <form method="POST">
 
@@ -172,7 +191,7 @@
                                             id="amount${x}"
                                             class="amount"
                                             step="0.01"
-                                            style="width: 150px;"
+                                            style="width: 150px; height: 25px;"
                                             onchange=myFunction()
                                         >
                                         </input
@@ -185,7 +204,7 @@
                                             id="credit_amount${x}"
                                             class="credit_amount"
                                             step="0.01"
-                                            style="width: 150px;"
+                                            style="width: 150px; height: 25px;"
                                             onchange=myFunction()
                                         >
                                         </input
