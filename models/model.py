@@ -69,7 +69,7 @@ class DollarBill(BaseModel):
     """This is for Dollar Bill Pydantic Model"""
     trans_date: date
     equipment_id: str
-    trackFactor: str
+    trackFactor: float
     no_trips: float
     usd_pmt: float  
     convertion_rate: float

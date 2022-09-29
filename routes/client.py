@@ -787,6 +787,7 @@ def validateLogin(request:Request):
     
     try :
         token = request.cookies.get('access_token')
+        # print(token)
         if token is None:
             raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

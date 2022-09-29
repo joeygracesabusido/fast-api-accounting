@@ -1,7 +1,9 @@
 import json
+from lib2to3.pgen2 import token
 from pyexpat import model
+from urllib import response
 from urllib.request import Request
-from fastapi import APIRouter, Body, HTTPException, Depends,status
+from fastapi import APIRouter, Body, HTTPException, Depends,status,Response
 from typing import Union, List
 from datetime import datetime
 
@@ -28,6 +30,8 @@ from sqlalchemy.orm import Session
 import sqlalchemy
 # from config.database import metadata,database
 
+from authentication.utils import OAuth2PasswordBearerWithCookie
+
 
 from pydantic import BaseModel
 from datetime import datetime, date
@@ -52,6 +56,9 @@ admin = APIRouter()
 # def home():
 #     """This is for testing only"""
 #     return {"Main":"This is Lenged"}
+
+
+
 #==================================================User Data =============================================
 from passlib.context import CryptContext
 
@@ -64,7 +71,9 @@ def get_password_hash(password):
 
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
-oauth_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="token")
+
+# oauth_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
     to_encode = data.copy()
@@ -87,6 +96,7 @@ def authenticate_user(username, password):
         if user:
             password_check = pwd_context.verify(password,password1)
             return password_check
+
         else :
             False
 
@@ -116,7 +126,7 @@ def sign_up(fullname: str, username: str, password: str, status: str,created: Un
 
 
 @admin.post('/token')
-def login(form_data: OAuth2PasswordRequestForm = Depends()):
+def login(response:Response,form_data: OAuth2PasswordRequestForm = Depends()):
     username = form_data.username
     password = form_data.password
 
@@ -142,7 +152,27 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
         data={"sub": username},
         expires_delta=access_token_expires,
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+
+    data = {"sub": username}
+    jwt_token = jwt.encode(data,SECRET_KEY,algorithm=ALGORITHM)
+    response.set_cookie(key="access_token", value=f'Bearer {jwt_token}',httponly=True)
+    
+    return {"access_token": jwt_token, "token_type": "bearer"}
+    # return {"access_token": access_token, "token_type": "bearer"}
+    # return(access_token)
+
+def get_user_from_token():
+
+    payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+    username = payload.get("sub")
+    return username
+    # myresult = mydb.login.find({"username":username})
+
+    # for i in myresult:
+    #     user = i['username']
+    #     print(user)
+
+    # return user
 
 
 @admin.get('/user')
@@ -354,9 +384,12 @@ def validateLogin(request:Request):
 @admin.put('/api-update-dollarBill/{id}')
 def update_dollarBill(id,item:DollarBill, token: str = Depends(oauth_scheme)):
     """This function is to update Diesel transactions info"""
-
-    
-    date_credited = date.today()
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        print(payload)
+    except Exception as e:
+        print(e)
+    date_credited = date.today() 
     SurigaoDB.update_one_dollarBill(trans_date=item.trans_date,
                                 equipment_id=item.equipment_id,trackFactor=item.trackFactor,
                                 no_trips=item.no_trips,usd_pmt=item.usd_pmt,
