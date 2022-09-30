@@ -236,8 +236,84 @@
                             </script>
             
                             <script>
+                            function myFunction() {
+                            let button = document.querySelector("#submiBTN");
                             
-                           
+                            button.disabled = true;
+                            let sumCredit = 0.0;
+                            let sumDebit = 0.0;
+
+                            
+                            
+                            credit_amount1 = document.getElementById('credit_amount1').value
+                            credit_amount2 = document.getElementById('credit_amount2').value
+                            credit_amount3 = document.getElementById('credit_amount3').value
+                            credit_amount4 = document.getElementById('credit_amount4').value
+                            credit_amount5 = document.getElementById('credit_amount5').value
+                            credit_amount6 = document.getElementById('credit_amount6').value
+                            credit_amount7 = document.getElementById('credit_amount7').value
+                            credit_amount8 = document.getElementById('credit_amount8').value
+                            credit_amount9 = document.getElementById('credit_amount9').value
+                            credit_amount10 = document.getElementById('credit_amount10').value
+                            credit_amount11 = document.getElementById('credit_amount11').value
+                            credit_amount12 = document.getElementById('credit_amount12').value
+
+                            const creditAmount = [
+                                 credit_amount1,credit_amount2,credit_amount3,
+                                 credit_amount4,credit_amount5,credit_amount6,
+                                 credit_amount7,credit_amount8,credit_amount9,
+                                 credit_amount10,credit_amount11,credit_amount12
+                                
+                            ]
+
+
+                            
+
+                            // sumCredit = (parseFloat(credit_amount1) + parseFloat(credit_amount2) +
+                            //                 parseFloat(credit_amount3) + parseFloat(credit_amount4)+
+                            //                 parseFloat(credit_amount5)+parseFloat(credit_amount6)+
+                            //                 parseFloat(credit_amount7)+parseFloat(credit_amount8)+
+                            //                 +parseFloat(credit_amount9)+parseFloat(credit_amount10)+
+                            //                 parseFloat(credit_amount11)+parseFloat(credit_amount11));
+
+
+                            amount1 = document.getElementById('amount1').value
+                            amount2 = document.getElementById('amount2').value
+                            amount3 = document.getElementById('amount3').value
+                            amount4 = document.getElementById('amount4').value
+                            amount5 = document.getElementById('amount5').value
+                            amount6 = document.getElementById('amount6').value
+                            amount7 = document.getElementById('amount7').value
+                            amount8 = document.getElementById('amount8').value
+                            amount9 = document.getElementById('amount9').value
+                            amount10 = document.getElementById('amount10').value
+                            amount11 = document.getElementById('amount11').value
+                            amount12 = document.getElementById('amount12').value
+
+                            const debitAmount = [
+                            amount1,amount2,amount3,
+                            amount4,amount5,amount6,
+                            amount7,amount8,amount9,
+                            amount10,amount11,amount12
+                                
+                            ]
+                            console.log(debitAmount)
+                            
+                            // sumDebit = (parseFloat(amount1) + parseFloat(amount2) +
+                            //                 parseFloat(amount3) + parseFloat(amount4)+
+                            //                 parseFloat(amount5)+parseFloat(amount6)+
+                            //                 parseFloat(amount7)+parseFloat(amount8)+
+                            //                 +parseFloat(amount9)+parseFloat(amount10)+
+                            //                 parseFloat(amount11)+parseFloat(amount12));
+
+
+                                
+                                
+                        
+                            if((sumCredit - sumDebit) === 0.0){
+                                button.disabled = false;
+                            }
+                            }
                             </script>
 
                             <script>
@@ -255,12 +331,7 @@
                            
 
                     </div>
-
-    </form>  
-    
-    <script>
-        
-    </script>
+    </form>                
                     
 </body>
 
