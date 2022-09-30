@@ -23,6 +23,7 @@
                                 type="date"
                                 name="trans_date"
                                 id="trans_date"
+                                required
                                 >
                             </input>  
                             <br>
@@ -30,7 +31,9 @@
 
                     <div class="container mt-3">
                         <label for="Journal" >Journal</label><br>
-                        <select name="trasactionType" id="trasactionType"class="filter-selectbox">
+                        <select name="trasactionType" id="trasactionType"class="filter-selectbox"
+                        required
+                        >
                                 <option value="Payment">Payments</option>
                                 <option value="Receipts">Receipts</option>
                                 <option value="Sales">Sales</option>
@@ -82,10 +85,10 @@
 
                                     
                                 
-                                    <td>
+                                    <!-- <td>
                                         <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
                                         </i>Add</button>
-                                    </td>
+                                    </td> -->
     
                                 
                                 </tr>
@@ -96,18 +99,24 @@
                             </tbody>
                         </table>
     
-                        
+                        <div class="container">
+
+                            <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
+                            </i>Add Line</button>
+        
+                            
+                            <button type="submit" name='submit' id='submiBTN' class="btn btn-success">
+                            <i class="fas fa-database"> 
+                            </i>Save</button>
+
+                        </div>
                     
-                    
-    
                         
-                        <button type="submit" name='submit' id='submiBTN' class="btn btn-success">
-                        <i class="fas fa-database"> 
 
                        
                         
                        
-                        </i>Save</button>
+                        
                         
     
     
@@ -159,7 +168,7 @@
                                     <td>
                                         <select name="accountTitle${x}" id="accountTitle${x}"class="filter-selectbox"
                                             >
-
+                                            <option value= --------->-------------</option>
                                             {% for result in all_chart_of_account %}
                                                 <option value="{{ result.accountTitle }}">{{ result.accountTitle }}</option>
                                             {% endfor %} 

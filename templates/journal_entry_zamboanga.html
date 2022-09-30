@@ -22,6 +22,7 @@
                         type="date"
                         name="trans_date"
                         id="trans_date"
+                        required
                         >
                     </input>  
                     <br>
@@ -29,7 +30,9 @@
 
             <div class="container mt-3">
                 <label for="Journal" >Journal</label><br>
-                <select name="journal" id="journal"class="filter-selectbox">
+                <select name="journal" id="journal"class="filter-selectbox"
+                  required      
+                >
                         <option value="Payment">Payments</option>
                         <option value="Receipts">Receipts</option>
                         <option value="Sales">Sales</option>
@@ -46,7 +49,7 @@
                         name="reference"
                         id="reference"
                         style="width: 300px;"
-                        
+                        required
                         >
                     </input><br>
 
@@ -61,6 +64,7 @@
                         type="input"
                         name="journal_memo" cols="35" rows="3"
                         id="journal_memo"
+                        required
                         >
                     </textarea><br>
                 
