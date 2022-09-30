@@ -92,14 +92,15 @@
                                     <td>Debit</td>
                                     <td>Credit</td>
                                     <td></td>
+                                    <td></td>
 
 
                                     
                                 
-                                    <td>
+                                    <!-- <td>
                                         <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
                                         </i>Add</button>
-                                    </td>
+                                    </td> -->
     
                                 
                                 </tr>
@@ -114,15 +115,14 @@
                     
                     
     
-                        
+                    <div class="container mt-3">
+                        <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
+                        </i>Add line</button>
+
                         <button type="submit" name='submit' id='submiBTN' class="btn btn-success">
                         <i class="fas fa-database"> 
-
-                       
-                        
-                       
                         </i>Save</button>
-                        
+                    </div>
     
     
     
@@ -216,6 +216,9 @@
                                         <button type="button"  id="remove_button" class="btn btn-danger"><i class="fas fa-database">
                                         </i>Remove</button>
                                     </td>
+
+                                   
+
                                     </tr> `; //New input field html 
                                     $(wrapper).append(fieldHTML); //Add field html
                                     
@@ -233,29 +236,8 @@
                             </script>
             
                             <script>
-                            function myFunction() {
-                            let button = document.querySelector("#submitBtn");
-                            let elements = [...document.getElementsByName('mySelect')];
-                            button.disabled = true;
-                            let sumCredit = 0.0;
-                            let sumDebit = 0.0;
-                            elements.forEach((el) => {
-                                let txType = el.options[el.selectedIndex].text;
-                                let myID = (el.id).replace('mySelect', '');
-                                
-                                cAmount = document.getElementById('credit_amount' + myID).value;
-                                sumCredit = sumCredit + parseFloat(cAmount);
                             
-                                dAmount = document.getElementById('amount' + myID).value;
-                                sumDebit = sumDebit + parseFloat(dAmount);
-
-                                
-                                
-                                })
-                            if((sumCredit - sumDebit) === 0.0 && elements.length >= 2){
-                                button.disabled = false;
-                            }
-                            }
+                           
                             </script>
 
                             <script>
@@ -273,7 +255,12 @@
                            
 
                     </div>
-    </form>                
+
+    </form>  
+    
+    <script>
+        
+    </script>
                     
 </body>
 
