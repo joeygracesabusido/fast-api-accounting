@@ -35,7 +35,36 @@ templates = Jinja2Templates(directory="templates")
 async def view_journal_entry(request: Request):
     """This function is for displaying journal Entry"""
    
-    all_journalEntry  = journalEntryZambos(mydb.journal_entry_zambo.find())
+    myresult  = mydb.journal_entry_zambo.find()
+
+    all_journalEntry = []
+    for item in myresult:
+        debit = item["debit_amount"]
+        credit = item["credit_amount"]
+        debit2 = '{:,.2f}'.format(debit)
+        credit2 = '{:,.2f}'.format(credit)
+
+        data = {}
+
+        data.update({
+            "id": item["_id"],
+            "date_entry": item["date_entry"],
+            "journal": item["journal"],
+            "ref": item["ref"],
+            "descriptions": item["descriptions"],
+            "acoount_number": item["acoount_number"],
+            "account_disc": item["account_disc"],
+            "debit_amount": debit2,
+            "credit_amount": credit2,
+            "due_date_apv": item["due_date_apv"],
+            "terms_days": item["terms_days"],
+            "supplier/Client": item["supplier/Client"],
+            "user": item["user"],
+            "created": item["created"]
+
+        })
+
+        all_journalEntry.append(data)
     
     return templates.TemplateResponse("viewJournalEntry_zambo.html", {"request":request,
                                         "all_journalEntry":all_journalEntry})

@@ -37,6 +37,7 @@
                                 type="date"
                                 name="trans_date"
                                 id="trans_date"
+                                required
                                 >
                             </input>  
                             <br>
@@ -44,7 +45,9 @@
 
                     <div class="container mt-3">
                         <label for="Journal" >Journal</label><br>
-                        <select name="trasactionType" id="trasactionType"class="filter-selectbox">
+                        <select name="trasactionType" id="trasactionType"class="filter-selectbox"
+                            required
+                            >
                                 <option value="Payment">Payments</option>
                                 <option value="Receipts">Receipts</option>
                                 <option value="Sales">Sales</option>
@@ -173,7 +176,7 @@
                                     <td>
                                         <select name="accountTitle${x}" id="accountTitle${x}"class="filter-selectbox"
                                             >
-
+                                            <option value="-----">------</option>
                                             {% for result in all_chart_of_account %}
                                                 <option value="{{ result.accountTitle }}">{{ result.accountTitle }}</option>
                                             {% endfor %} 
@@ -237,7 +240,7 @@
             
                             <script>
                             function myFunction() {
-                            let button = document.querySelector("#submiBTN");
+                            let button = document.querySelector("#submitBTN");
                             
                             button.disabled = true;
                             let sumCredit = 0.0;
