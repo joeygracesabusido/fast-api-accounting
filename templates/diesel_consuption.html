@@ -115,7 +115,7 @@
                         name="liter"
                         id="liter"
                         step="0.01"
-                       
+                        onkeyup="getTotalamount();"
                         >
                     </input>  
                     
@@ -128,7 +128,7 @@
                         name="price"
                         id="price"
                         step="0.01"
-                        onblur="getAmount()"
+                        onkeyup="getTotalamount();"
                         >
                     </input>  
                     
@@ -413,6 +413,27 @@
                 $('#amount').val(liter*price);
              }
         </script>
+
+
+<script type="text/javascript">
+    function getTotalamount(){
+        var liter=document.getElementById('liter').value;
+        var price=document.getElementById('price').value;
+       
+        var totalAmount;
+    
+        
+    
+        if(liter !="" && price !=""){
+            totalAmount = parseFloat(liter) * parseFloat(price) ;
+            document.getElementById('amount').value=totalAmount.toFixed(2);	
+        
+            
+        }
+    
+    }
+
+</script>
 
         
         

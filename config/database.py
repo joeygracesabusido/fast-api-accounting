@@ -126,17 +126,17 @@ class Database(object):
 
     @staticmethod
     def insert_diesel_consuption(transaction_date,equipment_id,withdrawal_slip,
-                                use_liter,price,amount,username):
+                                use_liter,price,amount,username,date_update):
         """This is to insert to database Inventory and inventory_onhand Table"""
         Database.DATABASE._open_connection() # to open database connection
 
         try:
            
             data = ( "INSERT INTO diesel_consumption (transaction_date,equipment_id,\
-                                withdrawal_slip,use_liter,price,amount,username)"
-                    "VALUES(%s,%s,%s,%s,%s,%s,%s)")
+                                withdrawal_slip,use_liter,price,amount,username,date_update)"
+                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s)")
             val = (transaction_date,equipment_id,withdrawal_slip,use_liter,
-                            price,amount,username)
+                            price,amount,username,date_update)
             #                  
             # cursor.execute(data)              
             cursor.execute(data,val) 

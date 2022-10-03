@@ -60,7 +60,7 @@ Database.initialize()
 
 
 @rizal_project.get("/diesel-consumption/", response_class=HTMLResponse)
-def get_record(request: Request):
+def get_record(request: Request, username: str = Depends(validateLogin)):
     """This function is for querying diesel consuption from Rizal Project"""
     # allConsumption = db.query(query=f"SELECT * FROM diesel_consumption")
     
@@ -94,11 +94,12 @@ def get_record(request: Request):
 
         agg_result_list.append(data)
 
-    # username = username
+    username = username
     equipment = Equipments(Database.select_allEquipment())
     
     return  templates.TemplateResponse("diesel_consuption.html", 
-                                        {"request":request,"agg_result_list":agg_result_list,"equipment":equipment})
+                                        {"request":request,"agg_result_list":agg_result_list,"equipment":equipment,
+                                        "username":username})
 
 
 @rizal_project.post("/diesel-consumption/", response_class=HTMLResponse)
@@ -114,7 +115,7 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
     
 
    
-   
+    date_update = datetime.today()
     username = username
 
    
@@ -122,7 +123,7 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
 
         Database.insert_diesel_consuption(transaction_date=trans_date,
                                         equipment_id=equipment,withdrawal_slip=withdrawalSlip,
-                                    use_liter=liter,price=price,amount=amount,username=username)
+                                    use_liter=liter,price=price,amount=amount,username=username,date_update=date_update)
 
         myresult = Database.select_all_from_dieselDB()
    
@@ -165,7 +166,7 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
                                         "username":username})
 
 @rizal_project.get("/update-diesel/{id}", response_class=HTMLResponse)
-def get_updateDiesel(request:Request,id):
+def get_updateDiesel(request:Request,id, username: str = Depends(validateLogin)):
     """This function is for dispalying Diesel Transaction using ID"""
     myresult = Database.select_dieselTrans(id=id)
    
@@ -183,7 +184,8 @@ def get_updateDiesel(request:Request,id):
     amount = myresult[6]
     amount2 = '{:,.2f}'.format(amount)
     
-    
+    user = username
+    date_update = datetime.today()
 
     data={}   
     
@@ -195,12 +197,14 @@ def get_updateDiesel(request:Request,id):
         'use_liter': use_liter,
         'price': price,
         'amount': amount,
+        'username': user,
+        'date_update': date_update
     })
 
     agg_result_list.append(data)
 
     return  templates.TemplateResponse("rizal_diesel_consumption_update.html", 
-                                        {"request":request,"agg_result_list":agg_result_list
+                                        {"request":request,"agg_result_list":agg_result_list,"user":user
                                         })
 
 @rizal_project.post("/update-diesel/{id}", response_class=HTMLResponse)
