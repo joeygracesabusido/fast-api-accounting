@@ -227,7 +227,7 @@ class Database(object):
         except Exception as ex:
             print("Error", f"Error due to :{str(ex)}")
         finally:
-            Database.DATABASE.commit()
+            # Database.DATABASE.commit()
             Database.DATABASE.close()
 
     @staticmethod
@@ -246,7 +246,7 @@ class Database(object):
         except Exception as ex:
             print("Error", f"Error due to :{str(ex)}")
         finally:
-            Database.DATABASE.commit()
+            # Database.DATABASE.commit()
             Database.DATABASE.close()
             
 

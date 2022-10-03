@@ -273,6 +273,25 @@ class SurigaoDB(object):
         finally:
             SurigaoDB.DATABASE.commit()
             SurigaoDB.DATABASE.close()
+#========================================= for Income Monitoring Frame ========================
+    @staticmethod
+    def select_one_totalIincome(id):
+        """This function is for querying to diesel Database with out parameters"""
+        SurigaoDB.DATABASE._open_connection()
+        try:
+            data = 'SELECT * FROM peso_bill \
+                WHERE id LIKE %s'
+
+            val = ('%' + id + '%',)
+            cursor.execute(data,(val),)
+            
+            
+            return cursor.fetchone()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            SurigaoDB.DATABASE.close()
 
 # ======================================== Equipment transaction===============================
     @staticmethod
@@ -280,7 +299,7 @@ class SurigaoDB(object):
         """This function is for querying to diesel Database with out parameters"""
         SurigaoDB.DATABASE._open_connection()
         try:
-            data = ('SELECT * FROM equipment')
+            data = ('SELECT * FROM equipment ORDEY BY equipment_id')
 
             cursor.execute(data)
             return cursor.fetchall()
