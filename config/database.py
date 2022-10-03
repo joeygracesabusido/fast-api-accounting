@@ -239,7 +239,7 @@ class Database(object):
        
         Database.DATABASE._open_connection()
         try:
-            data = ("SELECT * FROM equipment_details")
+            data = ("SELECT * FROM equipment_details ORDER BY equipment_id")
 
             cursor.execute(data)
             return cursor.fetchall()
