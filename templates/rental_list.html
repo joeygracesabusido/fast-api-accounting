@@ -1,0 +1,98 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<body>
+    <div>
+
+    </div>
+    <form class="form">
+        <div  class="container mt-3">
+            <label for="datefrom" >Date From</label>
+                <input
+                    type="date"
+                    name="datefrom"
+                    id="datefrom"
+                   
+                    >
+                </input>  
+
+            <label for="dateto" >Date To</label>
+                <input
+                    type="date"
+                    name="dateto"
+                    id="dateto"
+                   
+                    >
+                </input> 
+                
+                
+        </div>
+
+        
+
+    </form>
+
+        <button type="submit"  onclick="display_data()" class="btn btn-success">
+            Search Data
+            <i class="fas fa-database"></i>
+        </button>
+
+        <div class="container">
+            <ul id="one"></ul>
+        </div>
+    
+
+    
+
+    <script type="text/javascript">
+           
+       
+            // // var id = document.getElementById("trans_id").value
+            var datefrom = document.getElementById("datefrom").value
+            var dateto = document.getElementById("dateto").value
+            
+            
+            const rental_url = '/api-get-rental2/';
+            async function display_data(){
+                const responce = await fetch(rental_url)
+                const data = await responce.json();
+                const ul = document.getElementById('one');
+                
+                const testData = data[0]
+                var equipment;
+                var amount;
+                var data_search;
+                
+                let i = 0;
+
+                while (i < data.length) {
+                    equipment = data[i].equipment_id
+                    amount = data[i].rental_amount
+                    data_search = equipment+ ', ' + amount
+                    console.log(data_search);
+                    i++;
+
+                    const li = document.createElement("li");
+                    li.innerHTML = equipment;
+                    ul.appendChild(li);
+
+                }
+                
+                // const {transaction_date,equipment_id,total_rental_hour,rental_amount} = data;
+                // console.log(transaction_date);
+                // console.log(equipment_id);
+                // console.log(rental_amount);
+            }
+            
+           
+                
+            // display_data()      
+        
+        
+
+    </script>
+</body>
+
+
+{% endblock %}

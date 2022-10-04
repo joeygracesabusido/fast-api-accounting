@@ -321,7 +321,7 @@ def get_record():
     
     return  agg_result_list
 
-from schemas.rizal import DieselConsumption,DieselConsumptions
+from schemas.rizal import DieselConsumption,DieselConsumptions, RentalLists
 from models.model import DieselConsumption
 from config.database import Database
 Database.initialize()
@@ -340,6 +340,19 @@ def update_diesel(id,item:DieselConsumption,token: str = Depends(oauth_scheme)):
                             amount=item.amount,username=item.username,id=id)
                              
     return {"message":"data has been updated"}
+
+
+#=============================================Rizal Equipment====================================
+@admin.get('/api-get-rental/{datefrom}/{dateto}')
+def get_rental(datefrom,dateto):
+    """This is for querying rental true date transact"""
+    return RentalLists(Database.select_rental_with_parameters(datefrom=datefrom,dateto=dateto))
+
+
+@admin.get('/api-get-rental2/')
+def get_rental():
+    """This is for querying rental true date transact"""
+    return RentalLists(Database.select_all_from_rentalDB())
 
 
 #=============================================Surigao Database =====================================
@@ -449,5 +462,8 @@ def delete_surigao_pesoBill(id,token: str = Depends(oauth_scheme)):
     """This function is to delete journal Entry for Zambo"""
     SurigaoDB.delete_one_from_peso(id)
     return  {'Messeges':'Data has been deleted'}
+
+
+
     
     

@@ -288,6 +288,23 @@ class Database(object):
             print("Error", f"Error due to :{str(ex)}")
         finally:
            
+            Database.DATABASE.close() 
+
+
+    @staticmethod
+    def select_rental_with_parameters(datefrom,dateto):
+        """This function is for querying to diesel Database with out parameters"""
+        Database.DATABASE._open_connection()
+        try:
+            data = ("SELECT * FROM equipment_rental WHERE transaction_date BETWEEN '" + datefrom +"' AND '" + dateto +"' ")
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
             Database.DATABASE.close()       
 
 

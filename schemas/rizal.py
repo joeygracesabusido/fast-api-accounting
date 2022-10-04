@@ -42,10 +42,13 @@ def RentalList(item) -> dict:
         "total_rental_hour": float(item[4]),
         "rental_rate": float(item[5]),
         "rental_amount": float(item[6]),
-        "username": float(item[7]),
+        "username": str(item[7]),
         
        
     }
 
 def RentalLists(entity) -> list:
     return [RentalList(item) for item in entity] 
+
+
+

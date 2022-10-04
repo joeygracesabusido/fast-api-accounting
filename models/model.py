@@ -64,6 +64,9 @@ class DieselConsumption(BaseModel):
     amount: float
     username: str
     date_update: date
+
+
+
    
 #===============================================Surigao Database==============================
 class DollarBill(BaseModel):

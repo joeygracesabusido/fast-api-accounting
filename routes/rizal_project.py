@@ -346,5 +346,7 @@ async def get_rental_transaction(request: Request):
                                         })
 
 
-
+@rizal_project.get("/rental-search/", response_class=HTMLResponse)
+async def get_rentalSearch(request: Request):
     
+    return templates.TemplateResponse("rental_list.html",{"request":request})
