@@ -7,24 +7,60 @@
 
     </div>
     <form class="form">
-        <div  class="container mt-3">
-            <label for="datefrom" >Date From</label>
-                <input
-                    type="date"
-                    name="datefrom"
-                    id="datefrom"
-                   
-                    >
-                </input>  
+        <div class="container mt-3">
+            <label for="TransactionDate" >Date From</label>
+                    <input
+                        type="date"
+                        name="datefrom"
+                        id="datefrom"
+                        >
+                    </input>  
 
-            <label for="dateto" >Date To</label>
-                <input
-                    type="date"
-                    name="dateto"
-                    id="dateto"
+                <label for="TransactionDate" >Date To</label>
+                    <input
+                        type="date"
+                        name="dateto"
+                        id="dateto"
+                        >
+                    </input>  
+
+        </div>
+        <div  class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                
+                       
+                        <td>Date</td>
+                        <td>Equipment ID</td>
+                        <td>Total Hour</td>
+                        <td>Rental Rate</td>
+                        <td>Total Amount</td>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody id="table_body">
                    
-                    >
-                </input> 
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                           
+                      
+                        </tr>
+                       
+                    
+                </tbody>
+
+               
+
+            </table>
+
+            
                 
                 
         </div>
@@ -32,65 +68,104 @@
         
 
     </form>
+        <div class="container">
+
+        </div>
+
 
         <button type="submit"  onclick="display_data()" class="btn btn-success">
             Search Data
             <i class="fas fa-database"></i>
         </button>
 
-        <div class="container">
+        <!-- <div class="container">
             <ul id="one"></ul>
-        </div>
+        </div> -->
     
 
     
 
     <script type="text/javascript">
-           
-       
-            // // var id = document.getElementById("trans_id").value
+
             var datefrom = document.getElementById("datefrom").value
             var dateto = document.getElementById("dateto").value
-            
-            
-            const rental_url = '/api-get-rental2/';
-            async function display_data(){
-                const responce = await fetch(rental_url)
-                const data = await responce.json();
-                const ul = document.getElementById('one');
-                
-                const testData = data[0]
-                var equipment;
-                var amount;
-                var data_search;
-                
-                let i = 0;
 
-                while (i < data.length) {
-                    equipment = data[i].equipment_id
-                    amount = data[i].rental_amount
-                    data_search = equipment+ ', ' + amount
-                    console.log(data_search);
-                    i++;
+            var search_url = '/api-get-rental/'+datefrom/+dateto;
+            console.log(search_url)
+           const rental_url =search_url ;
+           async function display_data(){
+            const responce = await fetch(rental_url)
+            const data = await responce.json();
+            console.log(data)
 
-                    const li = document.createElement("li");
-                    li.innerHTML = equipment;
-                    ul.appendChild(li);
-
-                }
-                
-                // const {transaction_date,equipment_id,total_rental_hour,rental_amount} = data;
-                // console.log(transaction_date);
-                // console.log(equipment_id);
-                // console.log(rental_amount);
-            }
-            
+            let tableData="";
+            data.map((values)=>{
+                tableData+= ` <tr>
+                            <td>${values.transaction_date}</td>
+                            <td>${values.equipment_id}</td>
+                            <td>${values.total_rental_hour}</td>
+                            <td>${values.rental_rate}</td>
+                            <td>${values.rental_amount}</td>
+                          
+                        </tr>`;
+            });
+            document.getElementById("table_body").innerHTML=tableData;
+           }
+       
+        //    display_data()
            
+            // var datefrom = document.getElementById("datefrom").value
+            // var dateto = document.getElementById("dateto").value
+            
+            
+            // const rental_url = '/api-get-rental2/';
+            // async function display_data(){
+            //     const responce = await fetch(rental_url)
+            //     const data = await responce.json();
+            //     const ul = document.getElementById('one');
                 
-            // display_data()      
-        
-        
+            //     const testData = data[0]
+            //     var equipment;
+            //     var amount;
+            //     var data_search;
+                
+            //     let i = 0;
 
+            //     while (i < data.length) {
+            //         equipment = data[i].equipment_id
+            //         amount = data[i].rental_amount
+            //         data_search = equipment+ ', ' + amount
+            //         console.log(data[i]);
+            //         i++;
+
+            //         const li = document.createElement("li");
+            //         li.innerHTML = data[i];
+            //         ul.appendChild(li);
+
+            //     }
+                
+              
+            // }
+              
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script> -->
+
+
+    <script>
+        $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
     </script>
 </body>
 
