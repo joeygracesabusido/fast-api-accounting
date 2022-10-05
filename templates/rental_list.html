@@ -8,7 +8,7 @@
     </div>
     <form class="form">
         <div class="container mt-3">
-            <label for="TransactionDate" >Date From</label>
+            <!-- <label for="TransactionDate" >Date From</label>
                     <input
                         type="date"
                         name="datefrom"
@@ -22,7 +22,7 @@
                         name="dateto"
                         id="dateto"
                         >
-                    </input>  
+                    </input>   -->
 
         </div>
         <div  class="container mt-3">
@@ -73,10 +73,10 @@
         </div>
 
 
-        <button type="submit"  onclick="display_data()" class="btn btn-success">
+        <!-- <button type="submit"  onclick="display_data()" class="btn btn-success">
             Search Data
             <i class="fas fa-database"></i>
-        </button>
+        </button> -->
 
         <!-- <div class="container">
             <ul id="one"></ul>
@@ -87,10 +87,10 @@
 
     <script type="text/javascript">
 
-            var datefrom = document.getElementById("datefrom").value
-            var dateto = document.getElementById("dateto").value
+            // var datefrom = document.getElementById("datefrom").value
+            // var dateto = document.getElementById("dateto").value
 
-            var search_url = '/api-get-rental/'+datefrom/+dateto;
+            var search_url = '/api-get-rental2/';
             console.log(search_url)
            const rental_url =search_url ;
            async function display_data(){
@@ -112,7 +112,7 @@
             document.getElementById("table_body").innerHTML=tableData;
            }
        
-        //    display_data()
+           display_data()
            
             // var datefrom = document.getElementById("datefrom").value
             // var dateto = document.getElementById("dateto").value
