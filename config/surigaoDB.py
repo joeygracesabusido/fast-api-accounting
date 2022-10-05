@@ -299,7 +299,7 @@ class SurigaoDB(object):
         """This function is for querying to diesel Database with out parameters"""
         SurigaoDB.DATABASE._open_connection()
         try:
-            data = ('SELECT * FROM equipment ORDEY BY equipment_id')
+            data = ('SELECT * FROM equipment ORDER BY equipment_id')
 
             cursor.execute(data)
             return cursor.fetchall()
