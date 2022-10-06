@@ -67,6 +67,9 @@ class DieselConsumption(BaseModel):
 
 
 
+
+
+
    
 #===============================================Surigao Database==============================
 class DollarBill(BaseModel):

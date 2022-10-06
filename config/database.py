@@ -311,4 +311,21 @@ class Database(object):
 
 
     
-#=====================================Surigao DataBase======================================
+#=====================================Cash Advances==================================
+    @staticmethod
+    def select_all_cashAdvanves():
+        """This function is for Querying Cash Advacnes"""
+
+        Database.DATABASE._open_connection()
+        try:
+            data = ("SELECT * FROM cash_advance")
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            Database.DATABASE.close()       
+

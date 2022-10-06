@@ -343,6 +343,8 @@ def update_diesel(id,item:DieselConsumption,token: str = Depends(oauth_scheme)):
 
 
 #=============================================Rizal Equipment====================================
+from schemas.rizal import CashAdvance,CashAdvances
+
 @admin.get('/api-get-rental/{datefrom}/{dateto}')
 def get_rental(datefrom,dateto):
     """This is for querying rental true date transact"""
@@ -353,6 +355,14 @@ def get_rental(datefrom,dateto):
 def get_rental():
     """This is for querying rental true date transact"""
     return RentalLists(Database.select_all_from_rentalDB())
+
+@admin.get('/api-get-cash-advances/')
+def get_ca():
+    """This is for querying rental true date transact"""
+    return CashAdvances(Database.select_all_cashAdvanves())
+
+
+
 
 
 #=============================================Surigao Database =====================================
