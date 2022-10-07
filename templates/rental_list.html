@@ -3,12 +3,12 @@
 {% block content %}
 
 <body>
-    <div>
+    <div class="container">
 
     </div>
-    <form class="form">
+    
         <div class="container mt-3">
-            <!-- <label for="TransactionDate" >Date From</label>
+            <label for="TransactionDate" >Date From</label>
                     <input
                         type="date"
                         name="datefrom"
@@ -22,20 +22,26 @@
                         name="dateto"
                         id="dateto"
                         >
-                    </input>   -->
+                    </input>  
+
+                    <button type="submit"  onclick="display_data()" class="btn btn-success">
+                        Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
 
         </div>
         <div  class="container mt-3">
             <table id="myTable" class="table table-bordered"  style="text-align: center;">
                 <thead class="table-dark">
                 
-                       
+                        <td>ID</td>
                         <td>Date</td>
                         <td>Equipment ID</td>
                         <td>Total Hour</td>
                         <td>Rental Rate</td>
                         <td>Total Amount</td>
-                       
+                        <td>Running Bal</td>
+                        <td>Action</td>
                         
                     </tr>
                 </thead>
@@ -49,7 +55,9 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                           
+                            <td></td>
+                            <td></td>
+                            <td></td>
                       
                         </tr>
                        
@@ -67,16 +75,13 @@
 
         
 
-    </form>
+    
         <div class="container">
 
         </div>
 
 
-        <!-- <button type="submit"  onclick="display_data()" class="btn btn-success">
-            Search Data
-            <i class="fas fa-database"></i>
-        </button> -->
+       
 
         <!-- <div class="container">
             <ul id="one"></ul>
@@ -87,32 +92,42 @@
 
     <script type="text/javascript">
 
-            // var datefrom = document.getElementById("datefrom").value
-            // var dateto = document.getElementById("dateto").value
+            // const rental_url =search_url ;
+            async function display_data(){
+                var datefrom = document.getElementById("datefrom").value
+                var dateto = document.getElementById("dateto").value
+        
+                const search_url = `/api-get-rental/?datefrom=${datefrom}&dateto=${dateto}`;
 
-            var search_url = '/api-get-rental2/';
-            console.log(search_url)
-           const rental_url =search_url ;
-           async function display_data(){
-            const responce = await fetch(rental_url)
-            const data = await responce.json();
-            console.log(data)
 
-            let tableData="";
-            data.map((values)=>{
-                tableData+= ` <tr>
-                            <td>${values.transaction_date}</td>
-                            <td>${values.equipment_id}</td>
-                            <td>${values.total_rental_hour}</td>
-                            <td>${values.rental_rate}</td>
-                            <td>${values.rental_amount}</td>
-                          
-                        </tr>`;
-            });
-            document.getElementById("table_body").innerHTML=tableData;
-           }
-       
-           display_data()
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData="";
+                data.map((values)=>{
+                    tableData+= ` <tr>
+                                <td>${values.id}</td>
+                                <td>${values.transaction_date}</td>
+                                <td>${values.equipment_id}</td>
+                                <td>${values.total_rental_hour}</td>
+                                <td>${values.rental_rate}</td>
+                                <td>${values.rental_amount}</td>
+                                <td>${values.running_bal}</td>
+                                <td>
+                                    <button type="button"  id="remove_button" onclick="delete_rental(${values.id})" class="btn btn-danger">
+                                        <i class="fas fa-database">
+                                        </i>Remove</button>
+                                </td>
+                               
+                            </tr>`;
+                });
+                document.getElementById("table_body").innerHTML=tableData;
+            }
+        
+            // display_data()
            
             // var datefrom = document.getElementById("datefrom").value
             // var dateto = document.getElementById("dateto").value
@@ -150,6 +165,11 @@
 
     </script>
 
+
+        <script>
+            
+        </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
@@ -163,10 +183,10 @@
 
 
     <script>
-        $(document).ready(function () {
-                $('#myTable').DataTable();
-            });
-    </script>
+    //     $(document).ready(function () {
+    //             $('#myTable').DataTable();
+    //         });
+    // </script>
 </body>
 
 

@@ -58,7 +58,15 @@ from schemas.rizal import Equipment,Equipments
 from config.database import Database
 Database.initialize()
 
+#=================================================for Govt Mandatories and Cash advances===========================
+@rizal_project.get("/cash-advances/", response_class=HTMLResponse)
+def get_cashAdvance_record(request: Request, username: str = Depends(validateLogin)):
+    """This function is for querying cash advances"""
+    return templates.TemplateResponse("rizal_cash_advance.html",{
+                                        "request":request
+                                                         })
 
+#======================================================Diesel Frame===========================================
 @rizal_project.get("/diesel-consumption/", response_class=HTMLResponse)
 def get_record(request: Request, username: str = Depends(validateLogin)):
     """This function is for querying diesel consuption from Rizal Project"""

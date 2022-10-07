@@ -1,0 +1,138 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<body>
+    <div class="container">
+
+    </div>
+    
+        
+        <div  class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                
+                        <td>ID</td>
+                        <td>Employee ID</td>
+                        <td>Last Name</td>
+                        <td>First Name</td>
+                        <td>Deduction</td>
+                        <td>Action</td>
+                        
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+                   
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            
+                      
+                        </tr>
+                       
+                    
+                </tbody>
+
+               
+
+            </table>
+
+            
+                
+                
+        </div>
+
+        
+
+    
+        <div class="container">
+
+        </div>
+
+
+
+    
+
+    <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function display_data(){
+                
+        
+                const search_url = '/api-get-cashadvance/';
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData="";
+                data.map((values)=>{
+                    tableData+= ` <tr>
+                                <td>${values.id}</td>
+                                <td>${values.employee_id}</td>
+                                <td>${values.lastname}</td>
+                                <td>${values.firstname}</td>
+                                <td>${values.ca_deduction}</td>
+                                
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="delete_cashAdvance(${values.id})">
+                                    <i class="fas fa-database"></i>Delete</button></a>
+                                </td>
+                               
+                            </tr>`;
+                });
+                document.getElementById("table_body").innerHTML=tableData;
+            }
+        
+            display_data();
+              
+
+    </script>
+
+
+        <script>
+            function delete_cashAdvance(id){
+                
+                fetch("/api-delete-cash-advance/"+ id, {
+                method:'DELETE',
+                    })
+                    window.alert("Your Data has been Deleted");
+                    window.location.assign("/cash-advances/");
+                }
+            
+        </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script> -->
+
+
+    <script>
+    //     $(document).ready(function () {
+    //             $('#myTable').DataTable();
+    //         });
+    // </script>
+
+    <script>
+
+    </script>
+</body>
+
+
+{% endblock %}

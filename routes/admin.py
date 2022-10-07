@@ -344,22 +344,106 @@ def update_diesel(id,item:DieselConsumption,token: str = Depends(oauth_scheme)):
 
 #=============================================Rizal Equipment====================================
 from schemas.rizal import CashAdvance,CashAdvances
+@admin.get('/api-get-cashadvance/')
+def get_cashadvances():
+    """This function is for querying Cash advances"""
+    return CashAdvances(Database.select_all_cashAdvanves())
 
-@admin.get('/api-get-rental/{datefrom}/{dateto}')
+@admin.delete('/api-delete-cash-advance/{id}')
+def delete_employee(id,token: str = Depends(oauth_scheme)):
+    """This function is to delete journal Entry"""
+    Database.delete_one_from_cash(id=id)
+    return  {'Messeges':'Data has been deleted'}
+
+#===============================================Rizal Rental=======================================
+
+@admin.get('/api-get-rental/')
 def get_rental(datefrom,dateto):
     """This is for querying rental true date transact"""
-    return RentalLists(Database.select_rental_with_parameters(datefrom=datefrom,dateto=dateto))
+
+    myresult = Database.select_rental_with_parameters(datefrom=datefrom,dateto=dateto)
+   
+
+    agg_result_list = []
+    rental_amount3 = 0
+    for x in myresult:
+        id = x[0]
+        transaction_date = x[2]
+        equipment_id = x[3]
+        total_rental_hour = x[4]
+        rental_rate = x[5]
+        rental_amount = x[6]
+        username = x[7]
+
+        rental_amount3+=rental_amount
+       
+        rental_rate2 = '{:,.2f}'.format(rental_rate)
+        rental_amount2 = '{:,.2f}'.format(rental_amount)
+        rental_amount4 = '{:,.2f}'.format(rental_amount3)
+        
+
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "transaction_date": transaction_date ,
+            "equipment_id": equipment_id,
+            "total_rental_hour": total_rental_hour,
+            "rental_rate": rental_rate2,
+            "rental_amount": rental_amount2,
+            "running_bal": rental_amount4,
+            "username": username,
+        })
+
+        agg_result_list.append(data)
+    return (agg_result_list)
+    # return RentalLists(Database.select_rental_with_parameters(datefrom=datefrom,dateto=dateto))
 
 
 @admin.get('/api-get-rental2/')
 def get_rental():
     """This is for querying rental true date transact"""
-    return RentalLists(Database.select_all_from_rentalDB())
 
-@admin.get('/api-get-cash-advances/')
-def get_ca():
-    """This is for querying rental true date transact"""
-    return CashAdvances(Database.select_all_cashAdvanves())
+    myresult = Database.select_all_from_rentalDB()
+   
+
+    agg_result_list = []
+    rental_amount3 = 0
+    for x in myresult:
+        id = x[0]
+        transaction_date = x[2]
+        equipment_id = x[3]
+        total_rental_hour = x[4]
+        rental_rate = x[5]
+        rental_amount = x[6]
+        rental_amount3+=rental_amount
+        username = x[7]
+       
+        rental_rate2 = '{:,.2f}'.format(rental_rate)
+        rental_amount2 = '{:,.2f}'.format(rental_amount)
+        rental_amount4 = '{:,.2f}'.format(rental_amount3)
+        
+
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "transaction_date": transaction_date ,
+            "equipment_id": equipment_id,
+            "total_rental_hour": total_rental_hour,
+            "rental_rate": rental_rate2,
+            "rental_amount": rental_amount2,
+            "running_bal": rental_amount4,
+            "username": username,
+        })
+
+        agg_result_list.append(data)
+        print(agg_result_list)
+    return (agg_result_list)
+    # return RentalLists(Database.select_all_from_rentalDB())
+
 
 
 

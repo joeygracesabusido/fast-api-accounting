@@ -54,11 +54,11 @@ def RentalLists(entity) -> list:
 
 def CashAdvance(item) -> dict:
     return {
-        "id": str(item[0]),
-        "employee_id": str(item[1]),
-        "lastname": str(item[2]),
-        "firstname": str(item[3]),
-        "ca_deduction": float(item[4]),
+        "id": str(item[4]),
+        "employee_id": str(item[0]),
+        "lastname": str(item[1]),
+        "firstname": str(item[2]),
+        "ca_deduction": float(item[3]),
          
     }
 

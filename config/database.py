@@ -327,5 +327,22 @@ class Database(object):
             print("Error", f"Error due to :{str(ex)}")
         finally:
            
-            Database.DATABASE.close()       
+            Database.DATABASE.close()   
+
+    @staticmethod
+    def delete_one_from_cash(id):
+        """This function is for querying to diesel Database with out parameters"""
+        Database.DATABASE._open_connection()
+        try:
+            data = ('DELETE FROM cash_advance \
+                WHERE id = "'+id+'"')       
+                        
+            # cursor.execute(data)              
+            cursor.execute(data) 
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            Database.DATABASE.commit()
+            Database.DATABASE.close()    
 
