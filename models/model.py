@@ -100,6 +100,13 @@ class InsertPesoBill(BaseModel):
     date_credited: date
     user: str
    
-    
+
+class Cashadvance(BaseModel):
+    """This is for cash advance Pydantic Model"""
+
+    employee_id : str
+    lastname: str
+    firstname: str
+    ca_deduction:float
 
 

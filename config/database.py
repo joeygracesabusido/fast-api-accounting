@@ -312,6 +312,24 @@ class Database(object):
 
     
 #=====================================Cash Advances==================================
+
+    @staticmethod
+    def insert_cash_advance(employee_id,lastname,firstname,ca_deduction):
+        """This function is for inserting Data to Cash advances"""
+        Database.DATABASE._open_connection()
+        try:
+            data =  ("INSERT INTO cash_advance (employee_id,lastname,firstname,ca_deduction)"
+                "VALUES(%s,%s,%s,%s)")   
+            val = (employee_id,lastname,firstname,ca_deduction)       
+            # cursor.execute(data)              
+            cursor.execute(data,val) 
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            Database.DATABASE.commit()
+            Database.DATABASE.close() 
+
     @staticmethod
     def select_all_cashAdvanves():
         """This function is for Querying Cash Advacnes"""
@@ -329,6 +347,8 @@ class Database(object):
            
             Database.DATABASE.close()   
 
+   
+
     @staticmethod
     def delete_one_from_cash(id):
         """This function is for querying to diesel Database with out parameters"""
@@ -345,4 +365,40 @@ class Database(object):
         finally:
             Database.DATABASE.commit()
             Database.DATABASE.close()    
+
+#===============================================Employee Details ==============================================
+ 
+    @staticmethod
+    def select_one_employee(firstName):
+        """This function is for Querying Cash Advacnes"""
+
+        Database.DATABASE._open_connection()
+        try:
+            data = ' select * from employee_details where firstName like  "%'+firstName+'%"'
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            Database.DATABASE.close()  
+
+    @staticmethod
+    def select_one_employee_with_empID(employee_id):
+        """This function is for Querying Cash Advacnes"""
+
+        Database.DATABASE._open_connection()
+        try:
+            data = ' select * from employee_details where employee_id like  "%'+employee_id+'%"'
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            Database.DATABASE.close()  
 

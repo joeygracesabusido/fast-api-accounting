@@ -6,6 +6,100 @@
     <div class="container">
 
     </div>
+    <div class="container mt-3">
+
+        <div class="container mt-3">
+            
+            
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                 Add Cash advances
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Cash Advances</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+                        <label for="EmployeeID"
+                        >Employee ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="employee_id"
+                        id="employee_id"
+
+                        >
+
+                        <button type="submit"  onclick="display_emp_data()" class="btn btn-success">
+                            Search Employee ID
+                            <i class="fas fa-database"></i>
+                        </button><br>
+                        
+                    
+                        <label for="FirstName"
+                        >First Name</label>
+                        
+                        <input 
+                        type="text"
+                        name="firstName"
+                        id="firstName"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="LastName"
+                        >Last Name</label>
+                        
+                        <input 
+                        type="text"
+                        name="lastName"
+                        id="lastName"
+                        
+                        class="form-control"
+                        >
+
+                        
+                        <label for="LastName"
+                        >Last Name</label>
+                        
+                        <input 
+                        type="number"
+                        name="ca_deduction"
+                        id="ca_deduction"
+                        step="0.01"
+                        class="form-control"
+                        >
+                        
+                        
+                        
+                       
+                        
+                        
+                        
+
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_cashadvance()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+    </div>
+
+    
     
         
         <div  class="container mt-3">
@@ -111,27 +205,88 @@
             
         </script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+        <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function display_emp_data(){
+                var employee_id = document.getElementById("employee_id").value
+
+                const search_url = `/api-search-employee_by_empID/?term=${employee_id}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                var name = data[0].firstName
+                var lname = data[0].lastName
+
+                document.getElementById('firstName').value = name
+                document.getElementById('lastName').value = lname
+               
+    
+            }
+
+            
+            
+
+        </script>
+
+
+            <script type="text/javascript">
+                function insert_cashadvance(){
+                    var data = {}
+                    // var id = document.getElementById("trans_id").value
+                    data["employee_id"] = document.getElementById("employee_id").value
+                    data["lastname"] = document.getElementById("firstName").value
+                    data["firstname"] = document.getElementById("lastName").value
+                    data["ca_deduction"] = document.getElementById("ca_deduction").value
+                   
+                    
+                    console.log(data)
+
+                    fetch("/api-insert-cashadvance/", {
+                    method:'POST', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                        });
+                    // window.location.assign("/peso-bill/");
+                    window.alert("Your Data has been Save");
+                    window.location.assign("/cash-advances/");
+                }
+                
+
+            </script>
+
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
-
+ -->
 
     <!-- <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script> -->
 
 
-    <script>
-    //     $(document).ready(function () {
-    //             $('#myTable').DataTable();
-    //         });
-    // </script>
+        <script>
+        //     $(document).ready(function () {
+        //             $('#myTable').DataTable();
+        //         });
+        // </script>
 
-    <script>
+            <script>
 
-    </script>
+                $( function() {
+                    
+                    $( "#firstName" ).autocomplete({
+                    source: "/api-search-employee_name/"
+                    });
+                } );
+
+            </script>
 </body>
 
 

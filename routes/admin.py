@@ -8,7 +8,7 @@ from typing import Union, List
 from datetime import datetime
 
 from bson import ObjectId
-
+from typing import Optional
 
 
 from schemas.user import userEntity,usersEntity
@@ -343,7 +343,36 @@ def update_diesel(id,item:DieselConsumption,token: str = Depends(oauth_scheme)):
 
 
 #=============================================Rizal Equipment====================================
-from schemas.rizal import CashAdvance,CashAdvances
+from schemas.rizal import CashAdvance,CashAdvances,EmployeeDetail,EmployeeDetails
+from models.model import Cashadvance
+
+
+@admin.get("/api-search-employee_by_empID/")
+def autocomplete(term: Optional[str]):
+    items = EmployeeDetails(Database.select_one_employee_with_empID(employee_id=term))
+    return items
+
+@admin.get("/api-search-employee_name/")
+def autocomplete(term: Optional[str]):
+    items = Database.select_one_employee(firstName=term)
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item[3])
+    return suggestions
+
+
+@admin.post('/api-insert-cashadvance/')
+def rizal_insert_cashAdnvances(item:Cashadvance,token: str = Depends(oauth_scheme)):
+    """This function is for inserting Data or Cash Adnvances"""
+
+    Database.insert_cash_advance(employee_id=item.employee_id,
+                                    lastname=item.lastname,
+                                    firstname=item.firstname,
+                                    ca_deduction=item.ca_deduction)
+
+    return {'Messeges':'Data has been save'}
+
 @admin.get('/api-get-cashadvance/')
 def get_cashadvances():
     """This function is for querying Cash advances"""
@@ -511,7 +540,7 @@ def update_dollarBill(id,item:DollarBill, token: str = Depends(oauth_scheme)):
 #===============================================Surigao Peso==============================================
 
 @admin.post('/api-insert-surigao-pesoBill/')
-def insert_surigao_pesoBill(item:InsertPesoBill):
+def insert_surigao_pesoBill(item:InsertPesoBill,token: str = Depends(oauth_scheme)):
     """This function is to update Diesel transactions info"""
     date_credited = date.today()
     SurigaoDB.insert_peso_production(trans_date=item.trans_date,

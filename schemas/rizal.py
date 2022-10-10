@@ -66,4 +66,16 @@ def CashAdvances(entity) -> list:
     return [CashAdvance(item) for item in entity] 
 
 
+def EmployeeDetail(item) -> dict:
+    return {
+        # "id": str(item[0]),
+        "employee_id": str(item[1]),
+        "lastName": str(item[2]),
+        "firstName": str(item[3]),
+   
+    }
+
+def EmployeeDetails(entity) -> list:
+    return [EmployeeDetail(item) for item in entity] 
+
 
