@@ -400,5 +400,37 @@ class Database(object):
             print("Error", f"Error due to :{str(ex)}")
         finally:
            
-            Database.DATABASE.close()  
+            Database.DATABASE.close() 
+
+
+#======================================Rizal Payroll ======================================
+    @staticmethod
+    def computation13thMonth(date1,date2,department):
+        """This function is for Querying Cash Advacnes"""
+
+        Database.DATABASE._open_connection()
+        try:
+            data = ("SELECT employee_id,last_name,\
+                sum(regularday_cal)  as TotalRegday,\
+                sum(regularsunday_cal) / 1.30  as TotalRegSun,\
+                sum(spl_cal) / 1.30 as TotalSpl,\
+                sum(legal_day_cal) / 2 as Totallgl2,\
+                sum(shoprate_day_cal)  as Totalshoprate,\
+                sum(proviRate_day_cal)  as TotalproviRate,\
+                sum(provisun_day_cal)/1.30  as TotalproviSun,\
+                first_name, department \
+            from payroll_computation \
+            WHERE cut_off_date BETWEEN '" + date1 +"'AND '" + date2 +"' AND department LIKE '%" + department +"%' \
+            GROUP BY employee_id ,last_name,first_name,department \
+            ORDER BY last_name")
+            
+            cursor.execute(data)
+            return cursor.fetchall()
+
+
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            Database.DATABASE.close() 
 
