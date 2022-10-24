@@ -473,7 +473,11 @@ def get_rental():
     return (agg_result_list)
     # return RentalLists(Database.select_all_from_rentalDB())
 
-
+@admin.delete('/api-delete-rental/{id}')
+def delete_employee(id,token: str = Depends(oauth_scheme)):
+    """This function is to delete journal Entry"""
+    Database.delete_rental(id=id)
+    return  {'Messeges':'Data has been deleted'}
 
 
 

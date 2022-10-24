@@ -166,7 +166,15 @@
     </script>
 
 
-        <script>
+        <script type="text/javascript">
+              function delete_rental(id){
+                
+                fetch("/api-delete-rental/"+ id, {
+                method:'DELETE',
+                    })
+                    window.alert("Your Data has been Deleted");
+                    window.location.assign("/cash-advances/");
+                }
             
         </script>
 

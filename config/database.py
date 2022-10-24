@@ -305,7 +305,27 @@ class Database(object):
             print("Error", f"Error due to :{str(ex)}")
         finally:
            
-            Database.DATABASE.close()       
+            Database.DATABASE.close()   
+
+
+    @staticmethod
+    def delete_rental(id):
+        """This function si for deleting Rental with Parametes"""
+        Database.DATABASE._open_connection()    
+
+        try:
+            data = ('DELETE FROM equipment_rental \
+                WHERE id = "'+id+'"')       
+                        
+            # cursor.execute(data)              
+            cursor.execute(data) 
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            Database.DATABASE.commit()
+            Database.DATABASE.close()   
+
 
 
 
