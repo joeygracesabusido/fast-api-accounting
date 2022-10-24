@@ -358,3 +358,9 @@ async def get_rental_transaction(request: Request):
 async def get_rentalSearch(request: Request):
     
     return templates.TemplateResponse("rental_list.html",{"request":request})
+
+
+@rizal_project.get("/13thMonth-computation/", response_class=HTMLResponse)
+async def get_13thMonth(request: Request):
+    
+    return templates.TemplateResponse("comp13thMonth.html",{"request":request})

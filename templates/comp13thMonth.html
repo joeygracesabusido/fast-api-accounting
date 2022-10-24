@@ -1,0 +1,144 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<body>
+    <div class="container">
+
+    </div>
+    
+        <div class="container mt-3">
+            <label for="TransactionDate" >Date From</label>
+                    <input
+                        type="date"
+                        name="datefrom"
+                        id="datefrom"
+                        >
+                    </input>  
+
+                <label for="TransactionDate" >Date To</label>
+                    <input
+                        type="date"
+                        name="dateto"
+                        id="dateto"
+                        >
+                    </input>  
+
+                <label for="Department" >Department</label>
+                    <input
+                        type="text"
+                        name="department"
+                        id="department"
+                        >
+                    </input>  
+
+                    <button type="submit"  onclick="display_data()" class="btn btn-success">
+                        Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
+
+                    <button type="submit"  onclick="export_to_excel()" class="btn btn-danger">
+                        Export
+                        <i class="fas fa-database"></i>
+                    </button>
+
+        </div>
+        <div  class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                
+                        <td>Employee ID</td>
+                        <td>Last Name</td>
+                        <td>First Name</td>
+                        <td>Total Amount</td>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+                   
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                           
+                        </tr>
+                       
+                    
+                </tbody>
+
+               
+
+            </table>
+
+            
+                
+                
+        </div>
+
+        
+        <div class="container">
+
+        </div>
+
+
+
+    <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function display_data(){
+                var datefrom = document.getElementById("datefrom").value
+                var dateto = document.getElementById("dateto").value
+                var department = document.getElementById("department").value
+        
+                const search_url = `/api-get-comp13th/?date1=${datefrom}&date2=${dateto}&department=${department}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData="";
+                data.map((values)=>{
+                    tableData+= ` <tr>
+                                <td>${values.employee_id}</td>
+                                <td>${values.lastname}</td>
+                                <td>${values.fname}</td>
+                                <td>${values.totalAmount}</td>
+                                
+                               
+                            </tr>`;
+                });
+                document.getElementById("table_body").innerHTML=tableData;
+            }
+        
+        
+              
+
+    </script>
+
+
+        <script type="text/javascript">
+            function export_to_excel(type){
+                var data = document.getElementById("table_body");
+                var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+                XLSX.write(file, {bookType: type, bookSST: true, type: 'base64'});
+                XLSX.writefile(file, 'file.' + type);
+            }
+
+
+
+            
+        </script>
+
+    
+
+</body>
+
+
+{% endblock %}

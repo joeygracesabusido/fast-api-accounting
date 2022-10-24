@@ -1,6 +1,7 @@
 import json
 from lib2to3.pgen2 import token
 from pyexpat import model
+from re import I
 from urllib import response
 from urllib.request import Request
 from fastapi import APIRouter, Body, HTTPException, Depends,status,Response
@@ -361,7 +362,35 @@ def autocomplete(term: Optional[str]):
         suggestions.append(item[3])
     return suggestions
 
+#=======================================Conpensation/Salary frame====================================
+@admin.get('/api-get-comp13th/')
+def compt13Month(date1,date2,department):
+    """This function is for computation of 13th month"""
+    myresult = Database.computation13thMonth(date1=date1,date2=date2,department=department)
 
+    test = []
+    for i in myresult:
+        totalAmount = (float(i[2]) + float(i[3]) + float(i[4]) + float(i[5]) + float(i[6]) + float(i[7]) +
+                            float(i[8])) / 12
+        totalAmount2 = '{:,.2f}'.format(totalAmount)
+        data = {}
+        data.update({
+            "employee_id": i[0],
+            "lastname":i[1],
+            "fname": i[9],
+            "totalRegdays": i[2],
+            "TotalRegSun": i[3],
+            "TotalSpl": i[4],
+            "Totallgl2": i[5],
+            "Totalshoprate": i[6],
+            "TotalproviRate": i[7],
+            "TotalproviSun": i[8],
+            "totalAmount": totalAmount2
+        })
+        test.append(data)
+    return test
+
+#=====================================Cash advances Frame============================================
 @admin.post('/api-insert-cashadvance/')
 def rizal_insert_cashAdnvances(item:Cashadvance,token: str = Depends(oauth_scheme)):
     """This function is for inserting Data or Cash Adnvances"""
