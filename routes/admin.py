@@ -341,6 +341,45 @@ def update_diesel(id,item:DieselConsumption,token: str = Depends(oauth_scheme)):
                             amount=item.amount,username=item.username,id=id)
                              
     return {"message":"data has been updated"}
+@admin.get('/api-get-diesel-date/')
+def get_diesel_withParams(datefrom,dateto,token: str = Depends(oauth_scheme)):
+    """This function is for querying Diesel with parameters"""
+    myresult = Database.select_diesel_withParams(datefrom=datefrom,dateto=dateto)
+
+    query = []
+    total_liters = 0
+    total_amount = 0
+    for i in myresult:
+        use_liter = i[4]
+        price = i[5]
+        amount = i[6]
+        total_liters+=use_liter
+        total_amount+=amount
+
+
+        use_liter2 = '{:,.2f}'.format(use_liter)
+        total_liters2 = '{:,.2f}'.format(total_liters)
+        price2 = '{:,.2f}'.format(price)
+        amount2 = '{:,.2f}'.format(amount)
+        total_amount2 = '{:,.2f}'.format(total_amount)
+
+        data = {}
+        data.update({
+            "id": i[0],
+            "transaction_date":i[1],
+            "equipment_id": i[2],
+            "withdrawal_slip": i[3],
+            "use_liter": i[4],
+            "total_liters": total_liters2,
+            "price": price2,
+            "amount": amount2,
+            "total_amount": total_amount2
+            
+        })
+        query.append(data)
+    return query
+
+
 
 
 #=============================================Rizal Equipment====================================

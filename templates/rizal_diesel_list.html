@@ -1,0 +1,156 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<body>
+    <div class="container">
+
+    </div>
+    
+        <div class="container mt-3">
+            <label for="TransactionDate" >Date From</label>
+                    <input
+                        type="date"
+                        name="datefrom"
+                        id="datefrom"
+                        >
+                    </input>  
+
+                <label for="TransactionDate" >Date To</label>
+                    <input
+                        type="date"
+                        name="dateto"
+                        id="dateto"
+                        >
+                    </input>  
+
+                    <button type="submit"  onclick="display_data()" class="btn btn-success">
+                        Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
+
+        </div>
+        <div  class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                
+                        <td>ID</td>
+                        <td>Date</td>
+                        <td>Equipment ID</td>
+                        <td>Withdrawal Slip</td>
+                        <td>Liter</td>
+                        <td>Running Liters</td>
+                        <td>Price</td>
+                        <td>Amount</td>
+                        <td>Commulative Amount</td>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+                   
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                      
+                        </tr>
+                       
+                    
+                </tbody>
+
+               
+
+            </table>
+
+            
+                
+                
+        </div>
+
+        
+
+    
+        <div class="container">
+
+        </div>
+
+
+       
+
+        <!-- <div class="container">
+            <ul id="one"></ul>
+        </div> -->
+    
+
+    
+
+    <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function display_data(){
+                var datefrom = document.getElementById("datefrom").value
+                var dateto = document.getElementById("dateto").value
+        
+                const search_url = `/api-get-diesel-date/?datefrom=${datefrom}&dateto=${dateto}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+               
+                let tableData="";
+                data.map((values)=>{
+                    tableData+= ` <tr>
+                                <td>${values.id}</td>
+                                <td>${values.transaction_date}</td>
+                                <td>${values.equipment_id}</td>
+                                <td>${values.withdrawal_slip}</td>
+                                <td>${values.use_liter}</td>
+                                <td>${values.total_liters}</td>
+                                <td>${values.price}</td>
+                                <td>${values.amount}</td>
+                                <td>${values.total_amount}</td>
+                               
+                               
+                            </tr>`;
+                });
+                document.getElementById("table_body").innerHTML=tableData;
+            }
+        
+
+    </script>
+
+
+        
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script> -->
+
+
+    <script>
+    //     $(document).ready(function () {
+    //             $('#myTable').DataTable();
+    //         });
+    // </script>
+</body>
+
+
+{% endblock %}

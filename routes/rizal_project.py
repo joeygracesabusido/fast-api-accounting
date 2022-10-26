@@ -67,6 +67,11 @@ def get_cashAdvance_record(request: Request, username: str = Depends(validateLog
                                                          })
 
 #======================================================Diesel Frame===========================================
+@rizal_project.get("/diesel-consumption-list/", response_class=HTMLResponse)
+async def get_diesel_params(request: Request):
+    
+    return templates.TemplateResponse("rizal_diesel_list.html",{"request":request})
+
 @rizal_project.get("/diesel-consumption/", response_class=HTMLResponse)
 def get_record(request: Request, username: str = Depends(validateLogin)):
     """This function is for querying diesel consuption from Rizal Project"""

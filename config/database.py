@@ -164,6 +164,25 @@ class Database(object):
            
             Database.DATABASE.close()
 
+    @staticmethod
+    def select_diesel_withParams(datefrom,dateto):
+        """This function is for querying diesel with Date parameters"""
+        Database.DATABASE._open_connection()
+
+        try:
+            data = ("SELECT * FROM diesel_consumption \
+                WHERE  transaction_date between '" + datefrom +"' AND '" + dateto +"'")
+
+            # val = ('%' + id + '%',)
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            
+            Database.DATABASE.close()
+
+
 
     @staticmethod
     def select_dieselTrans(id):
