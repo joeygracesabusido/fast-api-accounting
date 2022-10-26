@@ -22,7 +22,15 @@
                         name="dateto"
                         id="dateto"
                         >
-                    </input>  
+                    </input>
+                    
+                <label for="Equipment ID" >Equipment ID</label>
+                    <input
+                        type="text"
+                        name="equipment_id"
+                        id="equipment_id"
+                        >
+                    </input>
 
                     <button type="submit"  onclick="display_data()" class="btn btn-success">
                         Search Data
@@ -99,48 +107,102 @@
             async function display_data(){
                 var datefrom = document.getElementById("datefrom").value
                 var dateto = document.getElementById("dateto").value
-        
-                const search_url = `/api-get-diesel-date/?datefrom=${datefrom}&dateto=${dateto}`;
+                var equipID = document.getElementById("equipment_id").value
 
 
-                const responce = await fetch(search_url)
-                const data = await responce.json();
-                console.log(data)
                 
+
+                if (equipID == ''){
+                    const search_url = `/api-get-diesel-date/?datefrom=${datefrom}&dateto=${dateto}`;
+
+
+                    const responce = await fetch(search_url)
+                    const data = await responce.json();
+                    console.log(data)
+
+
+
+                    let tableData="";
+                    data.map((values)=>{
+                        tableData+= ` <tr>
+                                    <td>${values.id}</td>
+                                    <td>${values.transaction_date}</td>
+                                    <td>${values.equipment_id}</td>
+                                    <td>${values.withdrawal_slip}</td>
+                                    <td>${values.use_liter}</td>
+                                    <td>${values.total_liters}</td>
+                                    <td>${values.price}</td>
+                                    <td>${values.amount}</td>
+                                    <td>${values.total_amount}</td>
+                                
+                                
+                                </tr>`;
+                    });
+                    document.getElementById("table_body").innerHTML=tableData;
+
+                }else{
+
+                    const search_url = `/api-get-diesel-equipment/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipID}`;
+
+
+                    const responce = await fetch(search_url)
+                    const data = await responce.json();
+                    console.log(data)
+
+
+
+                    let tableData="";
+                    data.map((values)=>{
+                        tableData+= ` <tr>
+                                    <td>${values.id}</td>
+                                    <td>${values.transaction_date}</td>
+                                    <td>${values.equipment_id}</td>
+                                    <td>${values.withdrawal_slip}</td>
+                                    <td>${values.use_liter}</td>
+                                    <td>${values.total_liters}</td>
+                                    <td>${values.price}</td>
+                                    <td>${values.amount}</td>
+                                    <td>${values.total_amount}</td>
+                                
+                                
+                                </tr>`;
+                    });
+                    document.getElementById("table_body").innerHTML=tableData;
+
+                }
+        
                
-                let tableData="";
-                data.map((values)=>{
-                    tableData+= ` <tr>
-                                <td>${values.id}</td>
-                                <td>${values.transaction_date}</td>
-                                <td>${values.equipment_id}</td>
-                                <td>${values.withdrawal_slip}</td>
-                                <td>${values.use_liter}</td>
-                                <td>${values.total_liters}</td>
-                                <td>${values.price}</td>
-                                <td>${values.amount}</td>
-                                <td>${values.total_amount}</td>
-                               
-                               
-                            </tr>`;
-                });
-                document.getElementById("table_body").innerHTML=tableData;
             }
         
 
     </script>
 
+        <script>
+
+            $( function() {
+                
+                $("#equipment_id").autocomplete({
+                source: "/autocomplete-rizal-equipment/"
+                });
+
+            } );
+
+
+
+        </script>
+
+
 
         
 
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
-
+ -->
 
     <!-- <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script> -->
 
@@ -150,6 +212,8 @@
     //             $('#myTable').DataTable();
     //         });
     // </script>
+
+        
 </body>
 
 

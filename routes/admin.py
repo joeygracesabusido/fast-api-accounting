@@ -380,6 +380,47 @@ def get_diesel_withParams(datefrom,dateto,token: str = Depends(oauth_scheme)):
     return query
 
 
+@admin.get('/api-get-diesel-equipment/')
+def get_diesel_withParams(datefrom,dateto,equipment_id,token: str = Depends(oauth_scheme)):
+    """This function is for querying Diesel with parameters"""
+    myresult = Database.select_diesel_equipID(datefrom=datefrom,dateto=dateto,
+                                                equipment_id= equipment_id)
+
+    query = []
+    total_liters = 0
+    total_amount = 0
+    for i in myresult:
+        use_liter = i[4]
+        price = i[5]
+        amount = i[6]
+        total_liters+=use_liter
+        total_amount+=amount
+
+
+        use_liter2 = '{:,.2f}'.format(use_liter)
+        total_liters2 = '{:,.2f}'.format(total_liters)
+        price2 = '{:,.2f}'.format(price)
+        amount2 = '{:,.2f}'.format(amount)
+        total_amount2 = '{:,.2f}'.format(total_amount)
+
+        data = {}
+        data.update({
+            "id": i[0],
+            "transaction_date":i[1],
+            "equipment_id": i[2],
+            "withdrawal_slip": i[3],
+            "use_liter": i[4],
+            "total_liters": total_liters2,
+            "price": price2,
+            "amount": amount2,
+            "total_amount": total_amount2
+            
+        })
+        query.append(data)
+    return query
+
+
+
 
 
 #=============================================Rizal Equipment====================================
@@ -403,7 +444,7 @@ def autocomplete(term: Optional[str]):
 
 #=======================================Conpensation/Salary frame====================================
 @admin.get('/api-get-comp13th/')
-def compt13Month(date1,date2,department):
+def compt13Month(date1,date2,department,token: str = Depends(oauth_scheme)):
     """This function is for computation of 13th month"""
     myresult = Database.computation13thMonth(date1=date1,date2=date2,department=department)
 
@@ -455,7 +496,7 @@ def delete_employee(id,token: str = Depends(oauth_scheme)):
 #===============================================Rizal Rental=======================================
 
 @admin.get('/api-get-rental/')
-def get_rental(datefrom,dateto):
+def get_rental(datefrom,dateto,token: str = Depends(oauth_scheme)):
     """This is for querying rental true date transact"""
 
     myresult = Database.select_rental_with_parameters(datefrom=datefrom,dateto=dateto)
@@ -499,7 +540,7 @@ def get_rental(datefrom,dateto):
 
 
 @admin.get('/api-get-rental2/')
-def get_rental():
+def get_rental(token: str = Depends(oauth_scheme)):
     """This is for querying rental true date transact"""
 
     myresult = Database.select_all_from_rentalDB()
