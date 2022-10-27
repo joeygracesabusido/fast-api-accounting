@@ -37,8 +37,8 @@
                         <i class="fas fa-database"></i>
                     </button>
 
-                    <button type="submit"  onclick="export_to_excel()" class="btn btn-danger">
-                        Export
+                    <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                        Export Excel
                         <i class="fas fa-database"></i>
                     </button>
 
@@ -123,16 +123,15 @@
     </script>
 
 
-        <script type="text/javascript">
-            function export_to_excel(type){
-                var data = document.getElementById("table_body");
-                var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
-                XLSX.write(file, {bookType: type, bookSST: true, type: 'base64'});
-                XLSX.writefile(file, 'file.' + type);
+        <script>
+            function html_table_excel(type){
+                var data = document.getElementById('table_body');
+                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                XLSX.writeFile(file, 'file.' + type);
+
             }
-
-
-
+        
             
         </script>
 
