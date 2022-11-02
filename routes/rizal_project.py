@@ -23,6 +23,7 @@ rizal_project = APIRouter(include_in_schema=False)
 templates = Jinja2Templates(directory="templates")
 
 
+
 #===========================================Calling for UserName ===========================================
 def validateLogin(request:Request):
 
@@ -65,6 +66,15 @@ def get_cashAdvance_record(request: Request, username: str = Depends(validateLog
     return templates.TemplateResponse("rizal_cash_advance.html",{
                                         "request":request
                                                          })
+
+
+@rizal_project.get('/payroll-computation/', response_class=HTMLResponse)
+def get_payrollComputation(request: Request,  username: str = Depends(validateLogin)):
+    """This function is for displaying """
+
+    return templates.TemplateResponse("payroll_computation.html",{
+                                                "request": request
+                                                        })
 
 #======================================================Diesel Frame===========================================
 @rizal_project.get("/diesel-consumption-list/", response_class=HTMLResponse)
