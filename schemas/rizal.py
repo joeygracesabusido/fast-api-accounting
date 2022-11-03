@@ -72,6 +72,11 @@ def EmployeeDetail(item) -> dict:
         "employee_id": str(item[1]),
         "lastName": str(item[2]),
         "firstName": str(item[3]),
+        "position": str(item[10]),
+        "salary_rate": float(item[20]),
+        "taxCode": str(item[21]),
+        "Salary_Detail": str(item[22]),
+        "off_on_details": str(item[23])
    
     }
 
