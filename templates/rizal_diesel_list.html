@@ -2,11 +2,11 @@
 
 {% block content %}
 <style>
-   body {
+   /* body {
     padding: 0;
     margin: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-   }
+   } */
 
    /* table {
     position: absolute;
@@ -150,27 +150,37 @@
 
                     const responce = await fetch(search_url)
                     const data = await responce.json();
-                    console.log(data)
 
+                    if (data.length === 0) {
+                        window.alert('No Data available');
+                    };
 
+                    if (responce.status === 200){
+                        console.log(data)
+                        let tableData="";
+                        data.map((values)=>{
+                            tableData+= ` <tr>
+                                        <td>${values.id}</td>
+                                        <td>${values.transaction_date}</td>
+                                        <td>${values.equipment_id}</td>
+                                        <td>${values.withdrawal_slip}</td>
+                                        <td>${values.use_liter}</td>
+                                        <td>${values.total_liters}</td>
+                                        <td>${values.price}</td>
+                                        <td>${values.amount}</td>
+                                        <td>${values.total_amount}</td>
+                                    
+                                    
+                                    </tr>`;
+                        });
+                        document.getElementById("table_body").innerHTML=tableData;
 
-                    let tableData="";
-                    data.map((values)=>{
-                        tableData+= ` <tr>
-                                    <td>${values.id}</td>
-                                    <td>${values.transaction_date}</td>
-                                    <td>${values.equipment_id}</td>
-                                    <td>${values.withdrawal_slip}</td>
-                                    <td>${values.use_liter}</td>
-                                    <td>${values.total_liters}</td>
-                                    <td>${values.price}</td>
-                                    <td>${values.amount}</td>
-                                    <td>${values.total_amount}</td>
-                                
-                                
-                                </tr>`;
-                    });
-                    document.getElementById("table_body").innerHTML=tableData;
+                    } 
+                    
+                    else{
+                        window.alert('Unauthorized Please login');
+                    }
+                    
 
                 }else{
 
@@ -179,27 +189,39 @@
 
                     const responce = await fetch(search_url)
                     const data = await responce.json();
-                    console.log(data)
 
+                    if (data.length === 0) {
+                        window.alert('No Data available');
+                    };
 
+                    if (responce.status === 200){
+                        console.log(data)
+                        let tableData="";
+                        data.map((values)=>{
+                            tableData+= ` <tr>
+                                        <td>${values.id}</td>
+                                        <td>${values.transaction_date}</td>
+                                        <td>${values.equipment_id}</td>
+                                        <td>${values.withdrawal_slip}</td>
+                                        <td>${values.use_liter}</td>
+                                        <td>${values.total_liters}</td>
+                                        <td>${values.price}</td>
+                                        <td>${values.amount}</td>
+                                        <td>${values.total_amount}</td>
+                                    
+                                    
+                                    </tr>`;
+                        });
+                        document.getElementById("table_body").innerHTML=tableData;
 
-                    let tableData="";
-                    data.map((values)=>{
-                        tableData+= ` <tr>
-                                    <td>${values.id}</td>
-                                    <td>${values.transaction_date}</td>
-                                    <td>${values.equipment_id}</td>
-                                    <td>${values.withdrawal_slip}</td>
-                                    <td>${values.use_liter}</td>
-                                    <td>${values.total_liters}</td>
-                                    <td>${values.price}</td>
-                                    <td>${values.amount}</td>
-                                    <td>${values.total_amount}</td>
-                                
-                                
-                                </tr>`;
-                    });
-                    document.getElementById("table_body").innerHTML=tableData;
+                    } 
+                    
+                    else{
+                        window.alert('Unauthorized Please login');
+                    }
+                    
+
+                    
 
                 }
         
