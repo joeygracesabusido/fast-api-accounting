@@ -64,6 +64,8 @@
                     name="salary_rate"
                     id="salary_rate"
                     style="width: 150px;"
+                    
+                    onkeyup="calculation2();"
                     >
                 </input>
 
@@ -99,6 +101,7 @@
             name="regday"
             id="regday"
             style="width: 100px;text-align: right;"
+            onkeyup="calculation();"
             >
         </input>
 
@@ -121,6 +124,7 @@
             name="regday_ot"
             id="regday_ot"
             style="width: 100px;text-align: right;"
+            onkeyup="calculation2();"
             >
         </input>
 
@@ -187,8 +191,60 @@
         </script>
 
         <script type="text/javascript">
+            function calculation(){
+                var salary_rate=document.getElementById('salary_rate').value;
+                var regday = document.getElementById('regday').value;
+                
+                
+                var regday_cal;
+              
+               
+            
+                
+            
+                if(regday !=""){
+                    regday_cal = parseFloat(salary_rate) * parseFloat(regday);
+                   
+            
+                    
+                    document.getElementById('regday_cal').value=regday_cal.toFixed(2);	
+                
+                    
+                }
+            
+            }
+
+
 
         </script>
+
+        <script type="text/javascript">
+            function calculation2(){
+            
+                var regday_ot = document.getElementById('regday_ot').value;
+                var regday_ot_cal;
+            
+            
+                
+            
+                if(regday_ot!="" ){
+                    
+                    regday_ot_cal = parseFloat(salary_rate) *  parseFloat(regday_ot) ;
+                    
+            
+                   
+                    document.getElementById('regday_ot_cal').value=regday_ot_cal.toFixed(2);	
+                
+                    
+                }
+            
+            }
+
+
+
+</script>
+
+
 
 
 {% endblock %}
