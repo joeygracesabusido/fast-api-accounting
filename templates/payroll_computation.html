@@ -6,138 +6,248 @@
     <div class="container">
 
     </div>
-    <div  class="container mt-3">
-        <label for="TransactionDate" >Date</label><br>
-            <input
-                type="date"
-                name="datefrom"
-                id="datefrom"
-                >
-            </input>
+    <div  class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <label for="TransactionDate" >Date</label><br>
+                <input
+                    type="date"
+                    name="datefrom"
+                    id="datefrom"
+                    >
+                </input>
 
-           
             
-            <br>
-        <label for="Employee ID" >Employee ID</label><br>
-            <input
-                type="text"
-                name="employee_id"
-                id="employee_id"
-                >
-             </input>
+                
+                <br>
+                    <label for="Employee ID" >Employee ID</label><br>
+                        <input
+                            type="text"
+                            name="employee_id"
+                            id="employee_id"
+                            >
+                        </input>
 
-             <button type="submit"  onclick="display_emp_data()" class="btn btn-success">
-                Search Data
-                <i class="fas fa-database"></i>
-            </button>
-             
-             <br> 
+                        <button type="submit"  onclick="display_emp_data()" class="btn btn-success">
+                            Search Data
+                            <i class="fas fa-database"></i>
+                        </button>
+                        
+                        <br> 
 
-        <label for="FirstName" >First Name</label><br>
-             <input
-                 type="text"
-                 name="fname"
-                 id="fname"
-                 >
-              </input><br>
+                    <label for="FirstName" >First Name</label><br>
+                        <input
+                            type="text"
+                            name="fname"
+                            id="fname"
+                            >
+                        </input><br>
 
-        <label for="LastName" >Last Name</label><br>
-              <input
-                  type="text"
-                  name="lname"
-                  id="lname"
-                  >
-               </input>
+                    <label for="LastName" >Last Name</label><br>
+                        <input
+                            type="text"
+                            name="lname"
+                            id="lname"
+                            >
+                        </input><br>
 
-        <label for="Position" >Position</label>
-                <input
-                    type="text"
-                    name="position"
-                    id="position"
-                    style="width: 160px;"
-                    >
-                </input>
-        <label for="Salary Rate" >Salary Rate</label>
-                <input
-                    type="number"
-                    step="0.01"
-                    name="salary_rate"
-                    id="salary_rate"
-                    style="width: 150px;"
+                    <label for="Position" >Position</label><br>
+
+                            <input
+                                type="text"
+                                name="position"
+                                id="position"
+                               
+                                >
+                            </input><br>
+                    <label for="Salary Rate" >Salary Rate</label><br>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="salary_rate"
+                                id="salary_rate"
+                                
+                                
+                                
+                                >
+                            </input><br>
+
+                    <label for="Tax Classification" >Tax Classification</label><br>
+                            <input
+                                type="text"
+                                name="tax_class"
+                                id="tax_class"
+                                
+                                >
+                            </input><br>
+
+                    <label for="EmployeClass" >Employee Class</label><br>
+                            <input
+                                type="text"
+                                name="emp_class"
+                                id="emp_class"
+                               
+                                
+                                >
+                            </input>
+
+<!-- This is start for computation fields -->
+               
+                    <h1>
+                        This is for computation 
+                    </h1>
                     
-                    onkeyup="calculation2();"
-                    >
-                </input>
+                        <label for="REGDAY"
+                        style="margin-left: 0x;"
+                        >Regular day</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="regday"
+                            id="regday"
+                            style="width: 65px;text-align: right;"
+                            
+                            >
+                        </input>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="regday_cal"
+                            id="regday_cal"
+                            style="width: 100px;text-align: right;"
+                            >
+                        </input>
+    
+                        <label for="REGOT"
+                        style="margin-left: 30px;"
+                        >Regular OT</label>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="regday_ot"
+                            id="regday_ot"
+                            style="width: 65px;text-align: right; "
+                            
+                            >
+                        </input>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="regday_ot_cal"
+                            id="regday_ot_cal"
+                            style="width: 100px;text-align: right;"
+                            >
+                        </input><br><br>
 
-        <label for="Tax Classification" >Tax Classification</label>
-                <input
-                    type="text"
-                    name="tax_class"
-                    id="tax_class"
-                    style="width: 130px;"
-                    >
-                </input>
+                        <label for="SUNDAY"
+                        
+                        >SUNDAY </label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="sunday"
+                            id="sunday"
+                            style="width: 65px;text-align: right;
+                                   margin-left: 25px;"
+                            
+                            >
+                        </input>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="sunday_cal"
+                            id="sunday_cal"
+                            style="width: 100px;text-align: right;"
+                            >
+                        </input>
+    
+                        <label for="SundayOT"
+                            style="margin-left: 28px;"
+                        >Sunday OT</label>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="sunday_ot"
+                            id="sunday_ot"
+                            style="width: 65px;text-align: right;"
+                            
+                            >
+                        </input>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="sunday_ot_cal"
+                            id="sunday_ot_cal"
+                            style="width: 100px;text-align: right;"
+                            >
+                        </input><br><br>
+                <!-- This is for Special Holiday Computation -->
+                        <label for="SPL"
+                        
+                        >SPL </label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="spl"
+                            id="spl"
+                            style="width: 65px;text-align: right;
+                                   margin-left: 60px;"
+                            
+                            >
+                        </input>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="spl_cal"
+                            id="spl_cal"
+                            style="width: 100px;text-align: right;"
+                            >
+                        </input>
+    
+                        <label for="SPLOT"
+                            style="margin-left: 28px;"
+                        >SPL OT</label>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="spl_ot"
+                            id="spl_ot"
+                            style="width: 65px;text-align: right;
+                                    margin-left: 28px"
+                            
+                            >
+                        </input>
+    
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="spl_ot_cal"
+                            id="spl_ot_cal"
+                            style="width: 100px;text-align: right;"
+                            >
+                        </input><br><br>
+                      
 
-        <label for="EmployeClass" >Employee Class</label>
-                <input
-                    type="text"
-                    name="emp_class"
-                    id="emp_class"
-                    style="width: 75px; "
+               
+                
+
                     
-                    >
-                </input>
-
+                    
+                
+            </div>
+        </div>
         
     </div>
 
-    <div class="container mt-5">
-        <label for="REGDAY"
-        style="margin-left: 170px;"
-         >Regular day</label>
-        <input
-            type="number"
-            step="0.01"
-            name="regday"
-            id="regday"
-            style="width: 100px;text-align: right;"
-            onkeyup="calculation();"
-            >
-        </input>
-
-        <input
-            type="number"
-            step="0.01"
-            name="regday_cal"
-            id="regday_cal"
-            style="width: 100px;text-align: right;"
-            >
-        </input>
-
-        <label for="REGOT"
-            style="margin-left: 40px;"
-         >Regular OT</label>
-
-        <input
-            type="number"
-            step="0.01"
-            name="regday_ot"
-            id="regday_ot"
-            style="width: 100px;text-align: right;"
-            onkeyup="calculation2();"
-            >
-        </input>
-
-        <input
-            type="number"
-            step="0.01"
-            name="regday_ot_cal"
-            id="regday_ot_cal"
-            style="width: 100px;text-align: right;"
-            >
-        </input>
-        
-    </div>
+    
 </body>
 
         <script type="text/javascript">
@@ -190,59 +300,33 @@
 
         </script>
 
-        <script type="text/javascript">
-            function calculation(){
-                var salary_rate=document.getElementById('salary_rate').value;
-                var regday = document.getElementById('regday').value;
-                
-                
-                var regday_cal;
-              
-               
-            
-                
-            
-                if(regday !=""){
-                    regday_cal = parseFloat(salary_rate) * parseFloat(regday);
-                   
-            
-                    
-                    document.getElementById('regday_cal').value=regday_cal.toFixed(2);	
-                
-                    
-                }
-            
-            }
-
-
+        
 
         </script>
 
         <script type="text/javascript">
-            function calculation2(){
-            
-                var regday_ot = document.getElementById('regday_ot').value;
-                var regday_ot_cal;
-            
-            
-                
-            
-                if(regday_ot!="" ){
-                    
-                    regday_ot_cal = parseFloat(salary_rate) *  parseFloat(regday_ot) ;
-                    
-            
-                   
-                    document.getElementById('regday_ot_cal').value=regday_ot_cal.toFixed(2);	
-                
-                    
-                }
-            
+            document.getElementById('regday').addEventListener('input',
+            function(e){
+                let regday = e.target.value;
+                let salaryRate =  document.getElementById('salary_rate').value;
+                let regdayCal = parseFloat(salaryRate) * parseFloat(regday)
+                document.getElementById('regday_cal').value=regdayCal.toFixed(2);
             }
+            );
 
+        </script>
 
+        <script type="text/javascript">
+            document.getElementById('regday_ot').addEventListener('input',
+            function(e){
+                let regday_ot = e.target.value;
+                let salaryRate =  document.getElementById('salary_rate').value;
+                let regday_otCal = parseFloat(salaryRate) / 8 * 1.25 * parseFloat(regday_ot)
+                document.getElementById('regday_ot_cal').value=regday_otCal.toFixed(2);
+            }
+            );
 
-</script>
+        </script>
 
 
 
