@@ -65,10 +65,10 @@
             <div  class="container mt-3">
                 <label for="Amount" >Amount</label><br>
                     <input
-                        type="number"
+                        type="text"
                         name="rantal_amount"
                         id="rantal_amount"
-                        step="0.01"
+                        
                         
                         >
                     </input>  
@@ -259,14 +259,25 @@
             
         
             if(totalHours !="" && rentalRate !=""){
-                totalAmount = parseFloat(totalHours) * parseFloat(rentalRate) ;
-                document.getElementById('rantal_amount').value=totalAmount.toFixed(2);	
+                // totalAmount = parseFloat(totalHours) * parseFloat(rentalRate) ;
+                totalAmount = totalHours * rentalRate ;
+                // let num = 1234567890987654321;
+                // let formatter = Intl.NumberFormat('en-US')
+
+                let comma = totalAmount.toLocaleString("en-US");
+                // let comma = formatter.format(totalAmount);
+                document.getElementById('rantal_amount').value=comma;	
         
             
         }
     
     }
              
+        </script>
+
+        <script type="text/javascript">
+          
+
         </script>
 
         
