@@ -43,6 +43,32 @@
                         name="total_rental_hour"
                         id="total_rental_hour"
                         step="0.01"
+                        onkeyup="getTotalamount();"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Rental Rate" >Rental Rate</label><br>
+                    <input
+                        type="number"
+                        name="rantal_rate"
+                        id="rantal_rate"
+                        step="0.01"
+                        onkeyup="getTotalamount();"
+                        >
+                    </input>  
+                    
+            </div>
+
+            <div  class="container mt-3">
+                <label for="Amount" >Amount</label><br>
+                    <input
+                        type="number"
+                        name="rantal_amount"
+                        id="rantal_amount"
+                        step="0.01"
                         
                         >
                     </input>  
@@ -210,7 +236,7 @@
                                 success: function (data) {
                                     console.log(data); 
                                     alert('Data has been save')
-                                    window.location.href = "/rental-transaction-list/" 
+                                    window.location.href = "/rental-transaction/" 
                                 },
                                 error: function (error) {
                                         alert(error)
@@ -223,12 +249,24 @@
 
                 })
         </script>
-        <script>
-             function getAmount(){
-                var liter = $('#liter').val();
-                var price = $('#price').val();
-                $('#amount').val(liter*price);
-             }
+        <script type="text/javascript">
+           function getTotalamount(){
+            var totalHours=document.getElementById('total_rental_hour').value;
+            var rentalRate=document.getElementById('rantal_rate').value;
+        
+            var totalAmount;
+        
+            
+        
+            if(totalHours !="" && rentalRate !=""){
+                totalAmount = parseFloat(totalHours) * parseFloat(rentalRate) ;
+                document.getElementById('rantal_amount').value=totalAmount.toFixed(2);	
+        
+            
+        }
+    
+    }
+             
         </script>
 
         
