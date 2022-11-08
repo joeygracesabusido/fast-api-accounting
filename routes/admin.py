@@ -429,7 +429,7 @@ from models.model import Cashadvance
 
 
 @admin.get("/api-search-employee_by_empID/")
-def autocomplete(term: Optional[str]):
+def get_equipment(term: Optional[str]):
     items = EmployeeDetails(Database.select_one_employee_with_empID(employee_id=term))
     return items
 
@@ -704,7 +704,8 @@ def delete_surigao_pesoBill(id,token: str = Depends(oauth_scheme)):
 #============================================Vitali Zamboangao Project======================================
 from config.zamboanga import ZamboangaDB
 ZamboangaDB.initialize()
-from models.model import Equipment
+from models.model import Equipment,Routes
+
 @admin.post('/api-add-equipment/')
 def add_equipment(items: Equipment, token: str = Depends(oauth_scheme)):
     """This function is for posting equipment"""
@@ -743,6 +744,8 @@ def get_equipment(token: str=Depends(oauth_scheme)):
         # print(agg_result_list)
     return (agg_result_list)
 
+
+
 @admin.put('/api-update-equipment/{id}')
 def update_equipment(id,item:Equipment,token: str = Depends(oauth_scheme)):
     """This function is to update equipment """
@@ -757,6 +760,72 @@ def delete_employee(id,token: str = Depends(oauth_scheme)):
     ZamboangaDB.delete_equipment(id=id)
     return  {'Messeges':'Data has been deleted'}
 
+@admin.get("/api-search-equipment/")
+def autocomplete_equipment(id):
+    items = ZamboangaDB.select_equipment(id=id)
 
+
+    agg_result_list = []
+    
+    for x in items:
+        id = x[0]
+        equipment_id = x[1]
+        equipment_desc = x[2]
+        remarks = x[3]
+       
+
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "equipment_id": equipment_id ,
+            "equipment_desc": equipment_desc,
+            "remarks": remarks
+          
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return (agg_result_list)
+
+
+#============================================Routes============================================
+@admin.post('/api-add-routes/')
+def add_equipment(items: Routes, token: str = Depends(oauth_scheme)):
+    """This function is for posting routes"""
+
+    ZamboangaDB.insert_routes(routes_name=items.routes_name,
+                                distance=items.distance)
+    return {'Messege': 'Has been Save'}
+
+@admin.get('/api-get-routes/')
+def get_routes(token: str=Depends(oauth_scheme)):
+    """This function is for querying all Equipment"""
+    myresult = ZamboangaDB.select_all_routes()
+
+    agg_result_list = []
+    
+    for x in myresult:
+        id = x[0]
+        routes_name = x[1]
+        distance = x[2]
+    
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "routes_name": routes_name ,
+            "distance": distance,
+            
+          
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return (agg_result_list)
+
+    
 
     

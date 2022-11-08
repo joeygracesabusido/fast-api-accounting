@@ -22,26 +22,13 @@ class ZamboangaDB(object):
         ZamboangaDB.DATABASE._open_connection()
 
 
-        try: 
-            cursor.execute(
-                """CREATE TABLE IF NOT EXISTS equipment (id INT AUTO_INCREMENT PRIMARY KEY, 
-                            equipment_id VARCHAR(100), 
-                            equipment_desc VARCHAR(100),
-                            remarks VARCHAR(200))""")
-                    
-        except Exception as ex:
-            print("Error", f"Error due to :{str(ex)}")
-
-        finally:
-            ZamboangaDB.DATABASE.commit()
-            ZamboangaDB.DATABASE.close()
-
         # try: 
         #     cursor.execute(
-        #         """CREATE TABLE IF NOT EXISTS routes (id INT AUTO_INCREMENT PRIMARY KEY, 
-        #                     routes_name VARCHAR(100), 
-        #                     distance DECIMAL(9,2),
-        #                     date_credited date) """)
+        #         """CREATE TABLE IF NOT EXISTS equipment (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     equipment_id VARCHAR(100), 
+        #                     equipment_desc VARCHAR(100),
+        #                     remarks VARCHAR(200),
+        #                     UNIQUE (equipment_id))""")
                     
         # except Exception as ex:
         #     print("Error", f"Error due to :{str(ex)}")
@@ -49,6 +36,20 @@ class ZamboangaDB(object):
         # finally:
         #     ZamboangaDB.DATABASE.commit()
         #     ZamboangaDB.DATABASE.close()
+
+        try: 
+            cursor.execute(
+                """CREATE TABLE IF NOT EXISTS routes (id INT AUTO_INCREMENT PRIMARY KEY, 
+                            routes_name VARCHAR(100), 
+                            distance DECIMAL(9,2),
+                            UNIQUE (routes_name))""")
+                    
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+
+        finally:
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
 
         # try: 
         #     cursor.execute(
@@ -102,18 +103,20 @@ class ZamboangaDB(object):
 
        
         ZamboangaDB.DATABASE._open_connection()
-        try:
-            data = ('SELECT * FROM equipment \
-                WHERE equipment_id LIKE %s')
 
-            val = ('%' + id + '%',)
-            cursor.execute(data,(val),)
-            return cursor.fetchone()
+        try:
+            data = ' select * from equipment where id like  "%'+id+'%"'
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
         except Exception as ex:
             print("Error", f"Error due to :{str(ex)}")
         finally:
-            # Database.DATABASE.commit()
+           
             ZamboangaDB.DATABASE.close()
+
+       
 
 
     @staticmethod
@@ -174,5 +177,70 @@ class ZamboangaDB(object):
             print("Error", f"Error due to :{str(ex)}")
         finally:
             ZamboangaDB.DATABASE.commit()
-            ZamboangaDB.DATABASE.close()   
+            ZamboangaDB.DATABASE.close()  
 
+
+#==========================================Routes Frame=============================================
+
+    # routes_name VARCHAR(100), 
+    # distance DECIMAL(9,2),
+
+    @staticmethod
+    def select_all_routes():
+        """
+        This function is for querying all routes
+        """
+
+       
+        ZamboangaDB.DATABASE._open_connection()
+        try:
+            data = ('SELECT * FROM routes \
+                ')
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            # Database.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
+ 
+    @staticmethod
+    def insert_routes(routes_name,distance):
+        """This is to insert to database rental to equipment_rental Table"""
+        ZamboangaDB.DATABASE._open_connection() # to open database connection
+
+        try:
+           
+            data = ( "INSERT INTO routes (routes_name,distance)"
+                    "VALUES(%s,%s)")
+            val = (routes_name,distance)
+            #                  
+            # cursor.execute(data)              
+            cursor.execute(data,val) 
+           
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def delete_routes(id):
+        """This function si for deleting Rental with Parametes"""
+        ZamboangaDB.DATABASE._open_connection()    
+
+        try:
+            data = ('DELETE FROM routes \
+                WHERE id = "'+id+'"')       
+                        
+            # cursor.execute(data)              
+            cursor.execute(data) 
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()  

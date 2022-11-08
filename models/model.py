@@ -121,4 +121,7 @@ class Equipment(BaseModel):
     equipment_desc: str
     remarks: str
 
-
+class Routes(BaseModel):
+    """This is for inserting Routes Zamboanga Vitali Project"""
+    routes_name: str
+    distance: float

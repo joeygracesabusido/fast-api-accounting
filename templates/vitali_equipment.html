@@ -16,6 +16,18 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateEquipment">
                 Update Equipment
             </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#equipmentTable">
+                Equipment Table
+            </button><br><br>
+
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addRoutes">
+                Add Routes
+            </button>
+
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#routesTable">
+                Routes Table
+            </button>
         </div>
             <!-- Modal -->
             <div class="modal fade" id="updateEquipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -39,8 +51,16 @@
                         name="transID"
                         id="transID"
                         required
-                        class="form-control"
+                        
                         >
+
+                        <button type="submit"  onclick="display_data()" class="btn btn-success">
+                            Search 
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                        <br>
+                        
                         
                     
                         <label for="EquipmentID"
@@ -113,9 +133,9 @@
                         type="text"
                         name="equipment_id"
                         id="equipment_id"
-                        
                         class="form-control"
                         >
+
 
                         <label for="Equipment Discription"
                         >Equipment Discription</label>
@@ -152,50 +172,208 @@
                 </div>
                 </div>
             </div>
-        
-        
-        
-            <div  class="container mt-3">
-                <table id="myTable" class="table table-bordered"  style="text-align: center;">
-                    <thead class="table-dark">
+
+
+
+            <!-- This for table of Equipment -->
+
+            <div class="modal fade" id="equipmentTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Euipment Table</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
                     
-                            <td>ID</td>
-                            <td>Equipment ID</td>
-                            <td>Equipment Description</td>
-                            <td>Remarks</td>
-                            <td>Action</td>
-                            
-                        </tr>
-                    </thead>
-                    <tbody id="table_body">
-                       
-                            
-                            <tr>
+                    <div class="modal-body">
+
+                        <div  class="container mt-3">
+                            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
                                 
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                
-                          
-                            </tr>
-                           
-                        
-                    </tbody>
-    
-                   
-    
-                </table>
-    
+                                        <td>ID</td>
+                                        <td>Equipment ID</td>
+                                        <td>Equipment Description</td>
+                                        <td>Remarks</td>
+                                        <td>Action</td>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body">
+                                   
+                                        
+                                        <tr>
+                                            
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            
+                                      
+                                        </tr>
+                                       
+                                    
+                                </tbody>
                 
+                               
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+            
+                      
+               </div>
+            
+
+                       
+            
                     
+                    </div>
+                    <div class="modal-footer">
                     
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
             </div>
 
-          
-   </div>
+            <!-- This is for Adding Routes Modal -->
 
+            <div class="modal fade" id="addRoutes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Routes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+                        
+                        
+                        
+                    
+                        <label for="Routes"
+                        >Routes</label>
+                        
+                        <input 
+                        type="text"
+                        name="routes_name"
+                        id="routes_name"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Distance"
+                        >Distance</label>
+                        
+                        <input 
+                        type="number"
+                        name="distance"
+                        id="distance"
+                        step="0.01"
+                        class="form-control"
+                        ><br><br>
+
+                        
+                
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_routes()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            <!-- This for table of Equipment -->
+
+            <div class="modal fade" id="routesTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Euipment Table</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="container mt-3">
+                            <button type="submit" onclick="display_data2()" class="btn btn-primary">Display</button>
+                        </div>
+
+                        <div  class="container mt-3">
+                            <table id="myTable_routes" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                
+                                        <td>ID</td>
+                                        <td>Routes</td>
+                                        <td>Distance</td>
+                                        
+                                        <td>Action</td>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_routes">
+                                   
+                                        
+                                        <tr>
+                                            
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                           
+                                            
+                                      
+                                        </tr>
+                                       
+                                    
+                                </tbody>
+                
+                               
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+            
+                      
+               </div>
+            
+
+                       
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        
+        
+        
+            
 
    <script type="text/javascript">
         function insert_equipment(){
@@ -234,10 +412,10 @@
                         window.alert("Unauthorized credential Please Login");
                     }
                 })
-                .catch(function (error){
+                .catch(function (Error){
                     // Catch errors
-                    window.alert(error);
-                    console.log(error);
+                    window.alert(Error);
+                    console.log(Error);
                 });
                 
             // window.location.assign("/peso-bill/");
@@ -359,6 +537,127 @@ function update_equipment(){
         }
     
     </script>
+
+    <script type="text/javascript">
+
+        // const rental_url =search_url ;
+        async function display_data(){
+            var transid = document.getElementById("transID").value
+
+            const search_url = `/api-search-equipment/?id=${transid}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            var equipment_id = data[0].equipment_id
+            var equipment_desc = data[0].equipment_desc
+            var remarks = data[0].remarks
+            
+
+            document.getElementById("equipment_id_update").value = equipment_id
+            document.getElementById("equipment_desc_update").value = equipment_desc
+            document.getElementById("remarks_update").value = remarks
+        
+
+        }
+
+        
+        
+
+    </script>
+
+    <!-- ================================This is for routes javascript============================= -->
+
+    <script type="text/javascript">
+        function insert_routes(){
+            var data = {}
+            
+            data["routes_name"] = document.getElementById("routes_name").value
+            data["distance"] = document.getElementById("distance").value
+            
+           
+            
+            console.log(data)
+
+            fetch("/api-add-routes/", {
+            method:'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+                })
+
+
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Save");
+                        window.location.assign("/zamboanga-equipment/");
+                        console.log(json);
+                    }
+                    else if (fetch_status == 401){
+                        window.alert("Unauthorized credential Please Login");
+                    }
+                })
+                .catch(function (Error){
+                    // Catch errors
+                    window.alert(Error);
+                    console.log(Error);
+                });
+                
+          
+            
+        }
+        
+
+    </script>
+
+    <script type="text/javascript">
+
+        
+
+        // const rental_url =search_url ;
+        async function display_data2(){
+            
+            const search_url = `/api-get-routes/`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            
+            
+            let tableData2="";
+            data.map((values)=>{
+                tableData2+= ` <tr>
+                            <td>${values.id}</td>
+                            <td>${values.routes_name}</td>
+                            <td>${values.distance}</td>
+                            
+                        
+                            <td>
+                                <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
+                                    <i class="fas fa-database">
+                                    </i>Remove</button>
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body_routes").innerHTML=tableData2;
+        }
+        
+       
+
+</script>
+
 
 
 
