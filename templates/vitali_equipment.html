@@ -1,0 +1,367 @@
+
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<body>
+   <div class="container">
+
+        <div class="container mt-3">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addequipment">
+                Add Equipment
+            </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateEquipment">
+                Update Equipment
+            </button>
+        </div>
+            <!-- Modal -->
+            <div class="modal fade" id="updateEquipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Equipment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+                        <label for="transID"
+                        >Trans ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="transID"
+                        id="transID"
+                        required
+                        class="form-control"
+                        >
+                        
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id_update"
+                        id="equipment_id_update"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Equipment Discription"
+                        >Equipment Discription</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_desc_update"
+                        id="equipment_desc_update"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Remarks"
+                        >Remarks</label>
+
+                        <input 
+                        type="text"
+                        name="remarks_update"
+                        id="remarks_update"
+                        
+                        class="form-control"
+                        >
+                        
+                        <br><br>
+                        
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="update_equipment()" class="btn btn-primary">Update</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="addequipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Equipment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id"
+                        id="equipment_id"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Equipment Discription"
+                        >Equipment Discription</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_desc"
+                        id="equipment_desc"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Remarks"
+                        >Remarks</label>
+
+                        <input 
+                        type="text"
+                        name="remarks"
+                        id="remarks"
+                        
+                        class="form-control"
+                        >
+                        
+                        <br><br>
+                        
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_equipment()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+        
+        
+        
+            <div  class="container mt-3">
+                <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                    <thead class="table-dark">
+                    
+                            <td>ID</td>
+                            <td>Equipment ID</td>
+                            <td>Equipment Description</td>
+                            <td>Remarks</td>
+                            <td>Action</td>
+                            
+                        </tr>
+                    </thead>
+                    <tbody id="table_body">
+                       
+                            
+                            <tr>
+                                
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                
+                          
+                            </tr>
+                           
+                        
+                    </tbody>
+    
+                   
+    
+                </table>
+    
+                
+                    
+                    
+            </div>
+
+          
+   </div>
+
+
+   <script type="text/javascript">
+        function insert_equipment(){
+            var data = {}
+            // var id = document.getElementById("trans_id").value
+            data["equipment_id"] = document.getElementById("equipment_id").value
+            data["equipment_desc"] = document.getElementById("equipment_desc").value
+            data["remarks"] = document.getElementById("remarks").value
+           
+            
+            console.log(data)
+
+            fetch("/api-add-equipment/", {
+            method:'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+                })
+
+
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Save");
+                        window.location.assign("/zamboanga-equipment/");
+                        console.log(json);
+                    }
+                    else if (fetch_status == 401){
+                        window.alert("Unauthorized credential Please Login");
+                    }
+                })
+                .catch(function (error){
+                    // Catch errors
+                    window.alert(error);
+                    console.log(error);
+                });
+                
+            // window.location.assign("/peso-bill/");
+
+            // window.alert("Your Data has been Save");
+            // window.location.assign("/zamboanga-equipment/");
+
+            // if ({detail:"Not authenticated"}) {
+            //     window.alert("Unauthorized credentials Please login");
+                
+            // } else if({Messege: "Has been Save"}){
+                
+               
+            // }
+            
+        }
+        
+
+    </script>
+
+    <script type="text/javascript">
+
+function update_equipment(){
+            var data = {}
+            var id = document.getElementById("transID").value
+            data["equipment_id"] = document.getElementById("equipment_id_update").value
+            data["equipment_desc"] = document.getElementById("equipment_desc_update").value
+            data["remarks"] = document.getElementById("remarks_update").value
+           
+            
+            console.log(data)
+
+            fetch("/api-update-equipment/"+id, {
+            method:'PUT', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+                })
+
+
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Updated");
+                        window.location.assign("/zamboanga-equipment/");
+                        console.log(json);
+                    }
+                    else if (fetch_status == 401){
+                        window.alert("Unauthorized credential Please Login");
+                    }
+                })
+                .catch(function (error){
+                    // Catch errors
+                    window.alert(error);
+                    console.log(error);
+                });
+
+            }
+    </script>
+
+
+    <script type="text/javascript">
+
+       
+
+        // const rental_url =search_url ;
+        async function display_data(){
+            
+            const search_url = `/api-get-equipment/`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            
+            
+            let tableData="";
+            data.map((values)=>{
+                tableData+= ` <tr>
+                            <td>${values.id}</td>
+                            <td>${values.equipment_id}</td>
+                            <td>${values.equipment_desc}</td>
+                            <td>${values.remarks}</td>
+                           
+                            <td>
+                                <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
+                                    <i class="fas fa-database">
+                                    </i>Remove</button>
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body").innerHTML=tableData;
+        }
+        
+        display_data()
+
+    </script>
+
+
+
+
+    <script type="text/javascript">
+        function delete_equipment(id){
+        
+        fetch("/api-delete-equipment/"+ id, {
+        method:'DELETE',
+            })
+            window.alert("Your Data has been Deleted");
+            window.location.assign("/zamboanga-equipment/");
+        }
+    
+    </script>
+
+
+
+</body>
+
+{% endblock %}

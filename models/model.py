@@ -110,3 +110,15 @@ class Cashadvance(BaseModel):
     ca_deduction:float
 
 
+
+
+# ==========================================Zamboanga Table============================================
+
+class Equipment(BaseModel):
+    """This is for inserting Zamboanga Equipment true Pydatic Model"""
+
+    equipment_id: str
+    equipment_desc: str
+    remarks: str
+
+

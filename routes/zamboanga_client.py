@@ -31,6 +31,7 @@ templates = Jinja2Templates(directory="templates")
 
 
 
+
 @zamboanga_client.get("/view-journal-entry-zambo/", response_class=HTMLResponse)
 async def view_journal_entry(request: Request):
     """This function is for displaying journal Entry"""
@@ -438,7 +439,7 @@ async def insert_journal_entry(request: Request):
 
 
 
-#=============================================This ksi for Income Statement Router========================
+#=============================================This api for Income Statement Router========================
 @zamboanga_client.get("/income-statement-zambo/", response_class=HTMLResponse)
 async def get_income_statement(request:Request):
     """This function is for querying income statement"""
@@ -509,7 +510,11 @@ async def get_income_statement(request:Request):
     
 
 
-
+#==================================================Equipment Vitali =====================================================
+@zamboanga_client.get("/zamboanga-equipment/", response_class=HTMLResponse)
+async def equipment_zamboanga(request:Request):
+    """This function is to show page for Equipment"""
+    return templates.TemplateResponse("vitali_equipment.html",{'request':request})
 
 
 

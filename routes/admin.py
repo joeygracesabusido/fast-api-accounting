@@ -578,7 +578,7 @@ def get_rental(token: str = Depends(oauth_scheme)):
         })
 
         agg_result_list.append(data)
-        print(agg_result_list)
+        # print(agg_result_list)
     return (agg_result_list)
     # return RentalLists(Database.select_all_from_rentalDB())
 
@@ -701,5 +701,62 @@ def delete_surigao_pesoBill(id,token: str = Depends(oauth_scheme)):
 
 
 
+#============================================Vitali Zamboangao Project======================================
+from config.zamboanga import ZamboangaDB
+ZamboangaDB.initialize()
+from models.model import Equipment
+@admin.post('/api-add-equipment/')
+def add_equipment(items: Equipment, token: str = Depends(oauth_scheme)):
+    """This function is for posting equipment"""
+
+    ZamboangaDB.insert_equipment(equipment_id=items.equipment_id,
+                                    equipment_desc=items.equipment_desc,
+                                    remarks=items.remarks )
+    return {'Messege': 'Has been Save'}
+
+@admin.get('/api-get-equipment/')
+def get_equipment(token: str=Depends(oauth_scheme)):
+    """This function is for querying all Equipment"""
+    myresult = ZamboangaDB.select_all_equipment()
+
+    agg_result_list = []
     
+    for x in myresult:
+        id = x[0]
+        equipment_id = x[1]
+        equipment_desc = x[2]
+        remarks = x[3]
+       
+
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "equipment_id": equipment_id ,
+            "equipment_desc": equipment_desc,
+            "remarks": remarks
+          
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return (agg_result_list)
+
+@admin.put('/api-update-equipment/{id}')
+def update_equipment(id,item:Equipment,token: str = Depends(oauth_scheme)):
+    """This function is to update equipment """
+    ZamboangaDB.update_equipment(id=id,equipment_id=item.equipment_id,
+                                    equipment_desc=item.equipment_desc,
+                                    remarks=item.remarks)
+    return  {'Messeges':'Data has been updated'}
+
+@admin.delete('/api-delete-equipment/{id}')
+def delete_employee(id,token: str = Depends(oauth_scheme)):
+    """This function is to delete equipment"""
+    ZamboangaDB.delete_equipment(id=id)
+    return  {'Messeges':'Data has been deleted'}
+
+
+
     
