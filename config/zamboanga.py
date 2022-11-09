@@ -37,30 +37,32 @@ class ZamboangaDB(object):
         #     ZamboangaDB.DATABASE.commit()
         #     ZamboangaDB.DATABASE.close()
 
-        try: 
-            cursor.execute(
-                """CREATE TABLE IF NOT EXISTS routes (id INT AUTO_INCREMENT PRIMARY KEY, 
-                            routes_name VARCHAR(100), 
-                            distance DECIMAL(9,2),
-                            UNIQUE (routes_name))""")
+        # try: 
+        #     cursor.execute(
+        #         """CREATE TABLE IF NOT EXISTS routes (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     routes_name VARCHAR(100), 
+        #                     distance DECIMAL(9,2),
+        #                     UNIQUE (routes_name))""")
                     
-        except Exception as ex:
-            print("Error", f"Error due to :{str(ex)}")
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
 
-        finally:
-            ZamboangaDB.DATABASE.commit()
-            ZamboangaDB.DATABASE.close()
+        # finally:
+        #     ZamboangaDB.DATABASE.commit()
+        #     ZamboangaDB.DATABASE.close()
 
         # try: 
         #     cursor.execute(
         #         """CREATE TABLE IF NOT EXISTS hauling (id INT AUTO_INCREMENT PRIMARY KEY, 
         #                     trans_date date,
+        #                     equipment_id VARCHAR(100),
         #                     routes VARCHAR(100),
         #                     distance DECIMAL(9,2), 
         #                     trackFactor DECIMAL(9,2),
         #                     no_trips DECIMAL(9,2),
         #                     rate DECIMAL(9,2),
         #                     taxRate DECIMAL(3,2),
+        #                     amount DECIMAL(9,2),  
         #                     vat_output DECIMAL(9,2),
         #                     net_of_vat DECIMAL(9,2) 
         #                     user VARCHAR(100),

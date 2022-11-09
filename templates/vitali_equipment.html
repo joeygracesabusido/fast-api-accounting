@@ -19,7 +19,8 @@
 
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#equipmentTable">
                 Equipment Table
-            </button><br><br>
+            </button>
+            <br><br>
 
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addRoutes">
                 Add Routes
@@ -28,6 +29,13 @@
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#routesTable">
                 Routes Table
             </button>
+
+            <br><br>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addHauling">
+                Add Hauling
+            </button>
+
+            
         </div>
             <!-- Modal -->
             <div class="modal fade" id="updateEquipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -370,6 +378,176 @@
                 </div>
             </div>
 
+
+
+            <!-- This is for Adding Hauling  -->
+
+            <div class="modal fade" id="addHauling" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Hauling</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+                        <label for="Trans Date"
+                        >Transaction Date</label>
+                        
+                        <input 
+                        type="date"
+                        name="trans_date"
+                        id="trans_date"
+                        
+                        class="form-control"
+                        >
+                        
+                        
+                        
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id_h"
+                        id="equipment_id_h"
+                        class="form-control"
+                        >
+
+
+                        <label for="Routes"
+                        >Routes</label>
+                        
+                        <input 
+                        type="text"
+                        name="routes_h"
+                        id="routes_h"
+                        class="form-control"
+                        >
+
+                        <label for="Distance"
+                        >Distance</label>
+                        
+                        <input 
+                        type="number"
+                        name="distance_h"
+                        id="distance_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Track Factor"
+                        >Trackfactor</label>
+                        
+                        <input 
+                        type="text"
+                        name="trackFactor_h"
+                        id="trackFactor_h"
+                        class="form-control"
+                        >
+
+                        <label for="Number of Trips"
+                        >Number of Trips</label>
+                        
+                        <input 
+                        type="number"
+                        name="no_trips_h"
+                        id="no_trips_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Rate"
+                        >Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rate_h"
+                        id="rate_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="TotalAmount"
+                        >Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rate_h"
+                        id="rate_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+                        
+                        <br>
+                    
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="vatable" name="vatable"onclick="checkBoxes()">
+                            <label class="custom-control-label" for="customCheck1">Vatable</label>
+
+                            <input type="checkbox" class="custom-control-input" id="not-vat" name="not-vat">
+                            <label class="custom-control-label" for="customCheck1">Non-Vat</label>
+                        </div>
+
+                       
+                        <br>
+                        <label for="TaxRate"
+                        >Tax Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="taxRate_h"
+                        id="taxRate_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+                       
+
+                        <label for="Vat Output"
+                        >Vat Output</label>
+                        
+                        <input 
+                        type="number"
+                        name="vat_output_h"
+                        id="vat_output_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Net of Vat"
+                        >Net of Vat</label>
+                        
+                        <input 
+                        type="number"
+                        name="net_of_vat_h"
+                        id="net_of_vat_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                       
+                        
+                        <br><br>
+
+                        
+                
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_hauling()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
         
         
         
@@ -438,7 +616,7 @@
 
     <script type="text/javascript">
 
-function update_equipment(){
+        function update_equipment(){
             var data = {}
             var id = document.getElementById("transID").value
             data["equipment_id"] = document.getElementById("equipment_id_update").value
@@ -448,10 +626,13 @@ function update_equipment(){
             
             console.log(data)
 
-            fetch("/api-update-equipment/"+id, {
-            method:'PUT', 
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
+            if (id ===''){
+                window.alert("Trans ID field is requires");
+            } else{
+                fetch("/api-update-equipment/"+id, {
+                    method:'PUT', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
                 })
 
 
@@ -481,6 +662,9 @@ function update_equipment(){
                 });
 
             }
+
+            }
+
     </script>
 
 
@@ -550,14 +734,25 @@ function update_equipment(){
             const responce = await fetch(search_url)
             const data = await responce.json();
             console.log(data)
-            var equipment_id = data[0].equipment_id
-            var equipment_desc = data[0].equipment_desc
-            var remarks = data[0].remarks
-            
+            if (responce.status != 200){
+                    window.alert("Unauthorized Please Login")
 
-            document.getElementById("equipment_id_update").value = equipment_id
-            document.getElementById("equipment_desc_update").value = equipment_desc
-            document.getElementById("remarks_update").value = remarks
+                };
+
+            if (data.length === 0){
+                window.alert(`No ID store for ${transid}`)
+            }else{
+                var equipment_id = data[0].equipment_id
+                var equipment_desc = data[0].equipment_desc
+                var remarks = data[0].remarks
+                
+
+                document.getElementById("equipment_id_update").value = equipment_id
+                document.getElementById("equipment_desc_update").value = equipment_desc
+                document.getElementById("remarks_update").value = remarks
+
+            }
+            
         
 
         }
@@ -656,7 +851,77 @@ function update_equipment(){
         
        
 
-</script>
+    </script>
+
+    <!-- ==================================This is for Hauling Frame====================================== -->
+
+    <script type="text/javascript">
+        function insert_hauling(){
+            var data = {}
+            
+            data["routes_name"] = document.getElementById("routes_name").value
+            data["distance"] = document.getElementById("distance").value
+            
+           
+            
+            console.log(data)
+
+            fetch("/api-add-routes/", {
+            method:'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+                })
+
+
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Save");
+                        window.location.assign("/zamboanga-equipment/");
+                        console.log(json);
+                    }
+                    else if (fetch_status == 401){
+                        window.alert("Unauthorized credential Please Login");
+                    }
+                })
+                .catch(function (Error){
+                    // Catch errors
+                    window.alert(Error);
+                    console.log(Error);
+                });
+                
+          
+            
+        }
+    </script>
+
+    <script>
+        function checkBoxes(){
+            let checkboxes = document.querySelector('#vatable');
+            if (checkboxes.check){
+            var testValue = document.getElementById('taxRate_h').value = .12;
+            console.log(testValue)
+        }
+
+        }
+        
+        // document.getElementById('vatable').forEach(function(chk){
+        // chk.addEventListener('click', function() {
+        //     if(this.checked){
+        //         var testValue = document.getElementById('taxRate_h').value = .12;
+        //         console.log(testValue)
+        //     }
+        // });
+        // });
+    </script>
 
 
 
