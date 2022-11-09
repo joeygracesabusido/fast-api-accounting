@@ -1,6 +1,6 @@
 # import jwt
 # from urllib import response
-from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response
+from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response,status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from config.db import mydb
@@ -27,6 +27,44 @@ zamboanga_client = APIRouter(include_in_schema=False)
 
 
 templates = Jinja2Templates(directory="templates")
+
+
+
+def validateLogin(request:Request):
+    """This function is for Log In Authentication"""
+    
+    try :
+        token = request.cookies.get('access_token')
+        # print(token)
+        if token is None:
+            raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized",
+            headers={"WWW-Authenticate": "Basic"},
+            )
+        else:
+            scheme, _, param = token.partition(" ")
+            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+            username = payload.get("sub")
+        
+
+            user =  mydb.login.find({"username":username})
+
+            if user is not None:
+
+                return username
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized Please login",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
+
+
+
 
 
 
@@ -512,9 +550,11 @@ async def get_income_statement(request:Request):
 
 #==================================================Equipment Vitali =====================================================
 @zamboanga_client.get("/zamboanga-equipment/", response_class=HTMLResponse)
-async def equipment_zamboanga(request:Request):
+async def equipment_zamboanga(request:Request, username: str = Depends(validateLogin)):
     """This function is to show page for Equipment"""
-    return templates.TemplateResponse("vitali_equipment.html",{'request':request})
+
+    user = username
+    return templates.TemplateResponse("vitali_equipment.html",{'request':request,'user':user})
 
 
 

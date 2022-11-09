@@ -60,11 +60,12 @@ class ZamboangaDB(object):
         #                     distance DECIMAL(9,2), 
         #                     trackFactor DECIMAL(9,2),
         #                     no_trips DECIMAL(9,2),
+        #                     volume DECIMAL(9,2),
         #                     rate DECIMAL(9,2),
         #                     taxRate DECIMAL(3,2),
         #                     amount DECIMAL(9,2),  
         #                     vat_output DECIMAL(9,2),
-        #                     net_of_vat DECIMAL(9,2) 
+        #                     net_of_vat DECIMAL(9,2), 
         #                     user VARCHAR(100),
         #                     date_updated date,
         #                     date_credited date) """)
@@ -245,4 +246,77 @@ class ZamboangaDB(object):
             print("Error", f"Error due to :{str(ex)}")
         finally:
             ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def select_routes(routes_name):
+        """
+        This function is for querying with parameters of ID
+        """
+
+       
+        ZamboangaDB.DATABASE._open_connection()
+        try:
+            data = ('SELECT * FROM routes \
+                WHERE routes_name LIKE %s')
+
+            val = ('%' + routes_name + '%',)
+            cursor.execute(data,(val),)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            # Database.DATABASE.commit()
             ZamboangaDB.DATABASE.close()  
+
+#=========================================Vitali Hauling ===========================================
+   
+
+    @staticmethod
+    def insert_hauling(trans_date,equipment_id,routes,
+                        distance,trackFactor,no_trips,volume,
+                        rate,taxRate,amount,vat_output,net_of_vat,user,date_credited):
+        """This is to insert to database rental to hauling Table"""
+        ZamboangaDB.DATABASE._open_connection() # to open database connection
+
+        try:
+           
+            data = ( "INSERT INTO hauling (trans_date,equipment_id,routes,\
+                        distance,trackFactor,no_trips,volume,\
+                        rate,taxRate,amount,vat_output,net_of_vat,user,date_credited)"
+                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")
+            val = (trans_date,equipment_id,routes,
+                        distance,trackFactor,no_trips,volume,
+                        rate,taxRate,amount,vat_output,net_of_vat,user,date_credited)
+            #                  
+            # cursor.execute(data)              
+            cursor.execute(data,val) 
+           
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def select_all_hauling():
+        """
+        This function is for querying all hauling
+        """
+
+       
+        ZamboangaDB.DATABASE._open_connection()
+        try:
+            data = ('SELECT * FROM hauling \
+                ')
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            # Database.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()

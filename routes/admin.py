@@ -704,7 +704,7 @@ def delete_surigao_pesoBill(id,token: str = Depends(oauth_scheme)):
 #============================================Vitali Zamboangao Project======================================
 from config.zamboanga import ZamboangaDB
 ZamboangaDB.initialize()
-from models.model import Equipment,Routes
+from models.model import Equipment,Routes, Hauling
 
 @admin.post('/api-add-equipment/')
 def add_equipment(items: Equipment, token: str = Depends(oauth_scheme)):
@@ -825,6 +825,94 @@ def get_routes(token: str=Depends(oauth_scheme)):
         agg_result_list.append(data)
         # print(agg_result_list)
     return (agg_result_list)
+
+
+@admin.get("/api-search-routes/")
+def autocomplete_routes(term: Optional[str]):
+    items = ZamboangaDB.select_routes(routes_name=term)
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item[1])
+        
+    return suggestions
+
+
+@admin.get("/api-search-distance/")
+def autocomplete_routes_distance(term: Optional[str]):
+    items = ZamboangaDB.select_routes(routes_name=term)
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item[2])
+        
+    return suggestions
+
+
+#=======================================Vitali Hauling=====================================
+@admin.post('/api-add-hauling/')
+def add_equipment(items: Hauling, token: str = Depends(oauth_scheme)):
+    """This function is for posting routes"""
+
+   
+    
+    dateToday = date.today()
+
+    ZamboangaDB.insert_hauling(trans_date=items.trans_date,equipment_id=items.equipment_id,
+                                routes=items.routes,distance=items.distance,
+                                trackFactor=items.trackFactor,no_trips=items.no_trips,
+                                volume=items.volume,rate=items.rate,taxRate=items.taxRate,
+                                amount=items.amount,vat_output=items.vat_output,
+                                net_of_vat=items.net_of_vat,user=items.user,date_credited=dateToday)
+    return {'Messege': 'Has been Save'}
+
+
+@admin.get('/api-get-haulings/')
+def get_hauling(token: str=Depends(oauth_scheme)):
+    """This function is for querying all Hauling"""
+    myresult = ZamboangaDB.select_all_hauling()
+
+    agg_result_list = []
+    
+    for x in myresult:
+        id = x[0]
+        trans_date = x[1]
+        equipment_id = x[2]
+        routes = x[3]
+        distance = x[4]
+        trackFactor = x[5]
+        no_trips = x[6]
+        volume = x[7]
+        rate = x[8]
+        taxRate = x[9]
+        amount = x[10]
+        user = x[13]
+        date_credited = x[15]
+    
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "trans_date": trans_date ,
+            "equipment_id": equipment_id,
+            "routes": routes,
+            "distance": distance,
+            "trackFactor": trackFactor,
+            "no_trips": no_trips,
+            "volume": volume,
+            "rate": rate,
+            "taxRate": taxRate,
+            "amount": amount,
+            "user": user,
+            "date_credited": date_credited,
+          
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return agg_result_list
+
 
     
 

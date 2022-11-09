@@ -125,3 +125,21 @@ class Routes(BaseModel):
     """This is for inserting Routes Zamboanga Vitali Project"""
     routes_name: str
     distance: float
+
+class Hauling(BaseModel):
+    """This is for Pydantic Hauling Zamboanga Vitali Project"""
+    trans_date: date
+    equipment_id: str
+    routes: str
+    distance: float
+    trackFactor: float
+    no_trips: float
+    volume: float
+    rate: float
+    taxRate: float
+    amount: float
+    vat_output: float
+    net_of_vat: float
+    user: str
+    # date_updated: date
+    # date_credited: date

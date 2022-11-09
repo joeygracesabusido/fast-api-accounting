@@ -394,9 +394,19 @@
 
                     
                     <div class="modal-body">
-
+                    
+                        <input 
+                        type="text" hidden
+                        name="username"
+                        id="username"
+                        value={{user}}
+                        class="form-control"
+                        >
+                     
                         <label for="Trans Date"
                         >Transaction Date</label>
+
+
                         
                         <input 
                         type="date"
@@ -419,7 +429,7 @@
                         class="form-control"
                         >
 
-
+                        <br>
                         <label for="Routes"
                         >Routes</label>
                         
@@ -427,8 +437,14 @@
                         type="text"
                         name="routes_h"
                         id="routes_h"
-                        class="form-control"
+                        style="width: 250px;"
                         >
+                        <button type="submit" onclick="display_distance()"  class="btn btn-success">
+                            Search
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                        <br>
 
                         <label for="Distance"
                         >Distance</label>
@@ -462,6 +478,17 @@
                         class="form-control"
                         >
 
+                        <label for="Volume"
+                        >Volume</label>
+                        
+                        <input 
+                        type="number"
+                        name="volume_h"
+                        id="volume_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
                         <label for="Rate"
                         >Rate</label>
                         
@@ -474,23 +501,29 @@
                         >
 
                         <label for="TotalAmount"
-                        >Rate</label>
+                        >Amount</label>
                         
+                        <br>
                         <input 
                         type="number"
-                        name="rate_h"
-                        id="rate_h"
+                        name="amount_h"
+                        id="amount_h"
                         step="0.01"
-                        class="form-control"
+                        
                         >
+
+                        <button type="submit" onclick="calculate()"  class="btn btn-success">
+                            Calculate
+                            <i class="fas fa-database"></i>
+                        </button>
                         
                         <br>
                     
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="vatable" name="vatable"onclick="checkBoxes()">
+                            <input type="checkbox" class="custom-control-input" id="vatable" value="0.12" name="vatable">
                             <label class="custom-control-label" for="customCheck1">Vatable</label>
 
-                            <input type="checkbox" class="custom-control-input" id="not-vat" name="not-vat">
+                            <input type="checkbox" class="custom-control-input" id="not-vat" value=0 name="not-vat">
                             <label class="custom-control-label" for="customCheck1">Non-Vat</label>
                         </div>
 
@@ -859,14 +892,25 @@
         function insert_hauling(){
             var data = {}
             
-            data["routes_name"] = document.getElementById("routes_name").value
-            data["distance"] = document.getElementById("distance").value
+            data["trans_date"] = document.getElementById("trans_date").value
+            data["equipment_id"] = document.getElementById("equipment_id_h").value
+            data["routes"] = document.getElementById("routes_h").value
+            data["distance"] = document.getElementById("distance_h").value
+            data["trackFactor"] = document.getElementById("trackFactor_h").value
+            data["no_trips"] = document.getElementById("no_trips_h").value
+            data["volume"] = document.getElementById("volume_h").value
+            data["rate"] = document.getElementById("rate_h").value
+            data["taxRate"] = document.getElementById("taxRate_h").value
+            data["amount"] = document.getElementById("amount_h").value
+            data["vat_output"] = document.getElementById("vat_output_h").value
+            data["net_of_vat"] = document.getElementById("net_of_vat_h").value
+            data["user"] = document.getElementById("username").value
             
            
             
             console.log(data)
 
-            fetch("/api-add-routes/", {
+            fetch("/api-add-hauling/", {
             method:'POST', 
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
@@ -903,26 +947,103 @@
         }
     </script>
 
-    <script>
-        function checkBoxes(){
-            let checkboxes = document.querySelector('#vatable');
-            if (checkboxes.check){
-            var testValue = document.getElementById('taxRate_h').value = .12;
-            console.log(testValue)
-        }
+    <!-- This is for calculation of vat and etc -->
 
+    <script>
+        function calculate(){
+            let checkBox = document.getElementById('vatable');
+            var distance = document.getElementById('distance_h').value;
+            var truckfactor = document.getElementById('trackFactor_h').value;
+            var no_trips = document.getElementById('no_trips_h').value;
+            var volume = document.getElementById('volume_h').value;
+            var rate = document.getElementById('rate_h').value;
+            
+            
+            var amt = parseFloat(distance) * parseFloat(truckfactor) * parseFloat(rate) * parseFloat(no_trips)
+            var volume = parseFloat(distance) * parseFloat(truckfactor)  * parseFloat(no_trips)
+           
+            document.getElementById('amount_h').value = amt.toFixed(2);
+            volume = document.getElementById('volume_h').value = volume.toFixed(2);
+            var testValue;
+            var vatOuput;
+            var netofVat;
+
+            
+            if (checkBox.checked){
+                testValue = 0.12
+                netofVat = amt/1.12
+                vatOuput = netofVat * 0.12
+                document.getElementById('taxRate_h').value = testValue.toFixed(2);
+                document.getElementById('net_of_vat_h').value = netofVat.toFixed(2);
+                document.getElementById('vat_output_h').value = vatOuput.toFixed(2);
+
+            }else{
+                checkBox2 = document.getElementById('not-vat')
+                testValue = 0.00
+                netofVat = amt
+                vatOuput = 0.00
+                document.getElementById('taxRate_h').value = testValue.toFixed(2);
+                document.getElementById('net_of_vat_h').value = netofVat.toFixed(2);
+                document.getElementById('vat_output_h').value = vatOuput.toFixed(2);
+                
+                
+            }
+
+
+           
         }
         
-        // document.getElementById('vatable').forEach(function(chk){
-        // chk.addEventListener('click', function() {
-        //     if(this.checked){
-        //         var testValue = document.getElementById('taxRate_h').value = .12;
-        //         console.log(testValue)
-        //     }
-        // });
-        // });
+           
+       
+       
+       
     </script>
 
+    <!-- This is for auto complete of Routes -->
+    <script>
+        $( function() { 
+                    $("#routes_h").autocomplete({
+                    source: "/api-search-routes/"
+                    });
+
+                } );
+
+    </script>
+
+    <!-- this is for auto display of Distance for Hauling -->
+    <script type="text/javascript">
+
+        // const rental_url =search_url ;
+        async function display_distance(){
+            var routeSearch = document.getElementById("routes_h").value
+
+            const search_url = `/api-search-distance/?term=${routeSearch}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            console.log(data.length)
+
+            if (responce.status != 200){
+                window.alert("Unauthorized Please Login")
+
+            };
+
+            if (data.length === 0){
+                window.alert(`No ID store for ${routeSearch}`)
+            }
+            else{
+                var distance = data[0]
+            
+                document.getElementById('distance_h').value = distance
+                
+
+            }
+              
+            
+        }
+    </script>
 
 
 
