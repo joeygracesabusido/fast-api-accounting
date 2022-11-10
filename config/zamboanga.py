@@ -320,3 +320,29 @@ class ZamboangaDB(object):
         finally:
             # Database.DATABASE.commit()
             ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def update_hauling(id,trans_date,equipment_id,routes,
+                        distance,trackFactor,no_trips,volume,
+                        rate,taxRate,amount,vat_output,net_of_vat,user,date_updated):
+        """
+        This function is to update Hauling with parameters of  ID
+        """
+        ZamboangaDB.DATABASE._open_connection()
+        try:
+            data = ('UPDATE hauling SET trans_date=%s,equipment_id=%s,routes=%s,\
+                        distance=%s,trackFactor=%s,no_trips=%s,volume=%s,\
+                        rate=%s,taxRate=%s,amount=%s,vat_output=%s,net_of_vat=%s,user=%s,date_updated,\
+                        WHERE id = %s')
+            val =(trans_date,equipment_id,routes,
+                    distance,trackFactor,no_trips,volume,
+                     rate, taxRate,amount,vat_output,net_of_vat,user,
+                     date_updated, id)
+            cursor.execute(data,val)
+           
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()

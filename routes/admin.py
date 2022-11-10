@@ -886,7 +886,10 @@ def get_hauling(token: str=Depends(oauth_scheme)):
         rate = x[8]
         taxRate = x[9]
         amount = x[10]
+        vat_output = x[11]
+        net_of_vat = x[12]
         user = x[13]
+        date_updated = x[14]
         date_credited = x[15]
     
         data={}   
@@ -904,7 +907,10 @@ def get_hauling(token: str=Depends(oauth_scheme)):
             "rate": rate,
             "taxRate": taxRate,
             "amount": amount,
+            "vat_output": vat_output,
+            "net_of_vat": net_of_vat,
             "user": user,
+            "date_updated": date_updated,
             "date_credited": date_credited,
           
         })
@@ -912,6 +918,20 @@ def get_hauling(token: str=Depends(oauth_scheme)):
         agg_result_list.append(data)
         # print(agg_result_list)
     return agg_result_list
+
+
+@admin.put('/api-update-hauling/{id}')
+def update_hauling(id,items:Hauling,token: str = Depends(oauth_scheme)):
+    """This function is to update equipment """
+
+    dateToday = date.today()
+    ZamboangaDB.update_hauling(id=id,trans_date=items.trans_date,equipment_id=items.equipment_id,
+                                routes=items.routes,distance=items.distance,
+                                trackFactor=items.trackFactor,no_trips=items.no_trips,
+                                volume=items.volume,rate=items.rate,taxRate=items.taxRate,
+                                amount=items.amount,vat_output=items.vat_output,
+                                net_of_vat=items.net_of_vat,user=items.user,date_updated=dateToday)
+    return  {'Messeges':'Data has been updated'}
 
 
     

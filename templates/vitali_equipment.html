@@ -35,6 +35,10 @@
                 Add Hauling
             </button>
 
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#updateHauling">
+                Update hauling
+            </button>
+
             
         </div>
             <!-- Modal -->
@@ -581,6 +585,207 @@
 
 
 
+
+            <!-- This is for Updating Hauling  -->
+
+            <div class="modal fade" id="updateHauling" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Hauling</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                    
+                        <input 
+                        type="text" hidden
+                        name="username_update"
+                        id="username_update"
+                        value={{user}}
+                        class="form-control"
+                        >
+                     
+                        <label for="Trans Date"
+                        >Transaction Date</label>
+
+
+                        
+                        <input 
+                        type="date"
+                        name="trans_date_update"
+                        id="trans_date_update"
+                        
+                        class="form-control"
+                        >
+                        
+                        
+                        
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id_h_update"
+                        id="equipment_id_h_update"
+                        class="form-control"
+                        >
+
+                        <br>
+                        <label for="Routes"
+                        >Routes</label>
+                        
+                        <input 
+                        type="text"
+                        name="routes_h_update"
+                        id="routes_h_update"
+                        style="width: 250px;"
+                        >
+                        <button type="submit" onclick="display_distance_update()"  class="btn btn-success">
+                            Search
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                        <br>
+
+                        <label for="Distance"
+                        >Distance</label>
+                        
+                        <input 
+                        type="number"
+                        name="distance_h_update"
+                        id="distance_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Track Factor"
+                        >Trackfactor</label>
+                        
+                        <input 
+                        type="text"
+                        name="trackFactor_h_update"
+                        id="trackFactor_h_update"
+                        class="form-control"
+                        >
+
+                        <label for="Number of Trips"
+                        >Number of Trips</label>
+                        
+                        <input 
+                        type="number"
+                        name="no_trips_h_update"
+                        id="no_trips_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Volume"
+                        >Volume</label>
+                        
+                        <input 
+                        type="number"
+                        name="volume_h_update"
+                        id="volume_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Rate"
+                        >Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rate_h_update"
+                        id="rate_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="TotalAmount"
+                        >Amount</label>
+                        
+                        <br>
+                        <input 
+                        type="number"
+                        name="amount_h_update"
+                        id="amount_h_update"
+                        step="0.01"
+                        
+                        >
+
+                        <button type="submit" onclick="calculate_update()"  class="btn btn-success">
+                            Calculate
+                            <i class="fas fa-database"></i>
+                        </button>
+                        
+                        <br>
+                    
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="vatable_update" value="0.12" name="vatable">
+                            <label class="custom-control-label" for="customCheck1">Vatable</label>
+
+                            <input type="checkbox" class="custom-control-input" id="not-vat_update" value=0 name="not-vat">
+                            <label class="custom-control-label" for="customCheck1">Non-Vat</label>
+                        </div>
+
+                       
+                        <br>
+                        <label for="TaxRate"
+                        >Tax Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="taxRate_h_update"
+                        id="taxRate_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+                       
+
+                        <label for="Vat Output"
+                        >Vat Output</label>
+                        
+                        <input 
+                        type="number"
+                        name="vat_output_h_update"
+                        id="vat_output_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Net of Vat"
+                        >Net of Vat</label>
+                        
+                        <input 
+                        type="number"
+                        name="net_of_vat_h_update"
+                        id="net_of_vat_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <br><br>
+
+                        
+                
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="update_hauling()" class="btn btn-primary">Update</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
+
         
         
         
@@ -1043,6 +1248,103 @@
               
             
         }
+    </script>
+
+
+    <!--==================================This is for updating Hauling JavaScript====================== -->
+
+     <!-- This is for auto complete of Routes -->
+     <script>
+        $( function() { 
+                    $("#routes_h_update").autocomplete({
+                    source: "/api-search-routes/"
+                    });
+
+                } );
+
+    </script>
+
+
+<!-- ==============================this is for auto display of Distance for Hauling====================  -->
+    <script type="text/javascript">
+
+        // const rental_url =search_url ;
+        async function display_distance_update(){
+            var routeSearch = document.getElementById("routes_h_update").value
+
+            const search_url = `/api-search-distance/?term=${routeSearch}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            console.log(data.length)
+
+            if (responce.status != 200){
+                window.alert("Unauthorized Please Login")
+
+            };
+
+            if (data.length === 0){
+                window.alert(`No ID store for ${routeSearch}`)
+            }
+            else{
+                var distance = data[0]
+            
+                document.getElementById('distance_h_update').value = distance
+                
+
+            }
+              
+            
+        }
+    </script>
+
+    <!--=====================This is for computation of Vat========================= -->
+
+    <script>
+        function calculate_update(){
+            let checkBox = document.getElementById('vatable_update');
+            var distance = document.getElementById('distance_h_update').value;
+            var truckfactor = document.getElementById('trackFactor_h_update').value;
+            var no_trips = document.getElementById('no_trips_h_update').value;
+            var volume = document.getElementById('volume_h_update').value;
+            var rate = document.getElementById('rate_h_update').value;
+            
+            
+            var amt = parseFloat(distance) * parseFloat(truckfactor) * parseFloat(rate) * parseFloat(no_trips)
+            var volume = parseFloat(distance) * parseFloat(truckfactor)  * parseFloat(no_trips)
+           
+            document.getElementById('amount_h_update').value = amt.toFixed(2);
+            volume = document.getElementById('volume_h_update').value = volume.toFixed(2);
+            var testValue;
+            var vatOuput;
+            var netofVat;
+
+            
+            if (checkBox.checked){
+                testValue = 0.12
+                netofVat = amt/1.12
+                vatOuput = netofVat * 0.12
+                document.getElementById('taxRate_h_update').value = testValue.toFixed(2);
+                document.getElementById('net_of_vat_h_update').value = netofVat.toFixed(2);
+                document.getElementById('vat_output_h_update').value = vatOuput.toFixed(2);
+
+            }else{
+                checkBox2 = document.getElementById('not-vat_update')
+                testValue = 0.00
+                netofVat = amt
+                vatOuput = 0.00
+                document.getElementById('taxRate_h_update').value = testValue.toFixed(2);
+                document.getElementById('net_of_vat_h_update').value = netofVat.toFixed(2);
+                document.getElementById('vat_output_h_update').value = vatOuput.toFixed(2);
+                
+                
+            }
+           
+        }
+        
+           
     </script>
 
 
