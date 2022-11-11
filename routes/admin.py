@@ -755,7 +755,7 @@ def update_equipment(id,item:Equipment,token: str = Depends(oauth_scheme)):
     return  {'Messeges':'Data has been updated'}
 
 @admin.delete('/api-delete-equipment/{id}')
-def delete_employee(id,token: str = Depends(oauth_scheme)):
+def delete_equipment(id,token: str = Depends(oauth_scheme)):
     """This function is to delete equipment"""
     ZamboangaDB.delete_equipment(id=id)
     return  {'Messeges':'Data has been deleted'}
@@ -1031,13 +1031,22 @@ def update_hauling(id,items:Hauling,token: str = Depends(oauth_scheme)):
     """This function is to update equipment """
 
     dateToday = date.today()
+    
+
     ZamboangaDB.update_hauling(id=id,trans_date=items.trans_date,equipment_id=items.equipment_id,
-                                routes=items.routes,distance=items.distance,
-                                trackFactor=items.trackFactor,no_trips=items.no_trips,
-                                volume=items.volume,rate=items.rate,taxRate=items.taxRate,
-                                amount=items.amount,vat_output=items.vat_output,
-                                net_of_vat=items.net_of_vat,user=items.user,date_updated=dateToday)
+                        routes=items.routes,distance=items.distance,
+                        trackFactor=items.trackFactor,no_trips=items.no_trips,volume=items.volume,
+                        rate=items.rate,taxRate=items.taxRate,amount=items.amount,vat_output=items.vat_output,
+                        net_of_vat=items.net_of_vat,user=items.user,date_updated=dateToday)
+
     return  {'Messeges':'Data has been updated'}
+
+
+@admin.delete('/api-delete-hauling/{id}')
+def delete_hauling(id,token: str = Depends(oauth_scheme)):
+    """This function is to delete equipment"""
+    ZamboangaDB.delete_hauling(id=id)
+    return  {'Messeges':'Data has been deleted'}
 
 
     

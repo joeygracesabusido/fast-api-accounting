@@ -379,7 +379,7 @@ class ZamboangaDB(object):
         try:
             data = ('UPDATE hauling SET trans_date=%s,equipment_id=%s,routes=%s,\
                         distance=%s,trackFactor=%s,no_trips=%s,volume=%s,\
-                        rate=%s,taxRate=%s,amount=%s,vat_output=%s,net_of_vat=%s,user=%s,date_updated,\
+                        rate=%s,taxRate=%s,amount=%s,vat_output=%s,net_of_vat=%s,user=%s,date_updated=%s\
                         WHERE id = %s')
             val =(trans_date,equipment_id,routes,
                     distance,trackFactor,no_trips,volume,
@@ -392,3 +392,22 @@ class ZamboangaDB(object):
         finally:
             ZamboangaDB.DATABASE.commit()
             ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def delete_hauling(id):
+        """This function si for deleting Rental with Parametes"""
+        ZamboangaDB.DATABASE._open_connection()    
+
+        try:
+            data = ('DELETE FROM hauling \
+                WHERE id = "'+id+'"')       
+                        
+            # cursor.execute(data)              
+            cursor.execute(data) 
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()  

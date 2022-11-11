@@ -59,7 +59,7 @@ def validateLogin(request:Request):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail= "Not Authorized Please login",
-            headers={"WWW-Authenticate": "Basic"},
+            # headers={"WWW-Authenticate": "Basic"},
         )
 
 

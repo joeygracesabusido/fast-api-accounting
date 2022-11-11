@@ -798,7 +798,7 @@
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" onclick="update_hauling()" class="btn btn-primary">Update</button>
+                    <button type="submit" onclick="update_hauling()" class="btn btn-primary">Update Hauling</button>
                     <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                     </div>
                 </div>
@@ -858,6 +858,10 @@
                         
                             >
 
+                           
+
+                            
+
                             <button type="submit"  onclick="display_hauling_data()" class="btn btn-primary">
                                 Search Data
                                 <i class="fas fa-database"></i>
@@ -866,7 +870,7 @@
                         </div>
 
                         <div  class="container mt-3">
-                            <table id="myTable_routes" class="table table-bordered"  style="text-align: center;">
+                            <table id="myTable_hauling" class="table table-bordered"  style="text-align: center;">
                                 <thead class="table-dark">
                                 
                                         <td>ID</td>
@@ -905,6 +909,8 @@
                                        
                                     
                                 </tbody>
+
+                                
                 
                                
                 
@@ -924,8 +930,32 @@
                     
                     </div>
                     <div class="modal-footer">
+
+                        <label>Total Trips</label>
+                            <input 
+                            type="text"
+                            name="totalTrips"
+                            id="totalTrips"
+                            style="width: 75px;"
+                            >
+
+                        <label>Volume</label>
+                            <input 
+                            type="text"
+                            name="totalVolume"
+                            id="totalVolume"
+                            style="width: 75px;"
+                            >
+
+                        <label>Amount</label>
+                            <input 
+                            type="text"
+                            name="totalAmount"
+                            id="totalAmount"
+                            style="width: 75px;"
+                            >
                     
-                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                   
                     </div>
                 </div>
                 </div>
@@ -1555,6 +1585,76 @@
 
         </script>
 
+        <!-- This is for updating Hauling Function -->
+
+        <script type="text/javascript">
+            
+
+            function update_hauling(){
+                var data = {}
+                var id = document.getElementById("transID_h_update").value
+
+                data["trans_date"] = document.getElementById("trans_date_update").value;
+                data["user"] = document.getElementById("username_update").value;
+                data["equipment_id"] =  document.getElementById("equipment_id_h_update").value;
+                data["routes"] = document.getElementById("routes_h_update").value;
+                data["distance"] = document.getElementById("distance_h_update").value;
+                data["trackFactor"] = document.getElementById("trackFactor_h_update").value;
+                data["no_trips"] = document.getElementById("no_trips_h_update").value ;
+                data["volume"] = document.getElementById("volume_h_update").value;
+                data["rate"] = document.getElementById("rate_h_update").value;
+                data["taxRate"] = document.getElementById("taxRate_h_update").value;
+                data["amount"] = document.getElementById("amount_h_update").value;
+                data["vat_output"] = document.getElementById("vat_output_h_update").value;
+                data["net_of_vat"] = document.getElementById("net_of_vat_h_update").value;
+            
+                
+                console.log(data)
+
+                if (id ===''){
+                    window.alert("Trans ID field is requires");
+                } else{
+                    fetch("/api-update-hauling/"+id, {
+                        method:'PUT', 
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+
+
+                    .then(function (response) {
+                        // Save the response status in a variable to use later.
+                        fetch_status = response.status;
+                        // Handle success
+                        // eg. Convert the response to JSON and return
+                        return response.json();
+                    }) 
+                    .then(function (json) {
+                        // Check if the response were success
+                        if (fetch_status == 200) {
+                            // Use the converted JSON
+                            window.alert("Your Data has been Updated");
+                            window.location.assign("/zamboanga-equipment/");
+                            console.log(json);
+                        }
+                        else if (fetch_status == 401){
+                            window.alert("Unauthorized credential Please Login");
+                        }
+                    })
+                    .catch(function (error){
+                        // Catch errors
+                        window.alert(error);
+                        console.log(error);
+                    });
+
+                }
+
+                }
+
+        </script>
+
+
+
+
 
 
 
@@ -1564,6 +1664,8 @@
             
             
             async function display_hauling_data(){
+
+                
                 var dateFrom = document.getElementById('dateFrom_h_table').value;
                 var dateTo = document.getElementById('dateTo_h_table').value;
                 var equip_id = document.getElementById('equipment_id_h_table').value;
@@ -1594,7 +1696,7 @@
 
                             
                                 <td>
-                                    <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
+                                    <button type="button"  id="remove_button" onclick="delete_hauling(${values.id})" class="btn btn-danger">
                                         <i class="fas fa-database">
                                         </i>Remove</button>
                                 </td>
@@ -1602,11 +1704,55 @@
                             </tr>`;
                 });
                 document.getElementById("table_body_hauling").innerHTML=tableData3;
+                updateSubTotal()
             }
             
            
 
         </script>
+
+
+        <script type="text/javascript">
+            function delete_hauling(id){
+            
+            fetch("/api-delete-hauling/"+ id, {
+            method:'DELETE',
+                })
+                window.alert("Your Data has been Deleted");
+                window.location.assign("/zamboanga-equipment/");
+            }
+
+        </script>
+
+        <script type="text/javascript">
+            
+            function updateSubTotal(){
+                var table = document.getElementById("myTable_hauling"),
+                sumTrips = 0;
+                sumVolume = 0;
+                sumAmount = 0;
+                for (var i = 1; i < table.rows.length; i++) {
+                sumTrips = sumTrips + parseFloat(table.rows[i].cells[6].innerHTML);
+                sumVolume = sumVolume + parseFloat(table.rows[i].cells[7].innerHTML);
+                sumAmount = sumAmount + parseFloat(table.rows[i].cells[9].innerHTML);
+
+                
+                }
+
+                let sumTripsComa = sumTrips.toLocaleString("en-US");
+                let sumVolumeComa = sumVolume.toLocaleString("en-US");
+                let sumAmountComa = sumAmount.toLocaleString("en-US");
+
+                document.getElementById("totalTrips").value = sumTripsComa;
+                document.getElementById("totalVolume").value = sumVolumeComa;
+                document.getElementById("totalAmount").value = sumAmountComa;
+
+                        
+                            }
+
+        </script>
+
+       
 
 
 
