@@ -919,6 +919,112 @@ def get_hauling(token: str=Depends(oauth_scheme)):
         # print(agg_result_list)
     return agg_result_list
 
+@admin.get('/api-get-haulings-with-params/')
+def get_hauling_date_equipmentID(datefrom,dateto,equipment_id,token: str=Depends(oauth_scheme)):
+    """This function is for querying all Hauling"""
+    myresult = ZamboangaDB.select_hauling_withParams(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    agg_result_list = []
+    
+    for x in myresult:
+        id = x[0]
+        trans_date = x[1]
+        equipment_id = x[2]
+        routes = x[3]
+        distance = x[4]
+        trackFactor = x[5]
+        no_trips = x[6]
+        volume = x[7]
+        rate = x[8]
+        taxRate = x[9]
+        amount = x[10]
+        vat_output = x[11]
+        net_of_vat = x[12]
+        user = x[13]
+        date_updated = x[14]
+        date_credited = x[15]
+    
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "trans_date": trans_date ,
+            "equipment_id": equipment_id,
+            "routes": routes,
+            "distance": distance,
+            "trackFactor": trackFactor,
+            "no_trips": no_trips,
+            "volume": volume,
+            "rate": rate,
+            "taxRate": taxRate,
+            "amount": amount,
+            "vat_output": vat_output,
+            "net_of_vat": net_of_vat,
+            "user": user,
+            "date_updated": date_updated,
+            "date_credited": date_credited,
+          
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return agg_result_list
+
+
+@admin.get('/api-get-hauling-with-id/')
+def get_hauling_date_equipmentID(id,token: str=Depends(oauth_scheme)):
+    """This function is for querying all Hauling"""
+    myresult = ZamboangaDB.select_hauling_id(id=id)
+
+    agg_result_list = []
+    
+    for x in myresult:
+        id = x[0]
+        trans_date = x[1]
+        equipment_id = x[2]
+        routes = x[3]
+        distance = x[4]
+        trackFactor = x[5]
+        no_trips = x[6]
+        volume = x[7]
+        rate = x[8]
+        taxRate = x[9]
+        amount = x[10]
+        vat_output = x[11]
+        net_of_vat = x[12]
+        user = x[13]
+        date_updated = x[14]
+        date_credited = x[15]
+    
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "trans_date": trans_date ,
+            "equipment_id": equipment_id,
+            "routes": routes,
+            "distance": distance,
+            "trackFactor": trackFactor,
+            "no_trips": no_trips,
+            "volume": volume,
+            "rate": rate,
+            "taxRate": taxRate,
+            "amount": amount,
+            "vat_output": vat_output,
+            "net_of_vat": net_of_vat,
+            "user": user,
+            "date_updated": date_updated,
+            "date_credited": date_credited,
+          
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return agg_result_list
+
+
 
 @admin.put('/api-update-hauling/{id}')
 def update_hauling(id,items:Hauling,token: str = Depends(oauth_scheme)):

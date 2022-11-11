@@ -321,6 +321,52 @@ class ZamboangaDB(object):
             # Database.DATABASE.commit()
             ZamboangaDB.DATABASE.close()
 
+    @staticmethod
+    def select_hauling_withParams(equipment_id,datefrom,dateto):
+        """
+        This function is for querying with parameters of ID & Date
+        """
+
+       
+        ZamboangaDB.DATABASE._open_connection()
+
+        try:
+            data = ' select * from hauling where \
+                         trans_date BETWEEN "'+datefrom+'" AND "'+dateto+'" AND equipment_id like  "%'+equipment_id+'%"'
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def select_hauling_id(id):
+        """
+        This function is for querying with parameters of 
+        """
+
+       
+        ZamboangaDB.DATABASE._open_connection()
+
+        try:
+            data = ' select * from hauling where \
+                         id =  "'+id+'"'
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            ZamboangaDB.DATABASE.close()
+
+
 
     @staticmethod
     def update_hauling(id,trans_date,equipment_id,routes,

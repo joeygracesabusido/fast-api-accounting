@@ -40,6 +40,11 @@
             </button>
 
             
+
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#haulingTable">
+                Hauling Table
+            </button>
+            
         </div>
             <!-- Modal -->
             <div class="modal fade" id="updateEquipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -608,6 +613,23 @@
                         value={{user}}
                         class="form-control"
                         >
+
+                        <label for="Trans id"
+                        >Transaction ID</label>
+
+                        <input 
+                        type="text" 
+                        name="transID_h_update"
+                        id="transID_h_update"
+                    
+                        >
+
+                        <button type="submit"  onclick="dislay_data_id_hauling()" class="btn btn-success">
+                            Search 
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                        <br><br>
                      
                         <label for="Trans Date"
                         >Transaction Date</label>
@@ -782,6 +804,133 @@
                 </div>
                 </div>
             </div>
+
+
+            <!-- This for table of Hauling -->
+
+            <div class="modal fade" id="haulingTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hauling Table</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="container mt-3">
+
+                            <label for="Trans Date"
+                            >Date From</label>
+
+
+                            
+                            <input 
+                            type="date"
+                            name="dateFrom_h_table"
+                            id="dateFrom_h_table"
+                        
+                            >
+
+                            <label for="Trans Date"
+                            >Date To</label>
+
+
+                            
+                            <input 
+                            type="date"
+                            name="dateTo_h_table"
+                            id="dateTo_h_table"
+                        
+                            >
+
+                            <label for="EquipmentID"
+                            >Equipment</label>
+
+
+                            
+                            <input 
+                            type="text"
+                            name="equipment_id_h_table"
+                            id="equipment_id_h_table"
+                        
+                            >
+
+                            <button type="submit"  onclick="display_hauling_data()" class="btn btn-primary">
+                                Search Data
+                                <i class="fas fa-database"></i>
+                            </button>
+                            
+                        </div>
+
+                        <div  class="container mt-3">
+                            <table id="myTable_routes" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                
+                                        <td>ID</td>
+                                        <td>Trans Date</td>
+                                        <td>Equipment ID</td>
+                                        <td>Routes</td>
+                                        <td>Distance</td>
+                                        <td>Track Factor</td>
+                                        <td>Trips</td>
+                                        <td>Volume</td>
+                                        <td>Rate</td>
+                                        <td>Amount</td>
+                                        <td>Action</td>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_hauling">
+                                   
+                                        
+                                        <tr>
+                                            
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            
+                                      
+                                        </tr>
+                                       
+                                    
+                                </tbody>
+                
+                               
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+            
+                      
+               </div>
+            
+
+                       
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
 
 
 
@@ -1265,7 +1414,7 @@
     </script>
 
 
-<!-- ==============================this is for auto display of Distance for Hauling====================  -->
+<!-- ==============================this is for auto display of Distance for Hauling Update Frame====================  -->
     <script type="text/javascript">
 
         // const rental_url =search_url ;
@@ -1300,7 +1449,7 @@
         }
     </script>
 
-    <!--=====================This is for computation of Vat========================= -->
+    <!--=====================This is for computation of Vat  UPDATE FRAME================================== -->
 
     <script>
         function calculate_update(){
@@ -1346,6 +1495,122 @@
         
            
     </script>
+
+
+        <!-- This is for displaying Hauling Transaction using ID of Transaction -->
+        <script type="text/javascript">
+
+            
+            async function dislay_data_id_hauling(){
+                var transid = document.getElementById("transID_h_update").value
+
+                const search_url = `/api-get-hauling-with-id/?id=${transid}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                if (responce.status != 200){
+                        window.alert("Unauthorized Please Login")
+
+                    };
+
+                if (data.length === 0){
+                    window.alert(`No ID store for ${transid}`)
+                }else{
+                    var trans_date = data[0].trans_date
+                    var equipment_id = data[0].equipment_id
+                    var routes = data[0].routes
+                    var distance = data[0].distance
+                    var trackFactor = data[0].trackFactor
+                    var no_trips = data[0].no_trips
+                    var volume = data[0].volume
+                    var rate = data[0].rate
+                    var taxRate = data[0].taxRate
+                    var amount = data[0].amount
+                    var vat_output = data[0].vat_output
+                    var net_of_vat = data[0].net_of_vat
+
+
+                    
+
+                    document.getElementById("trans_date_update").value = trans_date;
+                    document.getElementById("equipment_id_h_update").value= equipment_id;
+                    document.getElementById("routes_h_update").value = routes;
+                    document.getElementById("distance_h_update").value = distance;
+                    document.getElementById("trackFactor_h_update").value = trackFactor;
+                    document.getElementById("no_trips_h_update").value = no_trips;
+                    document.getElementById("volume_h_update").value = volume;
+                    document.getElementById("rate_h_update").value = rate;
+                    document.getElementById("taxRate_h_update").value = taxRate;
+                    document.getElementById("amount_h_update").value = amount;
+                    document.getElementById("vat_output_h_update").value = vat_output;
+                    document.getElementById("net_of_vat_h_update").value = net_of_vat;
+                    
+                }
+                
+            
+
+            }
+
+        </script>
+
+
+
+
+
+    <!-- ===============================Displaying Hauling Table============================ -->
+        <script type="text/javascript">
+            
+            
+            async function display_hauling_data(){
+                var dateFrom = document.getElementById('dateFrom_h_table').value;
+                var dateTo = document.getElementById('dateTo_h_table').value;
+                var equip_id = document.getElementById('equipment_id_h_table').value;
+                
+                const search_url = `/api-get-haulings-with-params/?datefrom=${dateFrom}
+                                        &dateto=${dateTo}&equipment_id=${equip_id}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData3="";
+                data.map((values)=>{
+                    tableData3+= ` <tr>
+                                <td>${values.id}</td>
+                                <td>${values.trans_date}</td>
+                                <td>${values.equipment_id}</td>
+                                <td>${values.routes}</td>
+                                <td>${values.distance}</td>
+                                <td>${values.trackFactor}</td>
+                                <td>${values.no_trips}</td>
+                                <td>${values.volume}</td>
+                                <td>${values.rate}</td>
+                                <td>${values.amount}</td>
+
+                            
+                                <td>
+                                    <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
+                                        <i class="fas fa-database">
+                                        </i>Remove</button>
+                                </td>
+                            
+                            </tr>`;
+                });
+                document.getElementById("table_body_hauling").innerHTML=tableData3;
+            }
+            
+           
+
+        </script>
+
+
+
+
 
 
 
