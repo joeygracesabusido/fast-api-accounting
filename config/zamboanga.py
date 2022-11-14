@@ -411,3 +411,31 @@ class ZamboangaDB(object):
         finally:
             ZamboangaDB.DATABASE.commit()
             ZamboangaDB.DATABASE.close()  
+
+
+    @staticmethod
+    def select_hauling_sum_per_equipment(datefrom,dateto,equipment_id):
+        """This function is for sum per equipment hauling"""
+
+        ZamboangaDB.DATABASE._open_connection()
+
+        try:
+            data = ("SELECT equipment_id,routes,\
+                sum(no_trips)  as Trips,\
+                sum(volume) as Volume,\
+                sum(amount) as Amount,\
+                sum(net_of_vat)  as NetAmount\
+            from hauling \
+            WHERE trans_date BETWEEN '" + datefrom +"'AND '" + dateto +"' AND equipment_id LIKE '%" + equipment_id +"%' \
+            GROUP BY equipment_id ,routes \
+            ORDER BY equipment_id")
+            
+            cursor.execute(data)
+            return cursor.fetchall()
+
+
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+           
+            ZamboangaDB.DATABASE.close()

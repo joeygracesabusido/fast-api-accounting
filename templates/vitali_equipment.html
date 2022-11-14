@@ -44,6 +44,10 @@
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#haulingTable">
                 Hauling Table
             </button>
+
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#summaryhaulingTable">
+                Summary of Hauling
+            </button>
             
         </div>
             <!-- Modal -->
@@ -963,6 +967,153 @@
 
 
 
+            <!-- This is for Summary of table of Hauling -->
+
+            <div class="modal fade" id="summaryhaulingTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Summary Hauling Table</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="container mt-3">
+
+                            <label for="Trans Date"
+                            >Date From</label>
+
+
+                            
+                            <input 
+                            type="date"
+                            name="dateFrom_h_sum_table"
+                            id="dateFrom_h_sum_table"
+                        
+                            >
+
+                            <label for="Trans Date"
+                            >Date To</label>
+
+
+                            
+                            <input 
+                            type="date"
+                            name="dateTo_h_sum_table"
+                            id="dateTo_h_sum_table"
+                        
+                            >
+
+                            <label for="EquipmentID"
+                            >Equipment</label>
+
+
+                            
+                            <input 
+                            type="text"
+                            name="equipment_id_h_sum_table"
+                            id="equipment_id_h_sum_table"
+                        
+                            >
+
+                           
+
+                            
+
+                            <button type="submit"  onclick="display_sum_hauling_data()" class="btn btn-primary">
+                                Search Data
+                                <i class="fas fa-database"></i>
+                            </button>
+                            
+                        </div>
+
+                        <div  class="container mt-3">
+                            <table id="my_summaryTable_hauling" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                
+                                        <td>Equipment</td>
+                                        <td>Routes</td>
+                                        <td>Trips</td>
+                                        <td>Volume</td>
+                                        <td>Amount</td>
+                                        <td>Net of Vat</td>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_sum_hauling">
+                                   
+                                        
+                                        <tr>
+                                            
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                           
+                                            
+                                      
+                                        </tr>
+                                       
+                                    
+                                </tbody>
+
+                                
+                
+                               
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+            
+                      
+               </div>
+            
+
+                       
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+
+                        <label>Total Trips</label>
+                            <input 
+                            type="text"
+                            name="totalTrips_sum"
+                            id="totalTrips_sum"
+                            style="width: 100px;"
+                            >
+
+                        <label>Volume</label>
+                            <input 
+                            type="text"
+                            name="totalVolume_sum"
+                            id="totalVolume_sum"
+                            style="width: 130px;"
+                            >
+
+                        <label>Amount</label>
+                            <input 
+                            type="text"
+                            name="totalAmount_sum"
+                            id="totalAmount_sum"
+                            style="width: 130px;"
+                            >
+                    
+                   
+                    </div>
+                </div>
+                </div>
+            </div>
+
 
 
         
@@ -1752,7 +1903,83 @@
 
         </script>
 
-       
+
+        <script type="text/javascript">
+                    
+                    
+            async function display_sum_hauling_data(){
+
+                
+                var dateFrom = document.getElementById('dateFrom_h_sum_table').value;
+                var dateTo = document.getElementById('dateTo_h_sum_table').value;
+                var equip_id = document.getElementById('equipment_id_h_sum_table').value;
+                
+                const search_url = `/api-get-per-equipment-sum/?datefrom=${dateFrom}
+                                        &dateto=${dateTo}&equipment_id=${equip_id}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData4="";
+                data.map((values)=>{
+                    tableData4+= ` <tr>
+                               
+                               
+                                <td>${values.equipment_id}</td>
+                                <td>${values.routes}</td>
+                                <td>${values.no_trips}</td>
+                                <td>${values.volume}</td>
+                                <td>${values.amount}</td>
+                                <td>${values.net_of_vat}</td>
+
+                            
+                                
+                            
+                            </tr>`;
+                });
+                document.getElementById("table_body_sum_hauling").innerHTML=tableData4;
+                summarySubTotal()
+            }
+            
+        
+
+            </script>
+
+
+
+        <script type="text/javascript">
+            
+            function summarySubTotal(){
+                var table = document.getElementById("my_summaryTable_hauling"),
+                sumTrips = 0;
+                sumVolume = 0;
+                sumAmount = 0;
+                for (var i = 1; i < table.rows.length; i++) {
+                sumTrips = sumTrips + parseFloat(table.rows[i].cells[3].innerHTML);
+                sumVolume = sumVolume + parseFloat(table.rows[i].cells[4].innerHTML);
+                sumAmount = sumAmount + parseFloat(table.rows[i].cells[5].innerHTML);
+
+                
+                }
+
+                let sumTripsComa = sumTrips.toLocaleString("en-US");
+                let sumVolumeComa = sumVolume.toLocaleString("en-US");
+                let sumAmountComa = sumAmount.toLocaleString("en-US");
+
+                document.getElementById("totalTrips_sum").value = sumTripsComa;
+                document.getElementById("totalVolume_sum").value = sumVolumeComa;
+                document.getElementById("totalAmount_sum").value = sumAmountComa;
+
+                        
+                            }
+
+        </script>
+
+            
 
 
 

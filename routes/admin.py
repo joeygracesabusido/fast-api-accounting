@@ -1042,6 +1042,46 @@ def update_hauling(id,items:Hauling,token: str = Depends(oauth_scheme)):
     return  {'Messeges':'Data has been updated'}
 
 
+@admin.get('/api-get-per-equipment-sum/')
+def get_sum_per_equipment(equipment_id,datefrom,dateto, token: str = Depends(oauth_scheme)):
+    """This function is to get data sum of per Equipment"""
+    myresult = ZamboangaDB.select_hauling_sum_per_equipment(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    agg_result_list = []
+    
+    for x in myresult:
+        
+        equipment_id = x[0]
+        routes = x[1]
+        no_trips = x[2]
+        volume = x[3]
+        amount = x[4]
+        net_of_vat = x[5]
+       
+    
+        data={}   
+        
+        data.update({
+            
+           
+            "equipment_id": equipment_id,
+            "routes": routes,
+            "no_trips": no_trips,
+            "volume": volume,
+            "amount": amount,
+            "net_of_vat": net_of_vat,
+           
+          
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return agg_result_list
+
+
+    
+
+
 @admin.delete('/api-delete-hauling/{id}')
 def delete_hauling(id,token: str = Depends(oauth_scheme)):
     """This function is to delete equipment"""
