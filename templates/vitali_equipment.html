@@ -48,6 +48,12 @@
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#summaryhaulingTable">
                 Summary of Hauling
             </button>
+            <br><br>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addDiesel">
+                Add Diesel 
+            </button>
+
             
         </div>
             <!-- Modal -->
@@ -870,6 +876,11 @@
                                 Search Data
                                 <i class="fas fa-database"></i>
                             </button>
+
+                            <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-success">
+                                Export Data
+                                <i class="fas fa-database"></i>
+                            </button>
                             
                         </div>
 
@@ -948,7 +959,7 @@
                             type="text"
                             name="totalVolume"
                             id="totalVolume"
-                            style="width: 75px;"
+                            style="width: 150px;"
                             >
 
                         <label>Amount</label>
@@ -956,7 +967,7 @@
                             type="text"
                             name="totalAmount"
                             id="totalAmount"
-                            style="width: 75px;"
+                            style="width: 150px;"
                             >
                     
                    
@@ -1027,6 +1038,9 @@
                                 Search Data
                                 <i class="fas fa-database"></i>
                             </button>
+
+
+                            
                             
                         </div>
 
@@ -1109,6 +1123,116 @@
                             >
                     
                    
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
+            <!-- This is for adding Diesel for Vitali Project-->
+            <div class="modal fade" id="addDiesel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Diesel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+
+                        <input 
+                        type="text" hidden
+                        name="user_addDiesel"
+                        id="user_addDiesel"
+                        value={{user}}
+                        class="form-control"
+                        >
+                        
+                        <label for="TransDate"
+                        >Transaction Date</label>
+                        
+                        <input 
+                        type="date"
+                        name="date_addDiesel"
+                        id="date_addDiesel"
+                        class="form-control"
+                        >
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id_addDiesel"
+                        id="equipment_id_addDiesel"
+                        class="form-control"
+                        >
+
+
+                        <label for="withdrawal_slip"
+                        >Withdrawal Slip</label>
+                        
+                        <input 
+                        type="text"
+                        name="withdrawal_slip_Adddiesel"
+                        id="withdrawal_slip_Adddiesel"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Total Liters"
+                        >Liters</label>
+
+                        <input 
+                        type="number"
+                        name="liter_addDiesel"
+                        id="liter_addDiesel"
+                        step="0.01"
+                        
+                        class="form-control"
+                        >
+
+                        
+
+
+                        <label for="Price"
+                        >Price </label>
+
+                        <input 
+                        type="number"
+                        name="price_addDiesel"
+                        id="price_addDiesel"
+                        step="0.01"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Amount"
+                        >Amount</label>
+
+                        <input 
+                        type="number"
+                        name="amount_addDiesel"
+                        id="amount_addDiesel"
+                        step="0.01"
+                        
+                        class="form-control"
+                        >
+                        
+                        <br><br>
+                        
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_equipment()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                     </div>
                 </div>
                 </div>
@@ -1977,6 +2101,19 @@
                         
                             }
 
+        </script>
+
+
+        <script>
+            function html_table_excel(type){
+                var data = document.getElementById('table_body_hauling');
+                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                XLSX.writeFile(file, 'file.' + type);
+
+            }
+        
+            
         </script>
 
             
