@@ -1193,7 +1193,7 @@
                         name="liter_addDiesel"
                         id="liter_addDiesel"
                         step="0.01"
-                        
+                        onkeyup="getTotalamount(this.value);"
                         class="form-control"
                         >
 
@@ -1208,7 +1208,7 @@
                         name="price_addDiesel"
                         id="price_addDiesel"
                         step="0.01"
-                        
+                        onkeyup="getTotalamount(this.value);"
                         class="form-control"
                         >
 
@@ -1216,12 +1216,19 @@
                         >Amount</label>
 
                         <input 
-                        type="number"
+                        type="text"
                         name="amount_addDiesel"
                         id="amount_addDiesel"
-                        step="0.01"
+                      
                         
                         class="form-control"
+                        >
+
+                        <input 
+                        type="text" 
+                        name="amount_addDiesel2"
+                        id="amount_addDiesel2"
+                        step="0.01"
                         >
                         
                         <br><br>
@@ -2113,6 +2120,33 @@
 
             }
         
+            
+        </script>
+
+        <script type="text/javascript">
+            function getTotalamount(){
+            var totalliters=document.getElementById('liter_addDiesel').value;
+            var diesel_price=document.getElementById('price_addDiesel').value;
+        
+            var totalAmount;
+        
+            
+        
+            if(totalliters !="" && diesel_price !=""){
+                // totalAmount = parseFloat(totalHours) * parseFloat(rentalRate) ;
+                totalAmount = totalliters * diesel_price ;
+                // let num = 1234567890987654321;
+                // let formatter = Intl.NumberFormat('en-US')
+
+                let comma = totalAmount.toLocaleString("en-US");
+                // let comma = formatter.format(totalAmount);
+                document.getElementById('amount_addDiesel').value=comma;	
+                document.getElementById('amount_addDiesel2').value=totalAmount;
+        
+            
+        }
+
+        }
             
         </script>
 
