@@ -30,6 +30,8 @@ templates = Jinja2Templates(directory="templates")
 
 
 
+
+
 def validateLogin(request:Request):
     """This function is for Log In Authentication"""
     
@@ -545,7 +547,13 @@ async def get_income_statement(request:Request):
     
 
     return templates.TemplateResponse("incomestatement_zambo.html",{'request':request,'agg_result_list':agg_result_list})
-    
+
+#==================================================Trial Balance Frame =================================================
+@zamboanga_client.get("/trialbalance-zambo/", response_class=HTMLResponse)
+async def equipment_zamboanga(request:Request, username: str = Depends(validateLogin)):
+    """This function is to show page for Trial Balance"""
+
+    return templates.TemplateResponse("zamboanga/zamboangaTrialBal.html",{'request':request})
 
 
 #==================================================Equipment Vitali =====================================================
@@ -554,7 +562,13 @@ async def equipment_zamboanga(request:Request, username: str = Depends(validateL
     """This function is to show page for Equipment"""
 
     user = username
-    return templates.TemplateResponse("vitali_equipment.html",{'request':request,'user':user})
+    return templates.TemplateResponse("zamboanga/vitali_equipment.html",{'request':request,'user':user})
 
+@zamboanga_client.get("/zamboanga-test-html/", response_class=HTMLResponse)
+async def equipment_zamboanga(request:Request, username: str = Depends(validateLogin)):
+    """This function is to show page for Equipment"""
+
+    user = username
+    return templates.TemplateResponse("zamboanga/test.html",{'request':request,'user':user})
 
 

@@ -77,6 +77,28 @@ class ZamboangaDB(object):
         #     ZamboangaDB.DATABASE.commit()
         #     ZamboangaDB.DATABASE.close()
 
+
+        # try: 
+        #     cursor.execute(
+        #         """CREATE TABLE IF NOT EXISTS diesel (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     trans_date date,
+        #                     equipment_id VARCHAR(100),
+        #                     withdrawal_slip VARCHAR(100),
+        #                     liters DECIMAL(9,2), 
+        #                     price DECIMAL(9,2),
+        #                     amount DECIMAL(9,2),
+        #                     user VARCHAR(100),
+        #                     date_updated date,
+        #                     date_credited date) """)
+                    
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
+
+        # finally:
+        #     ZamboangaDB.DATABASE.commit()
+        #     ZamboangaDB.DATABASE.close()
+
+
     @staticmethod
     def select_all_equipment():
         """
@@ -439,3 +461,30 @@ class ZamboangaDB(object):
         finally:
            
             ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def insert_diesel(trans_date,equipment_id,withdrawal_slip,
+                        liters,price,amount,user,date_credited):
+        """This is to insert to database VITALI diesel to hauling Table"""
+        ZamboangaDB.DATABASE._open_connection() # to open database connection
+
+
+        try:
+        
+            data = ( "INSERT INTO diesel (trans_date,equipment_id,withdrawal_slip, \
+                        liters,price,amount,date_updated,user,date_credited)"
+                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)")
+            val = (trans_date,equipment_id,withdrawal_slip,
+                        liters,price,amount,user,date_credited)
+            #                  
+            # cursor.execute(data)              
+            cursor.execute(data,val) 
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
+

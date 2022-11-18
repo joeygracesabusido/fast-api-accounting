@@ -31,6 +31,41 @@ client = APIRouter(include_in_schema=False)
 templates = Jinja2Templates(directory="templates")
 
 
+
+def validateLogin(request:Request):
+    """This function is for Log In Authentication"""
+    
+    try :
+        token = request.cookies.get('access_token')
+        # print(token)
+        if token is None:
+            raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized",
+            headers={"WWW-Authenticate": "Basic"},
+            )
+        else:
+            scheme, _, param = token.partition(" ")
+            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+            username = payload.get("sub")
+        
+
+            user =  mydb.login.find({"username":username})
+
+            if user is not None:
+
+                return username
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized Please login",
+            # headers={"WWW-Authenticate": "Basic"},
+        )
+
+
+
 #=======================================User JWT Token ===========================================
 @client.get("/index", response_class=HTMLResponse)
 async def index(request: Request):
@@ -539,6 +574,14 @@ async def get_income_statement(request:Request):
     
 
     return templates.TemplateResponse("incomestatement.html",{'request':request,'agg_result_list':agg_result_list})
+
+
+#===========================================Trial Balance Transactions=============================================
+@client.get("/trialbalance-surigao/", response_class=HTMLResponse)
+async def equipment_zamboanga(request:Request, username: str = Depends(validateLogin)):
+    """This function is to show page for Trial Balance"""
+
+    return templates.TemplateResponse("surigao/surigaoTrialBal.html",{'request':request})
     
 
 #=============================================This is need for debugging insert Journal Entry==================================
@@ -807,6 +850,9 @@ async def insert_journal_entry(request: Request):
     return templates.TemplateResponse("journal_entry.html", 
                                         {"request":request,"all_chart_of_account":all_chart_of_account,
                                         "messeges":messeges})
+
+
+
 
 
 #========================================Surigao MYSQL DATA Base=======================================

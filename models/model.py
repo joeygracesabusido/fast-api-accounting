@@ -143,3 +143,13 @@ class Hauling(BaseModel):
     user: str
     # date_updated: date
     # date_credited: date
+
+class Vitalidiesel(BaseModel):
+    """This is for Pydantic Diesel Zamboanga Vitali Project"""
+    trans_date: date
+    equipment_id: str
+    withdrawal_slip: str
+    liters: float
+    price: float
+    amount: float
+    user: str

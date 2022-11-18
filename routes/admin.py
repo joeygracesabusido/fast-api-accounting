@@ -240,7 +240,7 @@ async def update_user(id,item:ChartofAccount):
     return chartofAccounts(mydb.chart_of_account.find({"_id":ObjectId(id)}))
 
 
-#==============================================Insert Journal Entry================================
+#==============================================Insert Journal Entry  Surigao================================
 @admin.get("/show-journal-entry")
 async def find_journal_entry(token: str = Depends(oauth_scheme)):
     """This function is for querying chart of account"""
@@ -264,6 +264,122 @@ def delete_journal_entry_zambo(id,token: str = Depends(oauth_scheme)):
     """This function is to delete journal Entry for Zambo"""
     mydb.journal_entry_zambo.find_one_and_delete({"_id":ObjectId(id)})
     return  {'Messeges':'Data has been deleted'}
+
+
+@admin.get('/api-trialbalance-surigao/')
+def get_trialBalance_zambo(datefrom,dateto,token: str = Depends(oauth_scheme)):
+    """This function is for querying Journal Entry for Zamboanga for Trial Balance"""
+   
+    date_time_obj_from = datetime.strptime(datefrom, '%Y-%m-%d')
+
+    
+    date_time_obj_to = datetime.strptime(dateto, '%Y-%m-%d')
+
+    agg_result= mydb.journal_entry.aggregate(
+        [
+        {"$match":{'date_entry': {'$gte':date_time_obj_from, '$lte':date_time_obj_to},
+           
+        }},
+        # {"$match": { "cut_off_period": date } },
+        # {'$sort' : { '$meta': "textScore" }, '$account_disc': -1 },
+        {"$group" : 
+            {"_id" :  '$acoount_number',
+            "accountName": {'$first':'$account_disc'},
+            "totalDebit" : {"$sum" : '$debit_amount'},
+            "totalCredit" : {"$sum" : '$credit_amount'},
+            
+            }},
+        {'$sort':{'_id': 1}}
+            
+        ])
+    agg_result_list = []
+    for x in agg_result:
+
+        accountNumber = x['_id']
+        account_title = x['accountName']
+        debit_amount = x['totalDebit']
+        debit_amount2 = '{:.2f}'.format(debit_amount)
+        credit_amount = x['totalCredit']
+        credit_amount2 = '{:.2f}'.format(credit_amount)
+        totalIncome =   float(credit_amount) - float(debit_amount)
+        totalIncome2 = '{:,.2f}'.format(totalIncome)
+
+        
+
+        data={}   
+        
+        data.update({
+            
+            
+            'acoount_number': accountNumber,
+            'accountTitle': account_title,
+            'debit_amount': debit_amount2,
+            'credit_amount': credit_amount2,
+            'totalAmount': totalIncome2,
+        })
+
+        agg_result_list.append(data)
+
+    return agg_result_list
+
+
+
+@admin.get('/api-trialbalance-zambo/')
+def get_trialBalance_zambo(datefrom,dateto,token: str = Depends(oauth_scheme)):
+    """This function is for querying Journal Entry for Zamboanga for Trial Balance"""
+   
+    date_time_obj_from = datetime.strptime(datefrom, '%Y-%m-%d')
+
+    
+    date_time_obj_to = datetime.strptime(dateto, '%Y-%m-%d')
+
+    agg_result= mydb.journal_entry_zambo.aggregate(
+        [
+        {"$match":{'date_entry': {'$gte':date_time_obj_from, '$lte':date_time_obj_to},
+           
+        }},
+        # {"$match": { "cut_off_period": date } },
+        # {'$sort' : { '$meta': "textScore" }, '$account_disc': -1 },
+        {"$group" : 
+            {"_id" :  '$acoount_number',
+            "accountName": {'$first':'$account_disc'},
+            "totalDebit" : {"$sum" : '$debit_amount'},
+            "totalCredit" : {"$sum" : '$credit_amount'},
+            
+            }},
+        {'$sort':{'_id': 1}}
+            
+        ])
+    agg_result_list = []
+    for x in agg_result:
+
+        accountNumber = x['_id']
+        account_title = x['accountName']
+        debit_amount = x['totalDebit']
+        debit_amount2 = '{:.2f}'.format(debit_amount)
+        credit_amount = x['totalCredit']
+        credit_amount2 = '{:.2f}'.format(credit_amount)
+        totalIncome =   float(credit_amount) - float(debit_amount)
+        totalIncome2 = '{:,.2f}'.format(totalIncome)
+
+        
+
+        data={}   
+        
+        data.update({
+            
+            
+            'acoount_number': accountNumber,
+            'accountTitle': account_title,
+            'debit_amount': debit_amount2,
+            'credit_amount': credit_amount2,
+            'totalAmount': totalIncome2,
+        })
+
+        agg_result_list.append(data)
+
+    return agg_result_list
+
 
 # admin_login = sqlalchemy.Table(
 #     "admin_login",
@@ -704,7 +820,7 @@ def delete_surigao_pesoBill(id,token: str = Depends(oauth_scheme)):
 #============================================Vitali Zamboangao Project======================================
 from config.zamboanga import ZamboangaDB
 ZamboangaDB.initialize()
-from models.model import Equipment,Routes, Hauling
+from models.model import Equipment,Routes, Hauling,Vitalidiesel
 
 @admin.post('/api-add-equipment/')
 def add_equipment(items: Equipment, token: str = Depends(oauth_scheme)):
@@ -1088,6 +1204,16 @@ def delete_hauling(id,token: str = Depends(oauth_scheme)):
     ZamboangaDB.delete_hauling(id=id)
     return  {'Messeges':'Data has been deleted'}
 
+
+#==========================================This is for inserting Diesel=======================================
+@admin.post('/insert-vitali-diesel/')
+def insert_diesel(items:Vitalidiesel, token: str = Depends(oauth_scheme)):
+    """This function is for inserting Diesel for Vitali Project"""
+    dateToday = date.today()
+    ZamboangaDB.insert_diesel(trans_date=items.trans_date,equipment_id=items.equipment_id,
+                                withdrawal_slip=items.withdrawal_slip,liters=items.liters,
+                                price=items.price,amount=items.amount,user=items.user,date_credited=dateToday)
+    return {'Measseges': 'Data has been inserted'}
 
     
 

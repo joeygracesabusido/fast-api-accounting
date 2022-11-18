@@ -1,0 +1,222 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<body>
+    <div class="container">
+        <div class="container mt-3">
+                    <label for="Trans Date"
+                    >Date From</label>
+    
+    
+                    
+                    <input 
+                    type="date"
+                    name="dateFrom"
+                    id="dateFrom"
+                
+                    >
+    
+                    <label for="Trans Date"
+                    >Date To</label>
+    
+    
+                    
+                    <input 
+                    type="date"
+                    name="dateTo"
+                    id="dateTo"
+                
+                    >
+    
+                   
+    
+                    
+    
+                    <button type="submit"  onclick="display_data()" class="btn btn-primary">
+                        Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
+
+
+                    <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-success">
+                        Export Excel
+                        <i class="fas fa-database"></i>
+                    </button>
+    
+    
+                    
+                    
+                </div>
+    
+                <div  class="container mt-3">
+                    <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                        <thead class="table-dark">
+                        
+                                <td>Account Number</td>
+                                <td>Account Title</td>
+                                <td>Debit</td>
+                                <td>Credit</td>
+                              
+                                
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="table_body">
+                            
+                                
+                                <tr>
+                                    
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                   
+                                    
+                                    
+                                
+                                </tr>
+                                
+                            
+                        </tbody>
+    
+                        
+        
+                        
+        
+                    </table>
+        
+                    
+                        
+                        
+                </div>
+    
+                          
+                   </div>
+                
+    
+                           
+                
+                        
+                        </div>
+                        <div class="modal-footer">
+    
+                            <label>Total Debit</label>
+                                <input 
+                                type="text"
+                                name="totalDebit"
+                                id="totalDebit"
+                                style="width: 150px; text-align: right;"
+                                >
+    
+                            <label>Total Debit</label>
+                                <input 
+                                type="text"
+                                name="totalCredit"
+                                id="totalCredit"
+                                style="width: 150px; text-align: right;"
+                                >
+    
+                           
+                        
+                       
+                        </div>
+                    </div>
+                    </div>
+                </div>
+    
+        </div>
+                             
+    
+    
+    
+    </div>
+
+
+    <script type="text/javascript">
+                    
+                    
+        async function display_data(){
+
+            
+            var dateFrom = document.getElementById('dateFrom').value;
+            var dateTo = document.getElementById('dateTo').value;
+
+            
+            const search_url = `/api-trialbalance-surigao/?datefrom=${dateFrom}&dateto=${dateTo}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            
+            
+            let tableData4="";
+            data.map((values)=>{
+                tableData4+= ` <tr>
+                           
+                           
+                            <td>${values.acoount_number}</td>
+                            <td>${values.accountTitle}</td>
+                            <td style="text-align: right;">${values.debit_amount}</td>
+                            <td style="text-align: right;">${values.credit_amount}</td>
+                                
+                        </tr>`;
+            });
+            document.getElementById("table_body").innerHTML=tableData4;
+            summarySubTotal()
+        }
+        
+    
+
+        </script>
+
+
+
+    <script type="text/javascript">
+        
+        function summarySubTotal(){
+            var table = document.getElementById("myTable"),
+           
+            sumDebit = 0;
+            sumCredit = 0;
+            for (var i = 1; i < table.rows.length; i++) {
+            sumDebit = sumDebit + parseFloat(table.rows[i].cells[2].innerHTML);
+            sumCredit = sumCredit + parseFloat(table.rows[i].cells[3].innerHTML);
+           
+
+            
+            }
+
+            
+            let sumDebitComa = sumDebit.toLocaleString("en-US");
+            let sumCreditComa = sumCredit.toLocaleString("en-US");
+
+            
+            document.getElementById("totalDebit").value = sumDebitComa;
+            document.getElementById("totalCredit").value = sumCreditComa;
+
+                    
+                        }
+
+    </script>
+
+
+    <script>
+        function html_table_excel(type){
+            var data = document.getElementById('table_body');
+            var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+            XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+            XLSX.writeFile(file, 'file.' + type);
+
+        }
+    
+        
+    </script>
+
+</body>
+
+
+{% endblock %}
