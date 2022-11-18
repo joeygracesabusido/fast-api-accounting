@@ -78,25 +78,25 @@ class ZamboangaDB(object):
         #     ZamboangaDB.DATABASE.close()
 
 
-        # try: 
-        #     cursor.execute(
-        #         """CREATE TABLE IF NOT EXISTS diesel (id INT AUTO_INCREMENT PRIMARY KEY, 
-        #                     trans_date date,
-        #                     equipment_id VARCHAR(100),
-        #                     withdrawal_slip VARCHAR(100),
-        #                     liters DECIMAL(9,2), 
-        #                     price DECIMAL(9,2),
-        #                     amount DECIMAL(9,2),
-        #                     user VARCHAR(100),
-        #                     date_updated date,
-        #                     date_credited date) """)
+        try: 
+            cursor.execute(
+                """CREATE TABLE IF NOT EXISTS diesel (id INT AUTO_INCREMENT PRIMARY KEY, 
+                            trans_date date,
+                            equipment_id VARCHAR(100),
+                            withdrawal_slip VARCHAR(100),
+                            liters DECIMAL(9,2), 
+                            price DECIMAL(9,2),
+                            amount DECIMAL(9,2),
+                            user VARCHAR(100),
+                            date_updated date,
+                            date_credited date) """)
                     
-        # except Exception as ex:
-        #     print("Error", f"Error due to :{str(ex)}")
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
 
-        # finally:
-        #     ZamboangaDB.DATABASE.commit()
-        #     ZamboangaDB.DATABASE.close()
+        finally:
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
 
 
     @staticmethod
@@ -110,6 +110,25 @@ class ZamboangaDB(object):
         try:
             data = ('SELECT * FROM equipment \
                 ')
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            # Database.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
+
+    @staticmethod
+    def select_equipmentID(equipment_id):
+        """
+        This function is for querying all equipment
+        """
+
+       
+        ZamboangaDB.DATABASE._open_connection()
+        try:
+            data = 'SELECT * FROM equipment WHERE equipment_id like  "%'+equipment_id+'%" '
 
             cursor.execute(data)
             return cursor.fetchall()
@@ -462,7 +481,7 @@ class ZamboangaDB(object):
            
             ZamboangaDB.DATABASE.close()
 
-
+#============================================This is for Vitali Diesel ==============================================
     @staticmethod
     def insert_diesel(trans_date,equipment_id,withdrawal_slip,
                         liters,price,amount,user,date_credited):
@@ -473,8 +492,8 @@ class ZamboangaDB(object):
         try:
         
             data = ( "INSERT INTO diesel (trans_date,equipment_id,withdrawal_slip, \
-                        liters,price,amount,date_updated,user,date_credited)"
-                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)")
+                        liters,price,amount,user,date_credited)"
+                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s)")
             val = (trans_date,equipment_id,withdrawal_slip,
                         liters,price,amount,user,date_credited)
             #                  
@@ -487,4 +506,44 @@ class ZamboangaDB(object):
 
             ZamboangaDB.DATABASE.commit()
             ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def select_all_diesel_with_equipmentID(datefrom,dateto,equipment_id):
+        """
+        This function is for querying all hauling
+        """
+
+       
+        ZamboangaDB.DATABASE._open_connection()
+        try:
+            data = 'SELECT * FROM diesel \
+                 WHERE trans_date BETWEEN "'+datefrom+'" AND "'+dateto+'" AND equipment_id like  "%'+equipment_id+'%"'
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            # Database.DATABASE.commit()
+            ZamboangaDB.DATABASE.close()
+
+
+    @staticmethod
+    def delete_diesel(id):
+        """This function si for deleting Rental with Parametes"""
+        ZamboangaDB.DATABASE._open_connection()    
+
+        try:
+            data = ('DELETE FROM diesel \
+                WHERE id = "'+id+'"')       
+                        
+            # cursor.execute(data)              
+            cursor.execute(data) 
+        
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            ZamboangaDB.DATABASE.commit()
+            ZamboangaDB.DATABASE.close() 
 

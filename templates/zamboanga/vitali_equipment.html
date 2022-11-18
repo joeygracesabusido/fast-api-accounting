@@ -54,6 +54,10 @@
                 Add Diesel 
             </button>
 
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#dieselList">
+                Diesel List
+            </button>
+
             
         </div>
             <!-- Modal -->
@@ -1193,7 +1197,7 @@
                         name="liter_addDiesel"
                         id="liter_addDiesel"
                         step="0.01"
-                        onkeyup="getTotalamount(this.value);"
+                        onkeyup="getTotalamountDiesel(this.value);"
                         class="form-control"
                         >
 
@@ -1208,7 +1212,7 @@
                         name="price_addDiesel"
                         id="price_addDiesel"
                         step="0.01"
-                        onkeyup="getTotalamount(this.value);"
+                        onkeyup="getTotalamountDiesel(this.value);"
                         class="form-control"
                         >
 
@@ -1238,12 +1242,157 @@
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" onclick="insert_equipment()" class="btn btn-primary">Save</button>
+                    <button type="submit" onclick="insert_diesel()" class="btn btn-primary">Save</button>
                     <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                     </div>
                 </div>
                 </div>
             </div>
+
+            <!-- this is for Diesel Modal List -->
+            <div class="modal fade" id="dieselList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Diesel List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+            <div class="modal-body">
+                <div class="container mt-3">
+
+                    <label for="Trans Date"
+                    >Date From</label>
+
+
+                    
+                    <input 
+                    type="date"
+                    name="dateFrom_dieselList"
+                    id="dateFrom_dieselList"
+                
+                    >
+
+                    <label for="Trans Date"
+                    >Date To</label>
+
+
+                    
+                    <input 
+                    type="date"
+                    name="dateTo_DieselList"
+                    id="dateTo_DieselList"
+                
+                    >
+
+                    <label for="EquipmentID"
+                    >Equipment</label>
+
+
+                    
+                    <input 
+                    type="text"
+                    name="equipment_id_DieselList"
+                    id="equipment_id_DieselList"
+                
+                    >
+
+            
+
+                    <button type="submit"  onclick="display_diesel_data()" class="btn btn-primary">
+                        Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
+
+
+                    
+                    
+                </div>
+
+                <div  class="container mt-3">
+                    <table id="my_table_diesel" class="table table-bordered"  style="text-align: center;">
+                        <thead class="table-dark">
+
+                                <td>ID</td>
+                                <td>Date</td>
+                                <td>Equipment</td>
+                                <td>W-Slip</td>
+                                <td>Liter</td>
+                                <td>Price</td>
+                                <td>Amount</td>
+                                <td>Action</td>
+                                
+                                
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="table_body_diesel">
+                           
+                                
+                                <tr>
+                                    
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                              
+                                </tr>
+                               
+                            
+                        </tbody>
+
+                        
+        
+                       
+        
+                    </table>
+        
+                    
+                        
+                        
+                </div>
+    
+              
+        </div>
+    
+
+               
+    
+            
+            </div>
+            <div class="modal-footer">
+
+                <label>Liters</label>
+                    <input 
+                    type="text"
+                    name="totalliter"
+                    id="totalliter"
+                    style="width: 130px; text-align: right;"
+                    >
+
+                <label>Total Amount</label>
+                    <input 
+                    type="text"
+                    name="totalAmount_diesel"
+                    id="totalAmount_diesel"
+                    style="width: 130px; text-align: right;"
+                    >
+
+                
+            
+           
+            </div>
+        </div>
+        </div>
+    </div>
+
+
 
 
 
@@ -2114,13 +2263,83 @@
                 XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
                 XLSX.writeFile(file, 'file.' + type);
 
-            }
-        
-            
+            }   
+        </script>
+
+
+<!-- ======================= This is for Diesel Transaction Java Script =====================-->
+
+        <script>
+            $( function() { 
+                        $("#equipment_id_addDiesel").autocomplete({
+                        source: "/api-search-autocomplete-equipment/"
+                        });
+
+                    } );
+
         </script>
 
         <script type="text/javascript">
-            function getTotalamount(){
+            function insert_diesel(){
+                var data = {}
+                
+                data["userl"] = document.getElementById("user_addDiesel").value
+                data["trans_date"] = document.getElementById("date_addDiesel").value
+                data["equipment_id"] = document.getElementById("equipment_id_addDiesel").value
+                data["withdrawal_slip"] = document.getElementById("withdrawal_slip_Adddiesel").value
+                data["liters"] = document.getElementById("liter_addDiesel").value
+                data["price"] = document.getElementById("price_addDiesel").value
+                data["amount"] = document.getElementById("amount_addDiesel2").value
+                data["user"] = document.getElementById("user_addDiesel").value
+              
+                
+            
+                
+                console.log(data)
+
+                fetch("/api-insert-vitali-diesel/", {
+                method:'POST', 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+                    })
+
+
+                    .then(function (response) {
+                        // Save the response status in a variable to use later.
+                        fetch_status = response.status;
+                        // Handle success
+                        // eg. Convert the response to JSON and return
+                        return response.json();
+                    }) 
+                    .then(function (json) {
+                        // Check if the response were success
+                        if (fetch_status == 200) {
+                            // Use the converted JSON
+                            window.alert("Your Data has been Save");
+                            window.location.assign("/zamboanga-equipment/");
+                            console.log(json);
+                        }
+                        else if (fetch_status == 401){
+                            window.alert("Unauthorized credential Please Login");
+                        } else if(fetch_status == 422){
+                            window.alert("Unprocessable Entity");
+                        }
+
+                    })
+                    .catch(function (Error){
+                        // Catch errors
+                        window.alert(Error);
+                        console.log(Error);
+                    });
+                    
+            
+                
+            }
+        </script>
+
+
+        <script type="text/javascript">
+            function getTotalamountDiesel(){
             var totalliters=document.getElementById('liter_addDiesel').value;
             var diesel_price=document.getElementById('price_addDiesel').value;
         
@@ -2146,13 +2365,98 @@
             
         </script>
 
+
+        <script type="text/javascript">
+
             
 
+            // const rental_url =search_url ;
+            async function display_diesel_data(){
+                var dateFrom = document.getElementById('dateFrom_dieselList').value;
+                var dateTo = document.getElementById('dateTo_DieselList').value;
+                var equip_id = document.getElementById('equipment_id_DieselList').value;
+                
+                const search_url = `/api-search-all-diesel/?datefrom=${dateFrom}
+                                        &dateto=${dateTo}&equipment_id=${equip_id}`;
 
 
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData="";
+                data.map((values)=>{
+                    tableData+= ` <tr>
+                                <td>${values.trans_id}</td>
+                                <td>${values.trans_date}</td>
+                                <td>${values.equipment_id}</td>
+                                <td>${values.withdrawal_slip}</td>
+                                <td>${values.liters}</td>
+                                <td>${values.price}</td>
+                                <td>${values.amount}</td>
+                            
+                                <td>
+                                    <button type="button"  id="remove_button" onclick="delete_diesel(${values.trans_id})" class="btn btn-danger">
+                                        <i class="fas fa-database">
+                                        </i>Remove</button>
+                                </td>
+                            
+                            </tr>`;
+                });
+                document.getElementById("table_body_diesel").innerHTML=tableData;
+
+                summaryDiesel()
+            }
+            
+           
+
+        </script>
 
 
+        <script type="text/javascript">
+                    
+            function summaryDiesel(){
+                var table = document.getElementById("my_table_diesel");
+               
+                sumLiter = 0;
+                sumAmountdiesel = 0;
+                for (var i = 1; i < table.rows.length; i++) {
+               
+                sumLiter = sumLiter + parseFloat(table.rows[i].cells[5].innerHTML);
+                sumAmountdiesel = sumAmountdiesel + parseFloat(table.rows[i].cells[6].innerHTML);
 
+                
+                }
+
+                
+                let sumLiterComa = sumLiter.toLocaleString("en-US");
+                let sumAmountdieselComa = sumAmountdiesel.toLocaleString("en-US");
+
+                
+                document.getElementById("totalliter").value = sumLiterComa;
+                document.getElementById("totalAmount_diesel").value = sumAmountdieselComa;
+
+                        
+                }
+
+        </script>
+
+        <script type="text/javascript">
+            function delete_diesel(id){
+            
+            fetch("/api-delete-diesel/"+ id, {
+            method:'DELETE',
+                })
+                window.alert("Your Data has been Deleted");
+                window.location.assign("/zamboanga-equipment/");
+            }
+
+        </script>
+
+
+        
 
 </body>
 

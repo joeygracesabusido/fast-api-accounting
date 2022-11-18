@@ -905,6 +905,16 @@ def autocomplete_equipment(id):
         # print(agg_result_list)
     return (agg_result_list)
 
+@admin.get("/api-search-autocomplete-equipment/")
+def autocomplete_equipmentID(term: Optional[str]):
+    items = ZamboangaDB.select_equipmentID(equipment_id=term)
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item[1])
+        
+    return suggestions
+
 
 #============================================Routes============================================
 @admin.post('/api-add-routes/')
@@ -1206,7 +1216,7 @@ def delete_hauling(id,token: str = Depends(oauth_scheme)):
 
 
 #==========================================This is for inserting Diesel=======================================
-@admin.post('/insert-vitali-diesel/')
+@admin.post('/api-insert-vitali-diesel/')
 def insert_diesel(items:Vitalidiesel, token: str = Depends(oauth_scheme)):
     """This function is for inserting Diesel for Vitali Project"""
     dateToday = date.today()
@@ -1214,6 +1224,53 @@ def insert_diesel(items:Vitalidiesel, token: str = Depends(oauth_scheme)):
                                 withdrawal_slip=items.withdrawal_slip,liters=items.liters,
                                 price=items.price,amount=items.amount,user=items.user,date_credited=dateToday)
     return {'Measseges': 'Data has been inserted'}
+
+
+@admin.get('/api-search-all-diesel/')
+async def get_all_diesel(equipment_id,datefrom,dateto,token: str = Depends(oauth_scheme)):
+    """This function is for querying all diesel """
+
+    myresult = ZamboangaDB.select_all_diesel_with_equipmentID(datefrom=datefrom,
+                                        dateto=dateto,equipment_id=equipment_id)
+
+    agg_result_list = []
+    
+    for x in myresult:
+        
+        trans_id = x[0]
+        trans_date = x[1]
+        equipment_id = x[2]
+        withdrawal_slip = x[3]
+        liters = x[4]
+        price = x[5]
+        amount = x[6]
+       
+       
+    
+        data={}   
+        
+        data.update({
+            
+            "trans_id": trans_id,
+            "trans_date": trans_date,
+            "equipment_id": equipment_id,
+            "withdrawal_slip": withdrawal_slip,
+            "liters": liters,
+            "price": price,
+            "amount": amount,
+        
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return agg_result_list
+
+@admin.delete('/api-delete-diesel/{id}')
+def delete_diesel(id,token: str = Depends(oauth_scheme)):
+    """This function is to delete equipment"""
+    ZamboangaDB.delete_diesel(id=id)
+    return  {'Messeges':'Data has been deleted'}
+   
 
     
 
