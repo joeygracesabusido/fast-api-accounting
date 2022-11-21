@@ -612,10 +612,10 @@ def delete_employee(id,token: str = Depends(oauth_scheme)):
 #===============================================Rizal Rental=======================================
 
 @admin.get('/api-get-rental/')
-def get_rental(datefrom,dateto,token: str = Depends(oauth_scheme)):
+def get_rental(datefrom,dateto,equipment_id,token: str = Depends(oauth_scheme)):
     """This is for querying rental true date transact"""
 
-    myresult = Database.select_rental_with_parameters(datefrom=datefrom,dateto=dateto)
+    myresult = Database.select_rental_with_parameters(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
    
 
     agg_result_list = []

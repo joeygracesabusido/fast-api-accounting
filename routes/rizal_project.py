@@ -341,10 +341,10 @@ async def post_rental_transaction(request: Request, username: str = Depends(vali
                                         })
 
 @rizal_project.get("/rental-transaction-list/", response_class=HTMLResponse)
-async def get_rental_transaction(request: Request):
+async def get_rental_transaction(equipment_id,request: Request):
     """This function is for displaying rental list """
 
-    myresult = Database.select_all_from_rentalDB()
+    myresult = Database.select_all_from_rentalDB(equipment_id=equipment_id)
 
 
     agg_result_list_eqp = []

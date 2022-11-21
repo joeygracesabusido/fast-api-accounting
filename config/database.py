@@ -316,7 +316,7 @@ class Database(object):
         """This function is for querying to diesel Database with out parameters"""
         Database.DATABASE._open_connection()
         try:
-            data = ('SELECT * FROM equipment_rental')
+            data = ('SELECT * FROM equipment_rental ')
 
             cursor.execute(data)
             return cursor.fetchall()
@@ -329,11 +329,12 @@ class Database(object):
 
 
     @staticmethod
-    def select_rental_with_parameters(datefrom,dateto):
+    def select_rental_with_parameters(datefrom,dateto,equipment_id):
         """This function is for querying to diesel Database with out parameters"""
         Database.DATABASE._open_connection()
         try:
-            data = ("SELECT * FROM equipment_rental WHERE transaction_date BETWEEN '" + datefrom +"' AND '" + dateto +"' ")
+            data = 'SELECT * FROM equipment_rental WHERE transaction_date BETWEEN "' + datefrom +'" AND "' + dateto +'" \
+                         AND  equipment_id like  "%'+equipment_id+'%" '
 
             cursor.execute(data)
             return cursor.fetchall()

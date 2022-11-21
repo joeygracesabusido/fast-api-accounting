@@ -24,6 +24,14 @@
                         >
                     </input>  
 
+                <label for="Equipment" >Equipment</label>
+                    <input
+                        type="text"
+                        name="equipment_id"
+                        id="equipment_id"
+                        >
+                    </input>  
+
                     <button type="submit"  onclick="display_data()" class="btn btn-success">
                         Search Data
                         <i class="fas fa-database"></i>
@@ -96,35 +104,45 @@
             async function display_data(){
                 var datefrom = document.getElementById("datefrom").value
                 var dateto = document.getElementById("dateto").value
+                var equipmentID = document.getElementById("equipment_id").value
         
-                const search_url = `/api-get-rental/?datefrom=${datefrom}&dateto=${dateto}`;
+                const search_url = `/api-get-rental/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
 
 
                 const responce = await fetch(search_url)
                 const data = await responce.json();
                 console.log(data)
+
+                if (data.length === 0) {
+                        window.alert('No Data available');
+                    };
                 
                 
-                
-                let tableData="";
-                data.map((values)=>{
-                    tableData+= ` <tr>
-                                <td>${values.id}</td>
-                                <td>${values.transaction_date}</td>
-                                <td>${values.equipment_id}</td>
-                                <td>${values.total_rental_hour}</td>
-                                <td>${values.rental_rate}</td>
-                                <td>${values.rental_amount}</td>
-                                <td>${values.running_bal}</td>
-                                <td>
-                                    <button type="button"  id="remove_button" onclick="delete_rental(${values.id})" class="btn btn-danger">
-                                        <i class="fas fa-database">
-                                        </i>Remove</button>
-                                </td>
-                               
-                            </tr>`;
-                });
-                document.getElementById("table_body").innerHTML=tableData;
+                if (responce.status === 200){
+                    let tableData="";
+                    data.map((values)=>{
+                        tableData+= ` <tr>
+                                    <td>${values.id}</td>
+                                    <td>${values.transaction_date}</td>
+                                    <td>${values.equipment_id}</td>
+                                    <td>${values.total_rental_hour}</td>
+                                    <td>${values.rental_rate}</td>
+                                    <td>${values.rental_amount}</td>
+                                    <td>${values.running_bal}</td>
+                                    <td>
+                                        <button type="button"  id="remove_button" onclick="delete_rental(${values.id})" class="btn btn-danger">
+                                            <i class="fas fa-database">
+                                            </i>Remove</button>
+                                    </td>
+                                
+                                </tr>`;
+                    });
+                    document.getElementById("table_body").innerHTML=tableData;
+
+                }else if (responce.status === 401){
+                    window.alert("Unauthorized Credentials Please Log in")
+                }
+               
             }
         
             // display_data()
