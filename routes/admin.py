@@ -381,6 +381,10 @@ def get_trialBalance_zambo(datefrom,dateto,token: str = Depends(oauth_scheme)):
     return agg_result_list
 
 
+
+
+
+
 # admin_login = sqlalchemy.Table(
 #     "admin_login",
 #     metadata,

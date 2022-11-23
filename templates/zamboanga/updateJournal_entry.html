@@ -1,0 +1,142 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<body>
+   <form method="POST">
+
+   
+        <div class="container">
+            <div class="container mt-3">
+                {% for list in journaEntry%}
+                <div  class="container mt-3">
+                    
+                        <input
+                            type="text" hidden
+                            name="username"
+                            id="username"
+                            value="{{user}}"
+                            >
+                        </input>  
+                        <br>
+                </div>
+
+                <div  class="container mt-3">
+                    
+                    <input
+                        type="text"  hidden
+                        name="transID"
+                        id="transID"
+                        value="{{list.transID}}"
+                        >
+                    </input>  
+                    <br>
+            </div>
+                <div  class="container mt-3">
+                    <label for="TransactionDate" >Transaction Date</label><br>
+                        <input
+                            type="date"
+                            name="trans_date"
+                            id="trans_date"
+                            value="{{list.date_entry}}"
+                            >
+                        </input>  
+                        <br>
+                </div>
+
+                <div class="container mt-3">
+                    <label for="Journal" >Journal</label><br>
+                    <input
+                    type="text"
+                    name="trans_date"
+                    id="trans_date"
+                    value="{{list.journal}}"
+                    >
+                </input>  
+                <br>
+                    
+                </div>
+
+                <div  class="container mt-3">
+                    <label >Reference</label><br>
+                        <input 
+                            type="text"
+                            name="reference"
+                            id="reference"
+                            value="{{list.ref}}"
+                        
+                            
+                            >
+                        </input><br>
+
+                        
+                </div>
+
+
+
+                <div  class="container mt-3">
+                    <label >Journal Memo</label><br>
+                        <textarea
+                            type="input"
+                            name="journal_memo" cols="35" rows="3"
+                            id="journal_memo"
+                            >{{list.descriptions}}
+                        </textarea><br>
+                    
+                </div>
+
+
+                <div  class="container mt-3">
+                    <label >Account Number</label><br>
+                        <input 
+                            type="text"
+                            name="acoount_number"
+                            id="acoount_number"
+                            value="{{list.acoount_number}}"
+                        
+                            
+                            >
+                        </input><br>
+
+                        
+                </div>
+                    
+                {% endfor %}
+
+                <div  class="container mt-3">
+
+                    <button type="submit"   class="btn btn-primary">
+                            Update
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                </div>
+                        
+        </div>
+
+    </form>
+
+    <script type="text/javascript">
+        function update_journal(){
+            var data = {}
+            var id = document.getElementById("transID").value
+            data["acoount_number"] = document.getElementById("account_number").value
+           
+            
+            console.log(data)
+
+            fetch("/update-chart-of-account/"+ id, {
+            method:'put', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+                })
+        }
+        
+
+    </script>
+
+</body>
+
+
+{% endblock %}

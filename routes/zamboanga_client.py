@@ -508,6 +508,7 @@ async def get_income_statement(request:Request):
         {"$group" : 
             {"_id" :  '$acoount_number',
             "accountName": {'$first':'$account_disc'},
+            "bsClass": {'$first':'$bsClass'},
             "totalDebit" : {"$sum" : '$debit_amount'},
             "totalCredit" : {"$sum" : '$credit_amount'},
             
@@ -526,6 +527,7 @@ async def get_income_statement(request:Request):
         credit_amount2 = '{:,.2f}'.format(credit_amount)
         totalIncome =   float(credit_amount) - float(debit_amount)
         totalIncome2 = '{:,.2f}'.format(totalIncome)
+        bsClass = x['bsClass']
 
         
 
@@ -539,6 +541,7 @@ async def get_income_statement(request:Request):
             'debit_amount': debit_amount2,
             'credit_amount': credit_amount2,
             'totalAmount': totalIncome2,
+            'bsClass': bsClass
         })
 
         agg_result_list.append(data)
@@ -547,11 +550,83 @@ async def get_income_statement(request:Request):
     
 
     return templates.TemplateResponse("incomestatement_zambo.html",{'request':request,'agg_result_list':agg_result_list})
+@zamboanga_client.get('/update-journal-entry/{id}',response_class=HTMLResponse)
+async def update_journalEntry(id,request:Request, username: str = Depends(validateLogin)):
+    """This function is for updating Journal Entry"""
+    username1 = username
+
+    search_journalEntry = mydb.journal_entry_zambo.find({"_id":ObjectId(id)})
+
+    agg_result_list = []
+    for i in search_journalEntry:
+        transID = i['_id']
+        date_time_obj_to = i['date_entry']
+        journal = i['journal']
+        reference = i['ref']
+        journal_memo =i['descriptions']
+        accountNumber = i['acoount_number']  
+        accountTitle2 = i['account_disc']
+        bsType = i['bsClass']
+        debit2 = i['debit_amount']
+        credit2 = i['credit_amount']
+        # date_time_obj = datetime.strptime(str(date_time_obj_to), '%Y-%m-%d').datetime()
+        
+        
+
+        data={}   
+        
+        data.update({
+            'transID': transID,
+            'date_entry': date_time_obj_to,
+            'journal': journal,
+            'ref': reference,
+            'descriptions': journal_memo,
+            'acoount_number': accountNumber,
+            'account_disc': accountTitle2,
+            'bsClass': bsType,
+            'debit_amount': float(debit2),
+            'credit_amount': float(credit2),
+            'due_date_apv': "",
+            'terms_days': "",
+            'supplier/Client': "",
+            'user': username1,
+            'created':datetime.now()
+        })
+
+        agg_result_list.append(data)
+
+        # print(data['journal'])
+
+   
+
+    return templates.TemplateResponse("zamboanga/updateJournal_entry.html",{'request':request,'user':username1,
+                                                        'journaEntry':agg_result_list})
+
+@zamboanga_client.post('/update-journal-entry/{id}')
+async def update_journalEntryZambo(id,request: Request, username: str = Depends(validateLogin)):
+    """This function is for querying Journal Entry for Zamboanga for Trial Balance"""
+    form =  await request.form()
+    account_number = form.get('acoount_number')
+   
+
+    query = {'_id':ObjectId(id)}
+
+    newValue = { "$set": {  
+                                'acoount_number':account_number,   
+                            }           
+                        }
+
+
+    mydb.journal_entry_zambo.update_one(query, newValue)
+
+    return templates.TemplateResponse("index.html", {"request":request})
+
 
 #==================================================Trial Balance Frame =================================================
 @zamboanga_client.get("/trialbalance-zambo/", response_class=HTMLResponse)
 async def equipment_zamboanga(request:Request, username: str = Depends(validateLogin)):
     """This function is to show page for Trial Balance"""
+    
 
     return templates.TemplateResponse("zamboanga/zamboangaTrialBal.html",{'request':request})
 

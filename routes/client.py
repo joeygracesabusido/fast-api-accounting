@@ -333,7 +333,7 @@ async def update_chart_of_account(id,request: Request):
                 query = {'_id':ObjectId(id)}
 
                 newValue = { "$set": {  
-                                            
+                                            'accountNum':account_number,
                                             'accountTitle': account_title,
                                             'bsClass': bstype,
                                             'user': user_search,
@@ -537,6 +537,7 @@ async def get_income_statement(request:Request):
         {"$group" : 
             {"_id" :  '$acoount_number',
             "accountName": {'$first':'$account_disc'},
+            "bsClass": {'$first':'$bsClass'},
             "totalDebit" : {"$sum" : '$debit_amount'},
             "totalCredit" : {"$sum" : '$credit_amount'},
             
@@ -555,6 +556,7 @@ async def get_income_statement(request:Request):
         credit_amount2 = '{:,.2f}'.format(credit_amount)
         totalIncome =   float(credit_amount) - float(debit_amount)
         totalIncome2 = '{:,.2f}'.format(totalIncome)
+        bsClass = x['bsClass']
 
         
 
@@ -566,6 +568,7 @@ async def get_income_statement(request:Request):
             'debit_amount': debit_amount2,
             'credit_amount': credit_amount2,
             'totalAmount': totalIncome2,
+            'bsClass': bsClass
         })
 
         agg_result_list.append(data)
