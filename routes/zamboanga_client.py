@@ -602,24 +602,35 @@ async def update_journalEntry(id,request:Request, username: str = Depends(valida
     return templates.TemplateResponse("zamboanga/updateJournal_entry.html",{'request':request,'user':username1,
                                                         'journaEntry':agg_result_list})
 
-@zamboanga_client.post('/update-journal-entry/{id}')
-async def update_journalEntryZambo(id,request: Request, username: str = Depends(validateLogin)):
-    """This function is for querying Journal Entry for Zamboanga for Trial Balance"""
-    form =  await request.form()
-    account_number = form.get('acoount_number')
+
+from models.model import UpdateJVEntry_zamboanga
+@zamboanga_client.put('/api-update-journal-entry-zambo/{id}')
+async def update_(id,item:UpdateJVEntry_zamboanga):
+    """This function is to update user info"""
+    mydb.journal_entry_zambo.find_one_and_update({"_id":ObjectId(id)},{
+        "$set":dict(item)
+            # 'created':datetime.now()
+    })
+    return {"Messeges":"Data Has been Updated"}
+
+# @zamboanga_client.post('/update-journal-entry/{id}')
+# async def update_journalEntryZambo(id,request: Request, username: str = Depends(validateLogin)):
+#     """This function is for querying Journal Entry for Zamboanga for Trial Balance"""
+#     form =  await request.form()
+#     account_number = form.get('acoount_number')
    
 
-    query = {'_id':ObjectId(id)}
+#     query = {'_id':ObjectId(id)}
 
-    newValue = { "$set": {  
-                                'acoount_number':account_number,   
-                            }           
-                        }
+#     newValue = { "$set": {  
+#                                 'acoount_number':account_number,   
+#                             }           
+#                         }
 
 
-    mydb.journal_entry_zambo.update_one(query, newValue)
+#     mydb.journal_entry_zambo.update_one(query, newValue)
 
-    return templates.TemplateResponse("index.html", {"request":request})
+#     return templates.TemplateResponse("index.html", {"request":request})
 
 
 #==================================================Trial Balance Frame =================================================

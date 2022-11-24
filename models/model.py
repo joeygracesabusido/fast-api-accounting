@@ -51,6 +51,21 @@ class UpdateJVEntry_surigao(BaseModel):
     debit_amount: float
     credit_amount: float
     user: str
+    created: datetime
+
+# ================================================Zamboanga Accouting Transaction=======================
+class UpdateJVEntry_zamboanga(BaseModel):
+    date_entry: datetime
+    journal: str
+    ref: str
+    descriptions: str
+    acoount_number: str
+    account_disc: str
+    bsClass: str
+    debit_amount: float
+    credit_amount: float
+    user: str
+    created: datetime
 
 #=============================================SQL Alchemy================================================
 

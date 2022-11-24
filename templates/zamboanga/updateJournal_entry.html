@@ -4,9 +4,7 @@
 
 {% block content %}
 <body>
-   <form method="POST">
 
-   
         <div class="container">
             <div class="container mt-3">
                 {% for list in journaEntry%}
@@ -33,14 +31,27 @@
                     </input>  
                     <br>
             </div>
+
+            <div  class="container mt-3">
+                
+                    <input
+                        type="datetime-local" hidden
+                        name="trans_date_now"
+                        id="trans_date_now"
+                        
+                        > 
+                    </input>  
+                    <br>
+            </div>
+
                 <div  class="container mt-3">
                     <label for="TransactionDate" >Transaction Date</label><br>
                         <input
-                            type="date"
+                            type="datetime-local"
                             name="trans_date"
                             id="trans_date"
-                            value="{{list.date_entry}}"
-                            >
+                            value="{{list.date_entry}}""
+                            > 
                         </input>  
                         <br>
                 </div>
@@ -49,8 +60,8 @@
                     <label for="Journal" >Journal</label><br>
                     <input
                     type="text"
-                    name="trans_date"
-                    id="trans_date"
+                    name="journal"
+                    id="journal"
                     value="{{list.journal}}"
                     >
                 </input>  
@@ -94,8 +105,70 @@
                             name="acoount_number"
                             id="acoount_number"
                             value="{{list.acoount_number}}"
+                    
+                            >
+                        </input><br>
+
                         
-                            
+                </div>
+
+                <div  class="container mt-3">
+                    <label >Account Title</label><br>
+                        <input 
+                            type="text"
+                            name="account_disc"
+                            id="account_disc"
+                            value="{{list.account_disc}}"
+                            style="width: 400px;"
+                            >
+                        </input>
+                        <button type="submit" onclick="display_data()"  class="btn btn-primary">
+                            Search
+                            <i class="fas fa-database"></i>
+                        </button>
+                        <br>
+
+                        
+                </div>
+
+                <div  class="container mt-3">
+                    <label >BS Type</label><br>
+                        <input 
+                            type="text"
+                            name="bsClass"
+                            id="bsClass"
+                            value="{{list.bsClass}}"
+                            style="width: 175px;"
+                            >
+                        </input><br>
+
+                        
+                </div>
+
+                <div  class="container mt-3">
+                    <label >Debit</label><br>
+                        <input 
+                            type="number"
+                            name="debitAmount"
+                            id="debitAmount"
+                            value="{{list.debit_amount}}"
+                            style="width: 175px;"
+                            step="0.02"
+                            >
+                        </input><br>
+
+                        
+                </div>
+
+                <div  class="container mt-3">
+                    <label >Credit</label><br>
+                        <input 
+                            type="number"
+                            name="creditAmount"
+                            id="creditAmount"
+                            value="{{list.credit_amount}}"
+                            style="width: 175px;"
+                            step="0.02"
                             >
                         </input><br>
 
@@ -106,8 +179,8 @@
 
                 <div  class="container mt-3">
 
-                    <button type="submit"   class="btn btn-primary">
-                            Update
+                    <button type="submit" onclick="update_journal()"  class="btn btn-primary">
+                            Update Record
                             <i class="fas fa-database"></i>
                         </button>
 
@@ -115,26 +188,129 @@
                         
         </div>
 
-    </form>
+    
 
     <script type="text/javascript">
         function update_journal(){
             var data = {}
             var id = document.getElementById("transID").value
-            data["acoount_number"] = document.getElementById("account_number").value
+            data["date_entry"] = document.getElementById("trans_date").value
+            data["journal"] = document.getElementById("journal").value
+            data["ref"] = document.getElementById("reference").value
+            data["descriptions"] = document.getElementById("journal_memo").value
+            data["acoount_number"] = document.getElementById("acoount_number").value
+            data["account_disc"] = document.getElementById("account_disc").value
+            data["bsClass"] = document.getElementById("bsClass").value
+            data["debit_amount"] = document.getElementById("debitAmount").value
+            data["credit_amount"] = document.getElementById("creditAmount").value
+            data["user"] = document.getElementById("username").value
+            data["created"] = document.getElementById("trans_date_now").value
            
             
             console.log(data)
 
-            fetch("/update-chart-of-account/"+ id, {
-            method:'put', 
+            fetch("/api-update-journal-entry-zambo/"+ id, {
+            method:'PUT', 
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
                 })
+
+                .then(function (response) {
+                        // Save the response status in a variable to use later.
+                        fetch_status = response.status;
+                        // Handle success
+                        // eg. Convert the response to JSON and return
+                        return response.json();
+                    }) 
+                    .then(function (json) {
+                        // Check if the response were success
+                        if (fetch_status == 200) {
+                            // Use the converted JSON
+                            window.alert("Your Data has been Save");
+                            window.location.assign("/view-journal-entry-zambo/");
+                            console.log(json);
+                        }
+                        else if (fetch_status == 401){
+                            window.alert("Unauthorized credential Please Login");
+                        } else if(fetch_status == 422){
+                            window.alert("Unprocessable Entity");
+                        }
+
+                    })
+                    .catch(function (Error){
+                        // Catch errors
+                        window.alert(Error);
+                        console.log(Error);
+                    });
+                    
         }
         
 
     </script>
+
+
+    <script>
+
+        $( function() {
+            
+            $( "#account_disc" ).autocomplete({
+            source: "/autocomplete/"
+            });
+        } );
+
+
+    </script>
+
+    <script type="text/javascript">
+        
+
+        const element = document.getElementById('trans_date_now');
+        element.valueAsNumber = Date.now()-(new Date()).getTimezoneOffset()*60000;
+
+          
+    </script>
+    <script type="text/javascript">
+
+        // const rental_url =search_url ;
+        async function display_data(){
+            var account_disc = document.getElementById("account_disc").value
+
+            const search_url = `/api-search-chart-account-sur/?accountTitle2=${account_disc}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            if (responce.status == 401){
+                    window.alert("Unauthorized Please Login")
+
+                };
+
+            if (data.length === 0){
+                window.alert(`No ID store for ${transid}`)
+            }else{
+                var acoount_number = data[0].accountNumber
+                var bsClass = data[0].bsType
+                
+                
+
+                document.getElementById("acoount_number").value = acoount_number
+                document.getElementById("bsClass").value = bsClass
+                
+            }
+            
+        
+
+        }
+
+        
+
+    </script>
+
+
+    
+
+
 
 </body>
 

@@ -34,6 +34,17 @@
                     <br>
             </div>
                 <div  class="container mt-3">
+                    
+                    <input
+                        type="datetime-local" hidden
+                        name="trans_date_now"
+                        id="trans_date_now"
+                        
+                        > 
+                    </input>  
+                    <br>
+                </div>
+                <div  class="container mt-3">
                     <label for="TransactionDate" >Transaction Date</label><br>
                         <input
                             type="datetime-local"
@@ -110,7 +121,14 @@
                             value="{{list.account_disc}}"
                             style="width: 400px;"
                             >
-                        </input><br>
+                        </input> 
+                        <button type="submit" onclick="display_data()"  class="btn btn-primary">
+                            Search
+                            <i class="fas fa-database"></i>
+                        </button>
+                        
+                        
+                        <br>
 
                         
                 </div>
@@ -188,6 +206,7 @@
             data["debit_amount"] = document.getElementById("debitAmount").value
             data["credit_amount"] = document.getElementById("creditAmount").value
             data["user"] = document.getElementById("username").value
+            data["created"] = document.getElementById("trans_date_now").value
            
             
             console.log(data)
@@ -243,6 +262,53 @@
 
 
     </script>
+
+        <script type="text/javascript">
+                
+
+            const element = document.getElementById('trans_date_now');
+            element.valueAsNumber = Date.now()-(new Date()).getTimezoneOffset()*60000;
+
+            
+        </script>
+        <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function display_data(){
+                var account_disc = document.getElementById("account_disc").value
+
+                const search_url = `/api-search-chart-account-sur/?accountTitle2=${account_disc}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                if (responce.status == 401){
+                        window.alert("Unauthorized Please Login")
+
+                    };
+
+                if (data.length === 0){
+                    window.alert(`No chart of account ${account_disc}`)
+                }else{
+                    var acoount_number = data[0].accountNumber
+                    var bsClass = data[0].bsType
+                    
+                    
+
+                    document.getElementById("acoount_number").value = acoount_number
+                    document.getElementById("bsClass").value = bsClass
+                    
+                }
+                
+            
+
+            }
+
+            
+
+        </script>
+
 
 </body>
 

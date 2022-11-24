@@ -915,6 +915,25 @@ async def update_bstype(id,item:UpdateJVEntry_surigao):
     })
     return {"Messeges":"Data Has been Updated"}
 
+@client.get('/api-search-chart-account-sur/')
+async def search_chartofAccount(accountTitle2):
+    items = mydb.chart_of_account.find({'accountTitle':accountTitle2})
+
+    agg_result_list = []
+    for i in items:
+        accountNumber = i['accountNum']
+        bsType = i['bsClass']
+
+        data={}   
+        
+        data.update({
+            'accountNumber': accountNumber,
+            'bsType': bsType,
+             
+        })
+
+        agg_result_list.append(data)
+    return agg_result_list
 
 #========================================Surigao MYSQL DATA Base=======================================
 from config.surigaoDB import SurigaoDB
