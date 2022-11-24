@@ -32,37 +32,7 @@ templates = Jinja2Templates(directory="templates")
 
 
 
-def validateLogin(request:Request):
-    """This function is for Log In Authentication"""
-    
-    try :
-        token = request.cookies.get('access_token')
-        # print(token)
-        if token is None:
-            raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail= "Not Authorized",
-            headers={"WWW-Authenticate": "Basic"},
-            )
-        else:
-            scheme, _, param = token.partition(" ")
-            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
-        
-            username = payload.get("sub")
-        
 
-            user =  mydb.login.find({"username":username})
-
-            if user is not None:
-
-                return username
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail= "Not Authorized Please login",
-            # headers={"WWW-Authenticate": "Basic"},
-        )
 
 
 
@@ -186,6 +156,38 @@ async def login(response: Response, request:Request):
     except:
         errors.append('Something wrong')
         return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
+
+def validateLogin(request:Request):
+    """This function is for Log In Authentication"""
+    
+    try :
+        token = request.cookies.get('access_token')
+        # print(token)
+        if token is None:
+            raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized",
+            # headers={"WWW-Authenticate": "Basic"},
+            )
+        else:
+            scheme, _, param = token.partition(" ")
+            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+            username = payload.get("sub")
+        
+
+            user =  mydb.login.find({"username":username})
+
+            if user is not None:
+
+                return username
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized Please login",
+            # headers={"WWW-Authenticate": "Basic"},
+        )
 
 #======================================Login for Front End or API Login=============================
 @client.get("/api-login/", response_class=HTMLResponse)
@@ -589,7 +591,7 @@ async def equipment_zamboanga(request:Request, username: str = Depends(validateL
 
 #=============================================This is need for debugging insert Journal Entry==================================
 @client.get("/insert-journal-entry/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request):
+async def insert_journal_entry(request: Request, username: str = Depends(validateLogin)):
     """This function is for openting navbar of accounting"""
     form = await request.form()
     accountTile = form.get('accountTitle')
@@ -853,48 +855,70 @@ async def insert_journal_entry(request: Request):
     return templates.TemplateResponse("journal_entry.html", 
                                         {"request":request,"all_chart_of_account":all_chart_of_account,
                                         "messeges":messeges})
+# =========================================Updating Journal Entry ====================================
 
+@client.get('/update-journal-entry-sur/{id}',response_class=HTMLResponse)
+async def update_journalEntry_sur(id,request:Request, username: str = Depends(validateLogin)):
+    """This function is for updating Journal Entry"""
+    username1 = username
+    search_journalEntry = mydb.journal_entry.find({"_id":ObjectId(id)})
 
+    agg_result_list = []
+    for i in search_journalEntry:
+        transID = i['_id']
+        trans_date = i['date_entry']
+        journal = i['journal']
+        reference = i['ref']
+        journal_memo =i['descriptions']
+        accountNumber = i['acoount_number']  
+        accountTitle2 = i['account_disc']
+        bsType = i['bsClass']
+        debit2 = i['debit_amount']
+        credit2 = i['credit_amount']
+        # date_time_obj_to = datetime.strptime(trans_date, '%Y-%m-%d %H-%M-%S')
+        
+        
 
+        data={}   
+        
+        data.update({
+            'transID': transID,
+            'date_entry': trans_date,
+            'journal': journal,
+            'ref': reference,
+            'descriptions': journal_memo,
+            'acoount_number': accountNumber,
+            'account_disc': accountTitle2,
+            'bsClass': bsType,
+            'debit_amount': float(debit2),
+            'credit_amount': float(credit2),
+            'due_date_apv': "",
+            'terms_days': "",
+            'supplier/Client': "",
+            'user': username1,
+            'created':datetime.now()
+        })
+
+        agg_result_list.append(data)
+        
+        
+
+    return templates.TemplateResponse('surigao/updateJournal_entry_sur.html',{'request':request,
+                                        'user':username1,'journaEntry':agg_result_list})
+
+from models.model import UpdateJVEntry_surigao
+@client.put('/api-update-journal-entry-sur/{id}')
+async def update_bstype(id,item:UpdateJVEntry_surigao):
+    """This function is to update user info"""
+    mydb.journal_entry.find_one_and_update({"_id":ObjectId(id)},{
+        "$set":dict(item)
+    })
+    return {"Messeges":"Data Has been Updated"}
 
 
 #========================================Surigao MYSQL DATA Base=======================================
 from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
-def validateLogin(request:Request):
-    """This function is for Log In Authentication"""
-    
-    try :
-        token = request.cookies.get('access_token')
-        # print(token)
-        if token is None:
-            raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail= "Not Authorized",
-            headers={"WWW-Authenticate": "Basic"},
-            )
-        else:
-            scheme, _, param = token.partition(" ")
-            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
-        
-            username = payload.get("sub")
-        
-
-            user =  mydb.login.find({"username":username})
-
-            if user is not None:
-
-                return username
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail= "Not Authorized Please login",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-
-
-
 
 
 @client.get("/dollar-bill/", response_class=HTMLResponse)
@@ -1224,3 +1248,6 @@ async def update_pesoBill(id,request: Request,username: str = Depends(validateLo
     return templates.TemplateResponse("surigao_pesoBill_update.html",{"request":request,
                                             "agg_result_list":agg_result_list,"user":user
                                             })
+
+
+

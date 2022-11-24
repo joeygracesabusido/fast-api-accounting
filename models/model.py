@@ -40,6 +40,18 @@ class JournalEntry(BaseModel):
     user: str
     created:datetime
 
+class UpdateJVEntry_surigao(BaseModel):
+    date_entry: datetime
+    journal: str
+    ref: str
+    descriptions: str
+    acoount_number: str
+    account_disc: str
+    bsClass: str
+    debit_amount: float
+    credit_amount: float
+    user: str
+
 #=============================================SQL Alchemy================================================
 
 class UserLogin(BaseModel):
