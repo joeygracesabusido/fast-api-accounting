@@ -91,6 +91,16 @@
                                 >
                             </input>
 
+                    <label for="EmployeClass" >Salary Details</label>
+                            <input
+                                type="text"
+                                name="salary_details"
+                                id="salary_details"
+                               
+                                
+                                >
+                            </input><br>
+
 <!-- This is start for computation fields -->
                
                     <h1>
@@ -279,7 +289,7 @@
                     var salary_rate = data[0].salary_rate
                     var taxCode = data[0].taxCode
                     var off_on_details = data[0].off_on_details
-
+                    var salary_details = data[0].Salary_Detail
 
                     document.getElementById('fname').value = name
                     document.getElementById('lname').value = lname
@@ -287,6 +297,7 @@
                     document.getElementById('salary_rate').value = salary_rate
                     document.getElementById('tax_class').value = taxCode
                     document.getElementById('emp_class').value = off_on_details
+                    document.getElementById('salary_details').value = salary_details
 
                 }
                 
@@ -308,9 +319,25 @@
             document.getElementById('regday').addEventListener('input',
             function(e){
                 let regday = e.target.value;
-                let salaryRate =  document.getElementById('salary_rate').value;
-                let regdayCal = parseFloat(salaryRate) * parseFloat(regday)
-                document.getElementById('regday_cal').value=regdayCal.toFixed(2);
+                var salDetails = document.getElementById('salary_details').value;
+               
+                var salaryRate;
+                var regdayCal;
+               
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    regdayCal = parseFloat(salaryRate) * parseFloat(regday)
+                    document.getElementById('regday_cal').value=regdayCal.toFixed(2);
+                    
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value;
+                    regdayCal = parseFloat(salaryRate) * parseFloat(regday)
+                    document.getElementById('regday_cal').value=regdayCal.toFixed(2);
+                }
+                
+                
+                
             }
             );
 
@@ -320,13 +347,80 @@
             document.getElementById('regday_ot').addEventListener('input',
             function(e){
                 let regday_ot = e.target.value;
-                let salaryRate =  document.getElementById('salary_rate').value;
-                let regday_otCal = parseFloat(salaryRate) / 8 * 1.25 * parseFloat(regday_ot)
-                document.getElementById('regday_ot_cal').value=regday_otCal.toFixed(2);
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var regday_otCal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    regday_otCal = parseFloat(salaryRate) / 8 * 1.25 * parseFloat(regday_ot)
+                    document.getElementById('regday_ot_cal').value=regday_otCal.toFixed(2);
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    regday_otCal = parseFloat(salaryRate) / 8 * 1.25 * parseFloat(regday_ot)
+                    document.getElementById('regday_ot_cal').value=regday_otCal.toFixed(2);
+
+                }
+   
             }
             );
 
         </script>
+
+        <script type="text/javascript">
+            document.getElementById('sunday').addEventListener('input',
+            function(e){
+                let sundayReg = e.target.value;
+                var salDetails = document.getElementById('salary_details').value;
+                
+                var salaryRate;
+                
+                var sundayReg_cal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    sundayReg_cal = parseFloat(salaryRate) * parseFloat(sundayReg) * 1.30
+                    document.getElementById('sunday_cal').value=sundayReg_cal.toFixed(2);
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value;
+                    sundayReg_cal = parseFloat(salaryRate) * parseFloat(sundayReg) * 1.30
+                    document.getElementById('sunday_cal').value=sundayReg_cal.toFixed(2);
+                }
+                
+                
+                
+            }
+            );
+
+        </script>
+
+        <script type="text/javascript">
+            document.getElementById('sunday_ot').addEventListener('input',
+            function(e){
+                let sunday_ot = e.target.value;
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var sunday_otCal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    sunday_otCal = parseFloat(salaryRate) / 8 * 1.25 * parseFloat(sunday_ot)
+                    document.getElementById('sunday_ot_cal').value=regday_otCal.toFixed(2);
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    regday_otCal = parseFloat(salaryRate) / 8 * 1.25 * parseFloat(sunday_ot)
+                    document.getElementById('sunday_ot_cal').value=regday_otCal.toFixed(2);
+
+                }
+
+            }
+            );
+
+        </script>
+
+
 
 
 
