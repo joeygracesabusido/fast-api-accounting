@@ -75,10 +75,7 @@ def authenticate_user(username, password):
         else :
             False
 
-@client.post('/login2')
-def cookie(response: Response):
-    response.set_cookie(key="mysession", value="1242r")
-    return {"message": "Wanna cookie?"}
+
 
 def create_access_token(data: dict, expires_delta: timedelta):
     to_encode = data.copy()

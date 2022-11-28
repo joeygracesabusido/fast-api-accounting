@@ -45,28 +45,142 @@
             
           </form>
 
+       
+
+          
+          <!-- Modal -->
+          <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+
+                    <label for="Full Name"
+                    >Full Name</label>
+                    
+                    <input 
+                    type="text"
+                    name="fullname"
+                    id="fullname"
+                    required
+                    class="form-control"
+                    >
+
+                    <label for="UserName"
+                    >User Name</label>
+                    
+                    <input 
+                    type="text"
+                    name="username1"
+                    id="username1"
+                    required
+                    class="form-control"
+                    >
+
+                    <label for="Password"
+                    >Password</label>
+                    
+                    <input 
+                    type="password"
+                    name="password1"
+                    id="password1"
+                    required
+                    class="form-control"
+                    >
+
+
+                    <label for="Password"
+                    >Re-type Password</label>
+                    
+                    <input 
+                    type="password"
+                    name="password2"
+                    id="password2"
+                    class="form-control"
+                    >
+
+                    <label for="Status"
+                    >Status</label>
+                    
+                    <input 
+                    type="text" 
+                    name="status"
+                    id="status"
+                    value="for approval"
+                    class="form-control"
+                    >
+
+                    <input
+                        type="datetime-local"
+                        name="trans_date"
+                        id="trans_date"
+                       
+                        > 
+                    </input>  
+
+                    
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="insert_employee_user()" class="btn btn-primary">Save</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+            </div>
+        
+
+          
+
           <div class="mb-3">
-            <button  type="submit" class="btn btn-primary mt-4" onclick="insert_peso()">Login</button>
+            <button  type="submit" class="btn btn-primary">
+            Login</button>
+            
+
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signup">
+                Sign Up
+            </button>
+
           </div>
 
     </div>
 
     <script type="text/javascript">
-        function insert_peso(){
+        function insert_employee_user(){
+            var fullname = document.getElementById("fullname").value
+            var username = document.getElementById("username1").value
+            var password = document.getElementById("password1").value
+           
+            var p1 = document.getElementById("password1").value
+            var p2 = document.getElementById("password2").value
+
             var data = {}
-            // var id = document.getElementById("trans_id").value
-            data["username"] = document.getElementById("username").value
-            data["password"] = document.getElementById("password").value
+            
+            data["fullname"] = document.getElementById("fullname").value
+            data["username"] = document.getElementById("username1").value
+            data["password"] = document.getElementById("password1").value
+            data["status"] = document.getElementById("status").value
+            data["created"] = document.getElementById("trans_date").value
             
             console.log(data)
-
-            
-
-            fetch("/token", {
-            method:'POST', 
-            headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: JSON.stringify('grant_type=&username${data["username"]}=&password=${data["password"]}cope=&client_id=&client_secret=')
-                })
+            if (fullname =='' || password =='' || username =='' ){
+                window.alert("Please fill up Blank Fields");
+            }else{
+                if (p1 != p2 || fullname =='' || password =='' || username =='' ){
+                window.alert("Password is not Equal");
+            }else{
+                fetch("/api-employee-sign-up/", {
+                method:'POST', 
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+                    })
                 .then(function (response) {
                     // Save the response status in a variable to use later.
                     fetch_status = response.status;
@@ -78,7 +192,7 @@
                     // Check if the response were success
                     if (fetch_status == 200) {
                         // Use the converted JSON
-                        // window.alert("Your Data has been Updated");
+                        window.alert("Your Data has been Updated");
                         // window.location.assign("/dollar-bill/");
                         console.log(json);
                     }
@@ -88,9 +202,28 @@
                     window.alert(error);
                     console.log(error);
                 });
+
+            }
+
+
+            }
+            
+            
+            
+            
         }
         
 
+    </script>
+
+
+    <script type="text/javascript">
+                    
+
+        const element = document.getElementById('trans_date');
+        element.valueAsNumber = Date.now()-(new Date()).getTimezoneOffset()*60000;
+
+        
     </script>
 
 

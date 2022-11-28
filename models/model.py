@@ -14,6 +14,13 @@ class User(BaseModel):
     status: str
     created: datetime
 
+class EmployeeUser(BaseModel):
+    fullname: str
+    username: str
+    password: str
+    status: str
+    created: datetime
+
 class balansheetType(BaseModel):
     bstype: str
 
