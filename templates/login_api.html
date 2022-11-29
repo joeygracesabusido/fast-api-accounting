@@ -106,7 +106,7 @@
                     class="form-control"
                     >
 
-                    <label for="Status"
+                    <label for="Status" hidden
                     >Status</label>
                     
                     <input 
@@ -118,7 +118,7 @@
                     >
 
                     <input
-                        type="datetime-local"
+                        type="datetime-local" hidden
                         name="trans_date"
                         id="trans_date"
                        
@@ -135,6 +135,71 @@
             </div>
             </div>
             </div>
+
+
+            <!-- Approver Modal-->
+          <div class="modal fade" id="approved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+
+                    <input 
+                    type="text"
+                    name="transID"
+                    id="transID"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="Full Name"
+                    >Full Name</label>
+                    
+                    <input 
+                    type="text"
+                    name="fullname_update"
+                    id="fullname_update"
+                
+                    >
+
+            <!-- This is for search button -->
+                    <button type="submit" onclick="display_data()"  class="btn btn-warning">
+                        Search
+                        <i class="fas fa-database"></i>
+                    </button>
+
+
+                    
+                    <br>
+                    <label for="Status"
+                    >Status</label>
+                    
+                    <input 
+                    type="text" 
+                    name="status_update"
+                    id="status_update"
+                    
+                    class="form-control"
+                    >
+
+                    
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="update_status()" class="btn btn-primary">Update</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+            </div>
+
         
 
           
@@ -146,6 +211,10 @@
 
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signup">
                 Sign Up
+            </button>
+
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#approved">
+                Approved User
             </button>
 
           </div>
@@ -225,6 +294,113 @@
 
         
     </script>
+
+        <script type="text/javascript">
+                    
+
+            function update_status(){
+                var data = {}
+                var id = document.getElementById("transID").value
+                var status = document.getElementById("status_update").value
+                
+                data["status"] = document.getElementById("status_update").value;
+                
+            
+                
+                console.log(data)
+
+                if (id ===''){
+                    window.alert("Trans ID field is requires");
+                } else{
+                    fetch(`/api-update-employee-user/?id=${id}&status=${status}`, {
+                        method:'PUT', 
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+
+
+                    .then(function (response) {
+                        // Save the response status in a variable to use later.
+                        fetch_status = response.status;
+                        // Handle success
+                        // eg. Convert the response to JSON and return
+                        return response.json();
+                    }) 
+                    .then(function (json) {
+                        // Check if the response were success
+                        if (fetch_status == 200) {
+                            // Use the converted JSON
+                            window.alert("Your Data has been Updated");
+                            window.location.assign("/index");
+                            console.log(json);
+                        }
+                        else if (fetch_status == 401){
+                            window.alert("Unauthorized credential Please Login");
+                        }
+                    })
+                    .catch(function (error){
+                        // Catch errors
+                        window.alert(error);
+                        console.log(error);
+                    });
+
+                }
+
+                }
+
+        </script>
+
+
+        <!-- This is for auto complete of Routes -->
+        <script>
+            $( function() { 
+                        $("#fullname_update").autocomplete({
+                        source: "/api-autocomplete-employee-user/"
+                        });
+
+                    } );
+
+        </script>
+
+
+        <!-- This is for displaying Hauling Transaction using ID of Transaction -->
+        <script type="text/javascript">
+
+                    
+            async function display_data(){
+                var fullname = document.getElementById("fullname_update").value
+
+                const search_url = `/api-get-employee-user/?fullname=${fullname}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+
+            
+                if (responce.status == 401){
+                        window.alert("Unauthorized Please Login")
+
+                    }
+
+                else if (data.length === 0){
+                    window.alert(`No ID store for ${fullname}`)
+                }else{
+                    var transID = data[0].id
+                    var status = data[0].status
+                
+
+                    document.getElementById("transID").value = transID;
+                    document.getElementById("status_update").value= status;
+                   
+                    
+                }
+                
+            
+
+            }
+
+        </script>
 
 
 

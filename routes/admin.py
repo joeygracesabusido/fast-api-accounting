@@ -17,6 +17,7 @@ from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.bstype import bsType, bsTypes
 from schemas.journalEntry import journalEntry,journalEntrys,journalEntryZambo,journalEntryZambos
 from models.model import User, balansheetType, ChartofAccount,JournalEntry,UserLogin
+from schemas.user import EmployeeuserEntity,EmployeeuserEntitys
 
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
@@ -58,6 +59,37 @@ admin = APIRouter()
 #     """This is for testing only"""
 #     return {"Main":"This is Lenged"}
 
+
+# def validateLogin(request:Request):
+#     """This function is for Log In Authentication"""
+    
+#     try :
+#         token = request.cookies.get('access_token')
+#         if token is None:
+#             raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             detail= "Not Authorized",
+#             # headers={"WWW-Authenticate": "Basic"},
+#             )
+#         else:
+#             scheme, _, param = token.partition(" ")
+#             payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
+        
+#             username = payload.get("sub")
+        
+
+#             user =  mydb.login.find({"username":username})
+
+#             if user is not None:
+
+#                 return username
+
+#     except Exception as e:
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             detail= "Not Authorized",
+#             # headers={"WWW-Authenticate": "Basic"},
+#         )
 
 
 #==================================================User Data =============================================
@@ -180,6 +212,33 @@ def get_user_from_token():
 async def find_all_user(token: str = Depends(oauth_scheme)):
     """This function is querying all user account"""
     return usersEntity(mydb.login.find())
+
+#=============================================employee user frame========================================
+@admin.get("/api-autocomplete-employee-user/")
+def autocomplete(term: Optional[str]):
+    """this is for auto complete of """
+    items = EmployeeuserEntitys(mydb.employee_login.find({'fullname':{"$regex":term,'$options':'i'}}))
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item['fullname'])
+    return suggestions
+
+@admin.get('/api-get-employee-user/')
+async def get_employee_user(fullname, token: str = Depends(oauth_scheme)):
+    """This is for search of employee"""
+    return  EmployeeuserEntitys(mydb.employee_login.find({'fullname':{"$regex":fullname,'$options':'i'}}))
+
+@admin.put('/api-update-employee-user/')
+async def update_employee_status(id,status:Optional[str]):
+    """This function is to update user info"""
+    mydb.employee_login.find_one_and_update({"_id":ObjectId(id)},{
+        "$set":{
+            "status":status
+        }
+    })
+    return {'Messaeges':'Data has been updated'}
+
 
 #================================================balance sheet Type========================================
 @admin.post("/insert-bstype")
@@ -713,41 +772,12 @@ def delete_employee(id,token: str = Depends(oauth_scheme)):
 
 #=============================================Surigao Database =====================================
 from routes.client import login
-from routes.rizal_project import validateLogin
+# from routes.rizal_project import validateLogin
 from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
 from models.model import InsertPesoBill, DollarBill
 
-def validateLogin(request:Request):
-    """This function is for Log In Authentication"""
-    
-    try :
-        token = request.cookies.get('access_token')
-        if token is None:
-            raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail= "Not Authorized",
-            headers={"WWW-Authenticate": "Basic"},
-            )
-        else:
-            scheme, _, param = token.partition(" ")
-            payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
-        
-            username = payload.get("sub")
-        
 
-            user =  mydb.login.find({"username":username})
-
-            if user is not None:
-
-                return username
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail= e,
-            headers={"WWW-Authenticate": "Basic"},
-        )
 #===============================================Surigao Peso==============================================
 
 @admin.put('/api-update-dollarBill/{id}')
