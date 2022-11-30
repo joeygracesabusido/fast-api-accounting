@@ -863,7 +863,7 @@ def add_equipment(items: Equipment, token: str = Depends(oauth_scheme)):
     ZamboangaDB.insert_equipment(equipment_id=items.equipment_id,
                                     equipment_desc=items.equipment_desc,
                                     remarks=items.remarks )
-    return {'Messege': 'Has been Save'}
+    return {'Messege': ' Data Has been Save'}
 
 @admin.get('/api-get-equipment/')
 def get_equipment(token: str=Depends(oauth_scheme)):

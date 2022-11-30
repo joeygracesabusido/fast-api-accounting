@@ -50,8 +50,8 @@ def validateLogin(request:Request):
         
             username = payload.get("sub")
         
-
-            user =  mydb.login.find({"username":username})
+            user =  usersEntity(mydb.login.find({"username":username}))
+            # user =  mydb.login.find({"username":username})
 
             
             if user == [] :

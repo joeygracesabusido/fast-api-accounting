@@ -154,7 +154,7 @@ async def login(response: Response, request:Request):
         errors.append('Something wrong')
         return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
 
-def validateLogin(request:Request):
+def SurigaovalidateLogin(request:Request):
     """This function is for Log In Authentication"""
     
     try :
@@ -172,8 +172,8 @@ def validateLogin(request:Request):
         
             username = payload.get("sub")
         
-
-            user =  mydb.login.find({"username":username})
+            user =  usersEntity(mydb.login.find({"username":username}))
+            
 
             
             if user == [] :
@@ -210,7 +210,7 @@ async def login_show(request: Request):
 
 
 @client.get("/chart-of-account/", response_class=HTMLResponse)
-def chart_of_account_view(request: Request,username: str = Depends(validateLogin)):
+def chart_of_account_view(request: Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for openting navbar of accounting"""
     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
     all_bstype = bsTypes(mydb.balansheetType.find())
@@ -291,7 +291,7 @@ async def insert_chart_of_account(request: Request):
                                                                 "all_bstype":all_bstype,"messeges":messeges})
 
 @client.get("/update-chart-of-account/{id}", response_class=HTMLResponse)
-def update_chart_of_account(id,request: Request,username: str = Depends(validateLogin)):
+def update_chart_of_account(id,request: Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for showing Form for Updating Chart of Account"""
     token = request.cookies.get('access_token')
     
@@ -364,7 +364,7 @@ async def update_chart_of_account(id,request: Request):
                                                             "all_bstype":all_bstype,"messeges":messeges})
 
 @client.get("/view-journal-entry/", response_class=HTMLResponse)
-async def view_journal_entry(request: Request,username: str = Depends(validateLogin)):
+async def view_journal_entry(request: Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for displaying journal Entry"""
    
     myresult  = mydb.journal_entry.find()
@@ -412,7 +412,7 @@ def autocomplete(term: Optional[str]):
     return suggestions
 
 @client.get("/insert-journal-entry-2/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request,username: str = Depends(validateLogin)):
+async def insert_journal_entry(request: Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for openting navbar of accounting"""
     form = await request.form()
     accountTile = form.get('accountTitle')
@@ -513,7 +513,7 @@ async def insert_journal_entry(request: Request):
                                                 "messeges":messeges})
 #=============================================This ksi for Income Statement Router========================
 @client.get("/income-statement/", response_class=HTMLResponse)
-async def get_income_statement(request:Request,username: str = Depends(validateLogin)):
+async def get_income_statement(request:Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for querying income statement"""
     return templates.TemplateResponse("incomestatement.html",{'request':request})
 
@@ -584,7 +584,7 @@ async def get_income_statement(request:Request):
 
 #===========================================Trial Balance Transactions=============================================
 @client.get("/trialbalance-surigao/", response_class=HTMLResponse)
-async def equipment_zamboanga(request:Request, username: str = Depends(validateLogin)):
+async def equipment_zamboanga(request:Request, username: str = Depends(SurigaovalidateLogin)):
     """This function is to show page for Trial Balance"""
 
     return templates.TemplateResponse("surigao/surigaoTrialBal.html",{'request':request})
@@ -592,7 +592,7 @@ async def equipment_zamboanga(request:Request, username: str = Depends(validateL
 
 #=============================================This is need for debugging insert Journal Entry==================================
 @client.get("/insert-journal-entry/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request, username: str = Depends(validateLogin)):
+async def insert_journal_entry(request: Request, username: str = Depends(SurigaovalidateLogin)):
     """This function is for openting navbar of accounting"""
     form = await request.form()
     accountTile = form.get('accountTitle')
@@ -605,7 +605,7 @@ async def insert_journal_entry(request: Request, username: str = Depends(validat
 
 
 @client.post("/insert-journal-entry/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request,username: str = Depends(validateLogin)):
+async def insert_journal_entry(request: Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for posting accounting"""
     form = await request.form()
 
@@ -859,7 +859,7 @@ async def insert_journal_entry(request: Request,username: str = Depends(validate
 # =========================================Updating Journal Entry ====================================
 
 @client.get('/update-journal-entry-sur/{id}',response_class=HTMLResponse)
-async def update_journalEntry_sur(id,request:Request, username: str = Depends(validateLogin)):
+async def update_journalEntry_sur(id,request:Request, username: str = Depends(SurigaovalidateLogin)):
     """This function is for updating Journal Entry"""
     username1 = username
     search_journalEntry = mydb.journal_entry.find({"_id":ObjectId(id)})
@@ -942,7 +942,7 @@ SurigaoDB.initialize()
 
 
 @client.get("/dollar-bill/", response_class=HTMLResponse)
-def get_dollarBill_records(request: Request,username: str = Depends(validateLogin)):
+def get_dollarBill_records(request: Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for querying diesel consuption from Rizal Project"""
    
     myresult = SurigaoDB.select_all_from_dollarBill()
@@ -1027,7 +1027,7 @@ def get_dollarBill_records(request: Request,username: str = Depends(validateLogi
 
 
 @client.post("/dollar-bill/", response_class=HTMLResponse)
-async def insert_dollarBill(request: Request, username: str = Depends(validateLogin)):
+async def insert_dollarBill(request: Request, username: str = Depends(SurigaovalidateLogin)):
     """This function is to insert Data to dollar Bill Table"""
     form = await request.form()
 
@@ -1103,7 +1103,7 @@ async def insert_dollarBill(request: Request, username: str = Depends(validateLo
 
 
 @client.get("/update-dollar-bill/{id}", response_class=HTMLResponse)
-async def update_dollarBill(id,request: Request, username: str = Depends(validateLogin)):
+async def update_dollarBill(id,request: Request, username: str = Depends(SurigaovalidateLogin)):
     """This function is for Updating Dollar Bill"""
 
     
@@ -1152,7 +1152,7 @@ async def update_dollarBill(id,request: Request, username: str = Depends(validat
 from config.surigaoDB import SurigaoDB
 SurigaoDB.initialize()
 @client.get("/peso-bill/", response_class=HTMLResponse)
-def get_peso_records(request: Request,username: str = Depends(validateLogin)):
+def get_peso_records(request: Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for showing Page for Peso Biling Surigao Project"""
 
     user = username
@@ -1224,7 +1224,7 @@ def get_peso_records(request: Request,username: str = Depends(validateLogin)):
                                     "agg_result_list":agg_result_list,"user":user})
 
 @client.get("/update-peso-bill/{id}", response_class=HTMLResponse)
-async def update_pesoBill(id,request: Request,username: str = Depends(validateLogin)):
+async def update_pesoBill(id,request: Request,username: str = Depends(SurigaovalidateLogin)):
     """This function is for Updating Dollar Bill"""
 
     myresult = SurigaoDB.select_one_from_pesoBill(id=id)

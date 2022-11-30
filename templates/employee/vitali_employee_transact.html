@@ -1,0 +1,2469 @@
+
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<body>
+    <div class="container">
+        <h2>
+            EMPLOYEE TRANSACTIONS
+        </h2>
+    </div>
+   
+   <div class="container">
+
+        <div class="container mt-3">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addequipment">
+                Add Equipment
+            </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateEquipment">
+                Update Equipment
+            </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#equipmentTable">
+                Equipment Table
+            </button>
+            <br><br>
+
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addRoutes">
+                Add Routes
+            </button>
+
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#routesTable">
+                Routes Table
+            </button>
+
+            <br><br>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addHauling">
+                Add Hauling
+            </button>
+
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#updateHauling">
+                Update hauling
+            </button>
+
+            
+
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#haulingTable">
+                Hauling Table
+            </button>
+
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#summaryhaulingTable">
+                Summary of Hauling
+            </button>
+            <br><br>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addDiesel">
+                Add Diesel 
+            </button>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#dieselList">
+                Diesel List
+            </button>
+
+            
+        </div>
+            <!-- Modal -->
+            <div class="modal fade" id="updateEquipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Equipment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+                        <label for="transID"
+                        >Trans ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="transID"
+                        id="transID"
+                        required
+                        
+                        >
+
+                        <button type="submit"  onclick="display_data()" class="btn btn-success">
+                            Search 
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                        <br>
+                        
+                        
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id_update"
+                        id="equipment_id_update"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Equipment Discription"
+                        >Equipment Discription</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_desc_update"
+                        id="equipment_desc_update"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Remarks"
+                        >Remarks</label>
+
+                        <input 
+                        type="text"
+                        name="remarks_update"
+                        id="remarks_update"
+                        
+                        class="form-control"
+                        >
+                        
+                        <br><br>
+                        
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="update_equipment()" class="btn btn-primary">Update</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="addequipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Equipment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id"
+                        id="equipment_id"
+                        class="form-control"
+                        >
+
+
+                        <label for="Equipment Discription"
+                        >Equipment Discription</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_desc"
+                        id="equipment_desc"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Remarks"
+                        >Remarks</label>
+
+                        <input 
+                        type="text"
+                        name="remarks"
+                        id="remarks"
+                        
+                        class="form-control"
+                        >
+                        
+                        <br><br>
+                        
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_equipment()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
+            <!-- This for table of Equipment -->
+
+            <div class="modal fade" id="equipmentTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Euipment Table</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+                        <div  class="container mt-3">
+                            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                
+                                        <td>ID</td>
+                                        <td>Equipment ID</td>
+                                        <td>Equipment Description</td>
+                                        <td>Remarks</td>
+                                        <td>Action</td>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body">
+                                   
+                                        
+                                        <tr>
+                                            
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            
+                                      
+                                        </tr>
+                                       
+                                    
+                                </tbody>
+                
+                               
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+            
+                      
+               </div>
+            
+
+                       
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- This is for Adding Routes Modal -->
+
+            <div class="modal fade" id="addRoutes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Routes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+                        
+                        
+                        
+                    
+                        <label for="Routes"
+                        >Routes</label>
+                        
+                        <input 
+                        type="text"
+                        name="routes_name"
+                        id="routes_name"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Distance"
+                        >Distance</label>
+                        
+                        <input 
+                        type="number"
+                        name="distance"
+                        id="distance"
+                        step="0.01"
+                        class="form-control"
+                        ><br><br>
+
+                        
+                
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_routes()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            <!-- This for table of Equipment -->
+
+            <div class="modal fade" id="routesTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Euipment Table</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="container mt-3">
+                            <button type="submit" onclick="display_data2()" class="btn btn-primary">Display</button>
+                        </div>
+
+                        <div  class="container mt-3">
+                            <table id="myTable_routes" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                
+                                        <td>ID</td>
+                                        <td>Routes</td>
+                                        <td>Distance</td>
+                                        
+                                        <td>Action</td>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_routes">
+                                   
+                                        
+                                        <tr>
+                                            
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                           
+                                            
+                                      
+                                        </tr>
+                                       
+                                    
+                                </tbody>
+                
+                               
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+            
+                      
+               </div>
+            
+
+                       
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
+            <!-- This is for Adding Hauling  -->
+
+            <div class="modal fade" id="addHauling" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Hauling</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                    
+                        <input 
+                        type="text" hidden
+                        name="username"
+                        id="username"
+                        value={{user}}
+                        class="form-control"
+                        >
+                     
+                        <label for="Trans Date"
+                        >Transaction Date</label>
+
+
+                        
+                        <input 
+                        type="date"
+                        name="trans_date"
+                        id="trans_date"
+                        
+                        class="form-control"
+                        >
+                        
+                        
+                        
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id_h"
+                        id="equipment_id_h"
+                        class="form-control"
+                        >
+
+                        <br>
+                        <label for="Routes"
+                        >Routes</label>
+                        
+                        <input 
+                        type="text"
+                        name="routes_h"
+                        id="routes_h"
+                        style="width: 250px;"
+                        >
+                        <button type="submit" onclick="display_distance()"  class="btn btn-success">
+                            Search
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                        <br>
+
+                        <label for="Distance"
+                        >Distance</label>
+                        
+                        <input 
+                        type="number"
+                        name="distance_h"
+                        id="distance_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Track Factor"
+                        >Trackfactor</label>
+                        
+                        <input 
+                        type="text"
+                        name="trackFactor_h"
+                        id="trackFactor_h"
+                        class="form-control"
+                        >
+
+                        <label for="Number of Trips"
+                        >Number of Trips</label>
+                        
+                        <input 
+                        type="number"
+                        name="no_trips_h"
+                        id="no_trips_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Volume"
+                        >Volume</label>
+                        
+                        <input 
+                        type="number"
+                        name="volume_h"
+                        id="volume_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Rate"
+                        >Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rate_h"
+                        id="rate_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="TotalAmount"
+                        >Amount</label>
+                        
+                        <br>
+                        <input 
+                        type="number"
+                        name="amount_h"
+                        id="amount_h"
+                        step="0.01"
+                        
+                        >
+
+                        <button type="submit" onclick="calculate()"  class="btn btn-success">
+                            Calculate
+                            <i class="fas fa-database"></i>
+                        </button>
+                        
+                        <br>
+                    
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="vatable" value="0.12" name="vatable">
+                            <label class="custom-control-label" for="customCheck1">Vatable</label>
+
+                            <input type="checkbox" class="custom-control-input" id="not-vat" value=0 name="not-vat">
+                            <label class="custom-control-label" for="customCheck1">Non-Vat</label>
+                        </div>
+
+                       
+                        <br>
+                        <label for="TaxRate"
+                        >Tax Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="taxRate_h"
+                        id="taxRate_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+                       
+
+                        <label for="Vat Output"
+                        >Vat Output</label>
+                        
+                        <input 
+                        type="number"
+                        name="vat_output_h"
+                        id="vat_output_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Net of Vat"
+                        >Net of Vat</label>
+                        
+                        <input 
+                        type="number"
+                        name="net_of_vat_h"
+                        id="net_of_vat_h"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                       
+                        
+                        <br><br>
+
+                        
+                
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_hauling()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- This is for Updating Hauling  -->
+
+            <div class="modal fade" id="updateHauling" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Hauling</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                    
+                        <input 
+                        type="text" hidden
+                        name="username_update"
+                        id="username_update"
+                        value={{user}}
+                        class="form-control"
+                        >
+
+                        <label for="Trans id"
+                        >Transaction ID</label>
+
+                        <input 
+                        type="text" 
+                        name="transID_h_update"
+                        id="transID_h_update"
+                    
+                        >
+
+                        <button type="submit"  onclick="dislay_data_id_hauling()" class="btn btn-success">
+                            Search 
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                        <br><br>
+                     
+                        <label for="Trans Date"
+                        >Transaction Date</label>
+
+
+                        
+                        <input 
+                        type="date"
+                        name="trans_date_update"
+                        id="trans_date_update"
+                        
+                        class="form-control"
+                        >
+                        
+                        
+                        
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id_h_update"
+                        id="equipment_id_h_update"
+                        class="form-control"
+                        >
+
+                        <br>
+                        <label for="Routes"
+                        >Routes</label>
+                        
+                        <input 
+                        type="text"
+                        name="routes_h_update"
+                        id="routes_h_update"
+                        style="width: 250px;"
+                        >
+                        <button type="submit" onclick="display_distance_update()"  class="btn btn-success">
+                            Search
+                            <i class="fas fa-database"></i>
+                        </button>
+
+                        <br>
+
+                        <label for="Distance"
+                        >Distance</label>
+                        
+                        <input 
+                        type="number"
+                        name="distance_h_update"
+                        id="distance_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Track Factor"
+                        >Trackfactor</label>
+                        
+                        <input 
+                        type="text"
+                        name="trackFactor_h_update"
+                        id="trackFactor_h_update"
+                        class="form-control"
+                        >
+
+                        <label for="Number of Trips"
+                        >Number of Trips</label>
+                        
+                        <input 
+                        type="number"
+                        name="no_trips_h_update"
+                        id="no_trips_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Volume"
+                        >Volume</label>
+                        
+                        <input 
+                        type="number"
+                        name="volume_h_update"
+                        id="volume_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Rate"
+                        >Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rate_h_update"
+                        id="rate_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="TotalAmount"
+                        >Amount</label>
+                        
+                        <br>
+                        <input 
+                        type="number"
+                        name="amount_h_update"
+                        id="amount_h_update"
+                        step="0.01"
+                        
+                        >
+
+                        <button type="submit" onclick="calculate_update()"  class="btn btn-success">
+                            Calculate
+                            <i class="fas fa-database"></i>
+                        </button>
+                        
+                        <br>
+                    
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="vatable_update" value="0.12" name="vatable">
+                            <label class="custom-control-label" for="customCheck1">Vatable</label>
+
+                            <input type="checkbox" class="custom-control-input" id="not-vat_update" value=0 name="not-vat">
+                            <label class="custom-control-label" for="customCheck1">Non-Vat</label>
+                        </div>
+
+                       
+                        <br>
+                        <label for="TaxRate"
+                        >Tax Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="taxRate_h_update"
+                        id="taxRate_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+                       
+
+                        <label for="Vat Output"
+                        >Vat Output</label>
+                        
+                        <input 
+                        type="number"
+                        name="vat_output_h_update"
+                        id="vat_output_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <label for="Net of Vat"
+                        >Net of Vat</label>
+                        
+                        <input 
+                        type="number"
+                        name="net_of_vat_h_update"
+                        id="net_of_vat_h_update"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                        <br><br>
+
+                        
+                
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="update_hauling()" class="btn btn-primary">Update Hauling</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            <!-- This for table of Hauling -->
+
+            <div class="modal fade" id="haulingTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hauling Table</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="container mt-3">
+
+                            <label for="Trans Date"
+                            >Date From</label>
+
+
+                            
+                            <input 
+                            type="date"
+                            name="dateFrom_h_table"
+                            id="dateFrom_h_table"
+                        
+                            >
+
+                            <label for="Trans Date"
+                            >Date To</label>
+
+
+                            
+                            <input 
+                            type="date"
+                            name="dateTo_h_table"
+                            id="dateTo_h_table"
+                        
+                            >
+
+                            <label for="EquipmentID"
+                            >Equipment</label>
+
+
+                            
+                            <input 
+                            type="text"
+                            name="equipment_id_h_table"
+                            id="equipment_id_h_table"
+                        
+                            >
+
+                           
+
+                            
+
+                            <button type="submit"  onclick="display_hauling_data()" class="btn btn-primary">
+                                Search Data
+                                <i class="fas fa-database"></i>
+                            </button>
+
+                            <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-success">
+                                Export Data
+                                <i class="fas fa-database"></i>
+                            </button>
+                            
+                        </div>
+
+                        <div  class="container mt-3">
+                            <table id="myTable_hauling" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                
+                                        <td>ID</td>
+                                        <td>Trans Date</td>
+                                        <td>Equipment ID</td>
+                                        <td>Routes</td>
+                                        <td>Distance</td>
+                                        <td>Track Factor</td>
+                                        <td>Trips</td>
+                                        <td>Volume</td>
+                                        <td>Rate</td>
+                                        <td>Amount</td>
+                                        <td>Action</td>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_hauling">
+                                   
+                                        
+                                        <tr>
+                                            
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            
+                                      
+                                        </tr>
+                                       
+                                    
+                                </tbody>
+
+                                
+                
+                               
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+            
+                      
+               </div>
+            
+
+                       
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+
+                        <label>Total Trips</label>
+                            <input 
+                            type="text"
+                            name="totalTrips"
+                            id="totalTrips"
+                            style="width: 75px;"
+                            >
+
+                        <label>Volume</label>
+                            <input 
+                            type="text"
+                            name="totalVolume"
+                            id="totalVolume"
+                            style="width: 150px;"
+                            >
+
+                        <label>Amount</label>
+                            <input 
+                            type="text"
+                            name="totalAmount"
+                            id="totalAmount"
+                            style="width: 150px;"
+                            >
+                    
+                   
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
+            <!-- This is for Summary of table of Hauling -->
+
+            <div class="modal fade" id="summaryhaulingTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Summary Hauling Table</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="container mt-3">
+
+                            <label for="Trans Date"
+                            >Date From</label>
+
+
+                            
+                            <input 
+                            type="date"
+                            name="dateFrom_h_sum_table"
+                            id="dateFrom_h_sum_table"
+                        
+                            >
+
+                            <label for="Trans Date"
+                            >Date To</label>
+
+
+                            
+                            <input 
+                            type="date"
+                            name="dateTo_h_sum_table"
+                            id="dateTo_h_sum_table"
+                        
+                            >
+
+                            <label for="EquipmentID"
+                            >Equipment</label>
+
+
+                            
+                            <input 
+                            type="text"
+                            name="equipment_id_h_sum_table"
+                            id="equipment_id_h_sum_table"
+                        
+                            >
+
+                           
+
+                            
+
+                            <button type="submit"  onclick="display_sum_hauling_data()" class="btn btn-primary">
+                                Search Data
+                                <i class="fas fa-database"></i>
+                            </button>
+
+
+                            
+                            
+                        </div>
+
+                        <div  class="container mt-3">
+                            <table id="my_summaryTable_hauling" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                
+                                        <td>Equipment</td>
+                                        <td>Routes</td>
+                                        <td>Trips</td>
+                                        <td>Volume</td>
+                                        <td>Amount</td>
+                                        <td>Net of Vat</td>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_sum_hauling">
+                                   
+                                        
+                                        <tr>
+                                            
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                           
+                                            
+                                      
+                                        </tr>
+                                       
+                                    
+                                </tbody>
+
+                                
+                
+                               
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+            
+                      
+               </div>
+            
+
+                       
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+
+                        <label>Total Trips</label>
+                            <input 
+                            type="text"
+                            name="totalTrips_sum"
+                            id="totalTrips_sum"
+                            style="width: 100px;"
+                            >
+
+                        <label>Volume</label>
+                            <input 
+                            type="text"
+                            name="totalVolume_sum"
+                            id="totalVolume_sum"
+                            style="width: 130px;"
+                            >
+
+                        <label>Amount</label>
+                            <input 
+                            type="text"
+                            name="totalAmount_sum"
+                            id="totalAmount_sum"
+                            style="width: 130px;"
+                            >
+                    
+                   
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
+            <!-- This is for adding Diesel for Vitali Project-->
+            <div class="modal fade" id="addDiesel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Diesel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+
+                        <input 
+                        type="text" hidden
+                        name="user_addDiesel"
+                        id="user_addDiesel"
+                        value={{user}}
+                        class="form-control"
+                        >
+                        
+                        <label for="TransDate"
+                        >Transaction Date</label>
+                        
+                        <input 
+                        type="date"
+                        name="date_addDiesel"
+                        id="date_addDiesel"
+                        class="form-control"
+                        >
+                    
+                        <label for="EquipmentID"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipment_id_addDiesel"
+                        id="equipment_id_addDiesel"
+                        class="form-control"
+                        >
+
+
+                        <label for="withdrawal_slip"
+                        >Withdrawal Slip</label>
+                        
+                        <input 
+                        type="text"
+                        name="withdrawal_slip_Adddiesel"
+                        id="withdrawal_slip_Adddiesel"
+                        
+                        class="form-control"
+                        >
+
+                        <label for="Total Liters"
+                        >Liters</label>
+
+                        <input 
+                        type="number"
+                        name="liter_addDiesel"
+                        id="liter_addDiesel"
+                        step="0.01"
+                        onkeyup="getTotalamountDiesel(this.value);"
+                        class="form-control"
+                        >
+
+                        
+
+
+                        <label for="Price"
+                        >Price </label>
+
+                        <input 
+                        type="number"
+                        name="price_addDiesel"
+                        id="price_addDiesel"
+                        step="0.01"
+                        onkeyup="getTotalamountDiesel(this.value);"
+                        class="form-control"
+                        >
+
+                        <label for="Amount"
+                        >Amount</label>
+
+                        <input 
+                        type="text"
+                        name="amount_addDiesel"
+                        id="amount_addDiesel"
+                      
+                        
+                        class="form-control"
+                        >
+
+                        <input 
+                        type="text" hidden
+                        name="amount_addDiesel2"
+                        id="amount_addDiesel2"
+                        step="0.01"
+                        >
+                        
+                        <br><br>
+                        
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="insert_diesel()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- this is for Diesel Modal List -->
+            <div class="modal fade" id="dieselList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Diesel List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+            <div class="modal-body">
+                <div class="container mt-3">
+
+                    <label for="Trans Date"
+                    >Date From</label>
+
+
+                    
+                    <input 
+                    type="date"
+                    name="dateFrom_dieselList"
+                    id="dateFrom_dieselList"
+                
+                    >
+
+                    <label for="Trans Date"
+                    >Date To</label>
+
+
+                    
+                    <input 
+                    type="date"
+                    name="dateTo_DieselList"
+                    id="dateTo_DieselList"
+                
+                    >
+
+                    <label for="EquipmentID"
+                    >Equipment</label>
+
+
+                    
+                    <input 
+                    type="text"
+                    name="equipment_id_DieselList"
+                    id="equipment_id_DieselList"
+                
+                    >
+
+            
+
+                    <button type="submit"  onclick="display_diesel_data()" class="btn btn-primary">
+                        Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
+
+
+                    
+                    
+                </div>
+
+                <div  class="container mt-3">
+                    <table id="my_table_diesel" class="table table-bordered"  style="text-align: center;">
+                        <thead class="table-dark">
+
+                                <td>ID</td>
+                                <td>Date</td>
+                                <td>Equipment</td>
+                                <td>W-Slip</td>
+                                <td>Liter</td>
+                                <td>Price</td>
+                                <td>Amount</td>
+                                <td>Action</td>
+                                
+                                
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="table_body_diesel">
+                           
+                                
+                                <tr>
+                                    
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                              
+                                </tr>
+                               
+                            
+                        </tbody>
+
+                        
+        
+                       
+        
+                    </table>
+        
+                    
+                        
+                        
+                </div>
+    
+              
+        </div>
+    
+
+               
+    
+            
+            </div>
+            <div class="modal-footer">
+
+                <label>Liters</label>
+                    <input 
+                    type="text"
+                    name="totalliter"
+                    id="totalliter"
+                    style="width: 130px; text-align: right;"
+                    >
+
+                <label>Total Amount</label>
+                    <input 
+                    type="text"
+                    name="totalAmount_diesel"
+                    id="totalAmount_diesel"
+                    style="width: 130px; text-align: right;"
+                    >
+
+                
+            
+           
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+
+
+
+        
+   <script type="text/javascript">
+        function insert_equipment(){
+            var data = {}
+            // var id = document.getElementById("trans_id").value
+            data["equipment_id"] = document.getElementById("equipment_id").value
+            data["equipment_desc"] = document.getElementById("equipment_desc").value
+            data["remarks"] = document.getElementById("remarks").value
+           
+            
+            console.log(data)
+
+            fetch("/api-add-equipment-employee/", {
+            method:'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+                })
+
+
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Save");
+                        window.location.assign("/employee-transaction-zambo/");
+                        console.log(json);
+                    }
+                    else if (fetch_status == 401){
+                        window.alert("Unauthorized credential Please Login");
+                    }
+                })
+                .catch(function (Error){
+                    // Catch errors
+                    window.alert(Error);
+                    console.log(Error);
+                });
+                
+            // window.location.assign("/peso-bill/");
+
+            // window.alert("Your Data has been Save");
+            // window.location.assign("/zamboanga-equipment/");
+
+            // if ({detail:"Not authenticated"}) {
+            //     window.alert("Unauthorized credentials Please login");
+                
+            // } else if({Messege: "Has been Save"}){
+                
+               
+            // }
+            
+        }
+        
+
+    </script>
+
+    <script type="text/javascript">
+
+        function update_equipment(){
+            var data = {}
+            var id = document.getElementById("transID").value
+            data["equipment_id"] = document.getElementById("equipment_id_update").value
+            data["equipment_desc"] = document.getElementById("equipment_desc_update").value
+            data["remarks"] = document.getElementById("remarks_update").value
+           
+            
+            console.log(data)
+
+            if (id ===''){
+                window.alert("Trans ID field is requires");
+            } else{
+                fetch("/api-update-equipment/"+id, {
+                    method:'PUT', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                })
+
+
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Updated");
+                        window.location.assign("/zamboanga-equipment/");
+                        console.log(json);
+                    }
+                    else if (fetch_status == 401){
+                        window.alert("Unauthorized credential Please Login");
+                    }
+                })
+                .catch(function (error){
+                    // Catch errors
+                    window.alert(error);
+                    console.log(error);
+                });
+
+            }
+
+            }
+
+    </script>
+
+
+    <script type="text/javascript">
+
+       
+
+        // const rental_url =search_url ;
+        async function display_data(){
+            
+            const search_url = `/api-get-equipment-employee/`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            
+            
+            let tableData="";
+            data.map((values)=>{
+                tableData+= ` <tr>
+                            <td>${values.id}</td>
+                            <td>${values.equipment_id}</td>
+                            <td>${values.equipment_desc}</td>
+                            <td>${values.remarks}</td>
+                           
+                            <td>
+                                <button type="button"  id="remove_button"  class="btn btn-danger">
+                                    <i class="fas fa-database">
+                                    </i>Remove</button>
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body").innerHTML=tableData;
+        }
+        
+        display_data()
+
+    </script>
+
+
+
+
+    <script type="text/javascript">
+        function delete_equipment(id){
+        
+        fetch("/api-delete-equipment/"+ id, {
+        method:'DELETE',
+            })
+            window.alert("Your Data has been Deleted");
+            window.location.assign("/zamboanga-equipment/");
+        }
+    
+    </script>
+
+    <script type="text/javascript">
+
+        // const rental_url =search_url ;
+        async function display_data(){
+            var transid = document.getElementById("transID").value
+
+            const search_url = `/api-search-equipment/?id=${transid}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            if (responce.status != 200){
+                    window.alert("Unauthorized Please Login")
+
+                };
+
+            if (data.length === 0){
+                window.alert(`No ID store for ${transid}`)
+            }else{
+                var equipment_id = data[0].equipment_id
+                var equipment_desc = data[0].equipment_desc
+                var remarks = data[0].remarks
+                
+
+                document.getElementById("equipment_id_update").value = equipment_id
+                document.getElementById("equipment_desc_update").value = equipment_desc
+                document.getElementById("remarks_update").value = remarks
+
+            }
+            
+        
+
+        }
+
+        
+        
+
+    </script>
+
+    <!-- ================================This is for routes javascript============================= -->
+
+    <script type="text/javascript">
+        function insert_routes(){
+            var data = {}
+            
+            data["routes_name"] = document.getElementById("routes_name").value
+            data["distance"] = document.getElementById("distance").value
+            
+           
+            
+            console.log(data)
+
+            fetch("/api-add-routes/", {
+            method:'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+                })
+
+
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Save");
+                        window.location.assign("/zamboanga-equipment/");
+                        console.log(json);
+                    }
+                    else if (fetch_status == 401){
+                        window.alert("Unauthorized credential Please Login");
+                    }
+                })
+                .catch(function (Error){
+                    // Catch errors
+                    window.alert(Error);
+                    console.log(Error);
+                });
+                
+          
+            
+        }
+        
+
+    </script>
+
+    <script type="text/javascript">
+
+        
+
+        // const rental_url =search_url ;
+        async function display_data2(){
+            
+            const search_url = `/api-get-routes/`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            
+            
+            let tableData2="";
+            data.map((values)=>{
+                tableData2+= ` <tr>
+                            <td>${values.id}</td>
+                            <td>${values.routes_name}</td>
+                            <td>${values.distance}</td>
+                            
+                        
+                            <td>
+                                <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
+                                    <i class="fas fa-database">
+                                    </i>Remove</button>
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body_routes").innerHTML=tableData2;
+        }
+        
+       
+
+    </script>
+
+    <!-- ==================================This is for Hauling Frame====================================== -->
+
+    <script type="text/javascript">
+        function insert_hauling(){
+            var data = {}
+            
+            data["trans_date"] = document.getElementById("trans_date").value
+            data["equipment_id"] = document.getElementById("equipment_id_h").value
+            data["routes"] = document.getElementById("routes_h").value
+            data["distance"] = document.getElementById("distance_h").value
+            data["trackFactor"] = document.getElementById("trackFactor_h").value
+            data["no_trips"] = document.getElementById("no_trips_h").value
+            data["volume"] = document.getElementById("volume_h").value
+            data["rate"] = document.getElementById("rate_h").value
+            data["taxRate"] = document.getElementById("taxRate_h").value
+            data["amount"] = document.getElementById("amount_h").value
+            data["vat_output"] = document.getElementById("vat_output_h").value
+            data["net_of_vat"] = document.getElementById("net_of_vat_h").value
+            data["user"] = document.getElementById("username").value
+            
+           
+            
+            console.log(data)
+
+            fetch("/api-add-hauling/", {
+            method:'POST', 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+                })
+
+
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                }) 
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        window.alert("Your Data has been Save");
+                        window.location.assign("/zamboanga-equipment/");
+                        console.log(json);
+                    }
+                    else if (fetch_status == 401){
+                        window.alert("Unauthorized credential Please Login");
+                    }
+                })
+                .catch(function (Error){
+                    // Catch errors
+                    window.alert(Error);
+                    console.log(Error);
+                });
+                
+          
+            
+        }
+    </script>
+
+    <!-- This is for calculation of vat and etc -->
+
+    <script>
+        function calculate(){
+            let checkBox = document.getElementById('vatable');
+            var distance = document.getElementById('distance_h').value;
+            var truckfactor = document.getElementById('trackFactor_h').value;
+            var no_trips = document.getElementById('no_trips_h').value;
+            var volume = document.getElementById('volume_h').value;
+            var rate = document.getElementById('rate_h').value;
+            
+            
+            var amt = parseFloat(distance) * parseFloat(truckfactor) * parseFloat(rate) * parseFloat(no_trips)
+            var volume = parseFloat(distance) * parseFloat(truckfactor)  * parseFloat(no_trips)
+           
+            document.getElementById('amount_h').value = amt.toFixed(2);
+            volume = document.getElementById('volume_h').value = volume.toFixed(2);
+            var testValue;
+            var vatOuput;
+            var netofVat;
+
+            
+            if (checkBox.checked){
+                testValue = 0.12
+                netofVat = amt/1.12
+                vatOuput = netofVat * 0.12
+                document.getElementById('taxRate_h').value = testValue.toFixed(2);
+                document.getElementById('net_of_vat_h').value = netofVat.toFixed(2);
+                document.getElementById('vat_output_h').value = vatOuput.toFixed(2);
+
+            }else{
+                checkBox2 = document.getElementById('not-vat')
+                testValue = 0.00
+                netofVat = amt
+                vatOuput = 0.00
+                document.getElementById('taxRate_h').value = testValue.toFixed(2);
+                document.getElementById('net_of_vat_h').value = netofVat.toFixed(2);
+                document.getElementById('vat_output_h').value = vatOuput.toFixed(2);
+                
+                
+            }
+
+
+           
+        }
+        
+           
+       
+       
+       
+    </script>
+
+    <!-- This is for auto complete of Routes -->
+    <script>
+        $( function() { 
+                    $("#routes_h").autocomplete({
+                    source: "/api-search-routes/"
+                    });
+
+                } );
+
+    </script>
+
+    <!-- this is for auto display of Distance for Hauling -->
+    <script type="text/javascript">
+
+        // const rental_url =search_url ;
+        async function display_distance(){
+            var routeSearch = document.getElementById("routes_h").value
+
+            const search_url = `/api-search-distance/?term=${routeSearch}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            console.log(data.length)
+
+            if (responce.status != 200){
+                window.alert("Unauthorized Please Login")
+
+            };
+
+            if (data.length === 0){
+                window.alert(`No ID store for ${routeSearch}`)
+            }
+            else{
+                var distance = data[0]
+            
+                document.getElementById('distance_h').value = distance
+                
+
+            }
+              
+            
+        }
+    </script>
+
+
+    <!--==================================This is for updating Hauling JavaScript====================== -->
+
+     <!-- This is for auto complete of Routes -->
+     <script>
+        $( function() { 
+                    $("#routes_h_update").autocomplete({
+                    source: "/api-search-routes/"
+                    });
+
+                } );
+
+    </script>
+
+
+<!-- ==============================this is for auto display of Distance for Hauling Update Frame====================  -->
+    <script type="text/javascript">
+
+        // const rental_url =search_url ;
+        async function display_distance_update(){
+            var routeSearch = document.getElementById("routes_h_update").value
+
+            const search_url = `/api-search-distance/?term=${routeSearch}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            console.log(data.length)
+
+            if (responce.status != 200){
+                window.alert("Unauthorized Please Login")
+
+            };
+
+            if (data.length === 0){
+                window.alert(`No ID store for ${routeSearch}`)
+            }
+            else{
+                var distance = data[0]
+            
+                document.getElementById('distance_h_update').value = distance
+                
+
+            }
+              
+            
+        }
+    </script>
+
+    <!--=====================This is for computation of Vat  UPDATE FRAME================================== -->
+
+    <script>
+        function calculate_update(){
+            let checkBox = document.getElementById('vatable_update');
+            var distance = document.getElementById('distance_h_update').value;
+            var truckfactor = document.getElementById('trackFactor_h_update').value;
+            var no_trips = document.getElementById('no_trips_h_update').value;
+            var volume = document.getElementById('volume_h_update').value;
+            var rate = document.getElementById('rate_h_update').value;
+            
+            
+            var amt = parseFloat(distance) * parseFloat(truckfactor) * parseFloat(rate) * parseFloat(no_trips)
+            var volume = parseFloat(distance) * parseFloat(truckfactor)  * parseFloat(no_trips)
+           
+            document.getElementById('amount_h_update').value = amt.toFixed(2);
+            volume = document.getElementById('volume_h_update').value = volume.toFixed(2);
+            var testValue;
+            var vatOuput;
+            var netofVat;
+
+            
+            if (checkBox.checked){
+                testValue = 0.12
+                netofVat = amt/1.12
+                vatOuput = netofVat * 0.12
+                document.getElementById('taxRate_h_update').value = testValue.toFixed(2);
+                document.getElementById('net_of_vat_h_update').value = netofVat.toFixed(2);
+                document.getElementById('vat_output_h_update').value = vatOuput.toFixed(2);
+
+            }else{
+                checkBox2 = document.getElementById('not-vat_update')
+                testValue = 0.00
+                netofVat = amt
+                vatOuput = 0.00
+                document.getElementById('taxRate_h_update').value = testValue.toFixed(2);
+                document.getElementById('net_of_vat_h_update').value = netofVat.toFixed(2);
+                document.getElementById('vat_output_h_update').value = vatOuput.toFixed(2);
+                
+                
+            }
+           
+        }
+        
+           
+    </script>
+
+
+        <!-- This is for displaying Hauling Transaction using ID of Transaction -->
+        <script type="text/javascript">
+
+            
+            async function dislay_data_id_hauling(){
+                var transid = document.getElementById("transID_h_update").value
+
+                const search_url = `/api-get-hauling-with-id/?id=${transid}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                if (responce.status != 200){
+                        window.alert("Unauthorized Please Login")
+
+                    };
+
+                if (data.length === 0){
+                    window.alert(`No ID store for ${transid}`)
+                }else{
+                    var trans_date = data[0].trans_date
+                    var equipment_id = data[0].equipment_id
+                    var routes = data[0].routes
+                    var distance = data[0].distance
+                    var trackFactor = data[0].trackFactor
+                    var no_trips = data[0].no_trips
+                    var volume = data[0].volume
+                    var rate = data[0].rate
+                    var taxRate = data[0].taxRate
+                    var amount = data[0].amount
+                    var vat_output = data[0].vat_output
+                    var net_of_vat = data[0].net_of_vat
+
+
+                    
+
+                    document.getElementById("trans_date_update").value = trans_date;
+                    document.getElementById("equipment_id_h_update").value= equipment_id;
+                    document.getElementById("routes_h_update").value = routes;
+                    document.getElementById("distance_h_update").value = distance;
+                    document.getElementById("trackFactor_h_update").value = trackFactor;
+                    document.getElementById("no_trips_h_update").value = no_trips;
+                    document.getElementById("volume_h_update").value = volume;
+                    document.getElementById("rate_h_update").value = rate;
+                    document.getElementById("taxRate_h_update").value = taxRate;
+                    document.getElementById("amount_h_update").value = amount;
+                    document.getElementById("vat_output_h_update").value = vat_output;
+                    document.getElementById("net_of_vat_h_update").value = net_of_vat;
+                    
+                }
+                
+            
+
+            }
+
+        </script>
+
+        <!-- This is for updating Hauling Function -->
+
+        <script type="text/javascript">
+            
+
+            function update_hauling(){
+                var data = {}
+                var id = document.getElementById("transID_h_update").value
+
+                data["trans_date"] = document.getElementById("trans_date_update").value;
+                data["user"] = document.getElementById("username_update").value;
+                data["equipment_id"] =  document.getElementById("equipment_id_h_update").value;
+                data["routes"] = document.getElementById("routes_h_update").value;
+                data["distance"] = document.getElementById("distance_h_update").value;
+                data["trackFactor"] = document.getElementById("trackFactor_h_update").value;
+                data["no_trips"] = document.getElementById("no_trips_h_update").value ;
+                data["volume"] = document.getElementById("volume_h_update").value;
+                data["rate"] = document.getElementById("rate_h_update").value;
+                data["taxRate"] = document.getElementById("taxRate_h_update").value;
+                data["amount"] = document.getElementById("amount_h_update").value;
+                data["vat_output"] = document.getElementById("vat_output_h_update").value;
+                data["net_of_vat"] = document.getElementById("net_of_vat_h_update").value;
+            
+                
+                console.log(data)
+
+                if (id ===''){
+                    window.alert("Trans ID field is requires");
+                } else{
+                    fetch("/api-update-hauling/"+id, {
+                        method:'PUT', 
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    })
+
+
+                    .then(function (response) {
+                        // Save the response status in a variable to use later.
+                        fetch_status = response.status;
+                        // Handle success
+                        // eg. Convert the response to JSON and return
+                        return response.json();
+                    }) 
+                    .then(function (json) {
+                        // Check if the response were success
+                        if (fetch_status == 200) {
+                            // Use the converted JSON
+                            window.alert("Your Data has been Updated");
+                            window.location.assign("/zamboanga-equipment/");
+                            console.log(json);
+                        }
+                        else if (fetch_status == 401){
+                            window.alert("Unauthorized credential Please Login");
+                        }
+                    })
+                    .catch(function (error){
+                        // Catch errors
+                        window.alert(error);
+                        console.log(error);
+                    });
+
+                }
+
+                }
+
+        </script>
+
+
+
+
+
+
+
+
+    <!-- ===============================Displaying Hauling Table============================ -->
+        <script type="text/javascript">
+            
+            
+            async function display_hauling_data(){
+
+                
+                var dateFrom = document.getElementById('dateFrom_h_table').value;
+                var dateTo = document.getElementById('dateTo_h_table').value;
+                var equip_id = document.getElementById('equipment_id_h_table').value;
+                
+                const search_url = `/api-get-haulings-with-params/?datefrom=${dateFrom}
+                                        &dateto=${dateTo}&equipment_id=${equip_id}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData3="";
+                data.map((values)=>{
+                    tableData3+= ` <tr>
+                                <td>${values.id}</td>
+                                <td>${values.trans_date}</td>
+                                <td>${values.equipment_id}</td>
+                                <td>${values.routes}</td>
+                                <td>${values.distance}</td>
+                                <td>${values.trackFactor}</td>
+                                <td>${values.no_trips}</td>
+                                <td>${values.volume}</td>
+                                <td>${values.rate}</td>
+                                <td>${values.amount}</td>
+
+                            
+                                <td>
+                                    <button type="button"  id="remove_button" onclick="delete_hauling(${values.id})" class="btn btn-danger">
+                                        <i class="fas fa-database">
+                                        </i>Remove</button>
+                                </td>
+                            
+                            </tr>`;
+                });
+                document.getElementById("table_body_hauling").innerHTML=tableData3;
+                updateSubTotal()
+            }
+            
+           
+
+        </script>
+
+
+        <script type="text/javascript">
+            function delete_hauling(id){
+            
+            fetch("/api-delete-hauling/"+ id, {
+            method:'DELETE',
+                })
+                window.alert("Your Data has been Deleted");
+                window.location.assign("/zamboanga-equipment/");
+            }
+
+        </script>
+
+        <script type="text/javascript">
+            
+            function updateSubTotal(){
+                var table = document.getElementById("myTable_hauling"),
+                sumTrips = 0;
+                sumVolume = 0;
+                sumAmount = 0;
+                for (var i = 1; i < table.rows.length; i++) {
+                sumTrips = sumTrips + parseFloat(table.rows[i].cells[6].innerHTML);
+                sumVolume = sumVolume + parseFloat(table.rows[i].cells[7].innerHTML);
+                sumAmount = sumAmount + parseFloat(table.rows[i].cells[9].innerHTML);
+
+                
+                }
+
+                let sumTripsComa = sumTrips.toLocaleString("en-US");
+                let sumVolumeComa = sumVolume.toLocaleString("en-US");
+                let sumAmountComa = sumAmount.toLocaleString("en-US");
+
+                document.getElementById("totalTrips").value = sumTripsComa;
+                document.getElementById("totalVolume").value = sumVolumeComa;
+                document.getElementById("totalAmount").value = sumAmountComa;
+
+                        
+                            }
+
+        </script>
+
+
+        <script type="text/javascript">
+                    
+                    
+            async function display_sum_hauling_data(){
+
+                
+                var dateFrom = document.getElementById('dateFrom_h_sum_table').value;
+                var dateTo = document.getElementById('dateTo_h_sum_table').value;
+                var equip_id = document.getElementById('equipment_id_h_sum_table').value;
+                
+                const search_url = `/api-get-per-equipment-sum/?datefrom=${dateFrom}
+                                        &dateto=${dateTo}&equipment_id=${equip_id}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData4="";
+                data.map((values)=>{
+                    tableData4+= ` <tr>
+                               
+                               
+                                <td>${values.equipment_id}</td>
+                                <td>${values.routes}</td>
+                                <td>${values.no_trips}</td>
+                                <td>${values.volume}</td>
+                                <td>${values.amount}</td>
+                                <td>${values.net_of_vat}</td>
+
+                            
+                                
+                            
+                            </tr>`;
+                });
+                document.getElementById("table_body_sum_hauling").innerHTML=tableData4;
+                summarySubTotal()
+            }
+            
+        
+
+            </script>
+
+
+
+        <script type="text/javascript">
+            
+            function summarySubTotal(){
+                var table = document.getElementById("my_summaryTable_hauling"),
+                sumTrips = 0;
+                sumVolume = 0;
+                sumAmount = 0;
+                for (var i = 1; i < table.rows.length; i++) {
+                sumTrips = sumTrips + parseFloat(table.rows[i].cells[3].innerHTML);
+                sumVolume = sumVolume + parseFloat(table.rows[i].cells[4].innerHTML);
+                sumAmount = sumAmount + parseFloat(table.rows[i].cells[5].innerHTML);
+
+                
+                }
+
+                let sumTripsComa = sumTrips.toLocaleString("en-US");
+                let sumVolumeComa = sumVolume.toLocaleString("en-US");
+                let sumAmountComa = sumAmount.toLocaleString("en-US");
+
+                document.getElementById("totalTrips_sum").value = sumTripsComa;
+                document.getElementById("totalVolume_sum").value = sumVolumeComa;
+                document.getElementById("totalAmount_sum").value = sumAmountComa;
+
+                        
+                            }
+
+        </script>
+
+
+        <script>
+            function html_table_excel(type){
+                var data = document.getElementById('table_body_hauling');
+                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                XLSX.writeFile(file, 'file.' + type);
+
+            }   
+        </script>
+
+
+<!-- ======================= This is for Diesel Transaction Java Script =====================-->
+
+        <script>
+            $( function() { 
+                        $("#equipment_id_addDiesel").autocomplete({
+                        source: "/api-search-autocomplete-equipment/"
+                        });
+
+                    } );
+
+        </script>
+
+        <script type="text/javascript">
+            function insert_diesel(){
+                var data = {}
+                
+                data["userl"] = document.getElementById("user_addDiesel").value
+                data["trans_date"] = document.getElementById("date_addDiesel").value
+                data["equipment_id"] = document.getElementById("equipment_id_addDiesel").value
+                data["withdrawal_slip"] = document.getElementById("withdrawal_slip_Adddiesel").value
+                data["liters"] = document.getElementById("liter_addDiesel").value
+                data["price"] = document.getElementById("price_addDiesel").value
+                data["amount"] = document.getElementById("amount_addDiesel2").value
+                data["user"] = document.getElementById("user_addDiesel").value
+              
+                
+            
+                
+                console.log(data)
+
+                fetch("/api-insert-vitali-diesel/", {
+                method:'POST', 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+                    })
+
+
+                    .then(function (response) {
+                        // Save the response status in a variable to use later.
+                        fetch_status = response.status;
+                        // Handle success
+                        // eg. Convert the response to JSON and return
+                        return response.json();
+                    }) 
+                    .then(function (json) {
+                        // Check if the response were success
+                        if (fetch_status == 200) {
+                            // Use the converted JSON
+                            window.alert("Your Data has been Save");
+                            window.location.assign("/zamboanga-equipment/");
+                            console.log(json);
+                        }
+                        else if (fetch_status == 401){
+                            window.alert("Unauthorized credential Please Login");
+                        } else if(fetch_status == 422){
+                            window.alert("Unprocessable Entity");
+                        }
+
+                    })
+                    .catch(function (Error){
+                        // Catch errors
+                        window.alert(Error);
+                        console.log(Error);
+                    });
+                    
+            
+                
+            }
+        </script>
+
+
+        <script type="text/javascript">
+            function getTotalamountDiesel(){
+            var totalliters=document.getElementById('liter_addDiesel').value;
+            var diesel_price=document.getElementById('price_addDiesel').value;
+        
+            var totalAmount;
+        
+            
+        
+            if(totalliters !="" && diesel_price !=""){
+                // totalAmount = parseFloat(totalHours) * parseFloat(rentalRate) ;
+                totalAmount = totalliters * diesel_price ;
+                // let num = 1234567890987654321;
+                // let formatter = Intl.NumberFormat('en-US')
+
+                let comma = totalAmount.toLocaleString("en-US");
+                // let comma = formatter.format(totalAmount);
+                document.getElementById('amount_addDiesel').value=comma;	
+                document.getElementById('amount_addDiesel2').value=totalAmount;
+        
+            
+        }
+
+        }
+            
+        </script>
+
+
+        <script type="text/javascript">
+
+            
+
+            // const rental_url =search_url ;
+            async function display_diesel_data(){
+                var dateFrom = document.getElementById('dateFrom_dieselList').value;
+                var dateTo = document.getElementById('dateTo_DieselList').value;
+                var equip_id = document.getElementById('equipment_id_DieselList').value;
+                
+                const search_url = `/api-search-all-diesel/?datefrom=${dateFrom}
+                                        &dateto=${dateTo}&equipment_id=${equip_id}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                
+                
+                let tableData="";
+                data.map((values)=>{
+                    tableData+= ` <tr>
+                                <td>${values.trans_id}</td>
+                                <td>${values.trans_date}</td>
+                                <td>${values.equipment_id}</td>
+                                <td>${values.withdrawal_slip}</td>
+                                <td>${values.liters}</td>
+                                <td>${values.price}</td>
+                                <td>${values.amount}</td>
+                            
+                                <td>
+                                    <button type="button"  id="remove_button" onclick="delete_diesel(${values.trans_id})" class="btn btn-danger">
+                                        <i class="fas fa-database">
+                                        </i>Remove</button>
+                                </td>
+                            
+                            </tr>`;
+                });
+                document.getElementById("table_body_diesel").innerHTML=tableData;
+
+                summaryDiesel()
+            }
+            
+           
+
+        </script>
+
+
+        <script type="text/javascript">
+                    
+            function summaryDiesel(){
+                var table = document.getElementById("my_table_diesel");
+               
+                sumLiter = 0;
+                sumAmountdiesel = 0;
+                for (var i = 1; i < table.rows.length; i++) {
+               
+                sumLiter = sumLiter + parseFloat(table.rows[i].cells[5].innerHTML);
+                sumAmountdiesel = sumAmountdiesel + parseFloat(table.rows[i].cells[6].innerHTML);
+
+                
+                }
+
+                
+                let sumLiterComa = sumLiter.toLocaleString("en-US");
+                let sumAmountdieselComa = sumAmountdiesel.toLocaleString("en-US");
+
+                
+                document.getElementById("totalliter").value = sumLiterComa;
+                document.getElementById("totalAmount_diesel").value = sumAmountdieselComa;
+
+                        
+                }
+
+        </script>
+
+        <script type="text/javascript">
+            function delete_diesel(id){
+            
+            fetch("/api-delete-diesel/"+ id, {
+            method:'DELETE',
+                })
+                window.alert("Your Data has been Deleted");
+                window.location.assign("/zamboanga-equipment/");
+            }
+
+        </script>
+
+
+        
+
+</body>
+
+{% endblock %}

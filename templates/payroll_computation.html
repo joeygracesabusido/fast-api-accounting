@@ -1,105 +1,137 @@
 {% extends 'index.html' %}
 
 {% block content %}
+<style>
+    .center form {
+        margin: 0 auto;
+        float: none;
+}
+</style>
 
 <body>
     <div class="container">
-
-    </div>
-    <div  class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <label for="TransactionDate" >Date</label><br>
-                <input
-                    type="date"
-                    name="datefrom"
-                    id="datefrom"
-                    >
-                </input>
-
+           
+                <div class="container  mt-3">
+                    <div class="d-flex justify-content-center">
+                        <div class="form-group mb-2">
+                            <label for="TransactionDate" >Date</label>
+                            <input
+                                type="date"
+                                name="datefrom"
+                                id="datefrom"
+                                class="form-control"
+                                >
+                            </input>
+        
             
-                
-                <br>
-                    <label for="Employee ID" >Employee ID</label><br>
-                        <input
+                            <label for="Employee ID" >Employee ID</label>
+                            <input
                             type="text"
                             name="employee_id"
                             id="employee_id"
+                            class="form-control"
                             >
-                        </input>
+                            </input>
+                            
+                           
+                                <button type="submit"  onclick="display_emp_data()" class="btn btn-success">
+                                    Search Data
+                                    <i class="fas fa-database"></i>
+                                </button>
+                           
+                        </div>
 
-                        <button type="submit"  onclick="display_emp_data()" class="btn btn-success">
-                            Search Data
-                            <i class="fas fa-database"></i>
-                        </button>
-                        
-                        <br> 
+                        <div class="form-group mx-sm-3 mb-3">
+                                <label for="FirstName" >First Name</label>
+                                <input
+                                    type="text"
+                                    name="fname"
+                                    id="fname"
+                                    class="form-control"
+                                    >
+                                </input>
 
-                    <label for="FirstName" >First Name</label><br>
-                        <input
-                            type="text"
-                            name="fname"
-                            id="fname"
-                            >
-                        </input><br>
+                                <label for="LastName" >Last Name</label>
+                                    <input
+                                        type="text"
+                                        name="lname"
+                                        id="lname"
+                                        class="form-control"
+                                        >
+                                    </input>
+                        </div>
 
-                    <label for="LastName" >Last Name</label><br>
-                        <input
-                            type="text"
-                            name="lname"
-                            id="lname"
-                            >
-                        </input><br>
-
-                    <label for="Position" >Position</label><br>
+                        <div class="form-group mx-sm-3 mb-3">
+                            <label for="Position" >Position</label>
 
                             <input
                                 type="text"
                                 name="position"
                                 id="position"
-                               
+                                class="form-control"
                                 >
-                            </input><br>
-                    <label for="Salary Rate" >Salary Rate</label><br>
-                            <input
-                                type="number"
-                                step="0.01"
-                                name="salary_rate"
-                                id="salary_rate"
-                                
-                                
-                                
-                                >
-                            </input><br>
+                            </input>
+                            <label for="Salary Rate" >Salary Rate</label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="salary_rate"
+                                    id="salary_rate"
+                                    class="form-control"
+                                    
+                                    
+                                    >
+                                </input>
 
-                    <label for="Tax Classification" >Tax Classification</label><br>
+                        </div>
+
+                        <div class="form-group mx-sm-3 mb-3">
+                            <label for="Tax Classification" >Tax Classification</label>
                             <input
                                 type="text"
                                 name="tax_class"
                                 id="tax_class"
-                                
-                                >
-                            </input><br>
-
-                    <label for="EmployeClass" >Employee Class</label><br>
-                            <input
-                                type="text"
-                                name="emp_class"
-                                id="emp_class"
-                               
-                                
+                                class="form-control"
                                 >
                             </input>
 
-                    <label for="EmployeClass" >Salary Details</label>
-                            <input
-                                type="text"
-                                name="salary_details"
-                                id="salary_details"
-                               
+                            <label for="EmployeClass" >Employee Class</label>
+                                <input
+                                    type="text"
+                                    name="emp_class"
+                                    id="emp_class"
                                 
-                                >
-                            </input><br>
+                                    class="form-control"
+                                    >
+                                </input>
+
+                            <label for="EmployeClass" >Salary Details</label>
+                                <input
+                                    type="text"
+                                    name="salary_details"
+                                    id="salary_details"
+                                    class="form-control"
+                                    
+                                    >
+                                </input>
+                    
+                        </div>
+
+                    
+                    </div>
+                    
+                </div>
+                
+               
+                
+           
+            
+              
+                
+
+                   
+
+                    
 
 <!-- This is start for computation fields -->
                
@@ -246,17 +278,13 @@
                         </input><br><br>
                       
 
-               
+    </div>       
                 
 
                     
                     
                 
-            </div>
-        </div>
-        
-    </div>
-
+    
     
 </body>
 

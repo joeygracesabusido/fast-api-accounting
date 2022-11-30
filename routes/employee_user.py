@@ -3,6 +3,9 @@ from lib2to3.pgen2 import token
 from pyexpat import model
 from re import I
 
+
+from authentication.utils import OAuth2PasswordBearerWithCookie
+
 from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -18,6 +21,8 @@ from datetime import timedelta, datetime,date
 
 from models.model import EmployeeUser
 
+from schemas.user import usersEntity
+
 
 from config.db import mydb
 
@@ -30,6 +35,12 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 employee_user = APIRouter(include_in_schema=False)
 templates = Jinja2Templates(directory="templates")
+
+
+
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
+oauth_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="token")
 
 
 
@@ -135,11 +146,18 @@ def EmployeevalidateLogin(request:Request):
         
             username = payload.get("sub")
         
+            user =  usersEntity(mydb.employee_login.find({"username":username}))
+            
 
-            user =  mydb.employee_login.find({"username":username})
-
-            if user is not None:
-
+            
+            if user == [] :
+                 raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+            else:
+                
                 return username
 
     except Exception as e:
@@ -173,3 +191,51 @@ def employee_sign_up(items:EmployeeUser):
         print("Error", f"Error due to :{str(ex)}")
     return {"message":"User has been save"} 
 
+#=========================================Equipment transactions====================================
+from config.zamboanga import ZamboangaDB
+ZamboangaDB.initialize()
+from models.model import Equipment,Routes, Hauling,Vitalidiesel
+
+
+@employee_user.get("/employee-transaction-zambo/", response_class=HTMLResponse)
+async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
+    return templates.TemplateResponse("employee/vitali_employee_transact.html", {"request":request}) 
+
+
+@employee_user.post('/api-add-equipment-employee/')
+def add_equipment(items: Equipment, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for posting equipment"""
+
+    ZamboangaDB.insert_equipment(equipment_id=items.equipment_id,
+                                    equipment_desc=items.equipment_desc,
+                                    remarks=items.remarks )
+    return {'Messege': ' Data Has been Save'}
+
+@employee_user.get('/api-get-equipment-employee/')
+def get_equipment(username: str = Depends(EmployeevalidateLogin)):
+    """This function is for querying all Equipment"""
+    myresult = ZamboangaDB.select_all_equipment()
+
+    agg_result_list = []
+    
+    for x in myresult:
+        id = x[0]
+        equipment_id = x[1]
+        equipment_desc = x[2]
+        remarks = x[3]
+       
+
+        data={}   
+        
+        data.update({
+            
+            "id": id,
+            "equipment_id": equipment_id ,
+            "equipment_desc": equipment_desc,
+            "remarks": remarks
+          
+        })
+
+        agg_result_list.append(data)
+        # print(agg_result_list)
+    return (agg_result_list)
