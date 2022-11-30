@@ -2,9 +2,8 @@
 
 {% block content %}
 <style>
-    .center form {
-        margin: 0 auto;
-        float: none;
+    body {
+        background-color: gray;
 }
 </style>
 
@@ -79,6 +78,16 @@
                                     id="salary_rate"
                                     class="form-control"
                                     
+                                    >
+                                </input>
+                            
+                            <label for="Provincial Rate" >Provincial Rate</label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="provi_rate"
+                                    id="provi_rate"
+                                    class="form-control"
                                     
                                     >
                                 </input>
@@ -133,150 +142,210 @@
 
                     
 
-<!-- This is start for computation fields -->
-               
+<!--============================== This is start for computation fields============================== -->
+                <div class="d-flex justify-content-center">
                     <h1>
                         This is for computation 
                     </h1>
-                    
+                </div>  
+                
+                <div class="d-flex justify-content-center">
+                    <div class="form-group mx-sm-3 mb-1">
                         <label for="REGDAY"
-                        style="margin-left: 0x;"
                         >Regular day</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="regday"
-                            id="regday"
-                            style="width: 65px;text-align: right;"
-                            
-                            >
-                        </input>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="regday"
+                                id="regday"
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="regdaycal"
+                        >Regday Cal</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="regday_cal"
+                                id="regday_cal"
+                                class="form-control"
+                                >
+                            </input>
     
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="regday_cal"
-                            id="regday_cal"
-                            style="width: 100px;text-align: right;"
-                            >
-                        </input>
-    
+
+                    </div>
+
+                    <div class="form-group mx-sm-3 mb-1">
                         <label for="REGOT"
-                        style="margin-left: 30px;"
                         >Regular OT</label>
     
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="regday_ot"
-                            id="regday_ot"
-                            style="width: 65px;text-align: right; "
-                            
-                            >
-                        </input>
-    
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="regday_ot_cal"
-                            id="regday_ot_cal"
-                            style="width: 100px;text-align: right;"
-                            >
-                        </input><br><br>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="regday_ot"
+                                id="regday_ot"
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="REGOT"
+                        >RegDay OT Calculation</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="regday_ot_cal"
+                                id="regday_ot_cal"
+                                class="form-control"
+                                >
+                            </input>
 
+                    </div>
+
+                    <div class="form-group mx-sm-2 mb-1">
                         <label for="SUNDAY"
-                        
                         >SUNDAY </label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="sunday"
-                            id="sunday"
-                            style="width: 65px;text-align: right;
-                                   margin-left: 25px;"
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="sunday"
+                                id="sunday"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
                             
-                            >
-                        </input>
+                        <label for="SUNDAY"
+                            >SUNDAY Calculation </label>
     
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="sunday_cal"
-                            id="sunday_cal"
-                            style="width: 100px;text-align: right;"
-                            >
-                        </input>
-    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="sunday_cal"
+                                id="sunday_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>
+
+                    <div class="form-group mx-sm-2 mb-1">
                         <label for="SundayOT"
-                            style="margin-left: 28px;"
+                           
                         >Sunday OT</label>
     
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="sunday_ot"
-                            id="sunday_ot"
-                            style="width: 65px;text-align: right;"
-                            
-                            >
-                        </input>
-    
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="sunday_ot_cal"
-                            id="sunday_ot_cal"
-                            style="width: 100px;text-align: right;"
-                            >
-                        </input><br><br>
-                <!-- This is for Special Holiday Computation -->
-                        <label for="SPL"
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="sunday_ot"
+                                id="sunday_ot"
+                                style="text-align: right;
+                                "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="SundayOT"
                         
+                        >Sunday OT Calculation</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="sunday_ot_cal"
+                                id="sunday_ot_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>
+                    
+                    
+                        
+
+                </div>
+                        
+
+                        
+    
+                        
+                <!-- This is for Special Holiday Computation -->
+                <div class="d-flex justify-content-center">
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="SPL"
                         >SPL </label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="spl"
-                            id="spl"
-                            style="width: 65px;text-align: right;
-                                   margin-left: 60px;"
-                            
-                            >
-                        </input>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="spl"
+                                id="spl"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="SPL"
+                        >SPL Calculation </label>
+                     
     
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="spl_cal"
-                            id="spl_cal"
-                            style="width: 100px;text-align: right;"
-                            >
-                        </input>
-    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="spl_cal"
+                                id="spl_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>
+
+                    <div class="form-group mx-sm-2 mb-1">
                         <label for="SPLOT"
-                            style="margin-left: 28px;"
+                           
                         >SPL OT</label>
     
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="spl_ot"
-                            id="spl_ot"
-                            style="width: 65px;text-align: right;
-                                    margin-left: 28px"
-                            
-                            >
-                        </input>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="spl_ot"
+                                id="spl_ot"
+                                style="text-align: right;
+                                        "
+                                class="form-control"
+                                >
+                            </input>
+
+                        <label for="SPLOT"
+                           
+                        >SPL OT Calculation</label>
     
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="spl_ot_cal"
-                            id="spl_ot_cal"
-                            style="width: 100px;text-align: right;"
-                            >
-                        </input><br><br>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="spl_ot_cal"
+                                id="spl_ot_cal"
+                                style="text-align: right;
+                                        "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>
+
+                    
+    
+                        
                       
+
+                </div>
+                        
 
     </div>       
                 
