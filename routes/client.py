@@ -175,8 +175,15 @@ def validateLogin(request:Request):
 
             user =  mydb.login.find({"username":username})
 
-            if user is not None:
-
+            
+            if user == [] :
+                 raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+            else:
+                
                 return username
 
     except Exception as e:
@@ -186,10 +193,7 @@ def validateLogin(request:Request):
             # headers={"WWW-Authenticate": "Basic"},
         )
 
-#======================================Login for Front End or API Login=============================
-@client.get("/api-login/", response_class=HTMLResponse)
-async def api_login(request: Request):
-    return templates.TemplateResponse("login_api.html", {"request":request}) 
+
 
 
 #======================================Front End===================================================
@@ -206,7 +210,7 @@ async def login_show(request: Request):
 
 
 @client.get("/chart-of-account/", response_class=HTMLResponse)
-def chart_of_account_view(request: Request):
+def chart_of_account_view(request: Request,username: str = Depends(validateLogin)):
     """This function is for openting navbar of accounting"""
     all_chart_of_account = chartofAccounts(mydb.chart_of_account.find().sort('accountNum', 1))
     all_bstype = bsTypes(mydb.balansheetType.find())
@@ -287,7 +291,7 @@ async def insert_chart_of_account(request: Request):
                                                                 "all_bstype":all_bstype,"messeges":messeges})
 
 @client.get("/update-chart-of-account/{id}", response_class=HTMLResponse)
-def update_chart_of_account(id,request: Request):
+def update_chart_of_account(id,request: Request,username: str = Depends(validateLogin)):
     """This function is for showing Form for Updating Chart of Account"""
     token = request.cookies.get('access_token')
     
@@ -360,7 +364,7 @@ async def update_chart_of_account(id,request: Request):
                                                             "all_bstype":all_bstype,"messeges":messeges})
 
 @client.get("/view-journal-entry/", response_class=HTMLResponse)
-async def view_journal_entry(request: Request):
+async def view_journal_entry(request: Request,username: str = Depends(validateLogin)):
     """This function is for displaying journal Entry"""
    
     myresult  = mydb.journal_entry.find()
@@ -408,7 +412,7 @@ def autocomplete(term: Optional[str]):
     return suggestions
 
 @client.get("/insert-journal-entry-2/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request):
+async def insert_journal_entry(request: Request,username: str = Depends(validateLogin)):
     """This function is for openting navbar of accounting"""
     form = await request.form()
     accountTile = form.get('accountTitle')
@@ -509,7 +513,7 @@ async def insert_journal_entry(request: Request):
                                                 "messeges":messeges})
 #=============================================This ksi for Income Statement Router========================
 @client.get("/income-statement/", response_class=HTMLResponse)
-async def get_income_statement(request:Request):
+async def get_income_statement(request:Request,username: str = Depends(validateLogin)):
     """This function is for querying income statement"""
     return templates.TemplateResponse("incomestatement.html",{'request':request})
 
@@ -601,7 +605,7 @@ async def insert_journal_entry(request: Request, username: str = Depends(validat
 
 
 @client.post("/insert-journal-entry/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request):
+async def insert_journal_entry(request: Request,username: str = Depends(validateLogin)):
     """This function is for posting accounting"""
     form = await request.form()
 
@@ -938,7 +942,7 @@ SurigaoDB.initialize()
 
 
 @client.get("/dollar-bill/", response_class=HTMLResponse)
-def get_dollarBill_records(request: Request):
+def get_dollarBill_records(request: Request,username: str = Depends(validateLogin)):
     """This function is for querying diesel consuption from Rizal Project"""
    
     myresult = SurigaoDB.select_all_from_dollarBill()

@@ -42,7 +42,7 @@ def validateLogin(request:Request):
             raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail= "Not Authorized",
-            headers={"WWW-Authenticate": "Basic"},
+            
             )
         else:
             scheme, _, param = token.partition(" ")
@@ -53,8 +53,15 @@ def validateLogin(request:Request):
 
             user =  mydb.login.find({"username":username})
 
-            if user is not None:
-
+            
+            if user == [] :
+                 raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+            else:
+                
                 return username
 
     except Exception as e:
@@ -73,7 +80,7 @@ def validateLogin(request:Request):
 
 
 @zamboanga_client.get("/view-journal-entry-zambo/", response_class=HTMLResponse)
-async def view_journal_entry(request: Request):
+async def view_journal_entry(request: Request,username: str = Depends(validateLogin)):
     """This function is for displaying journal Entry"""
    
     myresult  = mydb.journal_entry_zambo.find()
@@ -114,7 +121,7 @@ async def view_journal_entry(request: Request):
 
 
 @zamboanga_client.get("/insert-journal-entry-zambo/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request):
+async def insert_journal_entry(request: Request,username: str = Depends(validateLogin)):
     """This function is for openting navbar of accounting"""
     form = await request.form()
     accountTile = form.get('accountTitle')
@@ -216,7 +223,7 @@ async def insert_journal_entry(request: Request):
 
 #=============================================This is need for debugging insert Journal Entry==================================
 @zamboanga_client.get("/insert-journal-entry-zambo2/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request):
+async def insert_journal_entry(request: Request,username: str = Depends(validateLogin)):
     """This function is for openting navbar of accounting"""
     form = await request.form()
     accountTile = form.get('accountTitle')
@@ -481,7 +488,7 @@ async def insert_journal_entry(request: Request):
 
 #=============================================This api for Income Statement Router========================
 @zamboanga_client.get("/income-statement-zambo/", response_class=HTMLResponse)
-async def get_income_statement(request:Request):
+async def get_income_statement(request:Request,username: str = Depends(validateLogin)):
     """This function is for querying income statement"""
     return templates.TemplateResponse("incomestatement.html",{'request':request})
 

@@ -40,7 +40,8 @@
             class="form-control"
             >
             <div class="mb-3">
-
+                <button  type="submit" class="btn btn-primary">
+                Login</button>
             </div>
             
           </form>
@@ -200,14 +201,7 @@
             </div>
             </div>
 
-        
 
-          
-
-          <div class="mb-3">
-            <button  type="submit" class="btn btn-primary">
-            Login</button>
-            
 
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signup">
                 Sign Up
@@ -217,7 +211,7 @@
                 Approved User
             </button>
 
-          </div>
+          
 
     </div>
 
@@ -262,8 +256,10 @@
                     if (fetch_status == 200) {
                         // Use the converted JSON
                         window.alert("Your Data has been Updated");
-                        // window.location.assign("/dollar-bill/");
+                        window.location.assign("/dollar-bill/");
                         console.log(json);
+                    } else if (fetch_status == 401){
+                        window.alert("UnAuthorized please Login");
                     }
                 })
                 .catch(function (error){

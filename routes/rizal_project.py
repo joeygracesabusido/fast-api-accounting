@@ -25,6 +25,8 @@ templates = Jinja2Templates(directory="templates")
 
 
 #===========================================Calling for UserName ===========================================
+
+from schemas.user import usersEntity
 def validateLogin(request:Request):
 
     try :
@@ -33,19 +35,24 @@ def validateLogin(request:Request):
             raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail= "Not Authorized",
-            headers={"WWW-Authenticate": "Basic"},
+           
             )
         else:
             scheme, _, param = token.partition(" ")
             payload = jwt.decode(param, JWT_SECRET, algorithms=ALGORITHM)
         
             username = payload.get("sub")
-        
+            user =  usersEntity(mydb.login.find({"username":username}))
+            
 
-            user =  mydb.login.find({"username":username})
-
-            if user is not None:
-
+            if user == [] :
+                 raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+                
+                )
+            else:
+                
                 return username
 
     except Exception as e:
@@ -78,7 +85,7 @@ def get_payrollComputation(request: Request,  username: str = Depends(validateLo
 
 #======================================================Diesel Frame===========================================
 @rizal_project.get("/diesel-consumption-list/", response_class=HTMLResponse)
-async def get_diesel_params(request: Request):
+async def get_diesel_params(request: Request,username: str = Depends(validateLogin)):
     
     return templates.TemplateResponse("rizal_diesel_list.html",{"request":request})
 
@@ -341,7 +348,7 @@ async def post_rental_transaction(request: Request, username: str = Depends(vali
                                         })
 
 @rizal_project.get("/rental-transaction-list/", response_class=HTMLResponse)
-async def get_rental_transaction(equipment_id,request: Request):
+async def get_rental_transaction(equipment_id,request: Request,username: str = Depends(validateLogin)):
     """This function is for displaying rental list """
 
     myresult = Database.select_all_from_rentalDB(equipment_id=equipment_id)
@@ -370,12 +377,12 @@ async def get_rental_transaction(equipment_id,request: Request):
 
 
 @rizal_project.get("/rental-search/", response_class=HTMLResponse)
-async def get_rentalSearch(request: Request):
+async def get_rentalSearch(request: Request,username: str = Depends(validateLogin)):
     
     return templates.TemplateResponse("rental_list.html",{"request":request})
 
 
 @rizal_project.get("/13thMonth-computation/", response_class=HTMLResponse)
-async def get_13thMonth(request: Request):
+async def get_13thMonth(request: Request,username: str = Depends(validateLogin)):
     
     return templates.TemplateResponse("comp13thMonth.html",{"request":request})
