@@ -3,8 +3,12 @@
 {% block content %}
 <style>
     body {
-        background-color: gray;
-}
+        background-color: white;
+        };
+    .TransactionDate{
+        color: beige;
+    }
+    
 </style>
 
 <body>
@@ -13,7 +17,7 @@
                 <div class="container  mt-3">
                     <div class="d-flex justify-content-center">
                         <div class="form-group mb-2">
-                            <label for="TransactionDate" >Date</label>
+                            <label for="TransactionDate" class="l-color" >Date</label>
                             <input
                                 type="date"
                                 name="datefrom"
@@ -350,8 +354,8 @@
                             <input
                                 type="number"
                                 step="0.01"
-                                name="spl_ot"
-                                id="spl_ot"
+                                name="lgl2"
+                                id="lgl2"
                                 style="text-align: right;"
                                 class="form-control"
                                 >
@@ -364,14 +368,46 @@
                             <input
                                 type="number"
                                 step="0.01"
-                                name="spl_ot_cal"
-                                id="spl_ot_cal"
+                                name="lgl2_cal"
+                                id="lgl2_cal"
                                 style="text-align: right;"
                                 class="form-control"
                                 >
                             </input>
 
                     </div>
+
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="LGL2OT"
+                           
+                        >LGL2 OT</label>
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="lgl2_ot"
+                                id="lgl2_ot"
+                                style="text-align: right;"
+                                class="form-control"
+                                >
+                            </input>
+
+                        <label for="LGL2cAL"
+                           
+                        >LGL2 OT Calculation</label>
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="lgl2_ot_cal"
+                                id="lgl2_ot_cal"
+                                style="text-align: right;"
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>
+
 
 
                     
@@ -597,6 +633,58 @@
                     salaryRate =  document.getElementById('salary_rate').value ;
                     spl_ot_cal = parseFloat(salaryRate)/ 8 * 1.69 * parseFloat(spl_ot) 
                     document.getElementById('spl_ot_cal').value=spl_ot_cal.toFixed(2);
+
+                }
+
+            }
+            );
+
+        </script>
+
+<!-- =================================This is for SPL Calculation============================ -->
+        <script type="text/javascript">
+            document.getElementById('lgl2').addEventListener('input',
+            function(e){
+                let spl = e.target.value;
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var lgl2_cal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    lgl2_cal = parseFloat(salaryRate) * parseFloat(spl) * 2
+                    document.getElementById('lgl2_cal').value=lgl2_cal.toFixed(2);
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    lgl2_cal = parseFloat(salaryRate) * parseFloat(spl) * 2
+                    document.getElementById('lgl2_cal').value=lgl2_cal.toFixed(2);
+
+                }
+
+            }
+            );
+
+        </script>
+
+<!-- =================================This is for LGL2 OT  Calculation============================ -->
+        <script type="text/javascript">
+            document.getElementById('lgl2_ot').addEventListener('input',
+            function(e){
+                let lgl2_ot = e.target.value;
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var lgl2_ot_cal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    lgl2_ot_cal = parseFloat(salaryRate) / 8 * 2 * 1.30 * parseFloat(lgl2_ot)
+                    document.getElementById('lgl2_ot_cal').value=lgl2_ot_cal.toFixed(2);
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    lgl2_ot_cal = parseFloat(salaryRate)/ 8 * 2 * 1.30 * parseFloat(lgl2_ot) 
+                    document.getElementById('lgl2_ot_cal').value=lgl2_ot_cal.toFixed(2);
 
                 }
 
