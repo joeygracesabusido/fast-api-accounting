@@ -2,6 +2,7 @@
 # from urllib import response
 from distutils.command.config import config
 from traceback import format_list
+from typing import Union, List
 from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -12,6 +13,8 @@ from bson import ObjectId
 from typing import Optional
 
 from datetime import timedelta, datetime,date
+
+from models.model import User
 
 from schemas.chartofAccount import chartofAccount,chartofAccounts
 from schemas.user import userEntity,usersEntity
@@ -59,7 +62,7 @@ oauth_scheme = OAuth2PasswordBearer(tokenUrl="token")
 password1 = ""
 def authenticate_user(username, password):
     
-    user = mydb.login.find({"username":username})
+    user = mydb.login.find({'$and':[{"username":username},{'status':'approved'}]})
 
     for i in user:
         username = i['username']
@@ -147,12 +150,13 @@ async def login(response: Response, request:Request):
            
 
         else :
-            msg.append('Incorrect username or password')
+            msg.append('Incorrect username or password or you are Not Approved Yet')
             # raise HTTPException(status_code=400, detail="Incorrect username or password")
             return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
     except:
         errors.append('Something wrong')
         return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
+        
 
 def SurigaovalidateLogin(request:Request):
     """This function is for Log In Authentication"""
@@ -192,6 +196,48 @@ def SurigaovalidateLogin(request:Request):
             detail= "Not Authorized Please login",
             # headers={"WWW-Authenticate": "Basic"},
         )
+
+
+@client.post('/sign-up-admin')
+def sign_up(items:User):
+    """This function is for inserting """
+    dataInsert = dict()
+    dataInsert = {
+        "fullname": items.fullname,
+        "username": items.username,
+        "password": get_password_hash(items.password),
+        "status": items.status,
+        "created": items.created
+        
+        }
+    mydb.login.insert_one(dataInsert)
+    return {"message":"User has been save"} 
+
+
+@client.put('/api-update-admin-user/')
+async def update_employee_status(id,status:Optional[str], username = Depends(SurigaovalidateLogin)):
+    """This function is to update user info"""
+    mydb.login.find_one_and_update({"_id":ObjectId(id)},{
+        "$set":{
+            "status":status
+        }
+    })
+    return {'Messaeges':'Data has been updated'}
+
+@client.get('/api-get-admin-user/')
+async def get_employee_user(fullname, username = Depends(SurigaovalidateLogin)):
+    """This is for search of employee"""
+    return  usersEntity(mydb.login.find({'fullname':{"$regex":fullname,'$options':'i'}}))
+
+@client.get("/api-autocomplete-admin-user/")
+def autocomplete(term: Optional[str], username = Depends(SurigaovalidateLogin)):
+    """this is for auto complete of """
+    items = usersEntity(mydb.login.find({'fullname':{"$regex":term,'$options':'i'}}))
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item['fullname'])
+    return suggestions
 
 
 

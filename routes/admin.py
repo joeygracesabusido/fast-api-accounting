@@ -215,7 +215,7 @@ async def find_all_user(token: str = Depends(oauth_scheme)):
 
 #=============================================employee user frame========================================
 @admin.get("/api-autocomplete-employee-user/")
-def autocomplete(term: Optional[str]):
+def autocomplete(term: Optional[str],token: str = Depends(oauth_scheme)):
     """this is for auto complete of """
     items = EmployeeuserEntitys(mydb.employee_login.find({'fullname':{"$regex":term,'$options':'i'}}))
 
@@ -230,7 +230,7 @@ async def get_employee_user(fullname, token: str = Depends(oauth_scheme)):
     return  EmployeeuserEntitys(mydb.employee_login.find({'fullname':{"$regex":fullname,'$options':'i'}}))
 
 @admin.put('/api-update-employee-user/')
-async def update_employee_status(id,status:Optional[str]):
+async def update_employee_status(id,status:Optional[str],token: str = Depends(oauth_scheme)):
     """This function is to update user info"""
     mydb.employee_login.find_one_and_update({"_id":ObjectId(id)},{
         "$set":{

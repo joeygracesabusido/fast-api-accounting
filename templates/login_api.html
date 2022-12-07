@@ -111,7 +111,7 @@
                     >Status</label>
                     
                     <input 
-                    type="text" 
+                    type="text" hidden
                     name="status"
                     id="status"
                     value="for approval"
@@ -201,7 +201,7 @@
             </div>
             </div>
 
-
+           
 
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signup">
                 Sign Up
@@ -256,7 +256,7 @@
                     if (fetch_status == 200) {
                         // Use the converted JSON
                         window.alert("Your Data has been Updated");
-                        window.location.assign("/dollar-bill/");
+                        window.location.assign("/index");
                         console.log(json);
                     } else if (fetch_status == 401){
                         window.alert("UnAuthorized please Login");
