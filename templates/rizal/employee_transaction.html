@@ -1,6 +1,11 @@
 {% extends 'index.html' %}
 
 {% block content %}
+<style>
+        tr {
+            min-height: 5px;
+            }
+</style>
 
 <body>
     <div class="container">
@@ -8,31 +13,17 @@
     </div>
     
         <div class="container mt-3">
-            <label for="TransactionDate" >Date From</label>
-                    <input
-                        type="date"
-                        name="datefrom"
-                        id="datefrom"
-                        >
-                    </input>  
+            
 
-                <label for="TransactionDate" >Date To</label>
-                    <input
-                        type="date"
-                        name="dateto"
-                        id="dateto"
-                        >
-                    </input>  
-
-                <label for="Department" >Department</label>
+                <label for="Employee" >Employee</label>
                     <input
                         type="text"
-                        name="department"
-                        id="department"
+                        name="employee_id"
+                        id="employee_id"
                         >
                     </input>  
 
-                    <button type="submit"  onclick="display_data()" class="btn btn-success">
+                    <button type="submit"  onclick="displayData()" class="btn btn-success">
                         Search Data
                         <i class="fas fa-database"></i>
                     </button>
@@ -47,11 +38,14 @@
             <table id="myTable" class="table table-bordered"  style="text-align: center;">
                 <thead class="table-dark">
                 
+                        <td>Date</td>
                         <td>Employee ID</td>
                         <td>Last Name</td>
                         <td>First Name</td>
+                        <td>Gross Pay</td>
+                        <td>Net Pay</td>
                         <td>Department</td>
-                        <td>Total Amount</td>
+                       
                        
                         
                     </tr>
@@ -61,6 +55,8 @@
                         
                         <tr>
                             
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -90,36 +86,32 @@
 
     <script type="text/javascript">
 
-            // const rental_url =search_url ;
-            async function display_data(){
-                var datefrom = document.getElementById("datefrom").value
-                var dateto = document.getElementById("dateto").value
-                var department = document.getElementById("department").value
-        
-                const search_url = `/api-get-comp13th/?date1=${datefrom}&date2=${dateto}&department=${department}`;
+            
+
+            async function displayData() {
+                const employee_id= document.getElementById("employee_id").value;
+                const searchUrl = `/api-select-employee-transaction/?employee_id=${employee_id}`;
+
+                const response = await fetch(searchUrl);
+                const data = await response.json();
+                console.log(data);
+                let tableData = "";
+                for (const values of data) {
+                    tableData += `<tr>
+                    <td>${values.transaction_date}</td>
+                    <td>${values.employee_id}</td>
+                    <td>${values.lastname}</td>
+                    <td>${values.first_name}</td>
+                    <td>${values.grosspay_save}</td>
+                    <td>${values.netpay_save}</td>
+                    <td>${values.department}</td>
+                    </tr>`;
+                }
+                document.getElementById("table_body").innerHTML = tableData;
+                }
 
 
-                const responce = await fetch(search_url)
-                const data = await responce.json();
-                console.log(data)
-                
-                
-                
-                let tableData="";
-                data.map((values)=>{
-                    tableData+= ` <tr>
-                                <td>${values.employee_id}</td>
-                                <td>${values.lastname}</td>
-                                <td>${values.fname}</td>
-                                <td>${values.department}</td>
-                                <td>${values.totalAmount}</td>
-                                
-                               
-                            </tr>`;
-                });
-                document.getElementById("table_body").innerHTML=tableData;
-            }
-        
+
         
               
 

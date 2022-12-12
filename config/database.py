@@ -492,3 +492,34 @@ class Database(object):
            
             Database.DATABASE.close() 
 
+
+    @staticmethod
+    def get_employee_cutoff_range(employee_id):
+        """This function is for Querying for How Many cut off for Employee"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = ("SELECT cut_off_date, employee_id, last_name, first_name, grosspay_save, netpay_save,department \
+                FROM payroll_computation\
+                WHERE employee_id='" + employee_id +"' \
+                ORDER BY cut_off_date ")
+                
+          
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+           
+            Database.DATABASE.close()
+       
+

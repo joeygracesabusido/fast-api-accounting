@@ -484,30 +484,65 @@
         </script>
 
         <script type="text/javascript">
-            document.getElementById('regday').addEventListener('input',
-            function(e){
-                let regday = e.target.value;
-                var salDetails = document.getElementById('salary_details').value;
+            // document.getElementById('regday').addEventListener('input',
+            // function(e){
+            //     let regday = e.target.value;
+            //     var salDetails = document.getElementById('salary_details').value;
                
-                var salaryRate;
-                var regdayCal;
+            //     var salaryRate;
+            //     var regdayCal;
                
 
-                if (salDetails == 'Monthly'){
-                    salaryRate =  document.getElementById('salary_rate').value / 26;
-                    regdayCal = parseFloat(salaryRate) * parseFloat(regday)
-                    document.getElementById('regday_cal').value=regdayCal.toFixed(2);
+            //     if (salDetails == 'Monthly'){
+            //         salaryRate =  document.getElementById('salary_rate').value / 26;
+            //         regdayCal = parseFloat(salaryRate) * parseFloat(regday)
+            //         document.getElementById('regday_cal').value=regdayCal.toFixed(2);
                     
-                }else{
-                    salaryRate =  document.getElementById('salary_rate').value;
-                    regdayCal = parseFloat(salaryRate) * parseFloat(regday)
-                    document.getElementById('regday_cal').value=regdayCal.toFixed(2);
+            //     }else{
+            //         salaryRate =  document.getElementById('salary_rate').value;
+            //         regdayCal = parseFloat(salaryRate) * parseFloat(regday)
+            //         document.getElementById('regday_cal').value=regdayCal.toFixed(2);
+            //     }
+                
+                
+                
+            // }
+            // );
+             // Get the elements we need
+                const regdayInput = document.getElementById('regday');
+                const salaryDetails = document.getElementById('salary_details');
+                const salaryRateInput = document.getElementById('salary_rate');
+                const regdayCalInput = document.getElementById('regday_cal');
+
+                // Add an event listener to the regday input to calculate the regular day calculation
+                // when the value of the input changes
+                regdayInput.addEventListener('input', function(e) {
+                    // Get the values from the inputs
+                    const regday = Number(e.target.value);
+                    const salaryDetailsValue = salaryDetails.value;
+                    const salaryRate = Number(salaryRateInput.value);
+
+                    // Calculate the salary rate and regular day calculation
+                    const regularDayCalculation = calculateRegularDay(
+                    salaryDetailsValue,
+                    salaryRate,
+                    regday
+                    );
+
+                    // Update the regular day calculation input with the result
+                    regdayCalInput.value = regularDayCalculation.toFixed(2);
+                });
+
+                // Function to calculate the regular day calculation
+                function calculateRegularDay(salaryDetails, salaryRate, regularDay) {
+                    // If the salary is monthly, divide the salary rate by 26 to get the daily rate
+                    if (salaryDetails === 'Monthly') {
+                    salaryRate = salaryRate / 26;
+                    }
+
+                    // Return the regular day calculation
+                    return salaryRate * regularDay;
                 }
-                
-                
-                
-            }
-            );
 
         </script>
 
@@ -669,27 +704,63 @@
 
 <!-- =================================This is for LGL2 OT  Calculation============================ -->
         <script type="text/javascript">
-            document.getElementById('lgl2_ot').addEventListener('input',
-            function(e){
-                let lgl2_ot = e.target.value;
+            // document.getElementById('lgl2_ot').addEventListener('input',
+            // function(e){
+            //     let lgl2_ot = e.target.value;
 
-                var salDetails = document.getElementById('salary_details').value;
-                var salaryRate;
-                var lgl2_ot_cal;
+            //     var salDetails = document.getElementById('salary_details').value;
+            //     var salaryRate;
+            //     var lgl2_ot_cal;
 
-                if (salDetails == 'Monthly'){
-                    salaryRate =  document.getElementById('salary_rate').value / 26;
-                    lgl2_ot_cal = parseFloat(salaryRate) / 8 * 2 * 1.30 * parseFloat(lgl2_ot)
-                    document.getElementById('lgl2_ot_cal').value=lgl2_ot_cal.toFixed(2);
-                }else{
-                    salaryRate =  document.getElementById('salary_rate').value ;
-                    lgl2_ot_cal = parseFloat(salaryRate)/ 8 * 2 * 1.30 * parseFloat(lgl2_ot) 
-                    document.getElementById('lgl2_ot_cal').value=lgl2_ot_cal.toFixed(2);
+            //     if (salDetails == 'Monthly'){
+            //         salaryRate =  document.getElementById('salary_rate').value / 26;
+            //         lgl2_ot_cal = parseFloat(salaryRate) / 8 * 2 * 1.30 * parseFloat(lgl2_ot)
+            //         document.getElementById('lgl2_ot_cal').value=lgl2_ot_cal.toFixed(2);
+            //     }else{
+            //         salaryRate =  document.getElementById('salary_rate').value ;
+            //         lgl2_ot_cal = parseFloat(salaryRate)/ 8 * 2 * 1.30 * parseFloat(lgl2_ot) 
+            //         document.getElementById('lgl2_ot_cal').value=lgl2_ot_cal.toFixed(2);
 
+            //     }
+
+            // }
+            // );
+
+             // Get the elements we need
+                const lgl2OvertimeInput = document.getElementById('lgl2_ot');
+                const salaryDetails2 = document.getElementById('salary_details');
+                const salaryRateInput2= document.getElementById('salary_rate');
+                const lgl2OvertimeCalculationInput = document.getElementById('lgl2_ot_cal');
+
+                // Add an event listener to the lgl2 overtime input to calculate the overtime calculation
+                // when the value of the input changes
+                lgl2OvertimeInput.addEventListener('input', function(e) {
+                    // Get the values from the inputs
+                    const lgl2Overtime = Number(e.target.value);
+                    const salaryDetailsValue = salaryDetails2.value;
+                    const salaryRate = Number(salaryRateInput2.value);
+
+                    // Calculate the overtime calculation
+                    const lgl2OvertimeCalculation = calculateOvertime(
+                    salaryDetailsValue,
+                    salaryRate,
+                    lgl2Overtime
+                    );
+
+                    // Update the overtime calculation input with the result
+                    lgl2OvertimeCalculationInput.value = lgl2OvertimeCalculation.toFixed(2);
+                });
+
+                // Function to calculate the overtime calculation
+                function calculateOvertime(salaryDetails2, salaryRate, lgl2Overtime) {
+                    // If the salary is monthly, divide the salary rate by 26 to get the daily rate
+                    if (salaryDetails2 === 'Monthly') {
+                    salaryRate = salaryRate / 26;
+                    }
+
+                    // Return the overtime calculation
+                    return salaryRate / 8 * 2 * 1.30 * lgl2Overtime;
                 }
-
-            }
-            );
 
         </script>
 

@@ -637,6 +637,7 @@ def compt13Month(date1,date2,department,token: str = Depends(oauth_scheme)):
             "employee_id": i[0],
             "lastname":i[1],
             "fname": i[9],
+            "department": i[10],
             "totalRegdays": i[2],
             "TotalRegSun": i[3],
             "TotalSpl": i[4],
@@ -648,6 +649,86 @@ def compt13Month(date1,date2,department,token: str = Depends(oauth_scheme)):
         })
         test.append(data)
     return test
+
+     # Compute the total amount for each employee
+    # computations = map(
+    #     lambda result: {
+    #         "employee_id": result[0],
+    #         "lastname": result[1],
+    #         "fname": result[9],
+    #         "totalRegdays": result[2],
+    #         "TotalRegSun": result[3],
+    #         "TotalSpl": result[4],
+    #         "Totallgl2": result[5],
+    #         "Totalshoprate": result[6],
+    #         "TotalproviRate": result[7],
+    #         "TotalproviSun": result[8],
+    #         "totalAmount": '{:,.2f}'.format(
+    #             sum([result[2], result[3], result[4], result[5], result[6], result[7], result[8]]) / 12
+    #         )
+    #     },
+    #     results
+    # )
+
+    # # Return the computations
+    # return computations
+
+@admin.get('/api-select-employee-transaction/')
+def get_employee_payroll_transactions(employee_id,token: str = Depends(oauth_scheme)):
+    """This function is for displaying all reports or transaction for Employee  """
+    myresult = Database.get_employee_cutoff_range(employee_id=employee_id)
+
+    agg_result_list = []
+    for x in myresult:
+        transaction_date = x[0]
+        employee_id = x[1]
+        lastname = x[2]
+        first_name = x[3]
+        grosspay_save = x[4]
+        netpay_save = x[5]
+
+       
+       
+        grosspay_save2 = '{:,.2f}'.format(grosspay_save)
+        netpay_save2 = '{:,.2f}'.format(netpay_save)
+        
+       
+        
+
+        data={}   
+        
+        data.update({
+            
+            "transaction_date": transaction_date,
+            "employee_id": employee_id ,
+            "lastname": lastname,
+            "first_name": first_name,
+            "grosspay_save": '{:,.2f}'.format(x[4]),
+            "netpay_save": '{:,.2f}'.format(x[5]),
+            "department": x[6]
+           
+        })
+
+        agg_result_list.append(data)
+    return (agg_result_list)
+
+
+
+    # Create a list of dictionaries containing the transaction details
+    # transactions = map(
+    # lambda myresult: {
+    #     "transaction_date": myresult[0],
+    #     "employee_id": myresult[1],
+    #     "lastname": myresult[2],
+    #     "first_name": myresult[3],
+    #     "grosspay_save": '{:,.2f}'.format(myresult[4]),
+    #     "netpay_save": '{:,.2f}'.format(myresult[5]),
+    #     "department": myresult[6]
+    # },)
+
+        
+
+
 
 #=====================================Cash advances Frame============================================
 @admin.post('/api-insert-cashadvance/')
