@@ -973,7 +973,7 @@ def get_equipment(token: str=Depends(oauth_scheme)):
 
         agg_result_list.append(data)
         # print(agg_result_list)
-    return (agg_result_list)
+    return agg_result_list
 
 
 

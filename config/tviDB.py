@@ -16,8 +16,8 @@ class TviDB(object):
                                 password="Genesis@11",
                                 database="ldTviDB",
                                 auth_plugin='mysql_native_password')
-        global cursor
-        cursor = TviDB.DATABASE.cursor()
+        # global cursor
+        # cursor = TviDB.DATABASE.cursor()
 
         TviDB.DATABASE._open_connection()
 
@@ -36,3 +36,139 @@ class TviDB(object):
         # finally:
         #     TviDB.DATABASE.commit()
         #     TviDB.DATABASE.close()
+
+
+    @staticmethod
+    def insertEquipment(equipmentID, equipmentDesc, rentalRate, remarks):
+        """This is to insert to database rental to equipment_rental Table"""
+
+        try:
+            # Create a cursor object
+            
+            TviDB.DATABASE._open_connection()
+            cursor = TviDB.DATABASE.cursor()
+            # Use parameterized queries to prevent SQL injection attacks
+            data = (
+                "INSERT INTO equipment (equipmentID, equipmentDesc, rentalRate, remarks) "
+                "VALUES (%s, %s, %s, %s)"
+            )
+            val = (equipmentID, equipmentDesc, rentalRate, remarks)
+
+            # Execute the query and save the changes to the database
+            cursor.execute(data, val)
+            TviDB.DATABASE.commit()
+
+        except Exception as ex:
+            # Roll back any changes to the database if an error occurs
+            TviDB.DATABASE.rollback()
+            print("Error: ", str(ex))
+
+        finally:
+            # Close the cursor and connection to the database
+            cursor.close()
+            TviDB.DATABASE.close()
+
+
+    @staticmethod
+    def selectAllEquipment():
+        """
+        This function is for querying all equipment
+        """
+
+        # try:
+        #     # Open the database connection and create a cursor
+        #     with TviDB.DATABASE:
+        #         cursor = TviDB.DATABASE.cursor()
+
+        #         # Use a parameterized query to prevent SQL injection attacks
+        #         cursor.execute("SELECT * FROM equipment")
+
+        #         # Return the results of the query
+        #         return cursor.fetchall()
+        # except Exception as ex:
+        #     print("Error", f"Error occurred: {str(ex)}")
+
+
+        TviDB.DATABASE._open_connection()
+        cursor = TviDB.DATABASE.cursor()
+        try:
+            data = 'SELECT * FROM equipment '
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            # Database.DATABASE.commit()
+            TviDB.DATABASE.close()
+
+
+
+    @staticmethod
+    def selectEquipment(id):
+        """
+        This function is for querying all equipment
+        """
+
+        # try:
+        #     # Open the database connection and create a cursor
+        #     with TviDB.DATABASE:
+        #         cursor = TviDB.DATABASE.cursor()
+
+        #         # Use a parameterized query to prevent SQL injection attacks
+        #         cursor.execute('SELECT * FROM equipment WHERE id like  "%'+id+'%" ')
+
+        #         # Return the results of the query
+        #         equipment = cursor.fetchone()
+
+        #         # Check if no equipment was found
+        #         if equipment is None:
+        #             return "No equipment found with ID {}".format(id)
+
+        #         # Return the equipment data
+        #         return equipment
+        # except Exception as ex:
+        #     print("Error", f"Error occurred: {str(ex)}")
+
+
+        TviDB.DATABASE._open_connection()
+        cursor = TviDB.DATABASE.cursor()
+        try:
+            data = 'SELECT * FROM equipment WHERE id like  "%'+id+'%" '
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            # Database.DATABASE.commit()
+            TviDB.DATABASE.close()
+
+    @staticmethod
+    def update_equipment(id, equipmentId, equipmentDesc,rentalRate, remarks):
+        """
+        This function is to update Equipment with parameters of ID
+        """
+        # Use the `with` statement to handle opening and closing the database connection
+        # with TviDB.DATABASE:
+        TviDB.DATABASE._open_connection()
+        cursor = TviDB.DATABASE.cursor()
+        with TviDB.DATABASE:
+            try:
+                # Use a parameterized query to prevent SQL injection attacks
+                update_query = '''
+                    UPDATE equipment
+                    SET equipmentId = %s, equipmentDesc = %s, rentalRate = %s,remarks = %s
+                    WHERE id = %s
+                '''
+                cursor.execute(update_query, (equipmentId, equipmentDesc,rentalRate, remarks, id))
+                TviDB.DATABASE.commit()
+                # TviDB.DATABASE.close()
+            except Exception as ex:
+                print("Error", f"Error due to :{str(ex)}")
+
+
+
+
+
+

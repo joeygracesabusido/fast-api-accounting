@@ -11,6 +11,14 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertEquipment">
                 Add Equipment
             </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateEquipment">
+                Update Equipment
+            </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#equipmentTable">
+                Equipment List
+            </button>
         </div>
 
         <!-- Modal -->
@@ -33,8 +41,8 @@
                     
                     <input 
                     type="text"
-                    name="equipment_id"
-                    id="equipment_id"
+                    name="equipmentId"
+                    id="equipmentId"
                     
                     class="form-control"
                     >
@@ -44,8 +52,8 @@
                     
                     <input 
                     type="text"
-                    name="equipment_desc"
-                    id="equipment_desc"
+                    name="equipmentDesc"
+                    id="equipmentDesc"
                     
                     class="form-control"
                     >
@@ -79,14 +87,364 @@
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" onclick="update_equipment()" class="btn btn-primary">Save</button>
+                <button type="submit" onclick="insertEquipment()" class="btn btn-primary">Save</button>
                 <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                 </div>
             </div>
             </div>
         </div>
 
+
+        <!-- This for table of Equipment -->
+
+        <div class="modal fade" id="equipmentTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Euipment Table</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <button type="submit" onclick="displayData()" class="btn btn-primary">Display</button>
+                    </div>
+
+                    <div  class="container mt-3">
+                        <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                            
+                                    <td>ID</td>
+                                    <td>Equipment ID</td>
+                                    <td>Equipment Description</td>
+                                    <td>Rental Rate</td>
+                                    <td>Remarks</td>
+                                    <td>Action</td>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="table_body">
+                               
+                                    
+                                    <tr>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                  
+                                    </tr>
+                                   
+                                
+                            </tbody>
+            
+                           
+            
+                        </table>
+            
+                        
+                            
+                            
+                    </div>
+        
+                  
+           </div>
+        
+
+                   
+        
+                
+                </div>
+                <div class="modal-footer">
+                
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="updateEquipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Equipment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+
+                    <label for="transID"
+                    >Trans ID</label>
+                    
+                    <input 
+                    type="text"
+                    name="transID"
+                    id="transID"
+                    required
+                    
+                    >
+
+                    <button type="submit"  onclick="dislayDataEquipment()" class="btn btn-success">
+                        Search 
+                        <i class="fas fa-database"></i>
+                    </button>
+
+                    <br>
+                    
+                    
+                
+                    <label for="EquipmentID"
+                    >Equipment ID</label>
+                    
+                    <input 
+                    type="text"
+                    name="equipmenIdUpdate"
+                    id="equipmenIdUpdate"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="Equipment Discription"
+                    >Equipment Discription</label>
+                    
+                    <input 
+                    type="text"
+                    name="equipmentDescUpdate"
+                    id="equipmentDescUpdate"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="Rental Rate"
+                        >Rental Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rentalRateUpdate"
+                        id="rentalRateUpdate"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                    <label for="Remarks"
+                    >Remarks</label>
+
+                    <input 
+                    type="text"
+                    name="remarksUpdate" 
+                    id="remarksUpdate"
+                    
+                    class="form-control"
+                    >
+                    
+                    <br><br>
+                    
+        
+                
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="update_equipment()" class="btn btn-primary">Update</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
     </div>
+
+    <!-- This is to insert Equipment to tvi table -->
+    <script type="text/javascript">
+        // Define an async function to insert equipment
+        async function insertEquipment() {
+          // Get the values of the input fields
+          const data = {
+            equipmentId: document.getElementById("equipmentId").value,
+            equipmentDesc: document.getElementById("equipmentDesc").value,
+            rentalRate: document.getElementById("rentalRate").value,
+            remarks: document.getElementById("remarks").value
+          };
+      
+          // Use the fetch API to send the POST request
+          try {
+            const response = await fetch(`/api-insert-tvi-equipment/`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data)
+            });
+      
+            // Check if the response was successful
+            if (response.status === 200) {
+              window.alert("Your data has been saved");
+              window.location.assign("/tvi-transaction/");
+              console.log(response.json());
+            } else if (response.status === 401) {
+              window.alert("Unauthorized credential. Please login");
+            }
+          } catch (error) {
+            // Catch any errors and log them to the console
+            window.alert(error);
+            console.log(error);
+          }
+        }
+      </script>
+
+    <!-- This function is for displaying Equipment Data -->
+
+    <script type="text/javascript">
+         // const rental_url =search_url ;
+         async function displayData(){
+            
+            const search_url = `/api-get-tvi-equipment/`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            
+            
+            let tableData="";
+            data.map((values)=>{
+                tableData+= ` <tr>
+                            <td>${values.id}</td>
+                            <td>${values.equipmentID}</td>
+                            <td>${values.equipmentDesc}</td>
+                            <td>${values.rentalRate}</td>
+                            <td>${values.remarks}</td>
+                           
+                            <td>
+                                <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
+                                    <i class="fas fa-database">
+                                    </i>Remove</button>
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body").innerHTML=tableData;
+        }
+        
+      
+        
+    </script>
+
+
+
+    <!-- This is for displaying equipment  using ID of Transaction -->
+    <script type="text/javascript">
+
+            //         // Function to display data for the equipment with the given ID
+            async function dislayDataEquipment() {
+                // Get the equipment ID from the input field
+                var transid = document.getElementById("transID").value
+
+                // Construct the API URL using the equipment ID
+                var search_url = `/api-get-tvi-equipment-id/?id=${transid}`;
+
+                try {
+                // Call the API using the fetch API
+                var responce = await fetch(search_url)
+                var data = await responce.json();
+                console.log(data)
+                // Check if the API call was successful
+                if (responce.status != 200) {
+                    window.alert("Unauthorized Please Login")
+                }
+
+                // Check if any data was returned
+                if (data.length === 0) {
+                    window.alert(`No ID store for ${transid}`)
+                } else {
+                    // Get the data for the equipment
+                    var equipmenIdUpdate = data[0].equipmentID
+                    var equipmentDescUpdate = data[0].equipmentDesc
+                    var rentalRateUpdate = data[0].rentalRate
+                    var remarksUpdate = data[0].remarks
+
+                    // Update the input fields with the equipment data
+                    document.getElementById("equipmenIdUpdate").value = equipmenIdUpdate;
+                    document.getElementById("equipmentDescUpdate").value = equipmentDescUpdate;
+                    document.getElementById("rentalRateUpdate").value = rentalRateUpdate;
+                    document.getElementById("remarksUpdate").value = remarksUpdate;
+                }
+                } catch (error) {
+                // Handle any errors that occurred in the fetch call
+                console.error(error)
+                window.alert("Error occurred while fetching data")
+                }
+            }
+
+    </script>
+
+
+    <script type="text/javascript">
+        function update_equipment() {
+            var data = {};
+            var id = document.getElementById("transID").value;
+            data["equipmentId"] = document.getElementById("equipmenIdUpdate").value;
+            data["equipmentDesc"] = document.getElementById("equipmentDescUpdate").value;
+            data["rentalRate"] = document.getElementById("rentalRateUpdate").value;
+            data["remarks"] = document.getElementById("remarksUpdate").value;
+
+            console.log(data);
+
+            if (id === '') {
+                window.alert("Trans ID field is requires");
+            } else {
+                // Use async/await to simplify the fetch call
+                (async () => {
+                    try {
+                        // Use template literals to build the URL
+                        const response = await fetch("/api-update-tvi-equipment/"+ id, {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(data)
+                        });
+
+                        // Use response.ok to check if the response was successful
+                        if (response.ok) {
+                            window.alert("Your Data has been Updated");
+                            window.location.assign("/tvi-transaction/");
+                            console.log(await response.json());
+                        } else if (response.status === 401) {
+                            window.alert("Unauthorized credential Please Login");
+                        }
+                    } catch (error) {
+                        // Catch errors
+                        window.alert(error);
+                        console.log(error);
+                    }
+                })();
+            }
+        }
+    </script>
+
+
+
+
+
+  
+  
+      
+      
+      
 </body>
 
 {% endblock %}

@@ -187,3 +187,13 @@ class Vitalidiesel(BaseModel):
     price: float
     amount: float
     user: str
+
+
+#==============================================TVI Project Model=============================================
+class tviEquipment(BaseModel):
+    """This is for inserting TVI Equipment true Pydatic Model"""
+
+    equipmentId: str
+    equipmentDesc: str
+    rentalRate: float
+    remarks: str

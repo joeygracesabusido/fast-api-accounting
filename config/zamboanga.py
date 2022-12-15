@@ -78,25 +78,25 @@ class ZamboangaDB(object):
         #     ZamboangaDB.DATABASE.close()
 
 
-        try: 
-            cursor.execute(
-                """CREATE TABLE IF NOT EXISTS diesel (id INT AUTO_INCREMENT PRIMARY KEY, 
-                            trans_date date,
-                            equipment_id VARCHAR(100),
-                            withdrawal_slip VARCHAR(100),
-                            liters DECIMAL(9,2), 
-                            price DECIMAL(9,2),
-                            amount DECIMAL(9,2),
-                            user VARCHAR(100),
-                            date_updated date,
-                            date_credited date) """)
+        # try: 
+        #     cursor.execute(
+        #         """CREATE TABLE IF NOT EXISTS diesel (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     trans_date date,
+        #                     equipment_id VARCHAR(100),
+        #                     withdrawal_slip VARCHAR(100),
+        #                     liters DECIMAL(9,2), 
+        #                     price DECIMAL(9,2),
+        #                     amount DECIMAL(9,2),
+        #                     user VARCHAR(100),
+        #                     date_updated date,
+        #                     date_credited date) """)
                     
-        except Exception as ex:
-            print("Error", f"Error due to :{str(ex)}")
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
 
-        finally:
-            ZamboangaDB.DATABASE.commit()
-            ZamboangaDB.DATABASE.close()
+        # finally:
+        #     ZamboangaDB.DATABASE.commit()
+        #     ZamboangaDB.DATABASE.close()
 
 
     @staticmethod

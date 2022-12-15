@@ -2,6 +2,7 @@ from traceback import format_list
 from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
+from typing import Dict
 from config.db import mydb
 
 
@@ -69,4 +70,79 @@ TviDB.initialize() # this is to inialized database of TVI
 async def getTviTrans(request:Request,username: str = Depends(validateLogin)):
     """This function is for querying income statement"""
     return templates.TemplateResponse("tvi/tviEquipment.html",{'request':request})
+
+
+#==========================================Equipment Frame==================================================
+from models.model import tviEquipment
+@tviProject.post('/api-insert-tvi-equipment/')
+def insertTviEquipment(
+    item: tviEquipment, username: str = Depends(validateLogin)) -> Dict[str, str]:
+    """This function is for inserting Data of Equipment"""
+
+    try:
+        # Insert the equipment into the database
+        TviDB.insertEquipment(
+            equipmentID=item.equipmentId,
+            equipmentDesc=item.equipmentDesc,
+            rentalRate=item.rentalRate,
+            remarks=item.remarks,
+        )
+    except Exception as ex:
+        # Return an error message if an exception is thrown
+        return {"Error": f"Error occurred: {str(ex)}"}
+
+    # Return a success message if the operation was successful
+    return {"Message": "Data has been saved"}
+
+
+@ tviProject.get('/api-get-tvi-equipment/')
+def get_equipment(username: str = Depends(validateLogin)):
+    """This function is for querying all Equipment"""
+    equipmentList = TviDB.selectAllEquipment()
+
+    equipmentData = [
+            {
+                "id": x[0],
+                "equipmentID": x[1],
+                "equipmentDesc": x[2],
+                "rentalRate": x[3],
+                "remarks": x[4],
+            }
+            for x in equipmentList
+        ]
+       
+    return equipmentData
+
+@ tviProject.get('/api-get-tvi-equipment-id/')
+def getEquipmentID(id,username: str = Depends(validateLogin)) -> Dict[str, str]:
+    """This function is for querying all Equipment"""
+    equipmentList = TviDB.selectEquipment(id=id)
+
+    equipmentData = [
+            {
+                "id": x[0],
+                "equipmentID": x[1],
+                "equipmentDesc": x[2],
+                "rentalRate": x[3],
+                "remarks": x[4],
+            }
+            for x in equipmentList
+        ]
+       
+    return equipmentData
+
+
+@tviProject.put('/api-update-tvi-equipment/{id}')
+def update_equipment(id,item:tviEquipment,username: str = Depends(validateLogin)) -> Dict[str, str]:
+    """This function is to update equipment """
+    TviDB.update_equipment(equipmentId=item.equipmentId,
+                            equipmentDesc=item.equipmentDesc,
+                            rentalRate=item.rentalRate,
+                            remarks=item.remarks,id=id)
+    return  {'Messeges':'Data has been updated'}
+
+
+
+
+
 
