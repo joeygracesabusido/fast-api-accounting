@@ -1,0 +1,92 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+
+<body>
+    <div class="container">
+        <div class="container mt-3">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertEquipment">
+                Add Equipment
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="insertEquipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Equipment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+
+                
+                    <label for="EquipmentID"
+                    >Equipment ID</label>
+                    
+                    <input 
+                    type="text"
+                    name="equipment_id"
+                    id="equipment_id"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="Equipment Discription"
+                    >Equipment Discription</label>
+                    
+                    <input 
+                    type="text"
+                    name="equipment_desc"
+                    id="equipment_desc"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="Rental Rate"
+                        >Rental Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rentalRate"
+                        id="rentalRate"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                    <label for="Remarks"
+                    >Remarks</label>
+
+                    <input 
+                    type="text"
+                    name="remarks"
+                    id="remarks"
+                    
+                    class="form-control"
+                    >
+                    
+                    <br><br>
+                    
+        
+                
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="update_equipment()" class="btn btn-primary">Save</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+{% endblock %}
