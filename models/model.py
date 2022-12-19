@@ -197,3 +197,17 @@ class tviEquipment(BaseModel):
     equipmentDesc: str
     rentalRate: float
     remarks: str
+
+
+class tviRentalTrans(BaseModel):
+    """This is for inserting TVI Rental Transaction true Pydatic Model"""
+
+    transDate: date
+    equipmentId: str
+    totalHours: float
+    rentalRate: float
+    taxRate: float
+    vat_output: float
+    driverOperator: str
+    user: str
+    date_credited: date

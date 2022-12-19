@@ -16,8 +16,8 @@ class TviDB(object):
                                 password="Genesis@11",
                                 database="ldTviDB",
                                 auth_plugin='mysql_native_password')
-        # global cursor
-        # cursor = TviDB.DATABASE.cursor()
+        global cursor
+        cursor = TviDB.DATABASE.cursor()
 
         TviDB.DATABASE._open_connection()
 
@@ -36,6 +36,31 @@ class TviDB(object):
         # finally:
         #     TviDB.DATABASE.commit()
         #     TviDB.DATABASE.close()
+
+        # try: 
+        #     cursor.execute(
+        #         """CREATE TABLE IF NOT EXISTS rentalTransaction (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     transDate date,
+        #                     equipmentId VARCHAR (100) NOT NULL, 
+        #                     totalHours DECIMAL(9,2),
+        #                     rentalRate DECIMAL(9,2),
+        #                     totalAmount DECIMAL(9,2) GENERATED ALWAYS AS (totalHours*rentalRate) STORED,
+        #                     taxRate DECIMAL(3,2),
+        #                     vat_output DECIMAL(9,2),
+        #                     net_of_vat DECIMAL(9,2) GENERATED ALWAYS AS (totalAmount-vat_output) STORED,
+        #                     driverOperator VARCHAR (100) NOT NULL, 
+        #                     user VARCHAR(100),
+        #                     date_updated date,
+        #                     date_credited DATETIME NOT NULL) """)
+                    
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
+
+        # finally:
+        #     TviDB.DATABASE.commit()
+        #     TviDB.DATABASE.close()
+
+
 
 
     @staticmethod
@@ -166,6 +191,63 @@ class TviDB(object):
                 # TviDB.DATABASE.close()
             except Exception as ex:
                 print("Error", f"Error due to :{str(ex)}")
+
+
+#===========================================This is for Rental Transaction ===============================
+    @staticmethod
+    def insertRental(transDate, equipmentId, totalHours, rentalRate,
+                      taxRate, vat_output, driverOperator,user,date_credited):
+        """This is to insert to database rentalTransaction Table"""
+        TviDB.DATABASE._open_connection()
+        with TviDB.DATABASE.cursor() as cursor:
+            # Use the insert method to insert the data into the database
+            cursor.execute(
+                "INSERT INTO rentalTransaction",
+                {
+                    "transDate": transDate,
+                    "equipmentId": equipmentId,
+                    "totalHours": totalHours,
+                    "rentalRate": rentalRate,
+                    "taxRate": taxRate,
+                    "vat_output": vat_output,
+                    "driverOperator": driverOperator,
+                    "user": user,
+                    "date_credited": date_credited,
+                }
+            )
+            TviDB.DATABASE.commit()
+
+        # try:
+        #     # Create a cursor object
+            
+        #     TviDB.DATABASE._open_connection()
+        #     cursor = TviDB.DATABASE.cursor()
+        #     # Use parameterized queries to prevent SQL injection attacks
+        #     data = (
+        #         "INSERT INTO rentalTransaction (transDate, equipmentId, totalHours, rentalRate,\
+        #               taxRate, vat_output, driverOperator,user,date_credited) "
+        #         "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        #     )
+        #     val = (transDate, equipmentId, totalHours, rentalRate,
+        #               taxRate, vat_output, driverOperator,user,date_credited)
+
+        #     # Execute the query and save the changes to the database
+        #     cursor.execute(data, val)
+        #     TviDB.DATABASE.commit()
+
+        # except Exception as ex:
+        #     # Roll back any changes to the database if an error occurs
+        #     TviDB.DATABASE.rollback()
+        #     print("Error: ", str(ex))
+
+        # finally:
+        #     # Close the cursor and connection to the database
+        #     cursor.close()
+        #     TviDB.DATABASE.close()
+
+
+
+
 
 
 

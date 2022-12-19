@@ -76,7 +76,8 @@ async def getTviTrans(request:Request,username: str = Depends(validateLogin)):
 from models.model import tviEquipment
 @tviProject.post('/api-insert-tvi-equipment/')
 def insertTviEquipment(
-    item: tviEquipment, username: str = Depends(validateLogin)) -> Dict[str, str]:
+    item: tviEquipment, username: str = Depends(validateLogin)):
+    #-> Dict[str, str]
     """This function is for inserting Data of Equipment"""
 
     try:
@@ -114,7 +115,7 @@ def get_equipment(username: str = Depends(validateLogin)):
     return equipmentData
 
 @ tviProject.get('/api-get-tvi-equipment-id/')
-def getEquipmentID(id,username: str = Depends(validateLogin)) -> Dict[str, str]:
+def getEquipmentID(id,username: str = Depends(validateLogin)):
     """This function is for querying all Equipment"""
     equipmentList = TviDB.selectEquipment(id=id)
 
@@ -133,7 +134,7 @@ def getEquipmentID(id,username: str = Depends(validateLogin)) -> Dict[str, str]:
 
 
 @tviProject.put('/api-update-tvi-equipment/{id}')
-def update_equipment(id,item:tviEquipment,username: str = Depends(validateLogin)) -> Dict[str, str]:
+def update_equipment(id,item:tviEquipment,username: str = Depends(validateLogin)):
     """This function is to update equipment """
     TviDB.update_equipment(equipmentId=item.equipmentId,
                             equipmentDesc=item.equipmentDesc,
@@ -141,8 +142,32 @@ def update_equipment(id,item:tviEquipment,username: str = Depends(validateLogin)
                             remarks=item.remarks,id=id)
     return  {'Messeges':'Data has been updated'}
 
+from models.model import tviRentalTrans
+@tviProject.post('/api-insert-tvi-rental-transaction/')
+def insertRental(
+    item: tviRentalTrans, username: str = Depends(validateLogin)):
+    #-> Dict[str, str]
+    """This function is for inserting Data of Rental Transaction DB"""
 
+    try:
+        # Insert the equipment into the database
+        TviDB.insertRental(
+            transDate=item.transDate,
+            equipmentId=item.equipmentId,
+            totalHours=item.totalHours,
+            rentalRate=item.rentalRate, 
+            taxRate=item.taxRate,
+            vat_output=item.vat_output,
+            driverOperator=item.driverOperator,
+            user=item.user,
+            date_credited=item.date_credited
+        )
+    except Exception as ex:
+        # Return an error message if an exception is thrown
+        return {"Error": f"Error occurred: {str(ex)}"}
 
+    # Return a success message if the operation was successful
+    return {"Message": "Data has been saved"}
 
 
 
