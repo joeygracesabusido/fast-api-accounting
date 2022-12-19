@@ -142,12 +142,47 @@ def update_equipment(id,item:tviEquipment,username: str = Depends(validateLogin)
                             remarks=item.remarks,id=id)
     return  {'Messeges':'Data has been updated'}
 
+
+@tviProject.get("/api-search-autocomplete-tvi-equipment/")
+def autocomplete_equipmentID(term: Optional[str]):
+    items = TviDB.selectEquipmentIDAutocomplete(equipmentId=term)
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item[1])
+        
+    return suggestions
+
+#===================================================Rental Transaction=====================================
 from models.model import tviRentalTrans
+
+@ tviProject.get('/api-get-tvi-equipment-equipmentID/')
+def getEquipmentID(equipmentID,username: str = Depends(validateLogin)):
+    """This function is for querying all Equipment"""
+    equipmentList = TviDB.selectEquipmentIDAutocomplete(equipmentId=equipmentID)
+
+    equipmentData = [
+            {
+                "id": x[0],
+                "equipmentID": x[1],
+                "equipmentDesc": x[2],
+                "rentalRate": x[3],
+                "remarks": x[4],
+            }
+            for x in equipmentList
+        ]
+       
+    return equipmentData
+
+
+
+
 @tviProject.post('/api-insert-tvi-rental-transaction/')
 def insertRental(
     item: tviRentalTrans, username: str = Depends(validateLogin)):
     #-> Dict[str, str]
     """This function is for inserting Data of Rental Transaction DB"""
+    today = datetime.now()
 
     try:
         # Insert the equipment into the database
@@ -159,8 +194,8 @@ def insertRental(
             taxRate=item.taxRate,
             vat_output=item.vat_output,
             driverOperator=item.driverOperator,
-            user=item.user,
-            date_credited=item.date_credited
+            user=username,
+            date_credited=today
         )
     except Exception as ex:
         # Return an error message if an exception is thrown

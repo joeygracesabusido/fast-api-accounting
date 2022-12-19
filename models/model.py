@@ -209,5 +209,4 @@ class tviRentalTrans(BaseModel):
     taxRate: float
     vat_output: float
     driverOperator: str
-    user: str
-    date_credited: date
+    
