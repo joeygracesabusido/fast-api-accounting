@@ -47,6 +47,9 @@
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#insertRentalTrans">
                 Insert Rental
             </button>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#rentalList">
+                Rental List
+            </button>
         </div>
 
 
@@ -108,6 +111,17 @@
                     
                     class="form-control"
                     >
+
+                    <label for="Owner"
+                    >Owner</label>
+
+                    <input 
+                    type="text"
+                    name="owner"
+                    id="owner"
+                    
+                    class="form-control"
+                    >
                     
                     <br><br>
                     
@@ -151,6 +165,7 @@
                                     <td>Equipment Description</td>
                                     <td>Rental Rate</td>
                                     <td>Remarks</td>
+                                    <td>Owner</td>
                                     <td>Action</td>
                                     
                                 </tr>
@@ -166,7 +181,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                  
+                                        <td></td>
                                     </tr>
                                    
                                 
@@ -272,6 +287,17 @@
                     type="text"
                     name="remarksUpdate" 
                     id="remarksUpdate"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="Owner"
+                    >Owner</label>
+
+                    <input 
+                    type="text"
+                    name="ownerUpdate" 
+                    id="ownerUpdate"
                     
                     class="form-control"
                     >
@@ -416,6 +442,17 @@
                         class="form-control"
                         >
 
+                    <label for="Owner"
+                        >Owner</label>
+                        
+                        <input 
+                        type="text"
+                        name="ownerRentaltrans"
+                        id="ownerRentaltrans"
+                        
+                        class="form-control"
+                        >
+
                     
                     
                     <br><br>
@@ -426,6 +463,109 @@
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" onclick="insertRentalTrans()" class="btn btn-primary">Save</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- This for table of Equipment -->
+
+        <div class="modal fade" id="rentalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Euipment Table</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <label for="dateFrom"
+                        >From</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateFromRentTrans"
+                            id="dateFromRentTrans"
+                           
+                            >
+
+                    
+                        <label for="dateTo"
+                        >To</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateToRentTrans"
+                            id="dateToRentTrans"
+                           
+                            >
+
+                            <input 
+                            type="text"
+                            name="equipmentSearchRentTrans"
+                            id="equipmentSearchRentTrans"
+                            
+                            >
+                        <button type="submit" onclick="displayRentalData()" class="btn btn-primary">Search</button>
+                    </div>
+
+                    <div  class="container mt-3">
+                        <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                            
+                                    <td>ID</td>
+                                    <td>Trans Date</td>
+                                    <td>Equipment ID</td>
+                                    <td>Total Hour</td>
+                                    <td>Rental Rate</td>
+                                    <td>Total Amount</td>
+                                    <td>Action</td>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="table_body2">
+                               
+                                    
+                                    <tr>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        
+                                    </tr>
+                                   
+                                
+                            </tbody>
+            
+                           
+            
+                        </table>
+            
+                        
+                            
+                            
+                    </div>
+        
+                  
+           </div>
+        
+
+                   
+        
+                
+                </div>
+                <div class="modal-footer">
+                
                 <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                 </div>
             </div>
@@ -450,7 +590,8 @@
             equipmentId: document.getElementById("equipmentId").value,
             equipmentDesc: document.getElementById("equipmentDesc").value,
             rentalRate: document.getElementById("rentalRate").value,
-            remarks: document.getElementById("remarks").value
+            remarks: document.getElementById("remarks").value,
+            owner: document.getElementById("owner").value
           };
       
           // Use the fetch API to send the POST request
@@ -500,6 +641,7 @@
                             <td>${values.equipmentDesc}</td>
                             <td>${values.rentalRate}</td>
                             <td>${values.remarks}</td>
+                            <td>${values.owner}</td>
                            
                             <td>
                                 <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
@@ -548,12 +690,14 @@
                     var equipmentDescUpdate = data[0].equipmentDesc
                     var rentalRateUpdate = data[0].rentalRate
                     var remarksUpdate = data[0].remarks
+                    var ownerUpdate = data[0].owner
 
                     // Update the input fields with the equipment data
                     document.getElementById("equipmenIdUpdate").value = equipmenIdUpdate;
                     document.getElementById("equipmentDescUpdate").value = equipmentDescUpdate;
                     document.getElementById("rentalRateUpdate").value = rentalRateUpdate;
                     document.getElementById("remarksUpdate").value = remarksUpdate;
+                    document.getElementById("ownerUpdate").value = ownerUpdate;
                 }
                 } catch (error) {
                 // Handle any errors that occurred in the fetch call
@@ -573,6 +717,7 @@
             data["equipmentDesc"] = document.getElementById("equipmentDescUpdate").value;
             data["rentalRate"] = document.getElementById("rentalRateUpdate").value;
             data["remarks"] = document.getElementById("remarksUpdate").value;
+            data["owner"] = document.getElementById("ownerUpdate").value;
 
             console.log(data);
 
@@ -644,8 +789,10 @@
                 } else {
                 // Get the data for the equipment
                 const rentalRate = data[0].rentalRate;
-                
+                const owner = data[0].owner;
                 // Update the input fields with the equipment data
+                
+                document.getElementById("ownerRentaltrans").value = owner;
                 document.getElementById("rentalRateTransaction").value = rentalRate;
                 }
             } catch (error) {
@@ -739,6 +886,7 @@
             taxRate: document.getElementById("taxRateTransaction").value,
             vat_output: document.getElementById("vatOutputRentalTrans").value,
             driverOperator: document.getElementById("driverOperatorRentaltrans").value,
+            owner: document.getElementById("ownerRentaltrans").value,
             
           };
       
@@ -753,8 +901,9 @@
             // Check if the response was successful
             if (response.status === 200) {
               window.alert("Your data has been saved");
+              console.log(data);
               window.location.assign("/tvi-transaction/");
-              console.log(response.json());
+              
             } else if (response.status === 401) {
               window.alert("Unauthorized credential. Please login");
             }
@@ -765,6 +914,51 @@
           }
         }
       </script>
+
+     <!-- This function is for displaying Rental Data -->
+
+        <script type="text/javascript">
+            // const rental_url =search_url ;
+            async function displayRentalData(){
+                var datefrom = document.getElementById('dateFromRentTrans').value;
+                var dateto = document.getElementById('dateToRentTrans').value;
+                var equipment = document.getElementById('equipmentSearchRentTrans').value;
+            const search_url = `/api-get-tvi-rental-transactions/?datefrom=${datefrom}&dateto=${dateto}
+                                    &equipmentID${equipment}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            
+            
+            let tableData="";
+            data.map((values)=>{
+                tableData+= ` <tr>
+                            <td>${values.id}</td>
+                            <td>${values.transDate}</td>
+                            <td>${values.equipmentID}</td>
+                            <td>${values.totalHours}</td>
+                            <td>${values.rentalRate}</td>
+                            <td>${values.totalAmount}</td>
+                          
+                            
+                            <td>
+                                <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
+                                    <i class="fas fa-database">
+                                    </i>Remove</button>
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body2").innerHTML=tableData;
+        }
+        
+        
+        
+    </script>
+
 
 
 

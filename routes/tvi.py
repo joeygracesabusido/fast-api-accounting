@@ -108,6 +108,7 @@ def get_equipment(username: str = Depends(validateLogin)):
                 "equipmentDesc": x[2],
                 "rentalRate": x[3],
                 "remarks": x[4],
+                "owner": x[5],
             }
             for x in equipmentList
         ]
@@ -139,7 +140,8 @@ def update_equipment(id,item:tviEquipment,username: str = Depends(validateLogin)
     TviDB.update_equipment(equipmentId=item.equipmentId,
                             equipmentDesc=item.equipmentDesc,
                             rentalRate=item.rentalRate,
-                            remarks=item.remarks,id=id)
+                            remarks=item.remarks,
+                            owner=item.owner,id=id)
     return  {'Messeges':'Data has been updated'}
 
 
@@ -168,6 +170,7 @@ def getEquipmentID(equipmentID,username: str = Depends(validateLogin)):
                 "equipmentDesc": x[2],
                 "rentalRate": x[3],
                 "remarks": x[4],
+                "owner": x[5],
             }
             for x in equipmentList
         ]
@@ -195,14 +198,40 @@ def insertRental(
             vat_output=item.vat_output,
             driverOperator=item.driverOperator,
             user=username,
+            owner=item.owner,
             date_credited=today
         )
+       
     except Exception as ex:
         # Return an error message if an exception is thrown
         return {"Error": f"Error occurred: {str(ex)}"}
 
     # Return a success message if the operation was successful
     return {"Message": "Data has been saved"}
+
+
+@ tviProject.get('/api-get-tvi-rental-transactions/')
+def get_equipment(datefrom,dateto,equipmentID,username: str = Depends(validateLogin)):
+    """This function is for querying all Equipment"""
+    rentalList = TviDB.selectAllRental(datefrom=datefrom,dateto=dateto,equipmentID=equipmentID)
+
+    rentalData = [
+            {
+                "id": x[0],
+                "transDate": x[1],
+                "equipmentID": x[2],
+                "totalHours": x[3],
+                "rentalRate": x[4],
+                "totalAmount": x[5],
+                "net_of_vat": x[8],
+                "driverOperator": x[9],
+                "owner": x[10],
+            }
+            for x in rentalList
+        ]
+       
+    return rentalData
+
 
 
 

@@ -60,11 +60,25 @@ class TviDB(object):
         #     TviDB.DATABASE.commit()
         #     TviDB.DATABASE.close()
 
+        # Add a column to the table after another column
+        # try:
+        #     table_name = 'rentalTransaction'
+        #     after_column = 'driverOperator'
+        #     new_column_name = 'owner'
+        #     new_column_type = 'VARCHAR(50)'
+        #     alter_table_query = f'ALTER TABLE {table_name} ADD COLUMN {new_column_name} {new_column_type} AFTER {after_column}'
+        #     cursor.execute(alter_table_query)
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
+
+        # finally:
+        #     TviDB.DATABASE.commit()
+        #     TviDB.DATABASE.close()
 
 
 
     @staticmethod
-    def insertEquipment(equipmentID, equipmentDesc, rentalRate, remarks):
+    def insertEquipment(equipmentID, equipmentDesc, rentalRate, remarks,owner):
         """This is to insert to database rental to equipment_rental Table"""
 
         try:
@@ -74,10 +88,10 @@ class TviDB(object):
             cursor = TviDB.DATABASE.cursor()
             # Use parameterized queries to prevent SQL injection attacks
             data = (
-                "INSERT INTO equipment (equipmentID, equipmentDesc, rentalRate, remarks) "
-                "VALUES (%s, %s, %s, %s)"
+                "INSERT INTO equipment (equipmentID, equipmentDesc, rentalRate, remarks,owner) "
+                "VALUES (%s, %s, %s, %s, %s)"
             )
-            val = (equipmentID, equipmentDesc, rentalRate, remarks)
+            val = (equipmentID, equipmentDesc, rentalRate, remarks, owner)
 
             # Execute the query and save the changes to the database
             cursor.execute(data, val)
@@ -161,25 +175,7 @@ class TviDB(object):
         This function is for querying all equipment
         """
 
-        # try:
-        #     # Open the database connection and create a cursor
-        #     with TviDB.DATABASE:
-        #         cursor = TviDB.DATABASE.cursor()
-
-        #         # Use a parameterized query to prevent SQL injection attacks
-        #         cursor.execute('SELECT * FROM equipment WHERE id like  "%'+id+'%" ')
-
-        #         # Return the results of the query
-        #         equipment = cursor.fetchone()
-
-        #         # Check if no equipment was found
-        #         if equipment is None:
-        #             return "No equipment found with ID {}".format(id)
-
-        #         # Return the equipment data
-        #         return equipment
-        # except Exception as ex:
-        #     print("Error", f"Error occurred: {str(ex)}")
+      
 
 
         TviDB.DATABASE._open_connection()
@@ -196,7 +192,7 @@ class TviDB(object):
             TviDB.DATABASE.close()
 
     @staticmethod
-    def update_equipment(id, equipmentId, equipmentDesc,rentalRate, remarks):
+    def update_equipment(id, equipmentId, equipmentDesc,rentalRate, remarks, owner):
         """
         This function is to update Equipment with parameters of ID
         """
@@ -209,10 +205,10 @@ class TviDB(object):
                 # Use a parameterized query to prevent SQL injection attacks
                 update_query = '''
                     UPDATE equipment
-                    SET equipmentId = %s, equipmentDesc = %s, rentalRate = %s,remarks = %s
+                    SET equipmentId = %s, equipmentDesc = %s, rentalRate = %s,remarks = %s, owner = %s
                     WHERE id = %s
                 '''
-                cursor.execute(update_query, (equipmentId, equipmentDesc,rentalRate, remarks, id))
+                cursor.execute(update_query, (equipmentId, equipmentDesc,rentalRate, remarks,owner, id))
                 TviDB.DATABASE.commit()
                 # TviDB.DATABASE.close()
             except Exception as ex:
@@ -221,82 +217,57 @@ class TviDB(object):
 
 #===========================================This is for Rental Transaction ===============================
     @staticmethod
-    # def insertRental(transDate, equipmentId, totalHours, rentalRate,
-    #                   taxRate, vat_output, driverOperator,user,date_credited):
-    #     """This is to insert to database rentalTransaction Table"""
-    #     TviDB.DATABASE._open_connection()
-    #     with TviDB.DATABASE.cursor() as cursor:
-    #         try:
-    #         # Use the insert method to insert the data into the database
-    #             cursor.execute(
-    #                 "INSERT INTO rentalTransaction",
-    #                 {
-    #                     "transDate": transDate,
-    #                     "equipmentId": equipmentId,
-    #                     "totalHours": totalHours,
-    #                     "rentalRate": rentalRate,
-    #                     "taxRate": taxRate,
-    #                     "vat_output": vat_output,
-    #                     "driverOperator": driverOperator,
-    #                     "user": user,
-    #                     "date_credited": date_credited,
-    #                 }
-    #             )
-    #             TviDB.DATABASE.commit()
-            
-    #         except Exception as ex:
-    #         # Roll back any changes to the database if an error occurs
-    #             TviDB.DATABASE.rollback()
-    #             print("Error: ", str(ex))
-    def insertRental(transDate, equipmentId, totalHours, rentalRate, taxRate, vat_output, driverOperator, user, date_credited):
+    def insertRental(transDate, equipmentId, totalHours, rentalRate, taxRate,
+                                 vat_output, driverOperator, user, owner, date_credited):
         """This is to insert to database rentalTransaction Table"""
 
-        # Constants for the column names and data types
-        TRANS_DATE = "transDate"
-        EQUIPMENT_ID = "equipmentId"
-        TOTAL_HOURS = "totalHours"
-        RENTAL_RATE = "rentalRate"
-        TAX_RATE = "taxRate"
-        VAT_OUTPUT = "vat_output"
-        DRIVER_OPERATOR = "driverOperator"
-        USER = "user"
-        DATE_CREDITED = "date_credited"
-
-        # Construct the parameterized query
-        query = f"INSERT INTO rentalTransaction ({TRANS_DATE}, {EQUIPMENT_ID}, {TOTAL_HOURS}, {RENTAL_RATE}, {TAX_RATE}, {VAT_OUTPUT}, {DRIVER_OPERATOR}, {USER}, {DATE_CREDITED}) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-
-        # Create a data dictionary for the values to be inserted
-        data = {
-            TRANS_DATE: transDate,
-            EQUIPMENT_ID: equipmentId,
-            TOTAL_HOURS: totalHours,
-            RENTAL_RATE: rentalRate,
-            TAX_RATE: taxRate,
-            VAT_OUTPUT: vat_output,
-            DRIVER_OPERATOR: driverOperator,
-            USER: user,
-            DATE_CREDITED: date_credited,
-        }
-
-        # Add additional error checking here, if necessary
-
+      
         # Open the database connection
         TviDB.DATABASE._open_connection()
 
-        # Use a try-except block to handle errors gracefully
         try:
             with TviDB.DATABASE.cursor() as cursor:
-                # Execute the parameterized query
-                cursor.execute(query, data.values())
-            # Commit the transaction
-            TviDB.DATABASE.commit()
+
+
+                data = (
+                        "INSERT INTO rentalTransaction (transDate, equipmentId, totalHours, rentalRate, \
+                            taxRate, vat_output, driverOperator, user,owner,date_credited ) "
+                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    )
+                val = (transDate, equipmentId, totalHours, rentalRate, taxRate,
+                                 vat_output, driverOperator, user,owner, date_credited)
+
+                # Execute the query and save the changes to the database
+                cursor.execute(data, val)
+                TviDB.DATABASE.commit()
+
         except Exception as ex:
-            # Roll back the transaction and close the connection
+            # Roll back any changes to the database if an error occurs
             TviDB.DATABASE.rollback()
             print("Error: ", str(ex))
+
         finally:
-            # Close the connection
+            # Close the cursor and connection to the database
+            cursor.close()
             TviDB.DATABASE.close()
+
+    @staticmethod
+    def selectAllRental(datefrom,dateto,equipmentID):
+        """
+        This function is for querying all Rental Transactions
+        """
+
+        TviDB.DATABASE._open_connection()
+        SELECT_QUERY = 'SELECT * FROM rentalTransaction \
+                        WHERE transDate BETWEEN "'+datefrom+'" AND "'+dateto+'" AND equipmentID like  "%'+equipmentID+'%"'
+
+        with TviDB.DATABASE as cnx:
+            with cnx.cursor() as cursor:
+                try:
+                    cursor.execute(SELECT_QUERY)
+                    return cursor.fetchall()
+                except mysql.connector.Error as ex:
+                    print(f"Error due to: {str(ex)}")
       
 
 

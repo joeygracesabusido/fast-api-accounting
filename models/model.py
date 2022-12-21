@@ -197,6 +197,7 @@ class tviEquipment(BaseModel):
     equipmentDesc: str
     rentalRate: float
     remarks: str
+    owner: str
 
 
 class tviRentalTrans(BaseModel):
@@ -209,4 +210,5 @@ class tviRentalTrans(BaseModel):
     taxRate: float
     vat_output: float
     driverOperator: str
+    owner: str
     
