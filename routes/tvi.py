@@ -127,6 +127,7 @@ def getEquipmentID(id,username: str = Depends(validateLogin)):
                 "equipmentDesc": x[2],
                 "rentalRate": x[3],
                 "remarks": x[4],
+                "owner": x[5],
             }
             for x in equipmentList
         ]
@@ -161,7 +162,7 @@ from models.model import tviRentalTrans
 @ tviProject.get('/api-get-tvi-equipment-equipmentID/')
 def getEquipmentID(equipmentID,username: str = Depends(validateLogin)):
     """This function is for querying all Equipment"""
-    equipmentList = TviDB.selectEquipmentIDAutocomplete(equipmentId=equipmentID)
+    equipmentList = TviDB.selectEquipmentID(equipmentId=equipmentID)
 
     equipmentData = [
             {
@@ -211,9 +212,10 @@ def insertRental(
 
 
 @ tviProject.get('/api-get-tvi-rental-transactions/')
-def get_equipment(datefrom,dateto,equipmentID,username: str = Depends(validateLogin)):
+def get_equipment(datefrom,dateto,equipmentID,owner,username: str = Depends(validateLogin)):
     """This function is for querying all Equipment"""
-    rentalList = TviDB.selectAllRental(datefrom=datefrom,dateto=dateto,equipmentID=equipmentID)
+    rentalList = TviDB.selectAllRental(datefrom=datefrom,dateto=dateto,
+                                        equipmentID=equipmentID,onwer=owner)
 
     rentalData = [
             {
@@ -231,6 +233,48 @@ def get_equipment(datefrom,dateto,equipmentID,username: str = Depends(validateLo
         ]
        
     return rentalData
+
+# @tviProject.delete('/api-deletetiv-rental/{id}')
+# def delete_hauling(id,username: str = Depends(validateLogin)):
+#     """This function is to delete rental Transaction"""
+#     TviDB.delete_rental_trans(id=id)
+#     return  {'Messeges':'Data has been deleted'}
+@tviProject.delete('/api-deletetiv-rental/{id}')
+def delete_rental_transaction(id: int, username: str = Depends(validateLogin)):
+    """This function is to delete a rental transaction"""
+    try:
+        TviDB.delete_rental_trans(id=id)
+    except HTTPException as ex:
+        return {'message': ex.detail}
+
+
+@tviProject.get('/api-update-tiv-rental-withID/{id}',response_class=HTMLResponse)
+async def update_journalEntry_sur(id,request:Request, username: str = Depends(validateLogin)):
+    """This function is for updating Journal Entry"""
+    rentalList = TviDB.selectRentalperID(id=id)
+
+    rentalData = [
+            {
+                "id": x[0],
+                "transDate": x[1],
+                "equipmentID": x[2],
+                "totalHours": x[3],
+                "rentalRate": x[4],
+                "totalAmount": x[5],
+                "taxRate": x[6],
+                "vat_output": x[7],
+                "net_of_vat": x[8],
+                "driverOperator": x[9],
+                "owner": x[10],
+            }
+            for x in rentalList
+        ]
+       
+    
+
+    return templates.TemplateResponse('tvi/tviRentalUpdate.html',{'request':request,
+                                        'rentalData':rentalData})
+
 
 
 

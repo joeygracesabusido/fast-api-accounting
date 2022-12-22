@@ -165,7 +165,29 @@ class TviDB(object):
             # Close the connection, regardless of whether an exception occurred
             TviDB.DATABASE.close()
 
+    @staticmethod
+    def selectEquipmentID(equipmentId):
+        """
+        This function is for querying equipment with parameters
+        """
 
+       
+        TviDB.DATABASE._open_connection()
+        try:
+            with TviDB.DATABASE.cursor() as cursor:
+                # Use parameterized query to prevent SQL injection attacks
+                query = 'SELECT * FROM equipment WHERE equipmentId like %s'
+                cursor.execute(query, (f'%{equipmentId}%',))
+                rows = cursor.fetchall()
+                if not rows:
+                    return []
+                return rows
+        except Exception as ex:
+            # Raise the exception to be handled at a higher level
+            raise ex
+        finally:
+            # Close the connection, regardless of whether an exception occurred
+            TviDB.DATABASE.close()
 
 
 
@@ -252,14 +274,16 @@ class TviDB(object):
             TviDB.DATABASE.close()
 
     @staticmethod
-    def selectAllRental(datefrom,dateto,equipmentID):
+    def selectAllRental(datefrom,dateto,equipmentID,onwer):
         """
         This function is for querying all Rental Transactions
         """
 
         TviDB.DATABASE._open_connection()
         SELECT_QUERY = 'SELECT * FROM rentalTransaction \
-                        WHERE transDate BETWEEN "'+datefrom+'" AND "'+dateto+'" AND equipmentID like  "%'+equipmentID+'%"'
+                        WHERE transDate BETWEEN "'+datefrom+'" AND "'+dateto+'" \
+                        AND equipmentID like  "%'+equipmentID+'%" \
+                            AND owner like "%'+onwer+'%"'
 
         with TviDB.DATABASE as cnx:
             with cnx.cursor() as cursor:
@@ -268,6 +292,40 @@ class TviDB(object):
                     return cursor.fetchall()
                 except mysql.connector.Error as ex:
                     print(f"Error due to: {str(ex)}")
+
+    @staticmethod
+    def selectRentalperID(id):
+        """
+        This function is for querying all Rental Transactions with ID
+        """
+
+        TviDB.DATABASE._open_connection()
+        SELECT_QUERY = 'SELECT * FROM rentalTransaction \
+                        WHERE id like  "%'+id+'%" \
+                            '
+
+        with TviDB.DATABASE as cnx:
+            with cnx.cursor() as cursor:
+                try:
+                    cursor.execute(SELECT_QUERY)
+                    return cursor.fetchall()
+                except mysql.connector.Error as ex:
+                    print(f"Error due to: {str(ex)}")
+
+    @staticmethod
+    def delete_rental_trans(id):
+        """This function is for deleting Rental Trans with parameters"""
+        DELETE_QUERY = 'DELETE FROM rentalTransaction WHERE id = %s'
+
+        TviDB.DATABASE._open_connection()
+        with TviDB.DATABASE as cnx:
+            with cnx.cursor() as cursor:
+                try:
+                    cursor.execute(DELETE_QUERY, (id,))
+                except mysql.connector.Error as ex:
+                    print(f"Error due to: {str(ex)}")
+                else:
+                    cnx.commit()
       
 
 

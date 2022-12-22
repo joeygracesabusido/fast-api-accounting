@@ -505,14 +505,29 @@
                             id="dateToRentTrans"
                            
                             >
-
+                        <label for="Equipment"
+                            >Equipment</label>
                             <input 
                             type="text"
                             name="equipmentSearchRentTrans"
                             id="equipmentSearchRentTrans"
                             
                             >
+                        <label for="Owner"
+                            >Owner</label>
+                        
+                            <input 
+                            type="text"
+                            name="ownerSearchRentTrans"
+                            id="ownerSearchRentTrans"
+                            
+                            >
                         <button type="submit" onclick="displayRentalData()" class="btn btn-primary">Search</button>
+
+                        <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                            Export Excel
+                            <i class="fas fa-database"></i>
+                        </button>
                     </div>
 
                     <div  class="container mt-3">
@@ -525,8 +540,9 @@
                                     <td>Total Hour</td>
                                     <td>Rental Rate</td>
                                     <td>Total Amount</td>
-                                    <td>Action</td>
-                                    
+                                    <td>Owner</td>
+                                    <td>Delete</td>
+                                    <td>Update</td>
                                 </tr>
                             </thead>
                             <tbody id="table_body2">
@@ -541,7 +557,8 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                    
                                 
@@ -648,6 +665,8 @@
                                     <i class="fas fa-database">
                                     </i>Remove</button>
                             </td>
+
+                            
                         
                         </tr>`;
             });
@@ -768,16 +787,17 @@
     <script type="text/javascript">
 
 
-            equipmentID = document.getElementById('equipmentIdRent').value;
+            // equipmentID = document.getElementById('equipmentIdRent').value;
             async function dislayDataEquipmentRental() {
             try {
+                equipmentID = document.getElementById('equipmentIdRent').value;
                 // Construct the API URL using a template string
                 const searchUrl = `/api-get-tvi-equipment-equipmentID/?equipmentID=${equipmentID}`;
 
                 // Call the API using the fetch API
                 const responce = await fetch(searchUrl);
                 const data = await responce.json();
-
+                console.log(data)
                 // Check if the API call was successful
                 if (!responce.ok) {
                 window.alert("Unauthorized Please Login");
@@ -922,50 +942,98 @@
             async function displayRentalData(){
                 var datefrom = document.getElementById('dateFromRentTrans').value;
                 var dateto = document.getElementById('dateToRentTrans').value;
-                var equipment = document.getElementById('equipmentSearchRentTrans').value;
+                var equipmentID = document.getElementById('equipmentSearchRentTrans').value;
+                var owner = document.getElementById('ownerSearchRentTrans').value;
             const search_url = `/api-get-tvi-rental-transactions/?datefrom=${datefrom}&dateto=${dateto}
-                                    &equipmentID${equipment}`;
+                                &equipmentID=${equipmentID}&owner=${owner}`;
 
-
+            
             const responce = await fetch(search_url)
             const data = await responce.json();
             console.log(data)
             
-            
-            
-            let tableData="";
-            data.map((values)=>{
-                tableData+= ` <tr>
-                            <td>${values.id}</td>
-                            <td>${values.transDate}</td>
-                            <td>${values.equipmentID}</td>
-                            <td>${values.totalHours}</td>
-                            <td>${values.rentalRate}</td>
-                            <td>${values.totalAmount}</td>
-                          
+            if (responce.status === 200) {
+                let tableData2="";
+                data.map((values)=>{
+                    tableData2+= ` <tr>
+                                <td>${values.id}</td>
+                                <td>${values.transDate}</td>
+                                <td>${values.equipmentID}</td>
+                                <td>${values.totalHours}</td>
+                                <td>${values.rentalRate}</td>
+                                <td>${values.owner}</td>
+                                <td>${values.totalAmount}</td>
                             
-                            <td>
-                                <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
-                                    <i class="fas fa-database">
-                                    </i>Remove</button>
-                            </td>
-                        
-                        </tr>`;
-            });
-            document.getElementById("table_body2").innerHTML=tableData;
-        }
+                                
+                                <td>
+                                    <button type="button"  id="remove_button" onclick="delete_rental_transactions(${values.id})" class="btn btn-danger">
+                                        <i class="fas fa-database">
+                                        </i>Remove</button>
+                                </td>
+
+                                <td>
+                                    
+                                    <a href="/api-update-tiv-rental-withID/${values.id}"
+                                    <button type="button" class="btn btn-primary">
+                                    <i class="fas fa-database"></i> Edit</button></a>
+                                                       
+                           </td>
+
+                               
+                            
+                            </tr>`;
+                });
+                    document.getElementById("table_body2").innerHTML=tableData2;
+                }else if (responce.status === 401){
+                    window.alert("Unauthorized credential. Please login");
+                }
+            
+            }
+            
+            
         
         
-        
-    </script>
+        </script>
+
+
+        <script type="text/javascript">
+            function delete_rental_transactions(id) {
+            if (confirm('Are you sure you want to delete this rental transaction?')) {
+                fetch(`/api-deletetiv-rental/${id}`, {
+                method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                    alert('Your data has been deleted');
+                    window.location.assign('/tvi-transaction/');
+                    } else {
+                    throw new Error('Failed to delete data');
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+            }
+            }
+        </script>
 
 
 
 
+    <!-- this function is for exporting Excel -->
+        <script>
+            function html_table_excel(type){
+                var data = document.getElementById('table_body2');
+                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                XLSX.writeFile(file, 'rental.' + type);
+
+            }
+
+            
+        </script>
   
-  
-      
-      
+   
       
 </body>
 

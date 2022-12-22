@@ -1,0 +1,259 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<style>
+
+div.transactions {
+            width: 50%; /* Set a fixed width for the element */
+            margin: 0 auto; /* Center the element horizontally */
+            position: absolute; /* Position the element absolutely */
+            top: 50%; /* Move the element down by 50% of its own height */
+            left: 50%; /* Move the element right by 50% of its own width */
+            transform: translate(-50%, -50%); /* Offset the element by its own width and height */
+            
+    }
+
+    .red-text {
+    color: black;
+  }
+ /* input.form-control{
+    
+    background-color: blue;
+  } */
+ 
+
+</style>
+<body>
+    <div class="container">
+        
+        <div class="transactions">
+            {% for list in rentalData%}
+            <label class="red-text" for="EquipmentID"
+                    >Transaction ID</label>
+                    
+                    <input 
+                    type="text" hidden
+                    name="transID"
+                    id="transID"
+                    value="{{list.id}}"
+                    class="form-control"
+                    >
+
+            <label class="red-text" for="EquipmentID"
+                    >Equipment ID</label>
+                    
+                    <input 
+                   
+                    type="date"
+                    name="transactionDateRentTrans"
+                    id="transactionDateRentTrans"
+                    value="{{list.transDate}}"
+                    class="form-control"
+                    >
+
+            <label class="red-text" for="EquipmentID"
+                    >Equipment ID</label>
+                    
+                    <input 
+                    type="text"
+                    name="equipmentId"
+                    id="equipmentId"
+                    value="{{list.equipmentID}}"
+                    class="form-control"
+                    >
+
+
+                    
+
+            <label for="Total Hours"
+                    >Total Hours</label>
+                    
+                    <input 
+                    type="number"
+                    name="totalHoursRentalTrans"
+                    id="totalHoursRentalTrans"
+                    step="0.01"
+                    value="{{list.totalHours}}"
+                    class="form-control"
+                    >
+
+            <label for="Rental Rate"
+                    >Rental Rate</label>
+                    
+                    <input 
+                    type="number"
+                    name="rentalRateTransaction"
+                    id="rentalRateTransaction"
+                    step="0.01"
+                    value="{{list.rentalRate}}"
+                    class="form-control"
+                    >
+
+            <label for="Total Amount"
+                    >Gross Amount</label>
+                    
+                    <input 
+                    type="number"
+                    name="grossAmountTransaction"
+                    id="grossAmountTransaction"
+                    step="0.01"
+                    value="{{list.totalAmount}}"
+                    class="form-control"
+                    >
+            <label for="Tax Rate"
+                    >Tax Rate</label>
+                    
+                    <input 
+                    type="number"
+                    name="taxRateTransaction"
+                    id="taxRateTransaction"
+                    step="0.01"
+                    value="{{list.taxRate}}"
+                    onkeyup="getAverage();" 
+                    class="form-control"
+                    >
+
+            <label for="Vat Output"
+                    >Vat Output</label>
+                    
+                    <input 
+                    type="number"
+                    name="vatOutputRentalTrans"
+                    id="vatOutputRentalTrans"
+                    step="0.01"
+                    value="{{list.vat_output}}"
+                    class="form-control"
+                    >
+
+            <label for="NetofVat"
+                    >Net of VAt</label>
+                    
+                    <input 
+                    type="number"
+                    name="netOfVAtRentalTrans"
+                    id="netOfVAtRentalTrans"
+                    step="0.01"
+                    value="{{list.net_of_vat}}"
+                    class="form-control"
+                    >
+
+            <label for="driverOperator"
+                    >Driver/Operator</label>
+                    
+                    <input 
+                    type="text"
+                    name="driverOperatorRentaltrans"
+                    id="driverOperatorRentaltrans"
+                    value="{{list.driverOperator}}"
+                    class="form-control"
+                    >
+
+            <label for="Owner"
+                    >Owner</label>
+                    
+                    <input 
+                    type="text"
+                    name="ownerRentaltrans"
+                    id="ownerRentaltrans"
+                    value="{{list.owner}}"
+                    class="form-control"
+                    >
+
+
+
+            {% endfor %}
+        </div>
+        
+    </div>
+
+
+    <!-- This is for  computation of Gross Amount -->
+    <script type="text/javascript">
+        const totalHoursElement = document.getElementById('totalHoursRentalTrans');
+        const rentalRateElement = document.getElementById('rentalRateTransaction');
+        const grossAmountElement = document.getElementById('grossAmountTransaction');
+
+        totalHoursElement.addEventListener('input', updateGrossAmount);
+        rentalRateElement.addEventListener('input', updateGrossAmount);
+
+        function updateGrossAmount() {
+        const totalHours = Number(totalHoursElement.value);
+        const rentalRate = Number(rentalRateElement.value);
+
+        if (isNaN(totalHours) || isNaN(rentalRate)) {
+            grossAmountElement.value = '';
+            return;
+        }
+
+        const grossAmount = calculateGrossAmount(totalHours, rentalRate);
+        grossAmountElement.value = grossAmount.toFixed(2);
+        }
+
+        function calculateGrossAmount(totalHours, rentalRate) {
+        return totalHours * rentalRate;
+        }
+    </script>
+
+
+    <!-- This is for  computation of Vat Output  and Net of Vat-->
+    <script type="text/javascript">
+        const grossAmountInput = document.getElementById('grossAmountTransaction');
+        const taxRateElement = document.getElementById('taxRateTransaction');
+        const vatOutputElement = document.getElementById('vatOutputRentalTrans');
+        
+
+        grossAmountInput.addEventListener('input', updateVatAmount);
+        taxRateElement.addEventListener('input', updateVatAmount);
+        grossAmountInput.addEventListener('input', updateVatAmount);
+
+        function updateVatAmount() {
+        const totalgross = Number(grossAmountInput.value);
+        const taxRate = Number(taxRateElement.value);
+        const vatOutputCal = Number(vatOutputElement.value);
+
+        if (isNaN(totalgross) || isNaN(taxRate)) {
+            vatOutputElement.value = '';
+            return;
+        }
+
+        const vatOutput = calculateVatOutput(totalgross, taxRate);
+        vatOutputElement.value = vatOutput.toFixed(2);
+
+      
+
+        
+        }
+
+    
+        function calculateVatOutput(totalgross, taxRate) {
+        return (totalgross/1.12) * taxRate;
+        }
+
+
+       
+    </script>
+
+
+    <!-- This is for  computation of Net of Vat  and Net of Vat-->
+    <script type="text/javascript">
+        
+            function getAverage(){
+                var grossAmount=document.getElementById('grossAmountTransaction').value;
+                
+    
+                netOfVat = grossAmount/1.12
+                document.getElementById('netOfVAtRentalTrans').value=netOfVat.toFixed(2);	
+                   
+            }
+
+                
+    </script>
+
+    
+
+
+</body>
+
+{% endblock %}
