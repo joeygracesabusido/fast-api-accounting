@@ -111,7 +111,7 @@ div.transactions {
                     id="taxRateTransaction"
                     step="0.01"
                     value="{{list.taxRate}}"
-                    onkeyup="getAverage();" 
+                  
                     class="form-control"
                     >
 
@@ -164,6 +164,11 @@ div.transactions {
 
 
             {% endfor %}
+
+            <button type="submit"  onclick="update_rentalData()" class="btn btn-success">
+                Update
+                <i class="fas fa-database"></i>
+            </button>
         </div>
         
     </div>
@@ -239,17 +244,76 @@ div.transactions {
     <!-- This is for  computation of Net of Vat  and Net of Vat-->
     <script type="text/javascript">
         
-            function getAverage(){
-                var grossAmount=document.getElementById('grossAmountTransaction').value;
-                
-    
-                netOfVat = grossAmount/1.12
-                document.getElementById('netOfVAtRentalTrans').value=netOfVat.toFixed(2);	
-                   
-            }
+            document.getElementById('totalHoursRentalTrans').addEventListener('input',
+            function(e){
+                var totalHours = e.target.value;
+                var rentalRate = document.getElementById('rentalRateTransaction').value;
+                var TotalNetofVat;
+                var netOfVat3;
+                var totalGross;
+                totalGross = parseFloat(totalHours) * parseFloat(rentalRate)
+                netOfVat3 = parseFloat(totalGross)/1.12;
+                document.getElementById('netOfVAtRentalTrans').value=netOfVat3.toFixed(2);
 
-                
+            }
+            );
+    
     </script>
+
+    <!-- This function is for updating Rental Transactions -->
+        <script type="text/javascript">
+                function update_rentalData() {
+                var data = {};
+                var id = document.getElementById("transID").value;
+                data["transDate"] = document.getElementById("transactionDateRentTrans").value;
+                data["equipmentId"] = document.getElementById("equipmentId").value;
+                data["totalHours"] = document.getElementById("totalHoursRentalTrans").value;
+                data["rentalRate"] = document.getElementById("rentalRateTransaction").value;
+                data["taxRate"] = document.getElementById("taxRateTransaction").value;
+                data["vat_output"] = document.getElementById("vatOutputRentalTrans").value;
+                data["driverOperator"] = document.getElementById("driverOperatorRentaltrans").value;
+                data["owner"] = document.getElementById("ownerRentaltrans").value;
+
+
+                console.log(data);
+
+                if (id === '') {
+                        window.alert("Trans ID field is requires");
+                } else {
+                        // Use async/await to simplify the fetch call
+                        (async () => {
+                        try {
+                                // Use template literals to build the URL
+                                if (confirm('Are you sure you want to update this rental transaction?')){
+                                        const response = await fetch("/api-update-tiv-rental-withID/"+ id, {
+                                        method: "PUT",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(data)
+                                        });
+
+                                        // Use response.ok to check if the response was successful
+                                        if (response.ok) {
+                                        window.alert("Your Data has been Updated");
+                                        window.location.assign("/tvi-transaction/");
+                                        console.log(await response.json());
+                                        } else if (response.status === 401) {
+                                        window.alert("Unauthorized credential Please Login");
+                                        }
+
+                                } else {
+                                        throw new Error('Failed to delete data');
+                                        }
+                               
+                        } catch (error) {
+                                // Catch errors
+                                window.alert(error);
+                                console.log(error);
+                        }
+                        })();
+                }
+                }
+        </script>
+
 
     
 

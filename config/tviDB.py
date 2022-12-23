@@ -326,6 +326,35 @@ class TviDB(object):
                     print(f"Error due to: {str(ex)}")
                 else:
                     cnx.commit()
+
+
+    @staticmethod
+    def update_rentalTrans(id, transDate, equipmentId, totalHours, rentalRate, taxRate,
+                                 vat_output, driverOperator, user, owner, date_updated):
+        """
+        This function is to update Rental Transaction with parameters of ID
+        """
+        # Use the `with` statement to handle opening and closing the database connection
+        # with TviDB.DATABASE:
+        TviDB.DATABASE._open_connection()
+        cursor = TviDB.DATABASE.cursor()
+        with TviDB.DATABASE:
+            try:
+                # Use a parameterized query to prevent SQL injection attacks
+                update_query = '''
+                    UPDATE rentalTransaction
+                    SET transDate = %s, equipmentId = %s, totalHours = %s,rentalRate = %s, taxRate = %s,
+                    vat_output = %s, driverOperator = %s, user = %s, owner = %s, date_updated = %s
+                    WHERE id = %s
+                '''
+                cursor.execute(update_query, (transDate, equipmentId, 
+                                            totalHours,rentalRate, taxRate,
+                                            vat_output,driverOperator,user,
+                                             owner,date_updated, id))
+                TviDB.DATABASE.commit()
+                # TviDB.DATABASE.close()
+            except Exception as ex:
+                print("Error", f"Error due to :{str(ex)}")
       
 
 

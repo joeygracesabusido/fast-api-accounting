@@ -277,5 +277,14 @@ async def update_journalEntry_sur(id,request:Request, username: str = Depends(va
 
 
 
-
+@tviProject.put('/api-update-tiv-rental-withID/{id}')
+def updateRentalTransaction(id,item:tviRentalTrans,username: str = Depends(validateLogin)):
+    """This function is to update equipment """
+    today = datetime.today()
+    TviDB.update_rentalTrans(transDate=item.transDate,equipmentId=item.equipmentId,
+                            totalHours=item.totalHours,rentalRate=item.rentalRate,
+                            taxRate=item.taxRate,vat_output=item.vat_output,
+                            driverOperator=item.driverOperator,user=username,owner=item.owner,
+                            date_updated=today,id=id)
+    return  {'Messeges':'Data has been updated'}
 
