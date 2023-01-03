@@ -406,15 +406,77 @@
                                 >
                             </input>
 
-                    </div>
+                    </div>    
 
+                </div>
 
-
-                    
+                <div  class="d-flex justify-content-center">
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="SPL"
+                        >Shop Rate</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="shoprate"
+                                id="shoprate"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="SPL"
+                        >Shop Rate Calculation</label>
+                     
     
-                        
-                      
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="shopRate_cal"
+                                id="shopRate_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
 
+                    </div>              
+                    
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="SPL"
+                        >ProviRate</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="provirateNo"
+                                id="provirateNo"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="SPL"
+                        >Provi Rate Cal</label>
+                     
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="provirate_cal"
+                                id="provirate_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>          
+
+                </div>
+
+                <div>
+                    <button onclick="printPage()">Print</button>
                 </div>
                         
 
@@ -743,7 +805,11 @@
 
         </script>
 
-
+        <script>
+            function printPage() {
+                window.print();
+                }
+        </script>
 
 
 
