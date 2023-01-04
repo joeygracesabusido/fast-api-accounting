@@ -124,6 +124,24 @@ class Database(object):
 
         Database.DATABASE._open_connection()
 
+        try: 
+            cursor.execute(
+                """CREATE TABLE IF NOT EXISTS fund_request (id INT AUTO_INCREMENT PRIMARY KEY, 
+                            transDate date,
+                            payee VARCHAR (100) NOT NULL, 
+                            particular VARCHAR (300) ,
+                            amount DECIMAL(9,2),
+                            user VARCHAR(100),
+                            date_updated date,
+                            date_credited DATETIME) """)
+                    
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+
+        finally:
+            Database.DATABASE.commit()
+            Database.DATABASE.close()
+
     @staticmethod
     def insert_diesel_consuption(transaction_date,equipment_id,withdrawal_slip,
                                 use_liter,price,amount,username,date_update):

@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+    #div1 {
+    width: 50%; /* Set the width of the div element */
+    margin: auto; /* Center the div */
+    }
+</style>
+
+<body>
+    <div class="container" id="div1">
+        <label for="TransactionDate" class="l-color" >Date</label>
+            <input
+                type="date"
+                name="datefrom"
+                id="datefrom"
+                class="form-control"
+            >
+        </input>
+
+    </div>
+</body>
+
+
+{% endblock %}
