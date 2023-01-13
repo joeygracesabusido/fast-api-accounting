@@ -387,6 +387,11 @@ async def get_13thMonth(request: Request,username: str = Depends(validateLogin))
     
     return templates.TemplateResponse("comp13thMonth.html",{"request":request})
 
+@rizal_project.get("/employee-registration/", response_class=HTMLResponse)
+async def get_employee_payroll(request: Request,username: str = Depends(validateLogin)):
+    
+    return templates.TemplateResponse("rizal/employeeReg.html",{"request":request})
+
 
 @rizal_project.get("/get_employee_payroll/", response_class=HTMLResponse)
 async def get_employee_payroll(request: Request,username: str = Depends(validateLogin)):

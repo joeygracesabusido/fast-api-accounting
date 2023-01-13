@@ -1,0 +1,345 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+    #div1 {
+            width: 70%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: whitesmoke;
+           
+    }
+
+    #div2 {
+            width: 70%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 2px;
+            
+            display: flex; /* Use flexbox to align the input fields horizontally */
+    }
+
+    #div3 {
+            width: 70%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 2px;
+            
+            display: flex; /* Use flexbox to align the input fields horizontally */
+    }
+
+    #div4 {
+            width: 70%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 2px;
+            
+            display: flex; /* Use flexbox to align the input fields horizontally */
+    }
+
+    .input-box {
+        flex: 1; /* Divide the available space evenly between the input fields */
+        margin: 0 5px; /* Add some margin between the input fields */
+        border-radius: 20px; /* round the corners of the input field */
+        border: 2px solid lightskyblue;
+        padding: 10px;
+        background-color: whitesmoke;
+    }
+
+    .gender {
+        flex: 1; /* Divide the available space evenly between the input fields */
+        margin: 0 5px; /* Add some margin between the input fields */
+        border-radius: 20px; /* round the corners of the input field */
+        border: 2px solid lightskyblue;
+        padding: 10px;
+        background-color: whitesmoke;
+    }
+
+    .add_button {
+        border-radius: 20px 50px;
+        width: 100px;
+        height: 50px;
+        }
+</style>
+
+<body>
+    <div class="container mt-4" id="div1">
+        <div  class="container mt-4" id="div2">
+            <input 
+                type="text"
+                name="employeeID"
+                id="employeeID"
+                placeholder="Employee ID"
+                class="input-box"
+                >
+            </input>
+
+            <button type="button" name='submit' id='submiBTN' class="btn btn-warning">
+                <i class="fas fa-database"> 
+            </i>Search</button>
+
+
+        </div>
+        <div class="container mt-4" id="div2">
+            <label >Employee ID</label><br>
+            <input 
+                type="text"
+                name="employeeID"
+                id="employeeID"
+                class="input-box"
+                >
+            </input>
+    
+            <label >Last Name</label><br>
+            <input 
+                type="text"
+                name="employeeID"
+                id="employeeID"
+                class="input-box"
+                >
+            </input>
+    
+
+        </div>
+       
+        <div class="container mt-4" id="div3">
+            <label >First Name</label><br>
+            <input 
+                type="text"
+                name="firstName"
+                id="firstName"
+                class="input-box"
+                >
+            </input>
+
+            <label >Middle Name</label><br>
+            <input 
+                type="text"
+                name="middleName"
+                id="middleName"
+                class="input-box"
+                >
+            </input>
+        </div>
+
+
+        <div class="container mt-4" id="div4">
+            <label >Gender  </label><br>
+            <select name="trasactionType" id="trasactionType"class="gender"
+                        
+                    >
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                       
+    
+                    
+            </select>
+
+           
+        </div>
+
+        <div class="container mt-4" id="div4">
+            <label >Address</label><br>
+            <textarea
+                type="input"
+                name="desctiption" cols="35" rows="3"
+                id="desctiption" 
+                class="gender"
+                >
+            </textarea>
+    
+
+           
+        </div>
+
+
+        <div class="container mt-4" id="div4">
+            <label >Contact No.</label><br>
+            <input 
+                type="text"
+                name="contactNum"
+                id="contactNum"
+                class="input-box"
+                >
+            </input>
+
+            <label >Contact Person</label><br>
+            <input 
+                type="text"
+                name="conPerson"
+                id="conPerson"
+                class="input-box"
+                >
+            </input>
+        </div>
+
+        <div class="container mt-4" id="div4">
+            <label >Emergency-Contact</label><br>
+            <input 
+                type="text"
+                name="emerCon"
+                id="emerCon"
+                class="input-box"
+                >
+            </input>
+
+            <label >Position</label><br>
+            <input 
+                type="text"
+                name="position"
+                id="position"
+                class="input-box"
+                >
+            </input>
+        </div>
+
+
+        <div class="container mt-4" id="div4">
+            <label >Date Hire</label><br>
+            <input 
+                type="date"
+                name="dateHire"
+                id="dateHire"
+                class="input-box"
+                >
+            </input>
+
+            <label >Department</label><br>
+            <select name="trasactionType" id="trasactionType"class="gender"
+                        
+                    >
+                    <option value="Head Office">Head Office</option>
+                    <option value="Admin-Site">Admin-Site</option>
+                    <option value="Pampanga">Pampanga</option>
+                    <option value="Surigao">Surigao</option>
+                    <option value="Zamboanga">Zamboanga</option>
+                    <option value="Bayug">Bayug</option>
+                       
+            </select>
+        </div>
+
+
+        <div class="container mt-4" id="div4">
+            <label >EOC</label><br>
+            <input 
+                type="date"
+                name="endofContract"
+                id="endofContract"
+                class="input-box"
+                >
+            </input>
+
+            <label >TIN</label>
+            <input 
+            type="text"
+            name="tin"
+            id="tin"
+            class="input-box"
+            >
+            </input>
+           
+        </div>
+
+        <div class="container mt-4" id="div4">
+            <label >SSS</label><br>
+            <input 
+                type="text"
+                name="sss"
+                id="sss"
+                class="input-box"
+                >
+            </input>
+
+            <label >PHIC</label>
+            <input 
+            type="text"
+            name="phic"
+            id="phic"
+            class="input-box"
+            >
+            </input>
+           
+        </div>
+
+        <div class="container mt-4" id="div4">
+            <label >HDMF</label><br>
+            <input 
+                type="text"
+                name="hdmf"
+                id="hdmf"
+                class="input-box"
+                >
+            </input>
+
+            <label >Emp-Status</label>
+            <select name="trasactionType" id="trasactionType"class="gender"
+                        
+            >
+                <option value="Employeed">Employeed</option>
+                <option value="Resigned">Resigned</option>
+                <option value="Terminated">Terminated</option>
+               
+               
+            </select>
+        </div>
+
+
+        <div class="container mt-4" id="div4">
+            <label >Salary Rate</label><br>
+            <input 
+                type="number"
+                name="salaryRate"
+                id="salaryRate"
+                class="input-box"
+                step="0.01"
+                >
+            </input>
+
+            <label >Emp-Status</label>
+            <select name="taxcode" id="taxcode"class="gender"
+                        
+            >
+                <option value="Taxable">Taxable</option>
+                <option value="MWE">MWE</option>
+                 
+            </select>
+        </div>
+            <div class="container mt-4" id="div4">
+                <label >ON-OFF</label>
+                <select name="on_offDetail" id="on_offDetail"class="gender"
+                            
+                >
+                    <option value="on">on</option>
+                    <option value="off">off</option>
+                    
+                </select>
+
+                <label >Salary Details</label>
+                <select name="salaryDetails" id="salaryDetails"class="gender"
+                            
+                >
+                    <option value="Monthly">Monthly</option>
+                    <option value="Daily">Daily</option>
+                    
+                </select>
+
+            </div>
+
+        <div class="container mt-4" >
+            <button type="button"  id="add_button" class="btn btn-primary"><i class="btn-oblong">
+            </i>Save</button>
+
+            <button type="submit" name='submit' id='submiBTN' class="btn btn-success">
+            <i class="fas fa-database"> 
+            </i>Update</button>
+        </div>
+
+
+
+
+        
+
+       
+    </div>
+</body>
+
+{% endblock %}
