@@ -212,3 +212,16 @@ class tviRentalTrans(BaseModel):
     driverOperator: str
     owner: str
     
+#=========================================Employee Frame==========================================
+class EmployeeReg(BaseModel):
+    """This is for employee regsitration"""
+    employee_id: str
+    lastName: str
+    firstName: str
+    middleName: str
+    gender: str
+    address_employee: str
+    contactNumber: str
+    contact_person: str
+    emer_cont_person: str
+    position: str

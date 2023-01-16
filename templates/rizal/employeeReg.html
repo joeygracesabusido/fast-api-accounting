@@ -66,14 +66,15 @@
         <div  class="container mt-4" id="div2">
             <input 
                 type="text"
-                name="employeeID"
-                id="employeeID"
+                name="employeeIDSearch"
+                id="employeeIDSearch"
                 placeholder="Employee ID"
                 class="input-box"
+                
                 >
             </input>
 
-            <button type="button" name='submit' id='submiBTN' class="btn btn-warning">
+            <button type="submit" onclick="dislayEmployeeData()"  class="btn btn-warning">
                 <i class="fas fa-database"> 
             </i>Search</button>
 
@@ -92,8 +93,8 @@
             <label >Last Name</label><br>
             <input 
                 type="text"
-                name="employeeID"
-                id="employeeID"
+                name="lastName"
+                id="lastName"
                 class="input-box"
                 >
             </input>
@@ -124,7 +125,7 @@
 
         <div class="container mt-4" id="div4">
             <label >Gender  </label><br>
-            <select name="trasactionType" id="trasactionType"class="gender"
+            <select name="trasactionType" id="gender"class="gender"
                         
                     >
                         <option value="Male">Male</option>
@@ -141,8 +142,8 @@
             <label >Address</label><br>
             <textarea
                 type="input"
-                name="desctiption" cols="35" rows="3"
-                id="desctiption" 
+                name="address" cols="35" rows="3"
+                id="address" 
                 class="gender"
                 >
             </textarea>
@@ -204,7 +205,7 @@
             </input>
 
             <label >Department</label><br>
-            <select name="trasactionType" id="trasactionType"class="gender"
+            <select name="trasactionType" id="department"class="gender"
                         
                     >
                     <option value="Head Office">Head Office</option>
@@ -271,7 +272,7 @@
             </input>
 
             <label >Emp-Status</label>
-            <select name="trasactionType" id="trasactionType"class="gender"
+            <select name="trasactionType" id="empStatus"class="gender"
                         
             >
                 <option value="Employeed">Employeed</option>
@@ -340,6 +341,92 @@
 
        
     </div>
+
+    <!-- This is for displaying equipment  using ID of Transaction -->
+    <script type="text/javascript">
+
+
+        // equipmentID = document.getElementById('equipmentIdRent').value;
+        async function dislayEmployeeData() {
+        try {
+            employeeID = document.getElementById('employeeIDSearch').value;
+            // Construct the API URL using a template string
+            const searchUrl = `/api-employee-registration/?employee_id=${employeeID}`;
+
+            // Call the API using the fetch API
+            const responce = await fetch(searchUrl);
+            const data = await responce.json();
+            console.log(data)
+            // Check if the API call was successful
+            if (!responce.ok) {
+            window.alert("Unauthorized Please Login");
+            }
+
+            // Check if any data was returned
+            if (data.length === 0) {
+            window.alert(`No ID store for ${employeeID}`);
+            } else {
+            // Get the data for the equipment
+            const employeeID = data[0].employee_id;
+            const lastName = data[0].lastName;
+            const firstName = data[0].firstName;
+            const middleName = data[0].middleName;
+            const gender = data[0].gender;
+            const address_employee = data[0].address_employee;
+            const contactNumber = data[0].contactNumber;
+            const contact_person = data[0].contact_person;
+            const emer_cont_person = data[0].emer_cont_person;
+            const position = data[0].position;
+            const date_hired = data[0].date_hired;
+            const department = data[0].department;
+            const tin = data[0].tin;
+            const sssNumber = data[0].sssNumber;
+            const phicNumber = data[0].phicNumber;
+            const hdmfNumber = data[0].hdmfNumber;
+            const employment_status = data[0].employment_status;
+            const update_contract = data[0].update_contract;
+            const salary_rate = data[0].salary_rate;
+            const taxCode = data[0].taxCode;
+            const Salary_Detail = data[0].Salary_Detail;
+            const off_on_details = data[0].off_on_details;
+
+            // Update the input fields with the equipment data
+            
+            document.getElementById("employeeID").value = employeeID;
+            document.getElementById("lastName").value = lastName;
+            document.getElementById("firstName").value = firstName;
+            document.getElementById("middleName").value = middleName;
+            document.getElementById("gender").value = gender;
+            document.getElementById("address").value = address_employee;
+            document.getElementById("contactNum").value = contactNumber;
+            document.getElementById("conPerson").value = contact_person;
+            document.getElementById("emerCon").value = emer_cont_person;
+            document.getElementById("position").value = position;
+            document.getElementById("dateHire").value = date_hired;
+            document.getElementById("department").value = department;
+            
+            document.getElementById("tin").value = tin;
+            document.getElementById("sss").value = sssNumber;
+            document.getElementById("phic").value = phicNumber;
+            document.getElementById("hdmf").value = hdmfNumber;
+            document.getElementById("empStatus").value = employment_status;
+            document.getElementById("salaryRate").value = salary_rate;
+            document.getElementById("taxcode").value = taxCode;
+            document.getElementById("on_offDetail").value = off_on_details;
+            document.getElementById("salaryDetails").value = Salary_Detail;
+          
+
+
+            }
+        } catch (error) {
+            // Handle any errors that occurred in the fetch call
+            console.error(error);
+            window.alert("Error occurred while fetching data");
+        }
+        }
+
+    </script>
+
 </body>
 
 {% endblock %}

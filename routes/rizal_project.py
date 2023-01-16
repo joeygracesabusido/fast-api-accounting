@@ -382,6 +382,19 @@ async def get_rentalSearch(request: Request,username: str = Depends(validateLogi
     return templates.TemplateResponse("rental_list.html",{"request":request})
 
 
+
+
+
+
+
+@rizal_project.get("/get_employee_payroll/", response_class=HTMLResponse)
+async def get_employee_payroll(request: Request,username: str = Depends(validateLogin)):
+    
+    return templates.TemplateResponse("rizal/employee_transaction.html",{"request":request})
+
+#=============================================This is for employee Transaction===========================================
+from config.database import Database
+Database.initialize()
 @rizal_project.get("/13thMonth-computation/", response_class=HTMLResponse)
 async def get_13thMonth(request: Request,username: str = Depends(validateLogin)):
     
@@ -392,8 +405,44 @@ async def get_employee_payroll(request: Request,username: str = Depends(validate
     
     return templates.TemplateResponse("rizal/employeeReg.html",{"request":request})
 
+@rizal_project.get("/api-employee-registration/")
+async def get_employee_payroll(employee_id,username: str = Depends(validateLogin)):
 
-@rizal_project.get("/get_employee_payroll/", response_class=HTMLResponse)
-async def get_employee_payroll(request: Request,username: str = Depends(validateLogin)):
+    employeelList = Database.get_employee_info(employee_id=employee_id)
+    # print(employeelList)
+
+    employeeData = [
+            {
+                "id": x[0],
+                "employee_id": x[1],
+                "lastName": x[2],
+                "firstName": x[3],
+                "middleName": x[4],
+                "gender": x[5],
+                "address_employee": x[6],
+                "contactNumber": x[7],
+                "contact_person": x[8],
+                "emer_cont_person": x[9],
+                "position": x[10],
+                "date_hired": x[11],
+                "department": x[12],
+                "end_contract": x[13],
+                "tin": x[14],
+                "sssNumber": x[15],
+                "phicNumber": x[16],
+                "hdmfNumber": x[17],
+                "employment_status": x[18],
+                "update_contract": x[19],
+                "salary_rate": x[20],
+                "taxCode": x[21],
+                "Salary_Detail": x[22],
+                "off_on_details": x[23]
+
+            }
+            for x in employeelList
+        ]
+       
+    return employeeData
     
-    return templates.TemplateResponse("rizal/employee_transaction.html",{"request":request})
+    
+

@@ -539,5 +539,41 @@ class Database(object):
         finally:
            
             Database.DATABASE.close()
+
+
+    @staticmethod
+    def get_employee_info(employee_id):
+        """This function is for Querying for How Many cut off for Employee"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            # query = ("SELECT employee_id, lastName, firstName, middleName, gender,\
+            #     address_employee,contactNumber,contact_person,emer_cont_person,position,\
+            #         date_hired,department,end_contract,tin,sssNumber,phicNumber,hdmfNumber,employment_status\
+            #             update_contract,salary_rate,taxCode,Salary_Detail \
+            query = ("SELECT * \
+                FROM employee_details\
+                WHERE employee_id='" + employee_id +"' \
+                 ")
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
        
 
