@@ -575,5 +575,41 @@ class Database(object):
             Database.DATABASE.close()
 
 
+    @staticmethod
+    def updateEmployeeDetails(id,lastName,firstName, middleName, gender,  #5
+                            address_employee,contactNumber,contact_person,emer_cont_person,position, # 5
+                            date_hired,department,end_contract,tin,sssNumber,phicNumber, # 6
+                            hdmfNumber,employment_status,salary_rate,taxCode,off_on_details,Salary_Detail,user, # 6
+                            update_date):
+        """
+        This function is to update Equipment with parameters of ID
+        """
+        # Use the `with` statement to handle opening and closing the database connection
+        # with TviDB.DATABASE:
+        Database.DATABASE._open_connection()
+        cursor = Database.DATABASE.cursor()
+        with Database.DATABASE:
+            try:
+                # Use a parameterized query to prevent SQL injection attacks
+                update_query = '''
+                    UPDATE employee_details
+                    SET  lastName=%s,firstName=%s, middleName=%s, gender=%s,
+                            address_employee=%s,contactNumber=%s,contact_person=%s,emer_cont_person=%s,position=%s,
+                            date_hired=%s,department=%s,end_contract=%s,tin=%s,sssNumber=%s,phicNumber=%s,
+                            hdmfNumber=%s,employment_status=%s,salary_rate=%s,taxCode=%s,off_on_details=%s,Salary_Detail=%s,
+                            user=%s,update_date=%s
+                    WHERE id = %s
+                '''
+                cursor.execute(update_query, (lastName,firstName, middleName, gender, #4
+                            address_employee,contactNumber,contact_person,emer_cont_person,position, #5
+                            date_hired,department,end_contract,tin,sssNumber,phicNumber, #6
+                            hdmfNumber,employment_status,salary_rate,taxCode,off_on_details,Salary_Detail, # 6
+                            user,update_date,id)) # 2
+                Database.DATABASE.commit() 
+                # TviDB.DATABASE.close()
+            except Exception as ex:
+                print("Error", f"Error due to :{str(ex)}")
+
+
        
 

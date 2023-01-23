@@ -3,6 +3,7 @@ from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, 
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from config.db import mydb
+from models.model import EmployeeReg
 
 
 from bson import ObjectId
@@ -394,6 +395,7 @@ async def get_employee_payroll(request: Request,username: str = Depends(validate
 
 #=============================================This is for employee Transaction===========================================
 from config.database import Database
+
 Database.initialize()
 @rizal_project.get("/13thMonth-computation/", response_class=HTMLResponse)
 async def get_13thMonth(request: Request,username: str = Depends(validateLogin)):
@@ -444,5 +446,21 @@ async def get_employee_payroll(employee_id,username: str = Depends(validateLogin
        
     return employeeData
     
-    
+@rizal_project.put("/api-update-employee/{id}")
+async def get_employee_payroll(id,items:EmployeeReg,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.today()
+
+    Database.updateEmployeeDetails(lastName=items.lastName,firstName=items.firstName,
+                                    middleName=items.middleName,gender=items.gender,address_employee=items.address_employee,
+                                    contactNumber=items.contactNumber,contact_person=items.contact_person,
+                                    emer_cont_person=items.emer_cont_person,position=items.position,
+                                    date_hired=items.date_hired,department=items.department,
+                                    end_contract=items.end_contract,tin=items.tin,
+                                    sssNumber=items.sssNumber,phicNumber=items.phicNumber,hdmfNumber=items.hdmfNumber,
+                                    employment_status=items.employment_status,
+                                    salary_rate=items.salary_rate,taxCode=items.taxCode,off_on_details=items.off_on_details,
+                                    Salary_Detail=items.Salary_Detail,user=username,update_date=today,id=id)
+
+    return  {'Messeges':'Data has been updated'}
 

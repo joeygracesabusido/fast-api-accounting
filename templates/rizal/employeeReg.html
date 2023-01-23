@@ -65,6 +65,15 @@
     <div class="container mt-4" id="div1">
         <div  class="container mt-4" id="div2">
             <input 
+                type="text" hidden
+                name="transID"
+                id="transID"
+               
+                class="input-box"
+                
+                >
+            </input>
+            <input 
                 type="text"
                 name="employeeIDSearch"
                 id="employeeIDSearch"
@@ -329,7 +338,7 @@
             <button type="button"  id="add_button" class="btn btn-primary"><i class="btn-oblong">
             </i>Save</button>
 
-            <button type="submit" name='submit' id='submiBTN' class="btn btn-success">
+            <button type="submit" onclick="updateEmployee()" class="btn btn-success">
             <i class="fas fa-database"> 
             </i>Update</button>
         </div>
@@ -342,7 +351,7 @@
        
     </div>
 
-    <!-- This is for displaying equipment  using ID of Transaction -->
+    <!-- This is for displaying employee  using ID -->
     <script type="text/javascript">
 
 
@@ -367,6 +376,7 @@
             window.alert(`No ID store for ${employeeID}`);
             } else {
             // Get the data for the equipment
+            const transID = data[0].id;
             const employeeID = data[0].employee_id;
             const lastName = data[0].lastName;
             const firstName = data[0].firstName;
@@ -379,6 +389,7 @@
             const position = data[0].position;
             const date_hired = data[0].date_hired;
             const department = data[0].department;
+            const eoc = data[0].end_contract;
             const tin = data[0].tin;
             const sssNumber = data[0].sssNumber;
             const phicNumber = data[0].phicNumber;
@@ -391,7 +402,9 @@
             const off_on_details = data[0].off_on_details;
 
             // Update the input fields with the equipment data
+
             
+            document.getElementById("transID").value = transID;
             document.getElementById("employeeID").value = employeeID;
             document.getElementById("lastName").value = lastName;
             document.getElementById("firstName").value = firstName;
@@ -404,7 +417,8 @@
             document.getElementById("position").value = position;
             document.getElementById("dateHire").value = date_hired;
             document.getElementById("department").value = department;
-            
+
+            document.getElementById("endofContract").value = eoc;
             document.getElementById("tin").value = tin;
             document.getElementById("sss").value = sssNumber;
             document.getElementById("phic").value = phicNumber;
@@ -424,6 +438,79 @@
             window.alert("Error occurred while fetching data");
         }
         }
+
+    </script>
+
+    <script type="text/javascript">
+         function updateEmployee() {
+                var data = {};
+                id = document.getElementById('transID').value;
+                
+
+               
+                data["lastName"] = document.getElementById("lastName").value;
+                data["firstName"] = document.getElementById("firstName").value;
+                data["middleName"] = document.getElementById("middleName").value;
+                data["gender"] = document.getElementById("gender").value;
+                data["address_employee"] = document.getElementById("address").value;
+                data["contactNumber"] = document.getElementById("contactNum").value;
+                data["contact_person"] = document.getElementById("conPerson").value;
+                data["emer_cont_person"] = document.getElementById("emerCon").value;
+                data["position"] = document.getElementById("position").value;
+                data["date_hired"] = document.getElementById("dateHire").value;
+                data["department"] = document.getElementById("department").value;
+                
+                data["end_contract"] = document.getElementById("endofContract").value;
+                data["tin"] = document.getElementById("tin").value;
+                data["sssNumber"] = document.getElementById("sss").value;
+                data["phicNumber"] = document.getElementById("phic").value;
+                data["hdmfNumber"] = document.getElementById("hdmf").value;
+                data["employment_status"] = document.getElementById("empStatus").value;
+                data["salary_rate"] = document.getElementById("salaryRate").value;
+                data["taxCode"] = document.getElementById("taxcode").value;
+                data["off_on_details"] = document.getElementById("on_offDetail").value;
+                data["Salary_Detail"] = document.getElementById("salaryDetails").value ;
+
+
+
+                console.log(data);
+
+                if (id === '') {
+                        window.alert("Employee ID field is requires");
+                } else {
+                        // Use async/await to simplify the fetch call
+                        (async () => {
+                        try {
+                                // Use template literals to build the URL
+                                if (confirm('Are you sure you want to update this rental transaction?')){
+                                        const response = await fetch("/api-update-employee/"+ id, {
+                                        method: "PUT",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(data)
+                                        });
+
+                                        // Use response.ok to check if the response was successful
+                                        if (response.ok) {
+                                        window.alert("Your Data has been Updated");
+                                        window.location.assign("/index");
+                                        console.log(await response.json());
+                                        } else if (response.status === 401) {
+                                        window.alert("Unauthorized credential Please Login");
+                                        }
+
+                                } else {
+                                        throw new Error('Failed to update data');
+                                        }
+                               
+                        } catch (error) {
+                                // Catch errors
+                                window.alert(error);
+                                console.log(error);
+                        }
+                        })();
+                }
+                }
+
 
     </script>
 
