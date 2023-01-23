@@ -610,6 +610,35 @@ class Database(object):
             except Exception as ex:
                 print("Error", f"Error due to :{str(ex)}")
 
+    @staticmethod
+    def get_employeeDepartment(department):
+        """This function is for Employee List by department"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = ('SELECT employee_id, lastName, firstName,position,department,off_on_details,employment_status\
+                FROM employee_details\
+                WHERE department LIKE "%'+department+'%" ORDER BY lastName\
+                 ')
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
 
        
 

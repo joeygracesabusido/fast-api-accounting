@@ -464,3 +464,33 @@ async def get_employee_payroll(id,items:EmployeeReg,username: str = Depends(vali
 
     return  {'Messeges':'Data has been updated'}
 
+
+
+@rizal_project.get("/employee-list/", response_class=HTMLResponse)
+async def get_all_employee(request: Request,username: str = Depends(validateLogin)):
+    
+    return templates.TemplateResponse("ho/employeeList.html",{"request":request})
+
+@rizal_project.get("/api-employee-list/")
+async def get_employee_payroll(department,username: str = Depends(validateLogin)):
+
+    employeelList = Database.get_employeeDepartment(department=department)
+    # print(employeelList)
+
+    employeeData = [
+            {
+                
+                "employee_id": x[0],
+                "lastName": x[1],
+                "firstName": x[2],
+                "position": x[3],
+                "department": x[4],
+                "off_on_details": x[5],
+                "employment_status": x[6]
+
+            }
+            for x in employeelList
+        ]
+       
+    return employeeData
+

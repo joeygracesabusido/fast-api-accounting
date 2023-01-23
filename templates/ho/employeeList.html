@@ -1,0 +1,107 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<body>
+
+    <div class="container mt-3">
+        <label for="dateFrom"
+        >Department</label>
+        
+            <input 
+            type="text"
+            name="department"
+            id="department"
+           
+            >
+
+            <button type="submit"  onclick="displayEmployeeData()" class="btn btn-primary">
+                Search
+                <i class="fas fa-database"></i>
+            </button>
+    </div>
+
+    <div  class="container mt-3">
+        <table id="myTable" class="table table-bordered"  style="text-align: center;">
+            <thead class="table-dark">
+            
+                    <td>Employee ID</td>
+                    <td>Last Name</td>
+                    <td>First Name</td>
+                    <td>Position</td>
+                    <td>Department</td>
+                    <td>On-Off Details</td>
+                    <td>Employment Status</td>
+                </tr>
+            </thead>
+            <tbody id="table_body2">
+               
+                    
+                    <tr>
+                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
+                    </tr>
+                   
+                
+            </tbody>
+
+           
+
+        </table>
+
+        
+            
+            
+    </div>
+
+
+    <!-- This function is for displaying Rental Data -->
+
+    <script type="text/javascript">
+        // const rental_url =search_url ;
+        async function displayEmployeeData(){
+            var department = document.getElementById('department').value;
+           
+        const search_url = `/api-employee-list/?department=${department}`;
+
+        
+        const responce = await fetch(search_url)
+        const data = await responce.json();
+        console.log(data)
+        
+        if (responce.status === 200) {
+            let tableData2="";
+            data.map((values)=>{
+                tableData2+= ` <tr>
+                            <td>${values.employee_id}</td>
+                            <td>${values.lastName}</td>
+                            <td>${values.firstName}</td>
+                            <td>${values.position}</td>
+                            <td>${values.department}</td>
+                            <td>${values.off_on_details}</td>
+                            <td>${values.employment_status}</td>
+                    
+                        
+                        </tr>`;
+            });
+                document.getElementById("table_body2").innerHTML=tableData2;
+            }else if (responce.status === 401){
+                window.alert("Unauthorized credential. Please login");
+            }
+        
+        }
+        
+        
+    
+    
+    </script>
+
+</body>
+
+{% endblock %}
