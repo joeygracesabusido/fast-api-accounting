@@ -1,0 +1,144 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<body>
+    <div class="container mt-3">
+        <label for="dateFrom"
+        >Date From</label>
+        
+            <input 
+            type="date"
+            name="datefrom"
+            id="datefrom"
+           
+            >
+
+        <label for="dateto"
+        >Date To</label>
+            
+                <input 
+                type="date"
+                name="dateto"
+                id="dateto"
+               
+                >
+
+        <label for="dateto"
+        >Account Title</label>
+                    
+                <input 
+                type="text"
+                name="accountTitle"
+                id="accountTitle"
+                
+                >
+
+        <label for="Reference"
+        >Reference No.</label>
+                    
+                <input 
+                type="text"
+                name="ref"
+                id="ref"
+                
+                >
+
+            <button type="submit"  onclick="displayJournalData()" class="btn btn-primary">
+                Search
+                <i class="fas fa-database"></i>
+            </button>
+    </div>
+
+    <div  class="container mt-3">
+        <table id="myTable" class="table table-bordered"  style="text-align: center;">
+            <thead class="table-dark">
+                <tr>
+                    <td>Date</td>
+                    <td>Journal</td>
+                    <td>Reference</td>
+                    <td>Memo</td>
+                    <td>Account No.</td>
+                    <td>Account Title</td>
+                    <td>Debit</td>
+                    <td>Credit</td>
+                    
+                </tr>
+            </thead>
+            <tbody id="table_body2">
+               
+                    
+                    <tr>
+                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
+                    </tr>
+                   
+                
+            </tbody>
+
+           
+
+        </table>
+
+        
+            
+            
+    </div>
+
+
+    <!-- This function is for displaying Journal Entry Data -->
+
+    <script type="text/javascript">
+        // const rental_url =search_url ;
+        async function displayJournalData(){
+            var datefrom = document.getElementById('datefrom').value;
+            var dateto = document.getElementById('dateto').value;
+            var accountTitle = document.getElementById('accountTitle').value;
+            var ref = document.getElementById('ref').value;
+        // const search_url = `/api-employee-list/?department=${department}`;
+        const search_url = `/api-view-journal-entry-zambo/?datefrom=${datefrom}&dateto=${dateto}&accounTitle=${accountTitle}&ref=${ref}`;
+
+        
+        const responce = await fetch(search_url)
+        const data = await responce.json();
+        console.log(data)
+        
+        if (responce.status === 200) {
+            let tableData2="";
+            data.map((values)=>{
+                tableData2+= ` <tr>
+                            <td>${values.date_entry}</td>
+                            <td>${values.journal}</td>
+                            <td>${values.ref}</td>
+                            <td>${values.descriptions}</td>
+                            <td>${values.acoount_number}</td>
+                            <td>${values.account_disc}</td>
+                            <td>${values.debit_amount}</td>
+                            <td>${values.credit_amount}</td>
+                        
+                        </tr>`;
+            });
+                document.getElementById("table_body2").innerHTML=tableData2;
+            }else if (responce.status === 401){
+                window.alert("Unauthorized credential. Please login");
+            }
+        
+        }
+        
+        
+    
+    
+    </script>
+
+
+</body>
+
+{% endblock %}

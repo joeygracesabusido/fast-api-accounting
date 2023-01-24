@@ -313,6 +313,33 @@ def delete_journal_entry(id,token: str = Depends(oauth_scheme)):
 
 
 #==============================================Zamboanga Data===================================
+@admin.get('/api-view-journal-entry-zambo2/')
+def get_journal_entry_zambo(token: str = Depends(oauth_scheme)):
+    """This is for queryong journal entry for Zamboanga"""
+
+    myresult  = mydb.journal_entry_zambo.find()
+    journalData = [
+            {
+                
+                "date_entry": item["date_entry"],
+                "journal": item["journal"],
+                "ref": item["ref"],
+                "descriptions": item["descriptions"],
+                "acoount_number": item["acoount_number"],
+                "account_disc": item["account_disc"],
+                "debit_amount": item["debit_amount"],
+                "credit_amount": item["credit_amount"],
+                
+
+            }
+            for item in myresult
+        ]
+
+    return journalData
+    # return journalEntryZambos(mydb.journal_entry_zambo.find())
+
+
+
 @admin.get('/journal-entry-zambo/')
 def get_journal_entry_zambo(token: str = Depends(oauth_scheme)):
     """This is for queryong journal entry for Zamboanga"""

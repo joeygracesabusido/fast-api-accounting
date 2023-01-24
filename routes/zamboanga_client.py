@@ -648,6 +648,62 @@ async def equipment_zamboanga(request:Request, username: str = Depends(validateL
 
     return templates.TemplateResponse("zamboanga/zamboangaTrialBal.html",{'request':request})
 
+@zamboanga_client.get("/list-journal-entry-zambo/", response_class=HTMLResponse)
+async def equipment_zamboanga(request:Request, username: str = Depends(validateLogin)):
+    """This function is to show page for Trial Balance"""
+    
+
+    return templates.TemplateResponse("zamboanga/journalEntryListZambo.html",{'request':request})
+
+@zamboanga_client.get("/api-view-journal-entry-zambo/")
+async def api_view_journal_entry(datefrom,dateto,accounTitle,ref,request: Request,username: str = Depends(validateLogin)):
+    """This function is for displaying journal Entry"""
+
+    date_time_obj_from = datetime.strptime(datefrom, '%Y-%m-%d')
+
+    
+    date_time_obj_to = datetime.strptime(dateto, '%Y-%m-%d')
+   
+    myresult  = mydb.journal_entry_zambo.find({"$and": [{"date_entry": {"$gte": date_time_obj_from}},
+                                                     {"date_entry": {"$lte": date_time_obj_to}},
+                                                     {"account_disc": {"$regex": accounTitle, "$options": "i"}},
+                                                     {"ref": {"$regex": ref, "$options": "i"}}]})
+
+    all_journalEntry = []
+    for item in myresult:
+        debit = item["debit_amount"]
+        credit = item["credit_amount"]
+        debit2 = '{:,.2f}'.format(debit)
+        credit2 = '{:,.2f}'.format(credit) 
+
+        data = {}
+
+        data.update({
+            
+            "date_entry": item["date_entry"],
+            "journal": item["journal"],
+            "ref": item["ref"],
+            "descriptions": item["descriptions"],
+            "acoount_number": item["acoount_number"],
+            "account_disc": item["account_disc"],
+            "debit_amount": debit2,
+            "credit_amount": credit2,
+            "due_date_apv": item["due_date_apv"],
+            "terms_days": item["terms_days"],
+            "supplier/Client": item["supplier/Client"],
+            "user": item["user"],
+            "created": item["created"]
+
+        })
+
+        all_journalEntry.append(data)
+
+
+   
+    return all_journalEntry
+   
+    
+
 
 #==================================================Equipment Vitali =====================================================
 @zamboanga_client.get("/zamboanga-equipment/", response_class=HTMLResponse)
