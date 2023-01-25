@@ -1,0 +1,426 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+    #div1 {
+            /* width: 30%;  */
+            /* margin: auto; */
+            width: 350px;
+            height: 175px;
+            box-sizing: border-box;
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: lightcoral;
+
+            
+            /* margin-top: 10px; */
+            /* margin-right: 20px; */
+            /* margin-top: 20px; */
+            /* margin-bottom: 30px;*/
+
+            margin-left: 150px; 
+            display: inline-block;
+
+            box-shadow: inset 3px 3px 3px greenyellow;
+            text-align: center;
+            
+           
+    }
+
+    #div2 {
+            /* width: 30%;  */
+            /* margin: auto; */
+            width: 350px;
+            height: 175px;
+            box-sizing: border-box;
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: gray;
+
+            
+            /* margin-top: 10px;
+            margin-right: 200px;
+            margin-bottom: 30px; */
+            /* margin-left: 300px; */
+            display: inline-block;
+
+            box-shadow: inset 3px 3px  white;
+            text-align: center;
+            
+            
+           
+    }
+
+
+    #div3 {
+            /* width: 30%;  */
+            /* margin: auto; */
+            width: 350px;
+            height: 175px;
+            box-sizing: border-box;
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: green;
+
+            
+            /* margin-top: 10px;
+            margin-right: 100px;
+            margin-bottom: 30px; */
+            /* margin-left: 300px; */
+            display: inline-block;
+
+            box-shadow: inset 3px 3px  white;
+            text-align: center;
+           
+           
+            
+           
+    }
+
+    h2 {
+            color: white;
+        }
+
+    label {
+        color: white;
+        font-size: x-large
+    }
+
+    #totalEmployee {
+        color: yellow;
+        text-align: left;
+        font-size: large;
+        
+    }
+
+       
+
+</style>
+<body>
+    <div class="container" id="div1">
+        <h2>
+            RIZAL MONTALBAN
+        </h2>
+
+        <label id="totalEmployee">
+        Total Employee ON :
+        </label>
+
+        <label id="rizaltotal"
+        >Department</label>
+        <br>
+
+        <label id="totalEmployee">
+            Total Employee Off :
+            </label>
+    
+            <label id="rizaltotaloff"
+            >Department</label>
+    
+
+       
+
+    </div>
+
+    <div class="container" id="div2">
+
+        <h2 id="ho" >
+            Head Office
+        </h2>
+        <br>
+
+        <label id="totalEmployee">
+        Total Employee ON :
+        </label>
+
+        <label id="myLabel"
+        >Department</label>
+
+        <label id="totalEmployee">
+            Total Employee OFF :
+            </label>
+    
+            <label id="myLabelOff"
+            >Department</label>
+
+    </div>
+
+
+    <div class="container" id="div3">
+
+        <h2 id="Zamboanga">
+            ZAMBOANGA
+        </h2>
+
+        <label id="totalEmployee">
+            Total Employee ON :
+            </label>
+    
+            <label id="bayugTotal"
+            >Department</label>
+
+        <label id="totalEmployee">
+            Total Employee OFF :
+            </label>
+    
+            <label id="bayugTotaloff"
+            >Department</label>
+
+    </div>
+
+
+
+    <script type="text/javascript">
+
+
+        // equipmentID = document.getElementById('equipmentIdRent').value;
+        async function dislayEmployeeDataHeadOffice_on() {
+                try {
+                    // employeeID = document.getElementById('employeeIDSearch').value;
+                    // Construct the API URL using a template string
+
+                       
+
+                        department = 'Head Office'
+                        const searchUrl = `/api-employee-list-per-count/?department=${department}`;
+
+                        // Call the API using the fetch API
+                        const responce = await fetch(searchUrl);
+                        const data = await responce.json();
+                        console.log(data)
+                        // Check if the API call was successful
+                        if (!responce.ok) {
+                        window.alert("Unauthorized Please Login");
+                        }
+
+                        // Check if any data was returned
+                        if (data.length === 0) {
+                        window.alert(`No ID store for ${department}`);
+                        } else {
+                        // Get the data for the equipment
+                        const count = data[0];
+                        
+
+                        // Update the input fields with the equipment data
+
+                        
+                        document.getElementById("myLabel").innerHTML = count;  
+                        
+                        
+                        }
+
+
+                        department = 'Head Office'
+                        const searchUrl4 = `/api-employee-list-per-count-off/?department=${department}`;
+
+                        // Call the API using the fetch API
+                        const responce4 = await fetch(searchUrl4);
+                        const data4 = await responce4.json();
+                        console.log(data4)
+                        // Check if the API call was successful
+                        if (!responce4.ok) {
+                        window.alert("Unauthorized Please Login");
+                        }
+
+                        // Check if any data was returned
+                        if (data4.length === 0) {
+                        window.alert(`No ID store for ${department}`);
+                        } else {
+                        // Get the data for the equipment
+                        const count4 = data4[0];
+                        
+
+                        // Update the input fields with the equipment data
+
+                        
+                        document.getElementById("myLabelOff").innerHTML = count4;  
+                        
+                        
+                        }
+
+
+                    rizal = 'Rizal-R&F'
+
+                    const searchUrl2 = `/api-employee-list-per-count/?department=${rizal}`;
+
+                    // Call the API using the fetch API
+                    const responce2 = await fetch(searchUrl2);
+                    const data2 = await responce2.json();
+                    console.log(data2)
+                    // Check if the API call was successful
+                    if (!responce2.ok) {
+                    window.alert("Unauthorized Please Login");
+                    }
+
+                    // Check if any data was returned
+                    if (data2.length === 0) {
+                    window.alert(`No ID store for ${department}`);
+                    } else {
+                    // Get the data for the equipment
+                    const count2 = data2[0];
+                    
+
+                    // Update the input fields with the equipment data
+
+                    
+                    document.getElementById("rizaltotal").innerHTML = count2;  
+                    
+                    
+                    }
+
+
+                    rizal = 'Rizal-R&F'
+
+                    const searchUrl5 = `/api-employee-list-per-count-off/?department=${rizal}`;
+
+                    // Call the API using the fetch API
+                    const responce5 = await fetch(searchUrl5);
+                    const data5 = await responce5.json();
+                    console.log(data5)
+                    // Check if the API call was successful
+                    if (!responce5.ok) {
+                    window.alert("Unauthorized Please Login");
+                    }
+
+                    // Check if any data was returned
+                    if (data5.length === 0) {
+                    window.alert(`No ID store for ${department}`);
+                    } else {
+                    // Get the data for the equipment
+                    const count5 = data5[0];
+                    
+
+                    // Update the input fields with the equipment data
+
+                    
+                    document.getElementById("rizaltotaloff").innerHTML = count5;  
+                    
+                    
+                    }
+
+                    bayug = 'Bayug'
+
+                    const searchUrl3 = `/api-employee-list-per-count/?department=${bayug}`;
+
+                    // Call the API using the fetch API
+                    const responce3 = await fetch(searchUrl3);
+                    const data3 = await responce3.json();
+                    console.log(data2)
+                    // Check if the API call was successful
+                    if (!responce3.ok) {
+                    window.alert("Unauthorized Please Login");
+                    }
+
+                    // Check if any data was returned
+                    if (data3.length === 0) {
+                    window.alert(`No ID store for ${department}`);
+                    } else {
+                    // Get the data for the equipment
+                    const count3 = data3[0];
+                    
+
+                    // Update the input fields with the equipment data
+
+                    
+                    document.getElementById("bayugTotal").innerHTML = count3;  
+                    
+                    
+                    }
+
+
+                    bayug = 'Bayug'
+
+                    const searchUrl6 = `/api-employee-list-per-count-off/?department=${bayug}`;
+
+                    // Call the API using the fetch API
+                    const responce6 = await fetch(searchUrl6);
+                    const data6 = await responce6.json();
+                    console.log(data6)
+                    // Check if the API call was successful
+                    if (!responce6.ok) {
+                    window.alert("Unauthorized Please Login");
+                    }
+
+                    // Check if any data was returned
+                    if (data6.length === 0) {
+                    window.alert(`No ID store for ${department}`);
+                    } else {
+                    // Get the data for the equipment
+                    const count6 = data6[0];
+                    
+
+                    // Update the input fields with the equipment data
+
+                    
+                    document.getElementById("bayugTotaloff").innerHTML = count6;  
+                    
+                    
+                    }
+
+
+
+                        
+                    } catch (error) {
+                        // Handle any errors that occurred in the fetch call
+                        console.error(error);
+                        window.alert("Error occurred while fetching data");
+                    }
+        }
+        dislayEmployeeDataHeadOffice_on()
+
+    </script>
+
+<script type="text/javascript">
+
+
+    
+    // async function dislayEmployeeDataRizal_on() {
+    //         try {
+              
+
+    //                 department = 'Rizal-R&F'
+    //                 const searchUrl2 = `/api-employee-list-per-count/?department=${department}`;
+
+    //                 // Call the API using the fetch API
+    //                 const responce2 = await fetch(searchUrl2);
+    //                 const data2 = await responce.json();
+    //                 console.log(data2)
+    //                 // Check if the API call was successful
+    //                 if (!responce2.ok) {
+    //                 window.alert("Unauthorized Please Login");
+    //                 }
+
+    //                 // Check if any data was returned
+    //                 if (data2.length === 0) {
+    //                 window.alert(`No ID store for ${department}`);
+    //                 } else {
+    //                 // Get the data for the equipment
+    //                 const count2 = data2[0];
+                    
+
+    //                 // Update the input fields with the equipment data
+
+                    
+    //                 document.getElementById("rizaltotal").innerHTML = count2;  
+                    
+                    
+    //                 }
+
+                    
+    //             } catch (error) {
+    //                 // Handle any errors that occurred in the fetch call
+    //                 console.error(error);
+    //                 window.alert("Error occurred while fetching data");
+    //             }
+    // }
+    // dislayEmployeeDataRizal_on()
+
+</script>
+
+
+</body>
+
+{% endblock %}

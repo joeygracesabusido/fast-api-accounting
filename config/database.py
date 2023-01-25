@@ -640,5 +640,69 @@ class Database(object):
             Database.DATABASE.close()
 
 
+    @staticmethod
+    def get_totalNumberEmployee(department):
+        """This function is for Employee List by department"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = 'SELECT COUNT(employee_id) \
+                FROM employee_details \
+                WHERE department LIKE "%'+department+'%" AND off_on_details ="on" AND employment_status ="Employeed" \
+                     ORDER BY lastName\
+                 '
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
+    @staticmethod
+    def get_totalNumberEmployee_off(department):
+        """This function is for Employee List by department"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = 'SELECT COUNT(employee_id) \
+                FROM employee_details \
+                WHERE department LIKE "%'+department+'%" AND off_on_details ="off" AND employment_status ="Employeed" \
+                     ORDER BY lastName\
+                 '
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
+
+
        
 

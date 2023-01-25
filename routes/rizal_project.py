@@ -494,3 +494,26 @@ async def get_employee_payroll(department,username: str = Depends(validateLogin)
        
     return employeeData
 
+#=================================================for HO Frame============================================
+@rizal_project.get("/home/", response_class=HTMLResponse)
+async def get_all_employee(request: Request):
+    
+    return templates.TemplateResponse("ho/home.html",{"request":request})
+
+@rizal_project.get("/api-employee-list-per-count/")
+async def get_employee_payroll(department,username: str = Depends(validateLogin)):
+    """This function is to get number of Employee"""
+
+    employeelList = Database.get_totalNumberEmployee(department=department)
+    # print(employeelList)
+ 
+    return employeelList
+
+@rizal_project.get("/api-employee-list-per-count-off/")
+async def get_employee_payroll(department,username: str = Depends(validateLogin)):
+    """This function is to get number of Employee"""
+
+    employeelList = Database.get_totalNumberEmployee_off(department=department)
+    
+  
+    return employeelList
