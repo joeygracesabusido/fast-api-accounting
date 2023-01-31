@@ -494,6 +494,12 @@ async def get_employee_payroll(department,username: str = Depends(validateLogin)
        
     return employeeData
 
+#================================================HAULING BILLING ========================================
+@rizal_project.get("/insert-tonnage-rizal/", response_class=HTMLResponse)
+async def insert_tonnage_rizal(request: Request):
+    """This is to display html page for inserting Tonnage"""
+    return templates.TemplateResponse("rizal/tonnage_insert.html",{"request":request})
+
 #=================================================for HO Frame============================================
 @rizal_project.get("/home/", response_class=HTMLResponse)
 async def get_all_employee(request: Request):
