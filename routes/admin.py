@@ -1414,6 +1414,10 @@ def delete_diesel(id,token: str = Depends(oauth_scheme)):
     return  {'Messeges':'Data has been deleted'}
    
 
+
+
+
+
     
 
     

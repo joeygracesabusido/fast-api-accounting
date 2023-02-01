@@ -500,13 +500,14 @@ async def insert_tonnage_rizal(request: Request,username: str = Depends(validate
     """This is to display html page for inserting Tonnage"""
     return templates.TemplateResponse("rizal/tonnage_insert.html",{"request":request})
 
-@rizal_project.put("/api-insert-tonnage-rizal/")
+@rizal_project.post("/api-insert-tonnage-rizal/")
 async def insertTonnageHauling(items:RizalTonnagehaul,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
-    today = datetime.today()
+    today = datetime.now()
 
     Database.insertTonnagehauling(transDate=items.transDate,equipment_id=items.equipment_id,
-                                    tripTicket=items.tripTicket,totalTonnage=items.totalTonnage,
+                                    tripTicket=items.tripTicket,totalTrip=items.totalTrip,
+                                    totalTonnage=items.totalTonnage,
                                     rate=items.rate,amount=items.amount,driverOperator=items.driverOperator,
                                     user=username,date_credited=today)
 
@@ -524,22 +525,24 @@ def autocomplete_equipmentID(term: Optional[str]):
 
 
 @rizal_project.get("/api-tonnage-hauling-list/")
-async def get_employee_payroll(datefrom,dateto,equipment_id,username: str = Depends(validateLogin)):
+async def getTonnageList(datefrom,dateto,equipment_id,username: str = Depends(validateLogin)):
 
     tonnageList = Database.get_tonnageHaul(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
-    # print(employeelList)
+    # print(tonnageList)
 
     tonnageData = [
+        
             {
                 
                 "id": x[0],
-                "equipment_id": x[1],
-                "tripTicket": x[2],
-                "totalTrip": x[3],
-                "totalTonnage": x[4],
-                "rate": x[5],
-                "amount": x[6],
-                "driverOperator": x[7]
+                "transDate": x[1],
+                "equipment_id": x[2],
+                "tripTicket": x[3],
+                "totalTrip": x[4],
+                "totalTonnage": x[5],
+                "rate": x[6],
+                "amount": "{:,.2f}".format(x[7]),
+                "driverOperator": x[8]
                 
 
             }

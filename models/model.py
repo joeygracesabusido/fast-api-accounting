@@ -243,7 +243,7 @@ class RizalTonnagehaul(BaseModel):
     """This is for Tonnage Hauling in Rizal Model"""
     transDate: date
     equipment_id: str
-    tripTicket: float
+    tripTicket: str
     totalTrip: float
     totalTonnage: float
     rate: float

@@ -143,27 +143,27 @@ class Database(object):
         #     Database.DATABASE.close()
 
 
-        try: 
-            cursor.execute(
-                """CREATE TABLE IF NOT EXISTS hauling_tonnage (id INT AUTO_INCREMENT PRIMARY KEY, 
-                            transDate date,
-                            equipment_id VARCHAR (100) NOT NULL, 
-                            tripTicket DECIMAL(9,2) ,
-                            totalTrip DECIMAL(9,2),
-                            totalTonnage DECIMAL(9,2),
-                            rate DECIMAL(9,2),
-                            amount DECIMAL(9,2),
-                            driverOperator VARCHAR (100) , 
-                            user VARCHAR(100),
-                            date_updated DATETIME,
-                            date_credited DATETIME) """)
+        # try: 
+        #     cursor.execute(
+        #         """CREATE TABLE IF NOT EXISTS hauling_tonnage (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     transDate date,
+        #                     equipment_id VARCHAR (100) NOT NULL, 
+        #                     tripTicket  VARCHAR (100) ,
+        #                     totalTrip DECIMAL(9,2),
+        #                     totalTonnage DECIMAL(9,2),
+        #                     rate DECIMAL(9,2),
+        #                     amount DECIMAL(9,2),
+        #                     driverOperator VARCHAR (100) , 
+        #                     user VARCHAR(100),
+        #                     date_updated DATETIME,
+        #                     date_credited DATETIME) """)
                     
-        except Exception as ex:
-            print("Error", f"Error due to :{str(ex)}")
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
 
-        finally:
-            Database.DATABASE.commit()
-            Database.DATABASE.close()
+        # finally:
+        #     Database.DATABASE.commit()
+        #     Database.DATABASE.close()
 
     @staticmethod
     def insert_diesel_consuption(transaction_date,equipment_id,withdrawal_slip,
@@ -746,41 +746,40 @@ class Database(object):
 
 
 #=================================================Rizal Tonnage ===========================================
-    # @staticmethod
-    # def insertTonnagehauling(transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
-    #                         rate,amount,driverOperator,user,date_credited):
-    #     """This function is for inserting Data to Cash advances"""
-    #     Database.DATABASE._open_connection()
-    #     try:
-    #         data =  ("INSERT INTO hauling_tonnage (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, \
-    #                         rate,amount,driverOperator,user,date_credited)"
-    #             "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")   
-    #         val = (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
-    #                         rate,amount,driverOperator,user,date_credited)       
-    #         # cursor.execute(data)              
-    #         cursor.execute(data,val) 
-        
-    #     except Exception as ex:
-    #         print("Error", f"Error due to :{str(ex)}")
-    #     finally:
-    #         Database.DATABASE.commit()
-    #         Database.DATABASE.close() 
-
     @staticmethod
     def insertTonnagehauling(transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
                             rate,amount,driverOperator,user,date_credited):
         """This function is for inserting Data to Cash advances"""
+        Database.DATABASE._open_connection()
         try:
-            with Database.DATABASE._open_connection() as cursor:
-                data =  ("INSERT INTO hauling_tonnage (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, \
-                            rate,amount,driverOperator,user,date_credited)"
-                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")   
-                val = (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+            data =  ("INSERT INTO hauling_tonnage (transDate,equipment_id,tripTicket,totalTrip, \
+    totalTonnage,rate,amount,driverOperator,user,date_credited)"
+                "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")   
+            val = (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
                             rate,amount,driverOperator,user,date_credited)       
-                cursor.execute(data,val) 
-            
+            # cursor.execute(data)              
+            cursor.execute(data,val) 
+        
         except Exception as ex:
-            print("Error while inserting data into hauling_tonnage: ", f"{str(ex)}")
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            Database.DATABASE.commit()
+            Database.DATABASE.close() 
+
+    # @staticmethod
+    # def insertTonnagehauling(transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+    #                         rate,amount,driverOperator,user,date_credited):
+    #     """This function is for inserting Data to Cash advances"""
+    #     try:
+    #         with Database.DATABASE._open_connection() as cursor:
+    #             data =  ("INSERT INTO hauling_tonnage (transDate,equipment_id,tripTicket,totalTrip,totalTonnage,rate,amount,driverOperator,user,date_credited)"
+    #                 "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")   
+    #             val = (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+    #                         rate,amount,driverOperator,user,date_credited)       
+    #             cursor.execute(data,val) 
+            
+    #     except Exception as ex:
+    #         print("Error while inserting data into hauling_tonnage: ", f"{str(ex)}")
 
 
     @staticmethod
@@ -792,8 +791,8 @@ class Database(object):
         try:
             
             query = ('SELECT * FROM hauling_tonnage \
-                WHERE transDate BETWEEN "' + datefrom + '" AND  "' + dateto + '"  \
-                equipment_id LIKE "%'+equipment_id+'%" ORDER BY transDate\
+                WHERE transDate BETWEEN "' + datefrom + '" AND  "' + dateto + '" AND  \
+                equipment_id  like  "%'+equipment_id+'%" ORDER BY transDate\
                  ')
                 
             
@@ -811,6 +810,34 @@ class Database(object):
         finally:
             
             Database.DATABASE.close()
+
+
+    @staticmethod
+    def updateTonnageRizal(transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+                            rate,amount,driverOperator,user,date_updated,id):
+        """
+        This function is to update Tonnage with parameters of ID
+        """
+        # Use the `with` statement to handle opening and closing the database connection
+        # with TviDB.DATABASE:
+        Database.DATABASE._open_connection()
+        cursor = Database.DATABASE.cursor()
+        with Database.DATABASE:
+            try:
+                # Use a parameterized query to prevent SQL injection attacks
+                update_query = '''
+                    UPDATE hauling_tonnage
+                    SET  transDate=%s,equipment_id=%s, tripTicket=%s, totalTrip=%s,
+                            totalTonnage=%s,rate=%s,amount=%s,driverOperator=%s,user=%s,
+                            date_updated=%s
+                    WHERE id = %s
+                '''
+                cursor.execute(update_query, (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+                            rate,amount,driverOperator,user,date_updated,id)) # 2
+                Database.DATABASE.commit() 
+                # TviDB.DATABASE.close()
+            except Exception as ex:
+                print("Error", f"Error due to :{str(ex)}")
 
 
 
