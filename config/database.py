@@ -124,15 +124,38 @@ class Database(object):
 
         Database.DATABASE._open_connection()
 
+        # try: 
+        #     cursor.execute(
+        #         """CREATE TABLE IF NOT EXISTS fund_request (id INT AUTO_INCREMENT PRIMARY KEY, 
+        #                     transDate date,
+        #                     payee VARCHAR (100) NOT NULL, 
+        #                     particular VARCHAR (300) ,
+        #                     amount DECIMAL(9,2),
+        #                     user VARCHAR(100),
+        #                     date_updated date,
+        #                     date_credited DATETIME) """)
+                    
+        # except Exception as ex:
+        #     print("Error", f"Error due to :{str(ex)}")
+
+        # finally:
+        #     Database.DATABASE.commit()
+        #     Database.DATABASE.close()
+
+
         try: 
             cursor.execute(
-                """CREATE TABLE IF NOT EXISTS fund_request (id INT AUTO_INCREMENT PRIMARY KEY, 
+                """CREATE TABLE IF NOT EXISTS hauling_tonnage (id INT AUTO_INCREMENT PRIMARY KEY, 
                             transDate date,
-                            payee VARCHAR (100) NOT NULL, 
-                            particular VARCHAR (300) ,
+                            equipment_id VARCHAR (100) NOT NULL, 
+                            tripTicket DECIMAL(9,2) ,
+                            totalTrip DECIMAL(9,2),
+                            totalTonnage DECIMAL(9,2),
+                            rate DECIMAL(9,2),
                             amount DECIMAL(9,2),
+                            driverOperator VARCHAR (100) , 
                             user VARCHAR(100),
-                            date_updated date,
+                            date_updated DATETIME,
                             date_credited DATETIME) """)
                     
         except Exception as ex:
@@ -295,6 +318,26 @@ class Database(object):
         Database.DATABASE._open_connection()
         try:
             data = ("SELECT * FROM equipment_details ORDER BY equipment_id")
+
+            cursor.execute(data)
+            return cursor.fetchall()
+        except Exception as ex:
+            print("Error", f"Error due to :{str(ex)}")
+        finally:
+            # Database.DATABASE.commit()
+            Database.DATABASE.close()
+
+
+    @staticmethod
+    def select_allEquipment_autocomplete(equipment_id):
+        """
+        This function is for querying for Equipment
+        """
+
+       
+        Database.DATABASE._open_connection()
+        try:
+            data = ('SELECT * FROM equipment_details WHERE equipment_id like  "%'+equipment_id+'%" ORDER BY equipment_id')
 
             cursor.execute(data)
             return cursor.fetchall()
@@ -702,7 +745,77 @@ class Database(object):
             Database.DATABASE.close()
 
 
+#=================================================Rizal Tonnage ===========================================
+    # @staticmethod
+    # def insertTonnagehauling(transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+    #                         rate,amount,driverOperator,user,date_credited):
+    #     """This function is for inserting Data to Cash advances"""
+    #     Database.DATABASE._open_connection()
+    #     try:
+    #         data =  ("INSERT INTO hauling_tonnage (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, \
+    #                         rate,amount,driverOperator,user,date_credited)"
+    #             "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")   
+    #         val = (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+    #                         rate,amount,driverOperator,user,date_credited)       
+    #         # cursor.execute(data)              
+    #         cursor.execute(data,val) 
+        
+    #     except Exception as ex:
+    #         print("Error", f"Error due to :{str(ex)}")
+    #     finally:
+    #         Database.DATABASE.commit()
+    #         Database.DATABASE.close() 
 
+    @staticmethod
+    def insertTonnagehauling(transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+                            rate,amount,driverOperator,user,date_credited):
+        """This function is for inserting Data to Cash advances"""
+        try:
+            with Database.DATABASE._open_connection() as cursor:
+                data =  ("INSERT INTO hauling_tonnage (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, \
+                            rate,amount,driverOperator,user,date_credited)"
+                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")   
+                val = (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
+                            rate,amount,driverOperator,user,date_credited)       
+                cursor.execute(data,val) 
+            
+        except Exception as ex:
+            print("Error while inserting data into hauling_tonnage: ", f"{str(ex)}")
+
+
+    @staticmethod
+    def get_tonnageHaul(datefrom,dateto,equipment_id):
+        """This function is for Employee List by department"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = ('SELECT * FROM hauling_tonnage \
+                WHERE transDate BETWEEN "' + datefrom + '" AND  "' + dateto + '"  \
+                equipment_id LIKE "%'+equipment_id+'%" ORDER BY transDate\
+                 ')
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
+
+
+        
 
        
 

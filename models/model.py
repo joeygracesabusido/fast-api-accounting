@@ -239,4 +239,16 @@ class EmployeeReg(BaseModel):
     Salary_Detail: str
 
 
+class RizalTonnagehaul(BaseModel):
+    """This is for Tonnage Hauling in Rizal Model"""
+    transDate: date
+    equipment_id: str
+    tripTicket: float
+    totalTrip: float
+    totalTonnage: float
+    rate: float
+    amount: float
+    driverOperator: str
+   
+
     

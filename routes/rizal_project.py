@@ -3,7 +3,7 @@ from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, 
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from config.db import mydb
-from models.model import EmployeeReg
+from models.model import EmployeeReg, RizalTonnagehaul
 
 
 from bson import ObjectId
@@ -496,9 +496,59 @@ async def get_employee_payroll(department,username: str = Depends(validateLogin)
 
 #================================================HAULING BILLING ========================================
 @rizal_project.get("/insert-tonnage-rizal/", response_class=HTMLResponse)
-async def insert_tonnage_rizal(request: Request):
+async def insert_tonnage_rizal(request: Request,username: str = Depends(validateLogin)):
     """This is to display html page for inserting Tonnage"""
     return templates.TemplateResponse("rizal/tonnage_insert.html",{"request":request})
+
+@rizal_project.put("/api-insert-tonnage-rizal/")
+async def insertTonnageHauling(items:RizalTonnagehaul,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.today()
+
+    Database.insertTonnagehauling(transDate=items.transDate,equipment_id=items.equipment_id,
+                                    tripTicket=items.tripTicket,totalTonnage=items.totalTonnage,
+                                    rate=items.rate,amount=items.amount,driverOperator=items.driverOperator,
+                                    user=username,date_credited=today)
+
+    return  {'Messeges':'Data has been Save'}
+
+@rizal_project.get("/api-search-autocomplete-equipment-rizal/")
+def autocomplete_equipmentID(term: Optional[str]):
+    items = Database.select_allEquipment_autocomplete(equipment_id=term)
+
+    suggestions = []
+    for item in items:
+        suggestions.append(item[1])
+        
+    return suggestions
+
+
+@rizal_project.get("/api-tonnage-hauling-list/")
+async def get_employee_payroll(datefrom,dateto,equipment_id,username: str = Depends(validateLogin)):
+
+    tonnageList = Database.get_tonnageHaul(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+    # print(employeelList)
+
+    tonnageData = [
+            {
+                
+                "id": x[0],
+                "equipment_id": x[1],
+                "tripTicket": x[2],
+                "totalTrip": x[3],
+                "totalTonnage": x[4],
+                "rate": x[5],
+                "amount": x[6],
+                "driverOperator": x[7]
+                
+
+            }
+            for x in tonnageList
+        ]
+       
+    return tonnageData
+
+
 
 #=================================================for HO Frame============================================
 @rizal_project.get("/home/", response_class=HTMLResponse)
