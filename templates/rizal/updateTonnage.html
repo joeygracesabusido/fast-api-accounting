@@ -34,218 +34,185 @@
 </style>
 <body>
     <div class="container mt-4" id="div1">
-        <label style="color:yellow;">
-            Date
-        </label>
-        <input 
-            type="date" 
-            name="transDate"
-            id="transDate"
-            
+        {% for list in tonnageData%}
+            <input 
+            type="text" hidden
+            name="transID"
+            id="transID"
+            value="{{list.id}}"
             class="form-control"
             
             >
-
-        <label style="color:yellow;">
-            Equipment ID
+            <label style="color:yellow;">
+                Date
             </label>
             <input 
-                type="text" 
-                name="equipmentID"
-                id="equipmentID"
-                
+                type="date" 
+                name="transDate"
+                id="transDate"
+                value="{{list.transDate}}"
                 class="form-control"
                 
-            >
+                >
 
-        <label style="color:yellow;">
-            Trip Ticket
-            </label>
-            <input 
-                type="text" 
-                name="tripTicket"
-                id="tripTicket"
-                
-                class="form-control"
-                
-            >
+            <label style="color:yellow;">
+                Equipment ID
+                </label>
+                <input 
+                    type="text" 
+                    name="equipmentID"
+                    id="equipmentID"
+                    value="{{list.equipment_id}}"
+                    class="form-control"
+                    
+                >
 
-        <label style="color:yellow;">
-            Total Trip
-            </label>
-            <input 
-                type="number" 
-                name="totalTrip"
-                id="totalTrip"
-                step="0.0"
-                class="form-control"
-                
-            >
+            <label style="color:yellow;">
+                Trip Ticket
+                </label>
+                <input 
+                    type="text" 
+                    name="tripTicket"
+                    id="tripTicket"
+                    value="{{list.tripTicket}}"
+                    class="form-control"
+                    
+                >
+
+            <label style="color:yellow;">
+                Total Trip
+                </label>
+                <input 
+                    type="number" 
+                    name="totalTrip"
+                    id="totalTrip"
+                    step="0.0"
+                    value="{{list.totalTrip}}"
+                    class="form-control"
+                    
+                >
 
 
-        <label style="color:yellow;">
-            Total Tonnage
-            </label>
-            <input 
-                type="number" 
-                name="totalTons"
-                id="totalTons"
-                step="0.0"
-                class="form-control"
-                
-            >
+            <label style="color:yellow;">
+                Total Tonnage
+                </label>
+                <input 
+                    type="number" 
+                    name="totalTons"
+                    id="totalTons"
+                    step="0.0"
+                    value="{{list.totalTonnage}}"
+                    class="form-control"
+                    
+                >
 
-        <label style="color:yellow;">
-            Rate
-            </label>
-            <input 
-                type="number" 
-                name="rate"
-                id="rate"
-                step="0.0"
-                class="form-control"
-                
-            >
+            <label style="color:yellow;">
+                Rate
+                </label>
+                <input 
+                    type="number" 
+                    name="rate"
+                    id="rate"
+                    step="0.0"
+                    value="{{list.rate}}"
+                    class="form-control"
+                    
+                >
 
-        <label style="color:yellow;">
-            Amount
-            </label>
-            <input 
-                type="number" 
-                name="amount"
-                id="amount"
-                step="0.0"
-                class="form-control"
-                
-            >
+            <label style="color:yellow;">
+                Amount
+                </label>
+                <input 
+                    type="number" 
+                    name="amount"
+                    id="amount"
+                    step="0.0"
+                    value="{{list.amount}}"
+                    class="form-control"
+                    
+                >
 
-        <label style="color:yellow;">
-            Driver/Operator
-            </label>
-            <input 
-                type="text" 
-                name="driver_operator"
-                id="driver_operator"
-                
-                class="form-control"
-                
-            ><br>
-
-            <button type="submit" onclick="inserttonnageHauling()" class="btn btn-info">
-            <i class="fas fa-database"></i> Save</button>
+            <label style="color:yellow;">
+                Driver/Operator
+                </label>
+                <input 
+                    type="text" 
+                    name="driver_operator"
+                    id="driver_operator"
+                    value="{{list.driverOperator}}"
+                    class="form-control"
+                    
+                ><br>
+        {% endfor %}
+            <button type="submit" onclick="updateTonnageHaul()" class="btn btn-info">
+            <i class="fas fa-database"></i>Update</button>
 
 
     </div>
 
+            <script type="text/javascript">
+                function updateTonnageHaul() {
+                    var data = {};
+                    id = document.getElementById('transID').value;
+                    
+
+                    
+                    data["transDate"] = document.getElementById("transDate").value;
+                    data["equipment_id"] = document.getElementById("equipmentID").value;
+                    data["tripTicket"] = document.getElementById("tripTicket").value;
+                    data["totalTrip"] = document.getElementById("totalTrip").value;
+                    data["totalTonnage"] = document.getElementById("totalTons").value;
+                    data["rate"] = document.getElementById("rate").value;
+                    data["amount"] = document.getElementById("amount").value;
+                    data["driverOperator"] = document.getElementById("driver_operator").value;
+                    
+
+
+
+                    console.log(data);
+
+                    if (id === '') {
+                            window.alert("Employee ID field is requires");
+                    } else {
+                            // Use async/await to simplify the fetch call
+                            (async () => {
+                            try {
+                                    // Use template literals to build the URL
+                                    if (confirm('Are you sure you want to update this rental transaction?')){
+                                            const response = await fetch("/api-update-tonnageHaul/"+ id, {
+                                            method: "PUT",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify(data)
+                                            });
+
+                                            // Use response.ok to check if the response was successful
+                                            if (response.ok) {
+                                            window.alert("Your Data has been Updated");
+                                            window.location.assign("/index");
+                                            console.log(await response.json());
+                                            } else if (response.status === 401) {
+                                            window.alert("Unauthorized credential Please Login");
+                                            }
+
+                                    } else {
+                                            throw new Error('Failed to update data');
+                                            }
+                                    
+                            } catch (error) {
+                                    // Catch errors
+                                    window.alert(error);
+                                    console.log(error);
+                            }
+                            })();
+                    }
+                    }
+
+
+        </script>
+
    
 
-    <!-- This is to insert Equipment to tvi table -->
-    <script type="text/javascript">
-        // Define an async function to insert equipment
-        async function inserttonnageHauling() {
-          // Get the values of the input fields
-          const data = {
-            transDate: document.getElementById("transDate").value,
-            equipment_id: document.getElementById("equipmentID").value,
-            tripTicket: document.getElementById("tripTicket").value,
-            totalTrip: document.getElementById("totalTrip").value,
-            totalTonnage: document.getElementById("totalTons").value,
-            rate: document.getElementById("rate").value,
-            amount: document.getElementById("amount").value,
-            driverOperator: document.getElementById("driver_operator").value,
-            
-            
-          };
-      
-          // Use the fetch API to send the POST request
-          try {
-            const response = await fetch(`/api-insert-tonnage-rizal/`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data)
-            });
-      
-            // Check if the response was successful
-            if (response.status === 200) {
-              window.alert("Your data has been saved");
-              console.log(data);
-              window.location.assign("/insert-tonnage-rizal/");
-              
-            } else if (response.status === 401) {
-              window.alert("Unauthorized credential. Please login");
-            }
-          } catch (error) {
-            // Catch any errors and log them to the console
-            window.alert(error);
-            console.log(error);
-          }
-        }
-      </script>
-
-
-        <script>
-            function html_table_excel(type){
-                var data = document.getElementById('table_body2');
-                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
-                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
-                XLSX.writeFile(file, 'employelist.' + type);
-
-            }
-
-            
-        </script>
-
-
-        <!-- This function is for displaying Tonnage Hauling Data -->
-
-        <script type="text/javascript">
-            // const rental_url =search_url ;
-            async function displayTonnageHaulingData(){
-                var dateFrom = document.getElementById('dateFrom').value;
-                var dateTo = document.getElementById('dateTo').value;
-                var equipmentIDSearch = document.getElementById('equipmentIDSearch').value;
-            
-            const search_url = `/api-tonnage-hauling-list/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
-
-            
-            const responce = await fetch(search_url)
-            const data = await responce.json();
-            console.log(data)
-            
-            if (responce.status === 200) {
-                let tableData2="";
-                data.map((values)=>{
-                    tableData2+= ` <tr>
-                               
-                                <td>${values.transDate}</td>
-                                <td>${values.equipment_id}</td>
-                                <td>${values.totalTrip}</td>
-                                <td>${values.totalTonnage}</td>
-                                <td>${values.rate}</td>
-                                <td>${values.amount}</td>
-                                <td>${values.driverOperator}</td>
-
-                                <td>
-                                    <a href="/update-journal-entry/${values.id}"
-                                    <button type="button" class="btn btn-primary">
-                                    <i class="fas fa-database"></i> Edit</button></a> 
-                                </td>
-                        
-                            
-                            </tr>`;
-                });
-                    document.getElementById("table_body2").innerHTML=tableData2;
-                }else if (responce.status === 401){
-                    window.alert("Unauthorized credential. Please login");
-                }
-            
-            }
-            
-            
-
-
-        </script>
-
+        <!-- This function is for autocomplete of Eqipment -->
         <script>
 
             $( function() {
@@ -291,22 +258,7 @@
                 const totalAmount = calculateTotalAmount(rate, totalTons);
                 amountInput.value = totalAmount.toFixed(2);
             });
-            // document.getElementById('rate').addEventListener('input',
-            // function(e){
-            //     let rate = e.target.value;
-
-            //     var totalTons = document.getElementById('totalTons').value;
-            //     var totalAmount;
-               
-            //     totalAmount = parseFloat(totalTons) * parseFloat(rate)
-            //     console.log(totalAmount)
-               
-            //     document.getElementById('amount').value=totalAmount.toFixed(2);
-
-            //     }
-
-            
-            // );
+           
 
         </script>
 

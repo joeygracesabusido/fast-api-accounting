@@ -552,6 +552,51 @@ async def getTonnageList(datefrom,dateto,equipment_id,username: str = Depends(va
     return tonnageData
 
 
+@rizal_project.get("/update-tonnageHaul/{id}", response_class=HTMLResponse)
+def get_updatetonnageHaul(request:Request,id, username: str = Depends(validateLogin)):
+    """This function is for dispalying Diesel Transaction using ID"""
+    myresult = Database.get_tonnageHaulID(id=id)
+
+
+    tonnageData = [
+        
+            {
+                
+                "id": x[0],
+                "transDate": x[1],
+                "equipment_id": x[2],
+                "tripTicket": x[3],
+                "totalTrip": x[4],
+                "totalTonnage": x[5],
+                "rate": x[6],
+                "amount": "{:,.2f}".format(x[7]),
+                "driverOperator": x[8]
+                
+
+            }
+            for x in myresult
+        ]
+   
+    
+    
+
+    return  templates.TemplateResponse("rizal/updateTonnage.html", 
+                                        {"request":request,"tonnageData":tonnageData,"user":username
+                                        })
+
+@rizal_project.put("/api-update-tonnageHaul/{id}")
+async def get_employee_payroll(id,items:RizalTonnagehaul,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.today()
+
+    Database.updateTonnageRizal(transDate=items.transDate,equipment_id=items.equipment_id,
+                                    tripTicket=items.tripTicket,totalTrip=items.totalTrip,
+                                    totalTonnage=items.totalTonnage,
+                                    rate=items.rate,amount=items.amount,driverOperator=items.driverOperator,
+                                    user=username,date_updated=today,id=id)
+
+    return  {'Messeges':'Data has been updated'}
+
 
 #=================================================for HO Frame============================================
 @rizal_project.get("/home/", response_class=HTMLResponse)

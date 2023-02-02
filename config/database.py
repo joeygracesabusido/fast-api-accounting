@@ -766,25 +766,12 @@ class Database(object):
             Database.DATABASE.commit()
             Database.DATABASE.close() 
 
-    # @staticmethod
-    # def insertTonnagehauling(transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
-    #                         rate,amount,driverOperator,user,date_credited):
-    #     """This function is for inserting Data to Cash advances"""
-    #     try:
-    #         with Database.DATABASE._open_connection() as cursor:
-    #             data =  ("INSERT INTO hauling_tonnage (transDate,equipment_id,tripTicket,totalTrip,totalTonnage,rate,amount,driverOperator,user,date_credited)"
-    #                 "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")   
-    #             val = (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
-    #                         rate,amount,driverOperator,user,date_credited)       
-    #             cursor.execute(data,val) 
-            
-    #     except Exception as ex:
-    #         print("Error while inserting data into hauling_tonnage: ", f"{str(ex)}")
+    
 
 
     @staticmethod
     def get_tonnageHaul(datefrom,dateto,equipment_id):
-        """This function is for Employee List by department"""
+        """This function is for querying hauling tons transaction using Date and Equipment ID"""
 
         # Use a with statement to automatically manage the database connection
         Database.DATABASE._open_connection()
@@ -813,6 +800,36 @@ class Database(object):
 
 
     @staticmethod
+    def get_tonnageHaulID(id):
+        """This function is for hauling Tonnage Transaction"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = ('SELECT * FROM hauling_tonnage \
+                WHERE id like "%'+id+'%" \
+                 ')
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
+
+    @staticmethod
     def updateTonnageRizal(transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
                             rate,amount,driverOperator,user,date_updated,id):
         """
@@ -835,7 +852,7 @@ class Database(object):
                 cursor.execute(update_query, (transDate,equipment_id,tripTicket,totalTrip,totalTonnage, 
                             rate,amount,driverOperator,user,date_updated,id)) # 2
                 Database.DATABASE.commit() 
-                # TviDB.DATABASE.close()
+                Database.DATABASE.close()
             except Exception as ex:
                 print("Error", f"Error due to :{str(ex)}")
 
