@@ -621,3 +621,119 @@ async def get_employee_payroll(department,username: str = Depends(validateLogin)
     
   
     return employeelList
+
+
+#===========================================For cost Analysis Frame==============================================
+
+@rizal_project.get("/api-tonnage-cost/")
+async def getTonnageList(datefrom,dateto,username: str = Depends(validateLogin)):
+
+    
+    
+    rentalList = Database.get_rental_cost(datefrom=datefrom,dateto=dateto)
+
+    
+
+    totalHours = 0
+    totalAmount = 0
+
+    totalTrip = 0
+    totalTonnage = 0
+    amount = 0
+
+    agg_result_list = []
+    for y in rentalList:
+        transaction_date = y[0],
+        equipment_id = y[1],
+        totalHours = y[2],
+        totalAmount = y[3],
+
+        tonnageList = Database.get_ton_cost(datefrom=datefrom,dateto=dateto) # for hauling_tonnage table
+       
+        dieselList = Database.get_diesel_cost(datefrom=datefrom,dateto=dateto)
+
+        for x in tonnageList:
+            transDate = x[0],
+            equipment_id2 = x[1],
+            totalTrip = x[2],
+            totalTonnage = x[3],
+            amount = x[4],
+
+            if equipment_id == equipment_id2:
+                totalHours = y[2],
+                totalAmount = y[3],
+                totalTonnage = x[3],
+                totalTrip = x[2],
+                amount = x[4],
+
+                totalService = totalAmount + amount
+
+
+            
+            
+
+        for d in dieselList:
+            equipment_id3 = d[0]
+            
+            totalLtrs = d[1]
+            totalAmountDiesel = d[2]
+
+            print(totalLtrs)
+            if equipment_id == equipment_id3:
+                totalLtrs = d[1]
+                totalAmountDiesel = d[2]
+                
+        
+                data ={}
+
+                data.update({
+                    "Date": transDate,
+                    "equipment_id": equipment_id,
+                    "totalAmount": totalAmount,
+                    "amount": amount,
+                    "totalIncome":totalService,
+                    "totalLiters": totalLtrs,
+                    "totalAmountDiesel": totalAmountDiesel})
+                agg_result_list.append(data)
+
+    # tonnageData = [
+        
+    #         {
+                
+                
+    #             "transDate": x[0],
+    #             "equipment_id": x[1],
+    #             "totalTrip": x[2],
+    #             "totalTonnage": x[3],
+    #             "amount": "{:,.2f}".format(x[4]),
+                
+                
+
+    #         }
+    #         for x in tonnageList
+    #     ]
+       
+    return agg_result_list
+
+@rizal_project.get("/api-tonnage-cost-analysis/")
+async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)):
+    """This function is for cost  analysis"""
+
+    cost = Database.get_costAnalysis(datefrom=datefrom,dateto=dateto)
+    print(cost)
+
+    costData = [
+        
+            {
+                
+                
+                "equipment": x[1],
+                "RentalAmount": x[1],
+                
+                
+
+            }
+            for x in cost
+        ]
+
+    return costData

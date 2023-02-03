@@ -857,6 +857,145 @@ class Database(object):
                 print("Error", f"Error due to :{str(ex)}")
 
 
+    @staticmethod
+    def get_ton_cost(datefrom,dateto):
+        """This function is for querying hauling tons transaction using Date and Equipment ID"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = ('SELECT transDate, equipment_id, \
+                sum(totalTrip)  as totalTrip, \
+                sum(totalTonnage)  as totalTons, \
+                sum(amount)  as totalAmount\
+                 FROM hauling_tonnage \
+                WHERE transDate BETWEEN "' + datefrom + '" AND  "' + dateto + '"   \
+                GROUP BY transDate ,equipment_id \
+                 ORDER BY transDate ')
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+    @staticmethod
+    def get_rental_cost(datefrom,dateto):
+        """This function is for querying hauling tons transaction using Date and Equipment ID"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = ('SELECT  transaction_date, equipment_id, \
+                sum(total_rental_hour)  as totalHours,\
+                sum(rental_amount)  as totalAmount    \
+                FROM  equipment_rental  \
+                WHERE transaction_date BETWEEN "' + datefrom + '" AND  "' + dateto + '" \
+                GROUP BY transaction_date ,equipment_id \
+                ORDER BY transaction_date')
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
+    @staticmethod
+    def get_diesel_cost(datefrom,dateto):
+        """This function is for querying Diesel transaction using Date and Equipment ID"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = ('SELECT equipment_id, \
+                sum(use_liter)  as liters,\
+                sum(amount)  as totalAmount    \
+                FROM  diesel_consumption  \
+                WHERE transaction_date BETWEEN "' + datefrom + '" AND  "' + dateto + '" \
+                GROUP BY equipment_id \
+                ORDER BY equipment_id')
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
+    @staticmethod
+    def get_costAnalysis(datefrom,dateto):
+        """This function is for querying hauling tons transaction using Date and Equipment ID"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query =  "Select equipment_rental.equipment_id,  \
+                equipment_rental.rental_amount\
+                from equipment_rental\
+                FULL OUTER JOIN hauling_tonnage \
+                ON equipment_rental.equipment_id=hauling_tonnage.equipment_id  \
+                where equipment_rental.transaction_date \
+                 BETWEEN '" + datefrom + "' and\
+                 '" + dateto + "' \
+                  \
+                 "   
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
+
+                
+
+
 
 
         
