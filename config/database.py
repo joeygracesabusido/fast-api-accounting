@@ -964,16 +964,44 @@ class Database(object):
         Database.DATABASE._open_connection()
         try:
             
-            query =  "Select equipment_rental.equipment_id,  \
-                equipment_rental.rental_amount\
-                from equipment_rental\
-                FULL OUTER JOIN hauling_tonnage \
-                ON equipment_rental.equipment_id=hauling_tonnage.equipment_id  \
-                where equipment_rental.transaction_date \
-                 BETWEEN '" + datefrom + "' and\
-                 '" + dateto + "' \
-                  \
-                 "   
+            query =('SELECT c.equipment_id,ab.totalTonAmount,ab.TotalRentalAmount,c.totalDCamount, \
+                    ((ab.totalTonAmount+ab.TotalRentalAmount)-c.totalDCamount)as NetIncome \
+                    FROM (SELECT ht.equipment_id, ht.totalTonAmount, er.TotalRentalAmount \
+                    FROM ( \
+                    SELECT equipment_id, sum(amount) as totalTonAmount \
+                    FROM hauling_tonnage \
+                    WHERE transDate BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+                    GROUP BY equipment_id \
+                    ) ht \
+                    LEFT JOIN ( \
+                    SELECT equipment_id, sum(rental_amount) as TotalRentalAmount \
+                    FROM equipment_rental \
+                    WHERE transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+                    GROUP BY equipment_id \
+                    ) er USING (equipment_id) \
+                        \
+                    UNION \
+                            \
+                    SELECT er.equipment_id, ht.totalTonAmount, er.TotalRentalAmount \
+                    FROM ( \
+                    SELECT equipment_id, sum(amount) as totalTonAmount \
+                    FROM hauling_tonnage \
+                    WHERE transDate BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+                    GROUP BY equipment_id \
+                    ) ht \
+                    RIGHT  JOIN ( \
+                    SELECT equipment_id, sum(rental_amount) as TotalRentalAmount \
+                    FROM equipment_rental \
+                    WHERE transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+                    GROUP BY equipment_id \
+                    ) er USING (equipment_id) \
+                    ) ab \
+                    RIGHT  JOIN (SELECT dc.equipment_id , \
+                    sum(dc.amount)as totalDCamount from diesel_consumption as dc \
+                    WHERE dc.transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+                    GROUP BY dc.equipment_id)c ON c.equipment_id = ab.equipment_id \
+                                    ')
+                                    
                 
             
 

@@ -720,18 +720,18 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
     """This function is for cost  analysis"""
 
     cost = Database.get_costAnalysis(datefrom=datefrom,dateto=dateto)
-    print(cost)
+    # print(cost)
 
     costData = [
         
             {
-                
-                
-                "equipment": x[1],
-                "RentalAmount": x[1],
-                
-                
-
+                 
+                "equipment_id": x[0],
+                "TonnageAmount": x[1],
+                "RentalAmount": x[2],
+                "DieselAmount": x[3],
+                "netIncome": x[4],
+            
             }
             for x in cost
         ]

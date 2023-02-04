@@ -172,6 +172,110 @@
     </div>
 
 
+    <div class="conatainer mt3">
+        <div  class="container mt-3">
+            <label for="dateFrom"
+            style="color: black;"
+            >Date From</label>
+            
+                <input 
+                type="date"
+                name="dateFrom"
+                id="dateFrom"
+               
+                >
+    
+            <label for="dateTo"
+            style="color: black;"
+            >Date To</label>
+            
+                <input 
+                type="date"
+                name="dateTo"
+                id="dateTo"
+                
+                >
+
+                <button type="submit"  onclick="displayCostAnalysisData()" class="btn btn-primary">
+                    Search
+                    <i class="fas fa-database"></i>
+                </button>
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                    <tr>
+                        <td>Equipment ID</td>
+                        <td>Total Ton Amounts</td>
+                        <td>Total Rental Amount</td>
+                        <td>Total Diesel </td>
+                        <td>Net Income</td>
+                       
+                    </tr>
+                </thead>
+                <tbody id="table_body2">
+                   
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            
+                            
+                        </tr>
+                       
+                    
+                </tbody>
+    
+               
+    
+            </table>
+    
+            
+                
+                
+        </div>
+    
+
+
+    </div>
+    <!-- This is to display Cost Analysis -->
+    <script type="text/javascript">
+        // const rental_url =search_url ;
+        async function displayCostAnalysisData(){
+            var datefrom = document.getElementById('dateFrom').value;
+            var dateto = document.getElementById('dateTo').value;
+        const search_url = `/api-tonnage-cost-analysis/?datefrom=${datefrom}&dateto=${dateto}`;
+
+        
+        const responce = await fetch(search_url)
+        const data = await responce.json();
+        console.log(data)
+        
+        if (responce.status === 200) {
+            let tableData2="";
+            data.map((values)=>{
+                tableData2+= ` <tr>
+                            <td>${values.equipment_id}</td>
+                            <td>${values.TonnageAmount}</td>
+                            <td>${values.RentalAmount}</td>
+                            <td>${values.DieselAmount}</td>
+                            <td>${values.netIncome}</td>
+                            
+                    
+                        
+                        </tr>`;
+            });
+                document.getElementById("table_body2").innerHTML=tableData2;
+            }else if (responce.status === 401){
+                window.alert("Unauthorized credential. Please login");
+            }
+        
+        }
+        
+    </script>
+
 
     <script type="text/javascript">
 
