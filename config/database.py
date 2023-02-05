@@ -964,59 +964,99 @@ class Database(object):
         Database.DATABASE._open_connection()
         try:
             
-            query = ('SELECT c.equipment_id, \
-                    CASE \
-                            WHEN totalTonAmount IS NULL THEN 0 \
-                            WHEN totalTonAmount IS NOT NULL THEN totalTonAmount \
-                        \
+            # query = ('SELECT c.equipment_id, \
+            #         CASE \
+            #                 WHEN totalTonAmount IS NULL THEN 0 \
+            #                 WHEN totalTonAmount IS NOT NULL THEN totalTonAmount \
+            #             \
+            #             END AS TonAmount,\
+            #                 \
+            #             CASE \
+            #                 WHEN TotalRentalAmount IS NULL THEN 0 \
+            #                 WHEN TotalRentalAmount IS NOT NULL THEN TotalRentalAmount \
+            #             \
+            #             END AS RentalAmount,\
+            #             CASE \
+            #                 WHEN totalDCamount IS NULL THEN 0 \
+            #                 WHEN totalDCamount IS NOT NULL THEN totalDCamount \
+            #             \
+            #             END AS DieselAmount\
+            #         \
+            #         FROM (SELECT ht.equipment_id, ht.totalTonAmount, er.TotalRentalAmount \
+            #         FROM ( \
+            #         SELECT equipment_id, sum(amount) as totalTonAmount \
+            #         FROM hauling_tonnage \
+            #         WHERE transDate BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+            #         GROUP BY equipment_id \
+            #         ) ht \
+            #         LEFT JOIN ( \
+            #         SELECT equipment_id, sum(rental_amount) as TotalRentalAmount \
+            #         FROM equipment_rental \
+            #         WHERE transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+            #         GROUP BY equipment_id \
+            #         ) er USING (equipment_id) \
+            #             \
+            #         UNION \
+            #                 \
+            #         SELECT er.equipment_id, ht.totalTonAmount, er.TotalRentalAmount \
+            #         FROM ( \
+            #         SELECT equipment_id, sum(amount) as totalTonAmount \
+            #         FROM hauling_tonnage \
+            #         WHERE transDate BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+            #         GROUP BY equipment_id \
+            #         ) ht \
+            #         RIGHT  JOIN ( \
+            #         SELECT equipment_id, sum(rental_amount) as TotalRentalAmount \
+            #         FROM equipment_rental \
+            #         WHERE transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+            #         GROUP BY equipment_id \
+            #         ) er USING (equipment_id) \
+            #         ) ab \
+            #         RIGHT  JOIN (SELECT dc.equipment_id , \
+            #         sum(dc.amount)as totalDCamount from diesel_consumption as dc \
+            #         WHERE dc.transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
+            #         GROUP BY dc.equipment_id)c ON c.equipment_id = ab.equipment_id \
+            #                         ')
+
+            query = ('SELECT dc.equipment_id, \
+                        CASE \
+                        WHEN totalTonAmount IS NULL THEN 0 \
+                              else totalTonAmount \
                         END AS TonAmount,\
-                            \
-                        CASE \
-                            WHEN TotalRentalAmount IS NULL THEN 0 \
-                            WHEN TotalRentalAmount IS NOT NULL THEN TotalRentalAmount \
+                         CASE WHEN TotalRentalAmount IS NULL THEN 0 \
+                             else TotalRentalAmount \
+                         END AS RentalAmount, \
+                         CASE  WHEN totalDCamount IS NULL THEN 0 \
+                                else totalDCamount \
+                         END AS DieselAmount \
+                             \
+                        FROM (SELECT equipment_id, \
+                            sum(amount) AS totalTonAmount \
+                            FROM hauling_tonnage \
+                            WHERE transDate BETWEEN "' + datefrom + '" AND "' + dateto + '" \
+                                GROUP BY equipment_id\
+                                 ) AS ht \
+                                    \
+                            RIGHT  JOIN ( \
+                            SELECT equipment_id, sum(rental_amount) AS totalRentalAmount \
+                            FROM equipment_rental \
+                            WHERE transaction_date BETWEEN "' + datefrom + '" AND "' + dateto + '" \
+                            GROUP BY equipment_id \
+                            ) AS er \
+                            ON ht.equipment_id = er.equipment_id\
+                        RIGHT  JOIN ( \
+                        SELECT equipment_id, \
+                        sum(amount)as totalDCamount \
+                        FROM diesel_consumption \
+                        WHERE transaction_date BETWEEN "' + datefrom + '" AND "' + dateto + '" \
+                        GROUP BY equipment_id \
+                        ORDER BY equipment_id  \
+                        ) AS dc \
+                        ON er.equipment_id = dc.equipment_id \
                         \
-                        END AS RentalAmount,\
-                        CASE \
-                            WHEN totalDCamount IS NULL THEN 0 \
-                            WHEN totalDCamount IS NOT NULL THEN totalDCamount \
-                        \
-                        END AS DieselAmount\
-                    \
-                    FROM (SELECT ht.equipment_id, ht.totalTonAmount, er.TotalRentalAmount \
-                    FROM ( \
-                    SELECT equipment_id, sum(amount) as totalTonAmount \
-                    FROM hauling_tonnage \
-                    WHERE transDate BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
-                    GROUP BY equipment_id \
-                    ) ht \
-                    LEFT JOIN ( \
-                    SELECT equipment_id, sum(rental_amount) as TotalRentalAmount \
-                    FROM equipment_rental \
-                    WHERE transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
-                    GROUP BY equipment_id \
-                    ) er USING (equipment_id) \
-                        \
-                    UNION \
-                            \
-                    SELECT er.equipment_id, ht.totalTonAmount, er.TotalRentalAmount \
-                    FROM ( \
-                    SELECT equipment_id, sum(amount) as totalTonAmount \
-                    FROM hauling_tonnage \
-                    WHERE transDate BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
-                    GROUP BY equipment_id \
-                    ) ht \
-                    RIGHT  JOIN ( \
-                    SELECT equipment_id, sum(rental_amount) as TotalRentalAmount \
-                    FROM equipment_rental \
-                    WHERE transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
-                    GROUP BY equipment_id \
-                    ) er USING (equipment_id) \
-                    ) ab \
-                    RIGHT  JOIN (SELECT dc.equipment_id , \
-                    sum(dc.amount)as totalDCamount from diesel_consumption as dc \
-                    WHERE dc.transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
-                    GROUP BY dc.equipment_id)c ON c.equipment_id = ab.equipment_id \
-                                    ')
+                        ') 
+               
+                    
                 
             
 
