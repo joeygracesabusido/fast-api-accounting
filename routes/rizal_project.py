@@ -727,10 +727,10 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
             {
                  
                 "equipment_id": x[0],
-                "TonnageAmount": x[1],
-                "RentalAmount": x[2],
-                "DieselAmount": x[3],
-                "netIncome": x[4],
+                "TonnageAmount": "{:,.2f}".format(x[1]),
+                "RentalAmount": "{:,.2f}".format(x[2]),
+                "DieselAmount": "{:,.2f}".format(x[3]),
+                "netIncome": "{:,.2f}".format(float(((x[1])+(x[2]))-x[3])),
             
             }
             for x in cost

@@ -964,8 +964,24 @@ class Database(object):
         Database.DATABASE._open_connection()
         try:
             
-            query =('SELECT c.equipment_id,ab.totalTonAmount,ab.TotalRentalAmount,c.totalDCamount, \
-                    ((ab.totalTonAmount+ab.TotalRentalAmount)-c.totalDCamount)as NetIncome \
+            query = ('SELECT c.equipment_id, \
+                    CASE \
+                            WHEN totalTonAmount IS NULL THEN 0 \
+                            WHEN totalTonAmount IS NOT NULL THEN totalTonAmount \
+                        \
+                        END AS TonAmount,\
+                            \
+                        CASE \
+                            WHEN TotalRentalAmount IS NULL THEN 0 \
+                            WHEN TotalRentalAmount IS NOT NULL THEN TotalRentalAmount \
+                        \
+                        END AS RentalAmount,\
+                        CASE \
+                            WHEN totalDCamount IS NULL THEN 0 \
+                            WHEN totalDCamount IS NOT NULL THEN totalDCamount \
+                        \
+                        END AS DieselAmount\
+                    \
                     FROM (SELECT ht.equipment_id, ht.totalTonAmount, er.TotalRentalAmount \
                     FROM ( \
                     SELECT equipment_id, sum(amount) as totalTonAmount \
@@ -1001,7 +1017,6 @@ class Database(object):
                     WHERE dc.transaction_date BETWEEN  "' + datefrom + '" AND "' + dateto + '" \
                     GROUP BY dc.equipment_id)c ON c.equipment_id = ab.equipment_id \
                                     ')
-                                    
                 
             
 
