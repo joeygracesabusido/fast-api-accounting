@@ -249,6 +249,25 @@ class RizalTonnagehaul(BaseModel):
     rate: float
     amount: float
     driverOperator: str
+
+
+class Cost(BaseModel): 
+    """This is for cost or expenses table"""
+   
+    transDate: date
+    equipment_id: str 
+    salaries: float
+    fuel: float
+    oil_lubes: float
+    mechanicalSupplies: float
+    repairMaintenance: float
+    meals: float
+    transpo: float
+    tires: float
+    amortization: float
+    others: float
+    totalAmount: float
+   
    
 
     

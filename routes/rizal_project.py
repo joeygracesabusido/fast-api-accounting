@@ -737,3 +737,36 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
         ]
 
     return costData
+
+#================================================Rizal Cost Frame=====================================
+
+from config.models import cost,insertCost,select_cost
+from models.model import Cost
+@rizal_project.get("/api-insert-rizal-cost/", response_class=HTMLResponse)
+async def get_all_employee(request: Request):
+    
+    return templates.TemplateResponse("rizal/insertCost.html",{"request":request})
+
+
+
+@rizal_project.post("/api-insert-rizal-cost/")
+async def insertCostapi(items:Cost,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+
+    insertCost(transDate=items.transDate,equipment_id=items.equipment_id,salaries=items.salaries,
+                    fuel=items.fuel,oil_lubes=items.oil_lubes, 
+                    mechanicalSupplies=items.mechanicalSupplies,
+                    repairMaintenance=items.repairMaintenance,meals=items.meals,
+                    transpo=items.transpo,tires=items.tires,amortization=items.amortization,
+                    others=items.others, totalAmount=items.totalAmount,user=username,date_created=today)
+
+    return  {'Messeges':'Data has been Save'}
+
+@rizal_project.get("/api-get-rizal-cost/")
+async def get_cost(username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    costData = select_cost()
+    
+
+    return costData

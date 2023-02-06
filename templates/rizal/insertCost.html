@@ -1,0 +1,471 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+     #div1 {
+            width: 40%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: gray;
+           
+    }
+
+    #div3 {
+           
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: lightskyblue;
+            text-align: center;
+           
+    }
+
+    .input-box {
+        flex: 1; /* Divide the available space evenly between the input fields */
+        margin: 0 5px; /* Add some margin between the input fields */
+        border-radius: 20px; /* round the corners of the input field */
+        border: 2px solid lightskyblue;
+        padding: 10px;
+        background-color: whitesmoke;
+    }
+</style>
+<body>
+    <div class="container mt-4" id="div1">
+        <label style="color:yellow;">
+            Date
+        </label>
+        <input 
+            type="date" 
+            name="transDate"
+            id="transDate"
+            
+            class="form-control"
+            
+            >
+
+        <label style="color:yellow;">
+            Equipment ID
+            </label>
+            <input 
+                type="text" 
+                name="equipment_id"
+                id="equipment_id"
+                
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Salaries
+            </label>
+            <input 
+                type="number" 
+                name="salaries"
+                id="salaries"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Fuel
+            </label>
+            <input 
+                type="number" 
+                name="fuel"
+                id="fuel"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+
+        <label style="color:yellow;">
+            Oil & Lubes
+            </label>
+            <input 
+                type="number" 
+                name="oil_lubes"
+                id="oil_lubes"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Mechanical Supplies
+            </label>
+            <input 
+                type="number" 
+                name="mechanicalSupplies"
+                id="mechanicalSupplies"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Repair Maintenance
+            </label>
+            <input 
+                type="number" 
+                name="repairMaintenance"
+                id="repairMaintenance"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Meals
+            </label>
+            <input 
+                type="number" 
+                name="meals"
+                id="meals"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Transpo
+            </label>
+            <input 
+                type="number" 
+                name="transpo"
+                id="transpo"
+                step="0.0"
+                class="form-control"
+                
+            >
+        
+        <label style="color:yellow;">
+            Tires
+            </label>
+            <input 
+                type="number" 
+                name="tires"
+                id="tires"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Amortization
+            </label>
+            <input 
+                type="number" 
+                name="amortization"
+                id="amortization"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Others
+            </label>
+            <input 
+                type="number" 
+                name="others"
+                id="others"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Total Amount
+            </label>
+            <input 
+                type="number" 
+                name="totalAmount"
+                id="totalAmount"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        
+                
+            <br>
+
+            <button type="submit" onclick="insertCosting()" class="btn btn-info">
+            <i class="fas fa-database"></i> Save</button>
+
+
+    </div>
+
+    <div class="container mt-4" id="div3">
+        <label for="dateFrom"
+        >Date From</label>
+        
+            <input 
+            type="date"
+            name="dateFrom"
+            id="dateFrom"
+           
+            >
+
+        <label for="dateTo"
+        >Date To</label>
+        
+            <input 
+            type="date"
+            name="dateTo"
+            id="dateTo"
+            
+            >
+
+        <label for="dateTo"
+        >Equipment ID</label>
+        
+            <input 
+            type="text"
+            name="equipmentIDSearch"
+            id="equipmentIDSearch"
+            
+            >
+
+        
+            <button type="submit"  onclick="displayTonnageHaulingData()" class="btn btn-primary">
+                Search
+                <i class="fas fa-database"></i>
+            </button>
+
+            <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                Export
+                <i class="fas fa-database"></i>
+            </button>
+
+    </div>
+
+    <div class="container mt-4" id="div2">
+
+       
+
+        <table id="myTable" class="table table-bordered"  style="text-align: center;">
+            <thead class="table-dark">
+                <tr>
+                    <td>Date</td>
+                    <td>Equipment ID</td>
+                    <td>Total Trip</td>
+                    <td>Total Tonnage</td>
+                    <td>Rate</td>
+                    <td>Amount</td>
+                    <td>Driver Operator</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody id="table_body2">
+               
+                    
+                    <tr>
+                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
+                    </tr>
+                   
+                
+            </tbody>
+
+           
+
+        </table>
+
+    </div>
+
+
+    <!-- This is to insert Equipment to tvi table -->
+    <script type="text/javascript">
+        // Define an async function to insert equipment
+        async function insertCosting() {
+          // Get the values of the input fields
+          const data = {
+            transDate: document.getElementById("transDate").value,
+            equipment_id: document.getElementById("equipment_id").value,
+            salaries: document.getElementById("salaries").value,
+            fuel: document.getElementById("fuel").value,
+            oil_lubes: document.getElementById("oil_lubes").value,
+            mechanicalSupplies: document.getElementById("mechanicalSupplies").value,
+            repairMaintenance: document.getElementById("repairMaintenance").value,
+            meals: document.getElementById("meals").value,
+            transpo: document.getElementById("transpo").value,
+            tires: document.getElementById("tires").value,
+            amortization: document.getElementById("amortization").value,
+            others: document.getElementById("others").value,
+            totalAmount: document.getElementById("totalAmount").value,
+           
+            
+          };
+      
+          // Use the fetch API to send the POST request
+          try {
+            const response = await fetch(`/api-insert-rizal-cost/`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data)
+            });
+      
+            // Check if the response was successful
+            if (response.status === 200) {
+              window.alert("Your data has been saved");
+              console.log(data);
+              window.location.assign("/index/");
+              
+            } else if (response.status === 401) {
+              window.alert("Unauthorized credential. Please login");
+            }
+          } catch (error) {
+            // Catch any errors and log them to the console
+            window.alert(error);
+            console.log(error);
+          }
+        }
+      </script>
+
+
+        <script>
+            function html_table_excel(type){
+                var data = document.getElementById('table_body2');
+                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                XLSX.writeFile(file, 'employelist.' + type);
+
+            }
+
+            
+        </script>
+
+
+        <!-- This function is for displaying Tonnage Hauling Data -->
+
+        <script type="text/javascript">
+            // const rental_url =search_url ;
+            async function displayTonnageHaulingData(){
+                var dateFrom = document.getElementById('dateFrom').value;
+                var dateTo = document.getElementById('dateTo').value;
+                var equipmentIDSearch = document.getElementById('equipmentIDSearch').value;
+            
+            const search_url = `/api-tonnage-hauling-list/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
+
+            
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            if (responce.status === 200) {
+                let tableData2="";
+                data.map((values)=>{
+                    tableData2+= ` <tr>
+                               
+                                <td>${values.transDate}</td>
+                                <td>${values.equipment_id}</td>
+                                <td>${values.totalTrip}</td>
+                                <td>${values.totalTonnage}</td>
+                                <td>${values.rate}</td>
+                                <td>${values.amount}</td>
+                                <td>${values.driverOperator}</td>
+
+                                <td>
+                                    <a href="/update-tonnageHaul/${values.id}"
+                                    <button type="button" class="btn btn-primary">
+                                    <i class="fas fa-database"></i> Edit</button></a> 
+                                </td>
+                        
+                            
+                            </tr>`;
+                });
+                    document.getElementById("table_body2").innerHTML=tableData2;
+                }else if (responce.status === 401){
+                    window.alert("Unauthorized credential. Please login");
+                }
+            
+            }
+            
+            
+
+
+        </script>
+
+        <script>
+
+            $( function() {
+                
+                $( "#equipment_id" ).autocomplete({
+                source: "/api-search-autocomplete-equipment-rizal/"
+                });
+            } );
+
+
+        </script>
+
+
+        <script>
+
+            $( function() {
+                
+                $( "#equipmentIDSearch" ).autocomplete({
+                source: "/api-search-autocomplete-equipment-rizal/"
+                });
+            } );
+
+
+        </script>
+
+        <script type="text/javascript">
+            // const rateInput = document.getElementById("rate");
+            // const totalTonsInput = document.getElementById("totalTons");
+            // const amountInput = document.getElementById("amount");
+            
+            // function calculateTotalAmount(rate, totalTons) {
+            //     return parseFloat(totalTons) * parseFloat(rate);
+            // }
+            
+            // rateInput.addEventListener("input", function(event) {
+            //     const rate = event.target.value;
+            //     const totalTons = totalTonsInput.value;
+                
+            //     if (isNaN(rate) || isNaN(totalTons)) {
+            //     return;
+            //     }
+                
+            //     const totalAmount = calculateTotalAmount(rate, totalTons);
+            //     amountInput.value = totalAmount.toFixed(2);
+            // });
+
+
+            // document.getElementById('rate').addEventListener('input',
+            // function(e){
+            //     let rate = e.target.value;
+
+            //     var totalTons = document.getElementById('totalTons').value;
+            //     var totalAmount;
+               
+            //     totalAmount = parseFloat(totalTons) * parseFloat(rate)
+            //     console.log(totalAmount)
+               
+            //     document.getElementById('amount').value=totalAmount.toFixed(2);
+
+            //     }
+
+            
+            // );
+
+        </script>
+
+</body>
+
+
+{% endblock %}
