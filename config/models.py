@@ -133,12 +133,12 @@ def update_cost(id,transDate,equipment_id,salaries,fuel,oil_lubes,
         session.refresh(result)
 
 
-def select_test(equipment_id):
-    """This function is for selecting one data from cost table"""
-    with Session(engine) as session:
-        statement = select(cost).where(cost.equipment_id == equipment_id)
-        results = session.exec(statement)
+# def select_test(equipment_id):
+#     """This function is for selecting one data from cost table"""
+#     with Session(engine) as session:
+#         statement = select(cost).where(cost.equipment_id == equipment_id)
+#         results = session.exec(statement)
         
-        return results
+#         return results
 
 # create_db_and_tables()

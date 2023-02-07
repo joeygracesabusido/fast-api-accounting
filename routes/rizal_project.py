@@ -561,7 +561,7 @@ def get_updatetonnageHaul(request:Request,id, username: str = Depends(validateLo
     tonnageData = [
         
             {
-                
+
                 "id": x[0],
                 "transDate": x[1],
                 "equipment_id": x[2],
@@ -571,11 +571,13 @@ def get_updatetonnageHaul(request:Request,id, username: str = Depends(validateLo
                 "rate": x[6],
                 "amount": "{:,.2f}".format(x[7]),
                 "driverOperator": x[8]
-                
+            
 
             }
             for x in myresult
         ]
+
+  
    
     
     
@@ -742,7 +744,7 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
 
 from config.models import (cost,insertCost,select_cost,
                             select_cost_id,update_cost,
-                            select_test)
+                            )
 from models.model import Cost
 @rizal_project.get("/api-insert-rizal-cost/", response_class=HTMLResponse)
 async def get_all_employee(request: Request):
@@ -870,36 +872,6 @@ async def updateCostapi(id,items:Cost,username: str = Depends(validateLogin)):
     return  {'Messeges':'Data has been Updated'}
 
 
-@rizal_project.get("/test-api-cost-rizal/")
-async def get_costData_id(equipment_id,username: str = Depends(validateLogin)):
 
-    data = select_test(equipment_id=equipment_id)
-    
-
-    costData = [
-        
-            {
-                "id": results.id,
-                "transDate": results.transDate,
-                "equipment_id": results.equipment_id,
-                "salaries": results.salaries,
-                "fuel": results.fuel,
-                "oil_lubes": results.oil_lubes,
-                "mechanicalSupplies": results.mechanicalSupplies,
-                "repairMaintenance": results.repairMaintenance,
-                "meals": results.meals,
-                "transpo": results.transpo,
-                "tires": results.tires,
-                "amortization": results.amortization,
-                "others": results.others,
-                "totalAmount": results.totalAmount
-               
-            
-            }
-           for results in data
-        ]
-    
-
-    return costData
     
   

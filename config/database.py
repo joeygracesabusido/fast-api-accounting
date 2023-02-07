@@ -808,7 +808,7 @@ class Database(object):
         try:
             
             query = ('SELECT * FROM hauling_tonnage \
-                WHERE id like "%'+id+'%" \
+                WHERE id = "'+ id +'" \
                  ')
                 
             

@@ -34,8 +34,8 @@
 </style>
 <body>
     <div class="container mt-4" id="div1">
-        {% for list in tonnageData%}
-            <input 
+        {% for list in tonnageData %}
+        <input 
             type="text" hidden
             name="transID"
             id="transID"
@@ -141,12 +141,19 @@
                     id="driver_operator"
                     value="{{list.driverOperator}}"
                     class="form-control"
-                    
-                ><br>
-        {% endfor %}
-            <button type="submit" onclick="updateTonnageHaul()" class="btn btn-info">
-            <i class="fas fa-database"></i>Update</button>
+                    >
 
+
+        {% endfor %}  
+        
+        
+            <button type="submit" onclick="updateTonnageHaul()" class="btn btn-info">
+                <i class="fas fa-database"></i>Update</button>
+    
+       
+        
+       
+            
 
     </div>
 
