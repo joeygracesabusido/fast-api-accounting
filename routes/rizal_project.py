@@ -801,60 +801,60 @@ async def get_cost(datefrom,dateto,username: str = Depends(validateLogin)):
 @rizal_project.get("/update-cost-rizal/{id}", response_class=HTMLResponse)
 async def get_costData_id(id,request: Request):
 
-    # results = select_cost_id(id=id)
+    results = select_cost_id(id=id)
     
 
-    # costData = [
+    costData = [
         
-    #         {
-    #             "id": results.id,
-    #             "transDate": results.transDate,
-    #             "equipment_id": results.equipment_id,
-    #             "salaries": results.salaries,
-    #             "fuel": results.fuel,
-    #             "oil_lubes": results.oil_lubes,
-    #             "mechanicalSupplies": results.mechanicalSupplies,
-    #             "repairMaintenance": results.repairMaintenance,
-    #             "meals": results.meals,
-    #             "transpo": results.transpo,
-    #             "tires": results.tires,
-    #             "amortization": results.amortization,
-    #             "others": results.others,
-    #             "totalAmount": results.totalAmount
+            {
+                "id": results.id,
+                "transDate": results.transDate,
+                "equipment_id": results.equipment_id,
+                "salaries": results.salaries,
+                "fuel": results.fuel,
+                "oil_lubes": results.oil_lubes,
+                "mechanicalSupplies": results.mechanicalSupplies,
+                "repairMaintenance": results.repairMaintenance,
+                "meals": results.meals,
+                "transpo": results.transpo,
+                "tires": results.tires,
+                "amortization": results.amortization,
+                "others": results.others,
+                "totalAmount": results.totalAmount
             
-    #         }
+            }
            
-    #     ]
+        ]
     
 
     # return costData
 
 
-    cost = Database.get_cost_id(id=id)
+    # cost = Database.get_cost_id(id=id)
 
-    costData = [
+    # costData = [
         
-            {
-                 "id": results[0],
-                "transDate": results[1],
-                "equipment_id": results[2],
-                "salaries": results[3],
-                "fuel": results[4],
-                "oil_lubes": results[5],
-                "mechanicalSupplies": results[6],
-                "repairMaintenance": results[7],
-                "meals": results[8],
-                "transpo": results[9],
-                "tires": results[10],
-                "amortization": results[11],
-                "others": results[12],
-                "totalAmount": results[13]
+    #         {
+    #              "id": results[0],
+    #             "transDate": results[1],
+    #             "equipment_id": results[2],
+    #             "salaries": results[3],
+    #             "fuel": results[4],
+    #             "oil_lubes": results[5],
+    #             "mechanicalSupplies": results[6],
+    #             "repairMaintenance": results[7],
+    #             "meals": results[8],
+    #             "transpo": results[9],
+    #             "tires": results[10],
+    #             "amortization": results[11],
+    #             "others": results[12],
+    #             "totalAmount": results[13]
             
-            }
-           for results in cost
-        ]
+    #         }
+    #        for results in cost
+    #     ]
     
-    return templates.TemplateResponse("rizal/UpdateCost.html",{"request":request,"results":costData})
+    return templates.TemplateResponse("rizal/updateCost.html",{"request":request,"results":costData})
 
 
 @rizal_project.put("/api-update-rizal-cost/{id}")
