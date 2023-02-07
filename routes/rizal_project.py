@@ -740,7 +740,9 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
 
 #================================================Rizal Cost Frame=====================================
 
-from config.models import cost,insertCost,select_cost
+from config.models import (cost,insertCost,select_cost,
+                            select_cost_id,update_cost,
+                            select_test)
 from models.model import Cost
 @rizal_project.get("/api-insert-rizal-cost/", response_class=HTMLResponse)
 async def get_all_employee(request: Request):
@@ -764,9 +766,114 @@ async def insertCostapi(items:Cost,username: str = Depends(validateLogin)):
     return  {'Messeges':'Data has been Save'}
 
 @rizal_project.get("/api-get-rizal-cost/")
-async def get_cost(username: str = Depends(validateLogin)):
+async def get_cost(datefrom,dateto,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
-    costData = select_cost()
+    results = select_cost(datefrom=datefrom,dateto=dateto)
+
+    costData = [
+        
+            {
+                "id": x.id,
+                "transDate": x.transDate,
+                "equipment_id": x.equipment_id,
+                "salaries": "{:,.2f}".format(x.salaries),
+                "fuel": "{:,.2f}".format(x.fuel),
+                "oil_lubes": "{:,.2f}".format(x.oil_lubes),
+                "mechanicalSupplies": "{:,.2f}".format(x.mechanicalSupplies),
+                "repairMaintenance": "{:,.2f}".format(x.repairMaintenance),
+                "meals": "{:,.2f}".format(x.meals),
+                "transpo": "{:,.2f}".format(x.transpo),
+                "tires": "{:,.2f}".format(x.tires),
+                "amortization": "{:,.2f}".format(x.amortization),
+                "others": "{:,.2f}".format(x.others),
+                "totalAmount": "{:,.2f}".format(x.totalAmount),
+            
+            }
+            for x in results
+        ]
     
 
     return costData
+
+
+@rizal_project.get("/update-cost-rizal/{id}", response_class=HTMLResponse)
+async def get_costData_id(id,request: Request):
+
+    results = select_cost_id(id=id)
+    
+
+    costData = [
+        
+            {
+                "id": results.id,
+                "transDate": results.transDate,
+                "equipment_id": results.equipment_id,
+                "salaries": results.salaries,
+                "fuel": results.fuel,
+                "oil_lubes": results.oil_lubes,
+                "mechanicalSupplies": results.mechanicalSupplies,
+                "repairMaintenance": results.repairMaintenance,
+                "meals": results.meals,
+                "transpo": results.transpo,
+                "tires": results.tires,
+                "amortization": results.amortization,
+                "others": results.others,
+                "totalAmount": results.totalAmount
+            
+            }
+           
+        ]
+    
+
+    # return costData
+    
+    return templates.TemplateResponse("rizal/UpdateCost.html",{"request":request,"results":costData})
+
+
+@rizal_project.put("/api-update-rizal-cost/{id}")
+async def updateCostapi(id,items:Cost,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+
+    update_cost(transDate=items.transDate,equipment_id=items.equipment_id,salaries=items.salaries,
+                    fuel=items.fuel,oil_lubes=items.oil_lubes, 
+                    mechanicalSupplies=items.mechanicalSupplies,
+                    repairMaintenance=items.repairMaintenance,meals=items.meals,
+                    transpo=items.transpo,tires=items.tires,amortization=items.amortization,
+                    others=items.others, totalAmount=items.totalAmount,user=username,date_update=today,id=id)
+
+    return  {'Messeges':'Data has been Updated'}
+
+
+@rizal_project.get("/test-api-cost-rizal/")
+async def get_costData_id(equipment_id,username: str = Depends(validateLogin)):
+
+    data = select_test(equipment_id=equipment_id)
+    
+
+    costData = [
+        
+            {
+                "id": results.id,
+                "transDate": results.transDate,
+                "equipment_id": results.equipment_id,
+                "salaries": results.salaries,
+                "fuel": results.fuel,
+                "oil_lubes": results.oil_lubes,
+                "mechanicalSupplies": results.mechanicalSupplies,
+                "repairMaintenance": results.repairMaintenance,
+                "meals": results.meals,
+                "transpo": results.transpo,
+                "tires": results.tires,
+                "amortization": results.amortization,
+                "others": results.others,
+                "totalAmount": results.totalAmount
+            
+            }
+           for results in data
+        ]
+    
+
+    return costData
+    
+  

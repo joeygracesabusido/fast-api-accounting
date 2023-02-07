@@ -1,0 +1,338 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+     #div1 {
+            width: 40%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: gray;
+            
+    }
+
+    #div3 {
+           
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: lightskyblue;
+            text-align: center;
+           
+    }
+
+    .input-box {
+        flex: 1; /* Divide the available space evenly between the input fields */
+        margin: 0 5px; /* Add some margin between the input fields */
+        border-radius: 20px; /* round the corners of the input field */
+        border: 2px solid lightskyblue;
+        padding: 10px;
+        background-color: whitesmoke;
+    }
+</style>
+<body>
+    <div class="container mt-4" id="div1">
+        <h2 style="color:yellow;">UPDATE COST TRANSACTION</h2>
+                {% for list in results %}
+                <input 
+                type="text" hidden
+                name="transID"
+                id="transID"
+                value="{{list.id}}"
+                class="form-control"
+                >
+                <label style="color:yellow;">
+                    Date
+                </label>
+                <input 
+                    type="date" 
+                    name="transDate"
+                    id="transDate"
+                    value="{{list.transDate}}"
+                    class="form-control"
+                    
+                    >
+
+                <label style="color:yellow;">
+                    Equipment ID
+                    </label>
+                    <input 
+                        type="text" 
+                        name="equipment_id"
+                        id="equipment_id"
+                        value="{{list.equipment_id}}"
+                        class="form-control"
+                        
+                    >
+
+                <label style="color:yellow;">
+                    Salaries
+                    </label>
+                    <input 
+                        type="number" 
+                        name="salaries"
+                        id="salaries"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.salaries}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+                <label style="color:yellow;">
+                    Fuel
+                    </label>
+                    <input 
+                        type="number" 
+                        name="fuel"
+                        id="fuel"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.fuel}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+
+                <label style="color:yellow;">
+                    Oil & Lubes
+                    </label>
+                    <input 
+                        type="number" 
+                        name="oil_lubes"
+                        id="oil_lubes"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.oil_lubes}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+                <label style="color:yellow;">
+                    Mechanical Supplies
+                    </label>
+                    <input 
+                        type="number" 
+                        name="mechanicalSupplies"
+                        id="mechanicalSupplies"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.mechanicalSupplies}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+                <label style="color:yellow;">
+                    Repair Maintenance
+                    </label>
+                    <input 
+                        type="number" 
+                        name="repairMaintenance"
+                        id="repairMaintenance"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.repairMaintenance}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+                <label style="color:yellow;">
+                    Meals
+                    </label>
+                    <input 
+                        type="number" 
+                        name="meals"
+                        id="meals"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.repairMaintenance}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+                <label style="color:yellow;">
+                    Transpo
+                    </label>
+                    <input 
+                        type="number" 
+                        name="transpo"
+                        id="transpo"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.transpo}}"
+                        onkeyup="getTotalamount();"
+                    >
+                
+                <label style="color:yellow;">
+                    Tires
+                    </label>
+                    <input 
+                        type="number" 
+                        name="tires"
+                        id="tires"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.tires}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+                <label style="color:yellow;">
+                    Amortization
+                    </label>
+                    <input 
+                        type="number" 
+                        name="amortization"
+                        id="amortization"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.amortization}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+                <label style="color:yellow;">
+                    Others
+                    </label>
+                    <input 
+                        type="number" 
+                        name="others"
+                        id="others"
+                        step="0.0"
+                        class="form-control"
+                        value="{{list.others}}"
+                        onkeyup="getTotalamount();"
+                    >
+
+                <label style="color:yellow;">
+                    Total Amount
+                    </label>
+                    <input 
+                        type="number" 
+                        name="totalAmount"
+                        id="totalAmount"
+                        step="0.0"
+                        class="form-control"
+                        
+                    >
+            {% endfor %}
+            
+                        
+            <br>
+
+            <button type="submit" onclick="updateCost()" class="btn btn-info">
+            <i class="fas fa-database"></i>Update</button>
+
+
+    </div>
+
+    <!-- This function is for autocomplete Equipment ID -->
+        <script>
+
+            $( function() {
+                
+                $( "#equipment_id" ).autocomplete({
+                source: "/api-search-autocomplete-equipment-rizal/"
+                });
+            } );
+
+
+        </script>
+
+        <!-- This function is for updating cost Table for Rizal -->
+        <script type="text/javascript">
+            function updateCost() {
+                var data = {};
+                id = document.getElementById('transID').value;
+                totalAmount = document.getElementById("totalAmount").value;
+                
+                data["transDate"] = document.getElementById("transDate").value;
+                data["equipment_id"] = document.getElementById("equipment_id").value;
+                data["salaries"] = document.getElementById("salaries").value;
+                data["fuel"] = document.getElementById("fuel").value;
+                data["oil_lubes"] = document.getElementById("oil_lubes").value;
+                data["mechanicalSupplies"] = document.getElementById("mechanicalSupplies").value;
+                data["repairMaintenance"] = document.getElementById("repairMaintenance").value;
+                data["meals"] = document.getElementById("meals").value;
+                data["transpo"] = document.getElementById("transpo").value;
+                data["tires"] = document.getElementById("tires").value;
+                data["amortization"] = document.getElementById("amortization").value;
+                data["others"] = document.getElementById("others").value;
+                data["totalAmount"] = document.getElementById("totalAmount").value;
+
+
+                console.log(data);
+
+                if (id === '' || totalAmount === '' ) {
+                        window.alert("Employee ID field is requires");
+                } else {
+                        // Use async/await to simplify the fetch call
+                        (async () => {
+                        try {
+                                // Use template literals to build the URL
+                                if (confirm('Are you sure you want to update this rental transaction?')){
+                                        const response = await fetch("/api-update-rizal-cost/"+ id, {
+                                        method: "PUT",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(data)
+                                        });
+
+                                        // Use response.ok to check if the response was successful
+                                        if (response.ok) {
+                                        window.alert("Your Data has been Updated");
+                                        window.location.assign("/index");
+                                        console.log(await response.json());
+                                        } else if (response.status === 401) {
+                                        window.alert("Unauthorized credential Please Login");
+                                        }
+
+                                } else {
+                                        throw new Error('Failed to update data');
+                                        }
+                                
+                        } catch (error) {
+                                // Catch errors
+                                window.alert(error);
+                                console.log(error);
+                        }
+                        })();
+                }
+                }
+
+
+        </script>
+   
+        
+
+        <script type="text/javascript"> 
+            function getTotalamount(){
+               
+
+                var salaries = document.getElementById("salaries").value;
+                var fuel = document.getElementById("fuel").value;
+                var oil_lubes = document.getElementById("oil_lubes").value;
+                var mechanicalSupplies = document.getElementById("mechanicalSupplies").value;
+                var repairMaintenance = document.getElementById("repairMaintenance").value;
+                var meals = document.getElementById("meals").value;
+                var transpo = document.getElementById("transpo").value;
+                var tires = document.getElementById("tires").value;
+                var amortization = document.getElementById("amortization").value;
+                var others = document.getElementById("others").value;
+            // totalAmount: document.getElementById("totalAmount").value,
+            
+                var totalAmount;
+            
+                
+            
+              
+                totalAmount = (parseFloat(salaries) + parseFloat(fuel) + parseFloat(oil_lubes) +
+                                 parseFloat(mechanicalSupplies) + parseFloat(repairMaintenance) + parseFloat(meals) +
+                                 parseFloat(transpo) + parseFloat(tires) + parseFloat(amortization) +
+                                 parseFloat(others) );
+                document.getElementById('totalAmount').value=totalAmount.toFixed(2);	
+            
+                    
+                
+            
+            }
+
+        </script>
+
+</body>
+
+
+{% endblock %}

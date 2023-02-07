@@ -67,7 +67,7 @@
                 id="salaries"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
         <label style="color:yellow;">
@@ -79,7 +79,7 @@
                 id="fuel"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
 
@@ -92,7 +92,7 @@
                 id="oil_lubes"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
         <label style="color:yellow;">
@@ -104,7 +104,7 @@
                 id="mechanicalSupplies"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
         <label style="color:yellow;">
@@ -116,7 +116,7 @@
                 id="repairMaintenance"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
         <label style="color:yellow;">
@@ -128,7 +128,7 @@
                 id="meals"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
         <label style="color:yellow;">
@@ -140,7 +140,7 @@
                 id="transpo"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
         
         <label style="color:yellow;">
@@ -152,7 +152,7 @@
                 id="tires"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
         <label style="color:yellow;">
@@ -164,7 +164,7 @@
                 id="amortization"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
         <label style="color:yellow;">
@@ -176,7 +176,7 @@
                 id="others"
                 step="0.0"
                 class="form-control"
-                
+                onkeyup="getTotalamount();"
             >
 
         <label style="color:yellow;">
@@ -222,7 +222,7 @@
             
             >
 
-        <label for="dateTo"
+        <!-- <label for="dateTo"
         >Equipment ID</label>
         
             <input 
@@ -230,7 +230,7 @@
             name="equipmentIDSearch"
             id="equipmentIDSearch"
             
-            >
+            > -->
 
         
             <button type="submit"  onclick="displayTonnageHaulingData()" class="btn btn-primary">
@@ -254,11 +254,17 @@
                 <tr>
                     <td>Date</td>
                     <td>Equipment ID</td>
-                    <td>Total Trip</td>
-                    <td>Total Tonnage</td>
-                    <td>Rate</td>
-                    <td>Amount</td>
-                    <td>Driver Operator</td>
+                    <td>Salaries</td>
+                    <td>Fuel</td>
+                    <td>Oil & Lubes</td>
+                    <td>Mech. Supplies</td>
+                    <td>Repair & Main</td>
+                    <td>Meals</td>
+                    <td>Transpo</td>
+                    <td>Tires</td>
+                    <td>Amortization</td>
+                    <td>Others</td>
+                    <td>Total Cost</td>
                     <td>Action</td>
                 </tr>
             </thead>
@@ -274,7 +280,11 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                    
                 
@@ -356,9 +366,9 @@
             async function displayTonnageHaulingData(){
                 var dateFrom = document.getElementById('dateFrom').value;
                 var dateTo = document.getElementById('dateTo').value;
-                var equipmentIDSearch = document.getElementById('equipmentIDSearch').value;
+                
             
-            const search_url = `/api-tonnage-hauling-list/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
+            const search_url = `/api-get-rizal-cost/?datefrom=${dateFrom}&dateto=${dateTo}`;
 
             
             const responce = await fetch(search_url)
@@ -372,14 +382,21 @@
                                
                                 <td>${values.transDate}</td>
                                 <td>${values.equipment_id}</td>
-                                <td>${values.totalTrip}</td>
-                                <td>${values.totalTonnage}</td>
-                                <td>${values.rate}</td>
-                                <td>${values.amount}</td>
-                                <td>${values.driverOperator}</td>
+                                <td>${values.salaries}</td>
+                                <td>${values.fuel}</td>
+                                <td>${values.oil_lubes}</td>
+                                <td>${values.mechanicalSupplies}</td>
+                                <td>${values.repairMaintenance}</td>
+                                <td>${values.meals}</td>
+                                <td>${values.transpo}</td>
+                                <td>${values.tires}</td>
+                                <td>${values.amortization}</td>
+                                <td>${values.others}</td>
+                                <td>${values.totalAmount}</td>
+
 
                                 <td>
-                                    <a href="/update-tonnageHaul/${values.id}"
+                                    <a href="/update-cost-rizal/${values.id}"
                                     <button type="button" class="btn btn-primary">
                                     <i class="fas fa-database"></i> Edit</button></a> 
                                 </td>
@@ -411,7 +428,7 @@
 
         </script>
 
-
+<!-- 
         <script>
 
             $( function() {
@@ -422,28 +439,42 @@
             } );
 
 
-        </script>
+        </script> -->
 
         <script type="text/javascript">
-            // const rateInput = document.getElementById("rate");
-            // const totalTonsInput = document.getElementById("totalTons");
-            // const amountInput = document.getElementById("amount");
+            // const rateInput = document.getElementById("salaries");
+            // const totalTonsInput = document.getElementById("fuel");
+            // const amountInput = document.getElementById("totalAmount");
             
             // function calculateTotalAmount(rate, totalTons) {
             //     return parseFloat(totalTons) * parseFloat(rate);
             // }
             
-            // rateInput.addEventListener("input", function(event) {
-            //     const rate = event.target.value;
-            //     const totalTons = totalTonsInput.value;
+            // totalTonsInput.addEventListener("input", function(event) {
+            //     const totalTons = event.target.value;
+            //     const rate = rateInput.value;
                 
-            //     if (isNaN(rate) || isNaN(totalTons)) {
-            //     return;
-            //     }
+            //     // if (isNaN(rate) || isNaN(totalTons)) {
+            //     // return;
+            //     // }
                 
             //     const totalAmount = calculateTotalAmount(rate, totalTons);
             //     amountInput.value = totalAmount.toFixed(2);
             // });
+
+
+            // salaries: document.getElementById("salaries").value,
+            // fuel: document.getElementById("fuel").value,
+            // oil_lubes: document.getElementById("oil_lubes").value,
+            // mechanicalSupplies: document.getElementById("mechanicalSupplies").value,
+            // repairMaintenance: document.getElementById("repairMaintenance").value,
+            // meals: document.getElementById("meals").value,
+            // transpo: document.getElementById("transpo").value,
+            // tires: document.getElementById("tires").value,
+            // amortization: document.getElementById("amortization").value,
+            // others: document.getElementById("others").value,
+            // totalAmount: document.getElementById("totalAmount").value,
+            
 
 
             // document.getElementById('rate').addEventListener('input',
@@ -462,6 +493,41 @@
 
             
             // );
+
+        </script>
+
+
+        <script type="text/javascript"> 
+            function getTotalamount(){
+               
+
+                var salaries = document.getElementById("salaries").value;
+                var fuel = document.getElementById("fuel").value;
+                var oil_lubes = document.getElementById("oil_lubes").value;
+                var mechanicalSupplies = document.getElementById("mechanicalSupplies").value;
+                var repairMaintenance = document.getElementById("repairMaintenance").value;
+                var meals = document.getElementById("meals").value;
+                var transpo = document.getElementById("transpo").value;
+                var tires = document.getElementById("tires").value;
+                var amortization = document.getElementById("amortization").value;
+                var others = document.getElementById("others").value;
+            // totalAmount: document.getElementById("totalAmount").value,
+            
+                var totalAmount;
+            
+                
+            
+              
+                totalAmount = (parseFloat(salaries) + parseFloat(fuel) + parseFloat(oil_lubes) +
+                                 parseFloat(mechanicalSupplies) + parseFloat(repairMaintenance) + parseFloat(meals) +
+                                 parseFloat(transpo) + parseFloat(tires) + parseFloat(amortization) +
+                                 parseFloat(others) );
+                document.getElementById('totalAmount').value=totalAmount.toFixed(2);	
+            
+                    
+                
+            
+            }
 
         </script>
 
