@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import condecimal
-from sqlmodel import Field, Session, SQLModel, create_engine,select
+from sqlmodel import Field, Session, SQLModel, create_engine,select,func
 
 from datetime import datetime, date
 import mysql.connector
@@ -79,9 +79,12 @@ def select_cost(datefrom,dateto):
         statement = select(cost.id,cost.equipment_id,cost.transDate,cost.salaries,cost.fuel,
                         cost.oil_lubes,cost.mechanicalSupplies,cost.repairMaintenance,
                         cost.meals,cost.transpo,cost.tires,cost.amortization,
-                        cost.others,cost.totalAmount).where(cost.transDate >= datefrom , cost.transDate <= dateto )
+                        cost.others,cost.totalAmount).where(cost.transDate >= datefrom ,
+                         cost.transDate <= dateto ).order_by(cost.transDate.asc())
         results = session.exec(statement)
-        
+
+        # func.sum(cost.salaries).label('salaries')
+        # .group_by(cost.equipment_id)
         # data = []
         # for x in results:
             
