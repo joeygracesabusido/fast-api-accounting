@@ -1076,6 +1076,36 @@ class Database(object):
 
 
 
+    @staticmethod
+    def get_cost_id(id):
+        """This function is for hauling Tonnage Transaction"""
+
+        # Use a with statement to automatically manage the database connection
+        Database.DATABASE._open_connection()
+        try:
+            
+            query = ('SELECT * FROM cost \
+                WHERE id like "%'+id+'%" \
+                 ')
+                
+            
+
+            # Execute the query
+            cursor.execute(query)
+
+            # Return the results of the query
+            return cursor.fetchall()
+
+        except Exception as ex:
+            # Handle any errors that may occur
+            print("Error", f"Error due to: {ex}")
+
+        finally:
+            
+            Database.DATABASE.close()
+
+
+
                 
 
 

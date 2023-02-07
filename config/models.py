@@ -139,8 +139,6 @@ def select_test(equipment_id):
         statement = select(cost).where(cost.equipment_id == equipment_id)
         results = session.exec(statement)
         
-         
-        
         return results
 
 # create_db_and_tables()
