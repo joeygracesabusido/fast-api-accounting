@@ -254,6 +254,7 @@ class Database(object):
                 WHERE id LIKE %s'
 
             val = ('%' + id + '%',)
+
             cursor.execute(data,(val),)
             return cursor.fetchone()
         except Exception as ex:
@@ -1028,14 +1029,26 @@ class Database(object):
                          END AS RentalAmount, \
                          CASE  WHEN totalDCamount IS NULL THEN 0 \
                                 else totalDCamount \
-                         END AS DieselAmount \
+                         END AS DieselAmount, \
+                        CASE  WHEN totalCost IS NULL THEN 0 \
+                                else totalCost \
+                         END AS Expenses \
                              \
-                        FROM (SELECT equipment_id, \
+                        FROM (  \
+                            SELECT equipment_id, \
+                            sum(totalAmount)as totalCost \
+                            FROM cost \
+                            WHERE transDate BETWEEN "' + datefrom + '" AND "' + dateto + '" \
+                            GROUP BY equipment_id \
+                            ) AS tc \
+                           RIGHT  JOIN ( \
+                            SELECT equipment_id, \
                             sum(amount) AS totalTonAmount \
                             FROM hauling_tonnage \
                             WHERE transDate BETWEEN "' + datefrom + '" AND "' + dateto + '" \
                                 GROUP BY equipment_id\
                                  ) AS ht \
+                                ON tc.equipment_id = ht.equipment_id\
                                     \
                             RIGHT  JOIN ( \
                             SELECT equipment_id, sum(rental_amount) AS totalRentalAmount \
@@ -1054,6 +1067,7 @@ class Database(object):
                         ) AS dc \
                         ON er.equipment_id = dc.equipment_id \
                         \
+                       \
                         ') 
                
                     

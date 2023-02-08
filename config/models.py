@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import condecimal
-from sqlmodel import Field, Session, SQLModel, create_engine,select,func
+from sqlmodel import Field, Session, SQLModel, create_engine,select,func,funcfilter,within_group
 
 from datetime import datetime, date
 import mysql.connector
@@ -73,14 +73,16 @@ def insertCost(transDate,equipment_id,salaries,fuel,oil_lubes,
     session.close()
 
 
-def select_cost(datefrom,dateto):
+def select_cost(datefrom,dateto,equipment_id):
     """This function is for selecting all data from cost table"""
     with Session(engine) as session:
         statement = select(cost.id,cost.equipment_id,cost.transDate,cost.salaries,cost.fuel,
                         cost.oil_lubes,cost.mechanicalSupplies,cost.repairMaintenance,
                         cost.meals,cost.transpo,cost.tires,cost.amortization,
                         cost.others,cost.totalAmount).where(cost.transDate >= datefrom ,
-                         cost.transDate <= dateto ).order_by(cost.transDate.asc())
+                         cost.transDate <= dateto ) \
+                         .filter(cost.equipment_id.like ('%'+equipment_id +'%')) \
+                            .order_by(cost.transDate.asc())
         results = session.exec(statement)
 
         # func.sum(cost.salaries).label('salaries')
@@ -136,12 +138,23 @@ def update_cost(id,transDate,equipment_id,salaries,fuel,oil_lubes,
         session.refresh(result)
 
 
-# def select_test(equipment_id):
-#     """This function is for selecting one data from cost table"""
-#     with Session(engine) as session:
-#         statement = select(cost).where(cost.equipment_id == equipment_id)
-#         results = session.exec(statement)
-        
-#         return results
+def select_test():
+    """This function is for selecting one data from cost table"""
+    with Session(engine) as session:
+        # statement = select(func.sum(cost.salaries)).scalar()
+        statement = select(cost.equipment_id,func.sum(cost.salaries).label('salaries'),
+                    func.sum(cost.fuel).label('fuel'),func.sum(cost.oil_lubes).label('oil_lubes'),
+                    func.sum(cost.mechanicalSupplies).label('mechanicalSupplies'),
+                    func.sum(cost.repairMaintenance).label('repairMaintenance'),
+                    func.sum(cost.meals).label('meals'),func.sum(cost.amortization).label('amortization'),
+                    func.sum(cost.tires).label('tires'),func.sum(cost.transpo).label('transpo'),
+                    func.sum(cost.others).label('others'),func.sum(cost.totalAmount).label('totalAmount')
+                    ).group_by(cost.equipment_id)
+        results = session.exec(statement) 
+
+
+        return results
+
+      
 
 # create_db_and_tables()

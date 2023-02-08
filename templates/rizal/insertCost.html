@@ -222,7 +222,7 @@
             
             >
 
-        <!-- <label for="dateTo"
+        <label for="dateTo"
         >Equipment ID</label>
         
             <input 
@@ -230,7 +230,7 @@
             name="equipmentIDSearch"
             id="equipmentIDSearch"
             
-            > -->
+            >
 
         
             <button type="submit"  onclick="displayTonnageHaulingData()" class="btn btn-primary">
@@ -366,9 +366,9 @@
             async function displayTonnageHaulingData(){
                 var dateFrom = document.getElementById('dateFrom').value;
                 var dateTo = document.getElementById('dateTo').value;
-                
+                var equipmentID = document.getElementById('equipmentIDSearch').value;
             
-            const search_url = `/api-get-rizal-cost/?datefrom=${dateFrom}&dateto=${dateTo}`;
+            const search_url = `/api-get-rizal-cost/?datefrom=${dateFrom}&dateto=${dateTo},&equipment_id=${equipmentID}`;
 
             
             const responce = await fetch(search_url)
@@ -428,7 +428,7 @@
 
         </script>
 
-<!-- 
+
         <script>
 
             $( function() {
@@ -439,7 +439,7 @@
             } );
 
 
-        </script> -->
+        </script>
 
         <script type="text/javascript">
             // const rateInput = document.getElementById("salaries");

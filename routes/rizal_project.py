@@ -732,7 +732,8 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
                 "TonnageAmount": "{:,.2f}".format(x[1]),
                 "RentalAmount": "{:,.2f}".format(x[2]),
                 "DieselAmount": "{:,.2f}".format(x[3]),
-                "netIncome": "{:,.2f}".format(float(((x[1])+(x[2]))-x[3])),
+                "Expenses": "{:,.2f}".format(x[4]),
+                "netIncome": "{:,.2f}".format(float(((x[1])+(x[2]))-x[3]-x[4])),
             
             }
             for x in cost
@@ -743,7 +744,7 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
 #================================================Rizal Cost Frame=====================================
 
 from config.models import (cost,insertCost,select_cost,
-                            select_cost_id,update_cost,
+                            select_cost_id,update_cost,select_test
                             )
 from models.model import Cost
 @rizal_project.get("/api-insert-rizal-cost/", response_class=HTMLResponse)
@@ -768,9 +769,9 @@ async def insertCostapi(items:Cost,username: str = Depends(validateLogin)):
     return  {'Messeges':'Data has been Save'}
 
 @rizal_project.get("/api-get-rizal-cost/")
-async def get_cost(datefrom,dateto,username: str = Depends(validateLogin)):
+async def get_cost(datefrom,dateto,equipment_id,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
-    results = select_cost(datefrom=datefrom,dateto=dateto)
+    results = select_cost(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
 
     costData = [
         
@@ -871,7 +872,35 @@ async def updateCostapi(id,items:Cost,username: str = Depends(validateLogin)):
 
     return  {'Messeges':'Data has been Updated'}
 
+@rizal_project.get("/api-test-sum/")
+async def test(username: str = Depends(validateLogin)):
+    """This function is for testing"""
 
 
+    data = select_test()
     
+   
+    costData = [
+        
+            {
+               
+                "equipment_id": i['equipment_id'],
+                "salaries": i['salaries'],
+                "fuel": i['fuel'],
+                "oil_lubes": i['oil_lubes'],
+                "mechanicalSupplies": i['mechanicalSupplies'],
+                "repairMaintenance": i['repairMaintenance'],
+                "meals": i['meals'],
+                "transpo": i['transpo'],
+                "tires": i['tires'],
+                "amortization": i['amortization'],
+                "others": i['others'],
+                # "equipmentID": i['equipment_id']
+            
+            }
+          for i in data
+        ]
+    
+
+    return costData
   
