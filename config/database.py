@@ -1019,7 +1019,7 @@ class Database(object):
             #         GROUP BY dc.equipment_id)c ON c.equipment_id = ab.equipment_id \
             #                         ')
 
-            query = ('SELECT dc.equipment_id, \
+            query = ('SELECT ed.equipment_id, \
                         CASE \
                         WHEN totalTonAmount IS NULL THEN 0 \
                               else totalTonAmount \
@@ -1040,24 +1040,34 @@ class Database(object):
                             FROM cost \
                             WHERE transDate BETWEEN "' + datefrom + '" AND "' + dateto + '" \
                             GROUP BY equipment_id \
+                                ORDER BY equipment_id\
                             ) AS tc \
-                           RIGHT  JOIN ( \
+                                \
+                                RIGHT  JOIN ( \
+                                    SELECT equipment_id \
+                                    FROM equipment_details \
+                                        ORDER BY equipment_id\
+                                    ) AS ed \
+                                    ON tc.equipment_id = ed.equipment_id \
+                           LEFT  JOIN ( \
                             SELECT equipment_id, \
                             sum(amount) AS totalTonAmount \
                             FROM hauling_tonnage \
                             WHERE transDate BETWEEN "' + datefrom + '" AND "' + dateto + '" \
                                 GROUP BY equipment_id\
+                                    ORDER BY equipment_id\
                                  ) AS ht \
-                                ON tc.equipment_id = ht.equipment_id\
+                                ON ed.equipment_id = ht.equipment_id\
                                     \
-                            RIGHT  JOIN ( \
+                            LEFT  JOIN ( \
                             SELECT equipment_id, sum(rental_amount) AS totalRentalAmount \
                             FROM equipment_rental \
                             WHERE transaction_date BETWEEN "' + datefrom + '" AND "' + dateto + '" \
                             GROUP BY equipment_id \
+                                ORDER BY equipment_id\
                             ) AS er \
-                            ON ht.equipment_id = er.equipment_id\
-                        RIGHT  JOIN ( \
+                            ON ed.equipment_id = er.equipment_id\
+                        LEFT  JOIN ( \
                         SELECT equipment_id, \
                         sum(amount)as totalDCamount \
                         FROM diesel_consumption \
@@ -1065,7 +1075,7 @@ class Database(object):
                         GROUP BY equipment_id \
                         ORDER BY equipment_id  \
                         ) AS dc \
-                        ON er.equipment_id = dc.equipment_id \
+                        ON ed.equipment_id = dc.equipment_id \
                         \
                        \
                         ') 

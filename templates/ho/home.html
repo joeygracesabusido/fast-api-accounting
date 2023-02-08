@@ -186,6 +186,7 @@
 
     <div class="conatainer mt3">
         <div  class="container mt-3" id="div5">
+            <h2 style="color: green;">RIZAL PROJECT INCOME AND COST REPORT</h2>
             <label for="dateFrom"
             style="color: black;"
             >Date From</label>
@@ -210,6 +211,11 @@
 
                 <button type="submit"  onclick="displayCostAnalysisData()" class="btn btn-primary">
                     Search
+                    <i class="fas fa-database"></i>
+                </button>
+
+                <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                    Export
                     <i class="fas fa-database"></i>
                 </button>
             <table id="myTable" class="table table-bordered"  style="text-align: center;">
@@ -537,6 +543,18 @@
     // dislayEmployeeDataRizal_on()
 
 </script>
+
+        <script>
+            function html_table_excel(type){
+                var data = document.getElementById('table_body2');
+                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                XLSX.writeFile(file, 'RizalcostAnalysis.' + type);
+
+            }
+
+            
+        </script>
 
 
 </body>

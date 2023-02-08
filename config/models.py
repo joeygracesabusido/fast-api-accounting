@@ -155,6 +155,35 @@ def select_test():
 
         return results
 
+
+
+
+
+
+class cost_entry(SQLModel, table=True): 
+    """This is for cost or expenses table"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    trans_date: date
+    equipment_id: str = Field(index=True)
+    clasification: str = Field(default=None)
+    cost_amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    username: str = Field(default=None)
+    update_time: datetime
+
+
+def selectCostAnalysis2():
+    """This is for testing from traditional sql to sqlModel"""
+
+    with Session(engine) as session:
+        # statement = select(func.sum(cost.salaries)).scalar()
+        statement = select(cost_entry)
+                   
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
+        
       
 
 # create_db_and_tables()

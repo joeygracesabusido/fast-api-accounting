@@ -744,7 +744,8 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
 #================================================Rizal Cost Frame=====================================
 
 from config.models import (cost,insertCost,select_cost,
-                            select_cost_id,update_cost,select_test
+                            select_cost_id,update_cost,select_test,
+                            selectCostAnalysis2
                             )
 from models.model import Cost
 @rizal_project.get("/api-insert-rizal-cost/", response_class=HTMLResponse)
@@ -903,4 +904,28 @@ async def test(username: str = Depends(validateLogin)):
     
 
     return costData
+
+@rizal_project.get("/api-test-costTable/")
+async def test(username: str = Depends(validateLogin)):
+    """This function is for testing"""
+
+    data = selectCostAnalysis2()
+    
+
+    costData = [
+        
+            {
+                "trans_date": i.trans_date,
+                "equipment_id": i.equipment_id,
+                "clasification":i.clasification,
+                "cost_amount": i.cost_amount
+                # "equipmentID": i['equipment_id']
+            
+            }
+          for i in data
+        ]
+
+
+    return costData
+
   
