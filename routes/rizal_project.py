@@ -743,9 +743,10 @@ async def getCostAnalysis(datefrom,dateto,username: str = Depends(validateLogin)
 
 #================================================Rizal Cost Frame=====================================
 
-from config.models import (cost,insertCost,select_cost,
+from config.models import (cost,equipment_details, insertCost,select_cost,
                             select_cost_id,update_cost,select_test,
-                            selectCostAnalysis2
+                            selectCostAnalysis2,getEquipmentRizal,insertEquipment,
+                            select_rizalEquipment_id,updateRizalequipment
                             )
 from models.model import Cost
 @rizal_project.get("/api-insert-rizal-cost/", response_class=HTMLResponse)
@@ -861,7 +862,7 @@ async def get_costData_id(id,request: Request):
 
 @rizal_project.put("/api-update-rizal-cost/{id}")
 async def updateCostapi(id,items:Cost,username: str = Depends(validateLogin)):
-    """This function is to update employee Details"""
+    """This function is to update Cost"""
     today = datetime.now()
 
     update_cost(transDate=items.transDate,equipment_id=items.equipment_id,salaries=items.salaries,
@@ -927,5 +928,96 @@ async def test(username: str = Depends(validateLogin)):
 
 
     return costData
+
+
+
+#=======================================================Equipment Frame =================================================
+
+@rizal_project.get("/rizal-eqipment/", response_class=HTMLResponse)
+async def get_all_equipment(request: Request):
+    
+    return templates.TemplateResponse("rizal/equipment.html",{"request":request})
+
+@rizal_project.get("/api-get-rizal-equipment/")
+async def test(username: str = Depends(validateLogin)):
+    """This function is for testing"""
+
+    data = getEquipmentRizal()
+    
+
+    costData = [
+        
+            {
+                "id": i.id,
+                "equipment_id": i.equipment_id,
+                "purchase_date":i.purchase_date,
+                "description": i.description,
+                "purchase_amount": i.purchase_amount,
+                "rental_rate": i.rental_rate,
+                "plate_number": i.plate_number,
+                "status": i.status,
+                "owner": i.owner,
+            
+            }
+          for i in data
+        ]
+
+
+    return costData
+
+
+@rizal_project.post("/api-insert-rizal-equipment/")
+async def insertCostapi(items:equipment_details,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    insertEquipment(equipment_id=items.equipment_id,purchase_date=items.purchase_date,
+                        description=items.description,purchase_amount=items.purchase_amount,
+                        rental_rate=items.rental_rate,plate_number=items.plate_number,
+                        status=items.status,owner=items.owner)
+
+
+    return  {'Messeges':'Data has been Save'}   
+
+
+@rizal_project.get("/update-equipment-rizal/{id}", response_class=HTMLResponse)
+async def get_costData_id(id,request: Request):
+
+    i = select_rizalEquipment_id(id=id)
+    
+
+    costData = [
+        
+            {
+                "id": i.id,
+                "equipment_id": i.equipment_id,
+                "purchase_date":i.purchase_date,
+                "description": i.description,
+                "purchase_amount": i.purchase_amount,
+                "rental_rate": i.rental_rate,
+                "plate_number": i.plate_number,
+                "status": i.status,
+                "owner": i.owner
+            
+            }
+           
+        ]
+    
+
+    
+    
+    return templates.TemplateResponse("rizal/updateEquipment.html",{"request":request,"results":costData})
+
+
+@rizal_project.put("/api-update-rizal-equipment/{id}")
+async def updateRzEquipment(id,items:equipment_details,username: str = Depends(validateLogin)):
+
+    """This function is for updating Rizal Equipment"""
+    updateRizalequipment(equipment_id=items.equipment_id,purchase_date=items.purchase_date,
+                        description=items.description,purchase_amount=items.purchase_amount,
+                        rental_rate=items.rental_rate,plate_number=items.plate_number,
+                        status=items.status,owner=items.owner,id=id)
+
+    
+
+    return  {'Messeges':'Data has been Updated'}
 
   

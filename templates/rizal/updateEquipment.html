@@ -1,0 +1,221 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+     #div1 {
+            width: 40%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: gray;
+            
+    }
+
+    #div3 {
+           
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: lightskyblue;
+            text-align: center;
+           
+    }
+
+    .input-box {
+        flex: 1; /* Divide the available space evenly between the input fields */
+        margin: 0 5px; /* Add some margin between the input fields */
+        border-radius: 20px; /* round the corners of the input field */
+        border: 2px solid lightskyblue;
+        padding: 10px;
+        background-color: whitesmoke;
+    }
+</style>
+<body>
+    <div class="container mt-4" id="div1">
+        <h2 style="color:yellow;">UPDATE COST TRANSACTION</h2>
+            {% for list in results %}
+            <label for="EquipmentID"
+            >Equipment ID</label>
+
+            <input 
+            type="text" hidden
+            name="transID"
+            id="transID"
+            value="{{list.id}}"
+            class="form-control"
+            >
+            
+            <input 
+            type="text"
+            name="equipment_id"
+            id="equipment_id"
+            value="{{list.equipment_id}}"
+            class="form-control"
+            >
+
+            <label for="PurchaseDate"
+            >Purchase Date</label>
+            
+            <input 
+            type="date"
+            name="purchase_date"
+            id="purchase_date"
+            value="{{list.purchase_date}}"
+            class="form-control"
+            >
+
+            <label for="Equipment Discription"
+            >Equipment Discription</label>
+            
+            <input 
+            type="text"
+            name="description"
+            id="description"
+            value="{{list.description}}"
+            class="form-control"
+            >
+
+            <label for="Rental Rate"
+            >Purchase Amount</label>
+            
+                <input 
+                type="number"
+                name="purchase_amount"
+                id="purchase_amount"
+                step="0.01"
+                value="{{list.purchase_amount}}"
+                class="form-control"
+                >
+
+            <label for="Rental Rate"
+                >Rental Rate</label>
+                
+                <input 
+                type="number"
+                name="rental_rate"
+                id="rental_rate"
+                step="0.01"
+                value="{{list.rental_rate}}"
+                class="form-control"
+                >
+
+            <label for="PlateNumber"
+            >Plate Number</label>
+
+                <input 
+                type="text"
+                name="plate_number"
+                id="plate_number"
+                value="{{list.plate_number}}"
+                class="form-control"
+                >
+
+            <label for="Status"
+            >Status</label>
+
+                <select name="status" id="status"class="form-control"
+               
+                >
+                  <option value="Operational">Operational</option>
+                  <option value="Breakdown">Breakdown</option>
+                 
+          
+              </select> 
+                
+               
+
+            <label for="Owner"
+            >Owner</label>
+
+            <select name="owner" id="owner"class="form-control"
+               
+                >
+                  <option value="LD Global">LD Global</option>
+                  <option value="MVD">MVD</option>
+                  <option value="Fulcrum">Fulcrum</option>
+          
+            </select> 
+
+                
+            {% endfor %}
+            
+                        
+            <br>
+
+            <button type="submit" onclick="updateCost()" class="btn btn-info">
+            <i class="fas fa-database"></i>Update</button>
+
+
+    </div>
+
+   
+
+        <!-- This function is for updating cost Table for Rizal -->
+        <script type="text/javascript">
+            function updateCost() {
+                var data = {};
+                id = document.getElementById('transID').value;
+                
+                
+                data["equipment_id"] = document.getElementById("equipment_id").value;
+                data["purchase_date"] = document.getElementById("purchase_date").value;
+                data["description"] = document.getElementById("description").value;
+                data["purchase_amount"] = document.getElementById("purchase_amount").value;
+                data["rental_rate"] = document.getElementById("rental_rate").value;
+                data["plate_number"] = document.getElementById("plate_number").value;
+                data["status"] = document.getElementById("status").value;
+                data["owner"] = document.getElementById("owner").value;
+                
+
+
+                console.log(data);
+
+                if (id === '' ) {
+                        window.alert("Employee ID field is requires");
+                } else {
+                        // Use async/await to simplify the fetch call
+                        (async () => {
+                        try {
+                                // Use template literals to build the URL
+                                if (confirm('Are you sure you want to update this rental transaction?')){
+                                        const response = await fetch("/api-update-rizal-equipment/"+ id, {
+                                        method: "PUT",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(data)
+                                        });
+
+                                        // Use response.ok to check if the response was successful
+                                        if (response.ok) {
+                                        window.alert("Your Data has been Updated");
+                                        window.location.assign("/rizal-eqipment/");
+                                        console.log(await response.json());
+                                        } else if (response.status === 401) {
+                                        window.alert("Unauthorized credential Please Login");
+                                        }
+
+                                } else {
+                                        throw new Error('Failed to update data');
+                                        }
+                                
+                        } catch (error) {
+                                // Catch errors
+                                window.alert(error);
+                                console.log(error);
+                        }
+                        })();
+                }
+                }
+
+
+        </script>
+   
+        
+
+       
+
+</body>
+
+
+{% endblock %}

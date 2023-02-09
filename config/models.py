@@ -47,9 +47,37 @@ class cost(SQLModel, table=True):
     date_update: datetime = Field(default=None)
     date_created: datetime 
 
+class cost_entry(SQLModel, table=True): 
+    """This is for cost or expenses table"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    trans_date: date
+    equipment_id: str = Field(index=True)
+    clasification: str = Field(default=None)
+    cost_amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    particulars: str = Field(max_length=300,default=None)
+    username: str = Field(default=None)
+    update_time: datetime
+
+
+class equipment_details(SQLModel, table=True):
+    """This is to create table equipment_details"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    equipment_id:  str = Field(index=True)
+    purchase_date: date
+    description: str = Field(default=None)
+    purchase_amount: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    rental_rate: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    plate_number: str = Field(default=None)
+    status: str = Field(default=None,max_length=250)
+    owner: str = Field(default=None,max_length=150)
+
+
+
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
+
+# =================================================Cost Frame ================================================
 def insertCost(transDate,equipment_id,salaries,fuel,oil_lubes,
                  mechanicalSupplies, repairMaintenance, meals,transpo,tires, amortization,others, totalAmount,
                  user,date_created):
@@ -160,15 +188,7 @@ def select_test():
 
 
 
-class cost_entry(SQLModel, table=True): 
-    """This is for cost or expenses table"""
-    id: Optional[int] = Field(default=None, primary_key=True)
-    trans_date: date
-    equipment_id: str = Field(index=True)
-    clasification: str = Field(default=None)
-    cost_amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
-    username: str = Field(default=None)
-    update_time: datetime
+#==============================================Cost Entry Test Frame ===============================================
 
 
 def selectCostAnalysis2():
@@ -183,7 +203,71 @@ def selectCostAnalysis2():
         data = results.all()
         return data
 
+
+#========================================================Equipment Details Frame====================================
+def insertEquipment(equipment_id,purchase_date,description,
+                        purchase_amount,rental_rate,plate_number,status,owner):
+    """This function is for inserting Equipmnet of Rizal """
+    insertData = equipment_details(equipment_id=equipment_id,purchase_date=purchase_date,description=description,
+                        purchase_amount=purchase_amount,rental_rate=rental_rate,plate_number=plate_number,
+                         status=status,owner=owner)
+    
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
+def getEquipmentRizal():
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        statement = select(equipment_details).order_by(equipment_details.equipment_id.asc())
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
+
+def select_rizalEquipment_id(id):
+    """This function is for selecting one data from equipment_details table"""
+    with Session(engine) as session:
+        statement = select(equipment_details).where(equipment_details.id == id)
+        results = session.exec(statement)
+
+        result = results.one()   
         
+        return result
+
+def updateRizalequipment(id,equipment_id,purchase_date,description,
+                        purchase_amount,rental_rate,plate_number,status,owner):
+    """This function is for updating Rizal Equipment"""
+
+    with Session(engine) as session:
+        statement = select(equipment_details).where(equipment_details.id == id)
+        results = session.exec(statement)
+
+        result = results.one()
+
+           
+        result.equipment_id = equipment_id
+        result.purchase_date = purchase_date
+        result.description = description
+        result.purchase_amount = purchase_amount
+        result.rental_rate = rental_rate
+        result.plate_number = plate_number
+        result.status = status
+        result.owner = owner
+        
+
+    
+        session.add(result)
+        session.commit()
+        session.refresh(result)
+
       
 
 # create_db_and_tables()

@@ -1,0 +1,302 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<style>
+     #div1 {
+            width: 85%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: whitesmoke;
+           
+    }
+</style>
+<body>
+    <div class="container mt-4" id="div1">
+        <div class="ButtonTrans">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertEquipment">
+                Add Equipment
+            </button>
+
+            
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="insertEquipment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Equipment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+
+                
+                    <label for="EquipmentID"
+                    >Equipment ID</label>
+                    
+                    <input 
+                    type="text"
+                    name="equipment_id"
+                    id="equipment_id"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="PurchaseDate"
+                    >Purchase Date</label>
+                    
+                    <input 
+                    type="date"
+                    name="purchase_date"
+                    id="purchase_date"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="Equipment Discription"
+                    >Equipment Discription</label>
+                    
+                    <input 
+                    type="text"
+                    name="description"
+                    id="description"
+                    
+                    class="form-control"
+                    >
+
+                    <label for="Rental Rate"
+                    >Purchase Amount</label>
+                    
+                        <input 
+                        type="number"
+                        name="purchase_amount"
+                        id="purchase_amount"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                    <label for="Rental Rate"
+                        >Rental Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rental_rate"
+                        id="rental_rate"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                    <label for="PlateNumber"
+                    >Plate Number</label>
+
+                        <input 
+                        type="text"
+                        name="plate_number"
+                        id="plate_number"
+                        
+                        class="form-control"
+                        >
+
+                    <label for="Status"
+                    >Status</label>
+
+                        <select name="status" id="status"class="form-control"
+                       
+                        >
+                          <option value="Operational">Operational</option>
+                          <option value="Breakdown">Breakdown</option>
+                         
+                  
+                      </select> 
+                        
+                       
+
+                    <label for="Owner"
+                    >Owner</label>
+
+                    <select name="owner" id="owner"class="form-control"
+                       
+                        >
+                          <option value="LD Global">LD Global</option>
+                          <option value="MVD">MVD</option>
+                          <option value="Fulcrum">Fulcrum</option>
+                  
+                    </select> 
+
+                    
+                    
+                    <br>
+                    
+        
+                
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="insertEquipment()" class="btn btn-primary">Save</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <div class="container mt-4" id="div2">
+
+       
+            <!-- This is for Equipment Table -->
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                    <tr>
+                        <td>Equipment ID</td>
+                        <td>Purchase Date</td>
+                        <td>Description</td>
+                        <td>Purchase Amount</td>
+                        <td>Rental Rate</td>
+                        <td>Plate No.</td>
+                        <td>Status</td>
+                        <td>Owner</td>
+                        <td>Action</td>
+                       
+                    </tr>
+                </thead>
+                <tbody id="table_body2">
+                   
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                       
+                    
+                </tbody>
+    
+               
+    
+            </table>
+    
+        </div>
+
+        <!-- This is to insert Equipment to rizal table -->
+    <script type="text/javascript">
+        // Define an async function to insert equipment
+        async function insertEquipment() {
+          // Get the values of the input fields
+          const data = {
+            equipment_id: document.getElementById("equipment_id").value,
+            purchase_date: document.getElementById("purchase_date").value,
+            description: document.getElementById("description").value,
+            purchase_amount: document.getElementById("purchase_amount").value,
+            rental_rate: document.getElementById("rental_rate").value,
+            plate_number: document.getElementById("plate_number").value,
+            status: document.getElementById("status").value,
+            owner: document.getElementById("owner").value,
+            
+           
+            
+          };
+      
+          // Use the fetch API to send the POST request
+          try {
+            const response = await fetch(`/api-insert-rizal-cost/`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data)
+            });
+      
+            // Check if the response was successful
+            if (response.status === 200) {
+              window.alert("Your data has been saved");
+              console.log(data);
+              window.location.assign("/index/");
+              
+            } else if (response.status === 401) {
+              window.alert("Unauthorized credential. Please login");
+            }
+          } catch (error) {
+            // Catch any errors and log them to the console
+            window.alert(error);
+            console.log(error);
+          }
+        }
+      </script>
+
+
+         <!-- This function is for displaying Equipment for Rizal -->
+
+         <script type="text/javascript">
+            // const rental_url =search_url ;
+            async function displayEquipment(){
+                // var dateFrom = document.getElementById('dateFrom').value;
+                // var dateTo = document.getElementById('dateTo').value;
+                // var equipmentID = document.getElementById('equipmentIDSearch').value;
+            
+            const search_url = `/api-get-rizal-equipment/`;
+
+            
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+            if (responce.status === 200) {
+                let tableData2="";
+                data.map((values)=>{
+                    tableData2+= ` <tr>
+                               
+                                <td>${values.equipment_id}</td>
+                                <td>${values.purchase_date}</td>
+                                <td>${values.description}</td>
+                                <td>${values.purchase_amount}</td>
+                                <td>${values.rental_rate}</td>
+                                <td>${values.plate_number}</td>
+                                <td>${values.status}</td>
+                                <td>${values.owner}</td>
+                              
+
+
+                                <td>
+                                    <a href="/update-equipment-rizal/${values.id}"
+                                    <button type="button" class="btn btn-warning">
+                                    <i class="fas fa-database"></i> Edit</button></a> 
+                                </td>
+                        
+                            
+                            </tr>`;
+                });
+                    document.getElementById("table_body2").innerHTML=tableData2;
+                }else if (responce.status === 401){
+                    window.alert("Unauthorized credential. Please login");
+                }
+            
+            }
+            
+            displayEquipment()
+
+
+        </script>
+    
+    
+
+</body>
+
+
+
+
+
+{% endblock %}
