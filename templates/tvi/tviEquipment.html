@@ -73,8 +73,20 @@
                     
                     <input 
                     type="text"
-                    name="equipmentId"
-                    id="equipmentId"
+                    name="equipmentID"
+                    id="equipmentID"
+                    
+                    class="form-control"
+                    >
+
+
+                    <label for="Purchase Date"
+                    >Purchase Date</label>
+                    
+                    <input 
+                    type="date"
+                    name="purchase_date"
+                    id="purchase_date"
                     
                     class="form-control"
                     >
@@ -90,6 +102,19 @@
                     class="form-control"
                     >
 
+                   
+
+                    <label for="Rental Rate"
+                        >Purchase Amount</label>
+                        
+                        <input 
+                        type="number"
+                        name="purchase_amount"
+                        id="purchase_amount"
+                        step="0.01"
+                        class="form-control"
+                        >
+
                     <label for="Rental Rate"
                         >Rental Rate</label>
                         
@@ -101,30 +126,51 @@
                         class="form-control"
                         >
 
-                    <label for="Remarks"
-                    >Remarks</label>
+                    <label for="Plate Number"
+                        >Plate Number</label>
+    
+                        <input 
+                        type="text"
+                        name="plate_number"
+                        id="plate_number"
+                        class="form-control">
 
-                    <input 
-                    type="text"
-                    name="remarks"
-                    id="remarks"
+                    <label for="Status"
+                    >Status</label>
+    
+                        <select name="status" id="status"class="form-control">
+
+                            <option value="Operational">Operational</option>
+                            <option value="Breakdown">Breakdown</option>
+                            <option value="Disposed">Disposed</option>
                     
-                    class="form-control"
-                    >
+                        </select> 
 
                     <label for="Owner"
                     >Owner</label>
+    
+                        <select name="owner" id="owner"class="form-control"
+                           
+                            >
+                              <option value="LD Global">LD Global</option>
+                              <option value="MVD">MVD</option>
+                              <option value="Fulcrum">Fulcrum</option>
+                      
+                        </select> 
 
-                    <input 
-                    type="text"
-                    name="owner"
-                    id="owner"
-                    
-                    class="form-control"
+                    <label for="Remarks"
+                    >Remarks</label>
+
+                        <input 
+                        type="text"
+                        name="remarks"
+                        id="remarks"
+                        
+                        class="form-control"
                     >
+
                     
-                    <br><br>
-                    
+                  
         
                 
                 </div>
@@ -162,8 +208,11 @@
                             
                                     <td>ID</td>
                                     <td>Equipment ID</td>
+                                    <td>Purchase Date</td>
                                     <td>Equipment Description</td>
+                                    <td>Purchase amount</td>
                                     <td>Rental Rate</td>
+                                    <td>Status</td>
                                     <td>Remarks</td>
                                     <td>Owner</td>
                                     <td>Action</td>
@@ -175,6 +224,9 @@
                                     
                                     <tr>
                                         
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -604,29 +656,51 @@
         async function insertEquipment() {
           // Get the values of the input fields
           const data = {
-            equipmentId: document.getElementById("equipmentId").value,
+            equipmentID: document.getElementById("equipmentID").value,
+            purchase_date: document.getElementById("purchase_date").value,
             equipmentDesc: document.getElementById("equipmentDesc").value,
+            purchase_amount: document.getElementById("purchase_amount").value,
             rentalRate: document.getElementById("rentalRate").value,
+            plate_number: document.getElementById("plate_number").value,
+            status: document.getElementById("status").value,
             remarks: document.getElementById("remarks").value,
             owner: document.getElementById("owner").value
+
           };
       
           // Use the fetch API to send the POST request
-          try {
-            const response = await fetch(`/api-insert-tvi-equipment/`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data)
-            });
-      
-            // Check if the response was successful
-            if (response.status === 200) {
-              window.alert("Your data has been saved");
-              window.location.assign("/tvi-transaction/");
-              console.log(response.json());
-            } else if (response.status === 401) {
-              window.alert("Unauthorized credential. Please login");
-            }
+          try { 
+            var equipmentID = document.getElementById("equipmentID").value
+
+            const search_url = `/api-searchID-tiv-equipment/?equipmentID=${equipmentID}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+            
+
+            if (data.length != 0) {
+
+                const response = await fetch(`/api-insert-tvi-equipment-sqlModel/`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+                });
+        
+                // Check if the response was successful
+                if (response.status === 200) {
+                window.alert("Your data has been saved");
+                window.location.assign("/tvi-transaction/");
+                console.log(response.json());
+                } else if (response.status === 401) {
+                window.alert("Unauthorized credential. Please login");
+                }
+                    
+                }else{
+                    window.alert(`${equipmentID}Equipment id has been used`);
+                }
+           
           } catch (error) {
             // Catch any errors and log them to the console
             window.alert(error);
@@ -641,7 +715,7 @@
          // const rental_url =search_url ;
          async function displayData(){
             
-            const search_url = `/api-get-tvi-equipment/`;
+            const search_url = `/api-get-tvi-equipment-sqlModel/`;
 
 
             const responce = await fetch(search_url)
@@ -655,9 +729,13 @@
                 tableData+= ` <tr>
                             <td>${values.id}</td>
                             <td>${values.equipmentID}</td>
+                            <td>${values.purchase_date}</td>
                             <td>${values.equipmentDesc}</td>
+                            <td>${values.purchase_amount}</td>
                             <td>${values.rentalRate}</td>
+                            <td>${values.plate_number}</td>
                             <td>${values.remarks}</td>
+                            <td>${values.status}</td>
                             <td>${values.owner}</td>
                            
                             <td>

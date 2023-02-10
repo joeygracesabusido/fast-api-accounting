@@ -119,6 +119,7 @@ def get_record(request: Request, username: str = Depends(validateLogin)):
             'transaction_date': transaction_date,
             'equipment_id': equipment_id,
             'use_liter': use_liter2,
+            'withdrawal_slip': x[3],
             'price': price,
             'amount': amount2,
         })
@@ -178,6 +179,7 @@ async def insert_diesel(request: Request, username: str = Depends(validateLogin)
                 'id': id,
                 'transaction_date': transaction_date,
                 'equipment_id': equipment_id,
+                'withdrawal_slip': x[3],
                 'use_liter': use_liter2,
                 'price': price,
                 'amount': amount2,

@@ -289,3 +289,64 @@ def updateRentalTransaction(id,item:tviRentalTrans,username: str = Depends(valid
     return  {'Messeges':'Data has been updated'}
 
  
+#=============================================== Equipment Frame SqlModel=================================
+from config.tvi_models import equipment_details_tvi
+from config.tvi_models import insertEquipment_tvi,select_tivEquipment_id
+@tviProject.post("/api-insert-tvi-equipment-sqlModel/")
+async def insertCostapi(items:equipment_details_tvi,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    insertEquipment_tvi(equipmentID=items.equipmentID,purchase_date=items.purchase_date,
+                    equipmentDesc=items.equipmentDesc,purchase_amount=items.purchase_amount,
+                    rentalRate=items.rentalRate,plate_number=items.plate_number,
+                    status=items.status,remarks=items.remarks,owner=items.owner)
+
+
+    return  {'Messeges':'Data has been Save'}   
+
+@ tviProject.get('/api-get-tvi-equipment-sqlModel/')
+def get_equipment(username: str = Depends(validateLogin)):
+    """This function is for querying all Equipment"""
+    equipmentList = TviDB.selectAllEquipment()
+
+    equipmentData = [
+            {
+                "id": x.id,
+                "equipmentID": x.equipmentID,
+                "purchase_date": x.purchase_date,
+                "equipmentDesc": x.equipmentDesc,
+                "purchase_amount": x.purchase_amount,
+                "rentalRate": x.rentalRate,
+                "plate_number": x.plate_number,
+                "status": x.status,
+                "remarks": x.remarks,
+                "owner": x.owner,
+            }
+            for x in equipmentList
+        ]
+       
+    return equipmentData
+
+@tviProject.get("/api-searchID-tiv-equipment/")
+async def get_costData_id(equipmentID,username: str = Depends(validateLogin)):
+
+    i = select_tivEquipment_id(equipmentID=equipmentID)
+    
+
+    costData = [
+        
+            {
+                "id": i.id,
+                "equipment_id": i.equipment_id,
+                "purchase_date":i.purchase_date,
+                "description": i.description,
+                "purchase_amount": i.purchase_amount,
+                "rental_rate": i.rental_rate,
+                "plate_number": i.plate_number,
+                "status": i.status,
+                "owner": i.owner
+            
+            }
+           
+        ]
+    return costData
+
