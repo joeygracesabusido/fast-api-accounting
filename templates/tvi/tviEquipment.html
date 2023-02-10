@@ -211,11 +211,12 @@
                                     <td>Purchase Date</td>
                                     <td>Equipment Description</td>
                                     <td>Purchase amount</td>
+                                    <td>Plate No.</td>
                                     <td>Rental Rate</td>
                                     <td>Status</td>
                                     <td>Remarks</td>
                                     <td>Owner</td>
-                                    <td>Action</td>
+                                   
                                     
                                 </tr>
                             </thead>
@@ -234,6 +235,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        
                                     </tr>
                                    
                                 
@@ -297,15 +299,25 @@
 
                     <br>
                     
-                    
-                
                     <label for="EquipmentID"
                     >Equipment ID</label>
                     
                     <input 
                     type="text"
-                    name="equipmenIdUpdate"
-                    id="equipmenIdUpdate"
+                    name="equipmentID_up"
+                    id="equipmentID_up"
+                    
+                    class="form-control"
+                    >
+
+
+                    <label for="Purchase Date"
+                    >Purchase Date</label>
+                    
+                    <input 
+                    type="date"
+                    name="purchase_date_up"
+                    id="purchase_date_up"
                     
                     class="form-control"
                     >
@@ -315,46 +327,82 @@
                     
                     <input 
                     type="text"
-                    name="equipmentDescUpdate"
-                    id="equipmentDescUpdate"
+                    name="equipmentDesc_up"
+                    id="equipmentDesc_up"
                     
                     class="form-control"
                     >
+
+                   
+
+                    <label for="Rental Rate"
+                        >Purchase Amount</label>
+                        
+                        <input 
+                        type="number"
+                        name="purchase_amount_up"
+                        id="purchase_amount_up"
+                        step="0.01"
+                        class="form-control"
+                        >
 
                     <label for="Rental Rate"
                         >Rental Rate</label>
                         
                         <input 
                         type="number"
-                        name="rentalRateUpdate"
-                        id="rentalRateUpdate"
+                        name="rentalRate_up"
+                        id="rentalRate_up"
                         step="0.01"
                         class="form-control"
                         >
 
-                    <label for="Remarks"
-                    >Remarks</label>
+                    <label for="Plate Number"
+                        >Plate Number</label>
+    
+                        <input 
+                        type="text"
+                        name="plate_number_up"
+                        id="plate_number_up"
+                        class="form-control">
 
-                    <input 
-                    type="text"
-                    name="remarksUpdate" 
-                    id="remarksUpdate"
+                    <label for="Status"
+                    >Status</label>
+    
+                        <select name="status" id="status_up"class="form-control">
+
+                            <option value="Operational">Operational</option>
+                            <option value="Breakdown">Breakdown</option>
+                            <option value="Disposed">Disposed</option>
                     
-                    class="form-control"
-                    >
+                        </select> 
 
                     <label for="Owner"
                     >Owner</label>
+    
+                        <select name="owner" id="owner_up"class="form-control"
+                           
+                            >
+                              <option value="LD Global">LD Global</option>
+                              <option value="MVD">MVD</option>
+                              <option value="Fulcrum">Fulcrum</option>
+                      
+                        </select> 
 
-                    <input 
-                    type="text"
-                    name="ownerUpdate" 
-                    id="ownerUpdate"
-                    
-                    class="form-control"
+                    <label for="Remarks"
+                    >Remarks</label>
+
+                        <input 
+                        type="text"
+                        name="remarks_up"
+                        id="remarks_up"
+                        
+                        class="form-control"
                     >
+
+                
                     
-                    <br><br>
+                  
                     
         
                 
@@ -670,17 +718,18 @@
       
           // Use the fetch API to send the POST request
           try { 
-            var equipmentID = document.getElementById("equipmentID").value
+            // var equipmentID = document.getElementById("equipmentID").value
 
-            const search_url = `/api-searchID-tiv-equipment/?equipmentID=${equipmentID}`;
+            // const search_url = `/api-searchID-tiv-equipment/?equipmentID=${equipmentID}`;
 
 
-            const responce = await fetch(search_url)
-            const data = await responce.json();
-            console.log(data)
+            // const responce = await fetch(search_url)
+            // const data = await responce.json();
+            // console.log(data)
             
 
-            if (data.length != 0) {
+            // if (data.length != 0) 
+            
 
                 const response = await fetch(`/api-insert-tvi-equipment-sqlModel/`, {
                 method: "POST",
@@ -695,11 +744,11 @@
                 console.log(response.json());
                 } else if (response.status === 401) {
                 window.alert("Unauthorized credential. Please login");
+                }else{
+                    window.alert("Equipment ID is already Taken"); 
                 }
                     
-                }else{
-                    window.alert(`${equipmentID}Equipment id has been used`);
-                }
+               
            
           } catch (error) {
             // Catch any errors and log them to the console
@@ -734,16 +783,12 @@
                             <td>${values.purchase_amount}</td>
                             <td>${values.rentalRate}</td>
                             <td>${values.plate_number}</td>
-                            <td>${values.remarks}</td>
                             <td>${values.status}</td>
+                            <td>${values.remarks}</td>
+                            
                             <td>${values.owner}</td>
                            
-                            <td>
-                                <button type="button"  id="remove_button" onclick="delete_equipment(${values.id})" class="btn btn-danger">
-                                    <i class="fas fa-database">
-                                    </i>Remove</button>
-                            </td>
-
+                          
                             
                         
                         </tr>`;
@@ -766,7 +811,7 @@
                 var transid = document.getElementById("transID").value
 
                 // Construct the API URL using the equipment ID
-                var search_url = `/api-get-tvi-equipment-id/?id=${transid}`;
+                var search_url = `/api-searchID-tiv-equipment/?id=${transid}`;
 
                 try {
                 // Call the API using the fetch API
@@ -776,25 +821,36 @@
                 // Check if the API call was successful
                 if (responce.status != 200) {
                     window.alert("Unauthorized Please Login")
+                
+                } else if (data.length === 0) {
+                window.alert(`No ID store for ${transid}`);
                 }
-
-                // Check if any data was returned
-                if (data.length === 0) {
-                    window.alert(`No ID store for ${transid}`)
-                } else {
+                
+                else {
                     // Get the data for the equipment
-                    var equipmenIdUpdate = data[0].equipmentID
-                    var equipmentDescUpdate = data[0].equipmentDesc
-                    var rentalRateUpdate = data[0].rentalRate
-                    var remarksUpdate = data[0].remarks
-                    var ownerUpdate = data[0].owner
+                    var equipmentID = data[0].equipmentID
+                    var purchase_date = data[0].purchase_date
+                    var equipmentDesc = data[0].equipmentDesc
+                    var purchase_amount = data[0].purchase_amount
+                    var rentalRate = data[0].rentalRate
+                    var plate_number = data[0].plate_number
+                    var status = data[0].status
+                    var remarks = data[0].remarks
+                    var owner = data[0].owner
+                    
 
                     // Update the input fields with the equipment data
-                    document.getElementById("equipmenIdUpdate").value = equipmenIdUpdate;
-                    document.getElementById("equipmentDescUpdate").value = equipmentDescUpdate;
-                    document.getElementById("rentalRateUpdate").value = rentalRateUpdate;
-                    document.getElementById("remarksUpdate").value = remarksUpdate;
-                    document.getElementById("ownerUpdate").value = ownerUpdate;
+                    document.getElementById("equipmentID_up").value = equipmentID;
+                    document.getElementById("purchase_date_up").value = purchase_date;
+                    document.getElementById("equipmentDesc_up").value = equipmentDesc;
+                    document.getElementById("purchase_amount_up").value = purchase_amount;
+                    document.getElementById("rentalRate_up").value = rentalRate;
+                    document.getElementById("plate_number_up").value = plate_number;
+                    document.getElementById("status_up").value = status;
+                    document.getElementById("remarks_up").value = remarks;
+                    document.getElementById("owner_up").value = owner;
+
+
                 }
                 } catch (error) {
                 // Handle any errors that occurred in the fetch call
@@ -810,11 +866,15 @@
         function update_equipment() {
             var data = {};
             var id = document.getElementById("transID").value;
-            data["equipmentId"] = document.getElementById("equipmenIdUpdate").value;
-            data["equipmentDesc"] = document.getElementById("equipmentDescUpdate").value;
-            data["rentalRate"] = document.getElementById("rentalRateUpdate").value;
-            data["remarks"] = document.getElementById("remarksUpdate").value;
-            data["owner"] = document.getElementById("ownerUpdate").value;
+            data["equipmentID"] = document.getElementById("equipmentID_up").value;
+            data["purchase_date"] = document.getElementById("purchase_date_up").value;
+            data["equipmentDesc"] = document.getElementById("equipmentDesc_up").value;
+            data["purchase_amount"] = document.getElementById("purchase_amount_up").value;
+            data["rentalRate"] = document.getElementById("rentalRate_up").value;
+            data["plate_number"] = document.getElementById("plate_number_up").value;
+            data["status"] = document.getElementById("status_up").value;
+            data["remarks"] = document.getElementById("remarks_up").value;
+            data["owner"] = document.getElementById("owner_up").value;
 
             console.log(data);
 
@@ -825,7 +885,7 @@
                 (async () => {
                     try {
                         // Use template literals to build the URL
-                        const response = await fetch("/api-update-tvi-equipment/"+ id, {
+                        const response = await fetch(`/api-update-tvi-equipment-sqlModel/?id=${id}`, {
                             method: "PUT",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(data)

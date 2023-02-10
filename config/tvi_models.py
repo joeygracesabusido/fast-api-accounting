@@ -28,7 +28,7 @@ engine = create_engine(connection_string, echo=True)
 class equipment_details_tvi(SQLModel, table=True):
     """This is to create table equipment_details"""
     id: Optional[int] = Field(default=None, primary_key=True)
-    equipmentID:  str = Field(index=True)
+    equipmentID:  str = Field(index=True,unique=True)
     purchase_date: date
     equipmentDesc: str = Field(default=None)
     purchase_amount: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
@@ -81,5 +81,45 @@ def select_tivEquipment_id(equipmentID):
         result = results.one()   
         
         return result
+
+
+def select_tivEquipment_with_id(id):
+    """This function is for selecting one data from equipment_details table"""
+    with Session(engine) as session:
+        statement = select(equipment_details_tvi).where(equipment_details_tvi.id == id)
+        results = session.exec(statement)
+
+        result = results.one()   
+        
+        return result
+
+
+def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
+                        purchase_amount,rentalRate,plate_number,status,remarks,owner):
+    """This function is for updating Rizal Equipment"""
+
+    with Session(engine) as session:
+        statement = select(equipment_details_tvi).where(equipment_details_tvi.id == id)
+        results = session.exec(statement)
+
+        result = results.one()
+
+           
+        result.equipmentID = equipmentID
+        result.purchase_date = purchase_date
+        result.equipmentDesc = equipmentDesc
+        result.purchase_amount = purchase_amount
+        result.rentalRate = rentalRate
+        result.plate_number = plate_number
+        result.status = status
+        result.remarks = remarks
+        result.owner = owner
+        
+
+    
+        session.add(result)
+        session.commit()
+        session.refresh(result)
+
 
 # create_db_and_tables()
