@@ -819,14 +819,14 @@
                 var data = await responce.json();
                 console.log(data)
                 // Check if the API call was successful
-                if (responce.status != 200) {
-                    window.alert("Unauthorized Please Login")
+                if (responce.status === 404) {
+                    window.alert(`No transaction ID ${transid}`)
                 
                 } else if (data.length === 0) {
                 window.alert(`No ID store for ${transid}`);
                 }
                 
-                else {
+                else if (responce.status == 200) {
                     // Get the data for the equipment
                     var equipmentID = data[0].equipmentID
                     var purchase_date = data[0].purchase_date
@@ -851,6 +851,8 @@
                     document.getElementById("owner_up").value = owner;
 
 
+                } else if (responce.status == 422){
+                    window.alert(`Trans ID ${transid} is not Integer`)
                 }
                 } catch (error) {
                 // Handle any errors that occurred in the fetch call

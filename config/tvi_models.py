@@ -87,6 +87,7 @@ def select_tivEquipment_with_id(id):
     """This function is for selecting one data from equipment_details table"""
     with Session(engine) as session:
         statement = select(equipment_details_tvi).where(equipment_details_tvi.id == id)
+        
         results = session.exec(statement)
 
         result = results.one()   

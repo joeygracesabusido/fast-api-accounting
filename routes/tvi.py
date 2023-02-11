@@ -329,15 +329,12 @@ def get_equipment(username: str = Depends(validateLogin)):
     return equipmentData
 
 @tviProject.get("/api-searchID-tiv-equipment/")
-async def get_costData_id(id,username: str = Depends(validateLogin)):
+async def get_costData_id(id: int,username: str = Depends(validateLogin)):
 
-    x = select_tivEquipment_with_id(id=id)
-    
+    equipmentList = getEquipmentTVI()
 
-    costData = [
-        
+    equipmentData = [
             {
-                
                 "id": x.id,
                 "equipmentID": x.equipmentID,
                 "purchase_date": x.purchase_date,
@@ -348,17 +345,87 @@ async def get_costData_id(id,username: str = Depends(validateLogin)):
                 "status": x.status,
                 "remarks": x.remarks,
                 "owner": x.owner,
-            
             }
-           
+            for x in equipmentList
         ]
+      
+    new_list = [d['id'] for d in equipmentData]
+
+    # new_dict = {i: d['id'] for i, d in enumerate(equipmentData)}
+    # print(new_dict)
+
+    if id not in new_list:
+        raise HTTPException(
+            status_code=404, detail=f"Equipment with ID no. {id} does not exist"
+        )
+       
+
+    x = select_tivEquipment_with_id(id=id)
+
+
+    costData = [
+
+        {
+            
+            "id": x.id,
+            "equipmentID": x.equipmentID,
+            "purchase_date": x.purchase_date,
+            "equipmentDesc": x.equipmentDesc,
+            "purchase_amount": x.purchase_amount,
+            "rentalRate": x.rentalRate,
+            "plate_number": x.plate_number,
+            "status": x.status,
+            "remarks": x.remarks,
+            "owner": x.owner,
+        
+        }
+        
+    ]
+
+    return costData
+
+       
+
 
     
-    return costData
+    
+    # if id not in a:
+    #         raise HTTPException(
+    #         status_code=404, detail=f"Equipment with id does not exist"
+    #     )
+
+    
+
+        # x = select_tivEquipment_with_id(id=id)
+
+
+        # costData = [
+
+        #     {
+                
+        #         "id": x.id,
+        #         "equipmentID": x.equipmentID,
+        #         "purchase_date": x.purchase_date,
+        #         "equipmentDesc": x.equipmentDesc,
+        #         "purchase_amount": x.purchase_amount,
+        #         "rentalRate": x.rentalRate,
+        #         "plate_number": x.plate_number,
+        #         "status": x.status,
+        #         "remarks": x.remarks,
+        #         "owner": x.owner,
+            
+        #     }
+            
+        # ]
+
+
+
+    
+    return equipmentData
 
 
 @tviProject.put("/api-update-tvi-equipment-sqlModel/")
-async def updateRzEquipment(id,items:equipment_details_tvi,username: str = Depends(validateLogin)):
+async def updateRzEquipment(id: int,items:equipment_details_tvi,username: str = Depends(validateLogin)):
 
     """This function is for updating Rizal Equipment"""
     updateTVIequipment(equipmentID=items.equipmentID,purchase_date=items.purchase_date,
