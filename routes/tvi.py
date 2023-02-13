@@ -293,7 +293,7 @@ def updateRentalTransaction(id,item:tviRentalTrans,username: str = Depends(valid
 from config.tvi_models import equipment_details_tvi
 from config.tvi_models import (insertEquipment_tvi,select_tivEquipment_id,
                                 getEquipmentTVI,select_tivEquipment_with_id,
-                                updateTVIequipment)
+                                updateTVIequipment,getEquipmentTVI2)
 @tviProject.post("/api-insert-tvi-equipment-sqlModel/")
 async def insertCostapi(items:equipment_details_tvi,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
@@ -389,39 +389,7 @@ async def get_costData_id(id: int,username: str = Depends(validateLogin)):
 
     
     
-    # if id not in a:
-    #         raise HTTPException(
-    #         status_code=404, detail=f"Equipment with id does not exist"
-    #     )
-
     
-
-        # x = select_tivEquipment_with_id(id=id)
-
-
-        # costData = [
-
-        #     {
-                
-        #         "id": x.id,
-        #         "equipmentID": x.equipmentID,
-        #         "purchase_date": x.purchase_date,
-        #         "equipmentDesc": x.equipmentDesc,
-        #         "purchase_amount": x.purchase_amount,
-        #         "rentalRate": x.rentalRate,
-        #         "plate_number": x.plate_number,
-        #         "status": x.status,
-        #         "remarks": x.remarks,
-        #         "owner": x.owner,
-            
-        #     }
-            
-        # ]
-
-
-
-    
-    return equipmentData
 
 
 @tviProject.put("/api-update-tvi-equipment-sqlModel/")
@@ -436,4 +404,41 @@ async def updateRzEquipment(id: int,items:equipment_details_tvi,username: str = 
     
 
     return  {'Messeges':'Data has been Updated'}
+
+
+
+
+
+
+
+
+@tviProject.get("/api-search-tiv-test/")
+async def get_costData_id(items:equipment_details_tvi | None = None,username: str = Depends(validateLogin)):
+    equipmentList = getEquipmentTVI2()
+
+
+    for i in equipmentList:
+
+        def checkEquipment(item:i) -> bool:
+            return all(
+                items.id is None or item.i['id'] == items.id
+            )
+    
+  
+        
+
+   
+
+       
+    # result = {}
+    # for d in list_of_dicts:
+    #     result.update(d)
+
+    #     print(result)
+
+    #     return(result)
+    
+    
+    
+   
 

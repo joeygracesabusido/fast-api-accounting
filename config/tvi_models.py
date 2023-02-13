@@ -72,6 +72,38 @@ def getEquipmentTVI():
         data = results.all()
         return data
 
+
+def getEquipmentTVI2():
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        statement = select(equipment_details_tvi)
+                    
+        results = session.exec(statement) 
+
+        
+        equipmentData = [
+        {
+            "id": x.id,
+            "equipmentID": x.equipmentID,
+            "purchase_date": x.purchase_date,
+            "equipmentDesc": x.equipmentDesc,
+            "purchase_amount": x.purchase_amount,
+            "rentalRate": x.rentalRate,
+            "plate_number": x.plate_number,
+            "status": x.status,
+            "remarks": x.remarks,
+            "owner": x.owner,
+        }
+        for x in results
+            
+        ]
+
+      
+                
+        return equipmentData  
+
+
+
 def select_tivEquipment_id(equipmentID):
     """This function is for selecting one data from equipment_details table"""
     with Session(engine) as session:
@@ -124,3 +156,4 @@ def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
 
 
 # create_db_and_tables()
+getEquipmentTVI2()
