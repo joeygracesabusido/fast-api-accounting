@@ -412,17 +412,17 @@ async def updateRzEquipment(id: int,items:equipment_details_tvi,username: str = 
 
 
 
-@tviProject.get("/api-search-tiv-test/")
-async def get_costData_id(items:equipment_details_tvi | None = None,username: str = Depends(validateLogin)):
-    equipmentList = getEquipmentTVI2()
+# @tviProject.get("/api-search-tiv-test/")
+# async def get_costData_id(items:equipment_details_tvi | None = None,username: str = Depends(validateLogin)):
+#     equipmentList = getEquipmentTVI2()
 
 
-    for i in equipmentList:
+#     for i in equipmentList:
 
-        def checkEquipment(item:i) -> bool:
-            return all(
-                items.id is None or item.i['id'] == items.id
-            )
+#         def checkEquipment(item:i) -> bool:
+#             return all(
+#                 items.id is None or item.i['id'] == items.id
+#             )
     
   
         
