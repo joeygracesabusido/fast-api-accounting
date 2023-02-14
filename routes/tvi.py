@@ -290,10 +290,10 @@ def updateRentalTransaction(id,item:tviRentalTrans,username: str = Depends(valid
 
  
 #=============================================== Equipment Frame SqlModel=================================
-from config.tvi_models import equipment_details_tvi
+from config.tvi_models import equipment_details_tvi, rentaltransaction
 from config.tvi_models import (insertEquipment_tvi,select_tivEquipment_id,
                                 getEquipmentTVI,select_tivEquipment_with_id,
-                                updateTVIequipment,getEquipmentTVI2)
+                                updateTVIequipment,getEquipmentTVI2,insertRental_tvi,getRentalTVI)
 @tviProject.post("/api-insert-tvi-equipment-sqlModel/")
 async def insertCostapi(items:equipment_details_tvi,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
@@ -384,12 +384,6 @@ async def get_costData_id(id: int,username: str = Depends(validateLogin)):
 
     return costData
 
-       
-
-
-    
-    
-    
 
 
 @tviProject.put("/api-update-tvi-equipment-sqlModel/")
@@ -407,9 +401,43 @@ async def updateRzEquipment(id: int,items:equipment_details_tvi,username: str = 
 
 
 
+@tviProject.post("/api-insert-tvi-rental-sqlModel/")
+async def insertRentalTvi(items:rentaltransaction,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    insertRental_tvi(transDate=items.transDate,equipmentId=items.equipmentId,
+                        totalHours=items.totalHours,rentalRate=items.rentalRate,
+                        totalAmount=items.totalAmount, taxRate=items.vat_output,vat_output=items.vat_output,
+                        net_of_vat=items.net_of_vat,driverOperator=items.driverOperator,user=items.user,
+                        date_updated=items.date_updated,date_credited=items.date_credited)
 
 
+    return  {'Messeges':'Data has been Save'}  
 
+@ tviProject.get('/api-get-tvi-rental-sqlModel/')
+def get_RentalData(username: str = Depends(validateLogin)):
+    """This function is for querying all Equipment"""
+    rentalList = getRentalTVI()
+
+    Data = [
+            {
+                "id": x.id,
+                "transDate ": x.transDate ,
+                "equipmentId": x.equipmentId,
+                "totalHours": x.totalHours,
+                "rentalRate": x.rentalRate,
+                "totalAmount": x.totalAmount,
+                "taxRate": x.taxRate,
+                "vat_output": x.vat_output,
+                "net_of_vat": x.net_of_vat,
+                "driverOperator": x.driverOperator,
+                "user": x.user,
+                "date_updated": x.date_updated,
+                "date_credited": x.date_credited,
+            }
+            for x in rentalList
+        ]
+       
+    return Data
 
 
 # @tviProject.get("/api-search-tiv-test/")

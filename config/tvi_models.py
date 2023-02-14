@@ -37,7 +37,32 @@ class equipment_details_tvi(SQLModel, table=True):
     status: str = Field(default=None,max_length=250)
     remarks: str = Field(default=None,max_length=150)
     owner: str = Field(default=None,max_length=150)
+
+
+class rentaltransaction(SQLModel, table=True):
+    """This is for rental table in TVI"""  
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.d = SQLModel.util._collections.Properties({})
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    equipmentId: str = Field(index=True,unique=True)
+    totalHours: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    rentalRate: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    totalAmount: condecimal(max_digits=9, decimal_places=2)
+    taxRate: condecimal(max_digits=9, decimal_places=2)
+    vat_output:  condecimal(max_digits=3, decimal_places=2)
+    net_of_vat: condecimal(max_digits=3, decimal_places=2)
+    driverOperator: str = Field(default=None)
+    user: str = Field(default=None)
+    date_updated: datetime = Field(default=None)
+    date_credited: datetime
+
     
+
+    
+
 
 def create_db_and_tables():
     
@@ -154,6 +179,40 @@ def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
         session.commit()
         session.refresh(result)
 
+#=============================================TVI Frame=======================================
+def getRentalTVI():
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        statement = select(rentaltransaction).order_by(rentaltransaction.id.asc())
+                    
+        results = session.exec(statement) 
 
+        data = results.all()
+
+        
+        return data
+
+
+def insertRental_tvi(transDate,equipmentId,totalHours,
+                       rentalRate,totalAmount,taxRate,vat_output,net_of_vat,
+                       driverOperator,user,date_updated,date_credited):
+    """This function is for inserting Rental Transaction in TVI """
+    
+    insertData = rentaltransaction(transDate=transDate,equipmentId=equipmentId,
+                    totalHours=totalHours,rentalRate=rentalRate,
+                    totalAmount=totalAmount,taxRate=taxRate,
+                    vat_output=vat_output,net_of_vat=net_of_vat,driverOperator=driverOperator,
+                    user=user,date_updated=date_updated,date_credited=date_credited)
+    
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
+# getRentalTVI()
 # create_db_and_tables()
-getEquipmentTVI2()
+# getEquipmentTVI2()
