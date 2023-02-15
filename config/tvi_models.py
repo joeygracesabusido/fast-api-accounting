@@ -51,9 +51,9 @@ class rentaltransaction(SQLModel, table=True):
     totalHours: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     rentalRate: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     totalAmount: condecimal(max_digits=9, decimal_places=2)
-    taxRate: condecimal(max_digits=9, decimal_places=2)
-    vat_output:  condecimal(max_digits=3, decimal_places=2)
-    net_of_vat: condecimal(max_digits=3, decimal_places=2)
+    taxRate: condecimal(max_digits=3, decimal_places=2)
+    vat_output:  condecimal(max_digits=9, decimal_places=2)
+    net_of_vat: condecimal(max_digits=9, decimal_places=2)
     driverOperator: str = Field(default=None)
     user: str = Field(default=None)
     date_updated: datetime = Field(default=None)
@@ -64,7 +64,7 @@ class rentaltransaction(SQLModel, table=True):
     
 
 
-def create_db_and_tables():
+def create_db_and_tables2():
     
     SQLModel.metadata.create_all(engine)
 
@@ -95,6 +95,8 @@ def getEquipmentTVI():
         results = session.exec(statement) 
 
         data = results.all()
+
+        print(data)
         return data
 
 
@@ -148,7 +150,8 @@ def select_tivEquipment_with_id(id):
         results = session.exec(statement)
 
         result = results.one()   
-        
+        for i in result:
+            print(i)
         return result
 
 
@@ -179,7 +182,22 @@ def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
         session.commit()
         session.refresh(result)
 
+
 #=============================================TVI Frame=======================================
+def getRentalTVI_id(term):
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        # statement = select(equipment_details_tvi).filter(equipment_details_tvi.equipmentID.like ('%'+ term +'%')) \
+        #                     .order_by(equipment_details_tvi.equipmentID.asc())
+
+        statement = select(equipment_details_tvi).filter(equipment_details_tvi.equipmentID.like ('%'+ term +'%'))
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+       
+        return data
+
 def getRentalTVI():
     """This function is for querying all equipment in Rizal"""
     with Session(engine) as session:
@@ -195,14 +213,14 @@ def getRentalTVI():
 
 def insertRental_tvi(transDate,equipmentId,totalHours,
                        rentalRate,totalAmount,taxRate,vat_output,net_of_vat,
-                       driverOperator,user,date_updated,date_credited):
+                       driverOperator,user,date_credited):
     """This function is for inserting Rental Transaction in TVI """
     
     insertData = rentaltransaction(transDate=transDate,equipmentId=equipmentId,
                     totalHours=totalHours,rentalRate=rentalRate,
                     totalAmount=totalAmount,taxRate=taxRate,
                     vat_output=vat_output,net_of_vat=net_of_vat,driverOperator=driverOperator,
-                    user=user,date_updated=date_updated,date_credited=date_credited)
+                    user=user,date_credited=date_credited)
     
 
     session = Session(engine)
@@ -211,8 +229,16 @@ def insertRental_tvi(transDate,equipmentId,totalHours,
     
     session.commit()
 
+
     session.close()
 
-# getRentalTVI()
-# create_db_and_tables()
+
+# getRentalTVI_id('181')
+# select_tivEquipment_with_id(1)
 # getEquipmentTVI2()
+# getRentalTVI()
+
+
+
+# create_db_and_tables2()
+

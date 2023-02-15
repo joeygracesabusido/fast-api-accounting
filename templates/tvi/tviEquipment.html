@@ -449,11 +449,11 @@
                     type="text"
                     name="equipmentIdRent"
                     id="equipmentIdRent"
-                    required
+                  
                     
                     >
 
-                    <button type="submit"  onclick="dislayDataEquipmentRental()" class="btn btn-success">
+                    <button type="submit"  onclick="dislayRentalRate()" class="btn btn-success">
                         Search 
                         <i class="fas fa-database"></i>
                     </button>
@@ -916,53 +916,107 @@
     <script>
         $( function() { 
                     $("#equipmentIdRent").autocomplete({
-                    source: "/api-search-autocomplete-tvi-equipment/"
+                    source: "/api-search-autocomplete-tvi-equipment2/"
                     });
 
                 } );
 
     </script>
 
-    <!-- This is for displaying equipment  using ID of Transaction -->
+    <!-- This function mis for automatic display of rental Rate -->
+
     <script type="text/javascript">
 
 
-            // equipmentID = document.getElementById('equipmentIdRent').value;
-            async function dislayDataEquipmentRental() {
-            try {
-                equipmentID = document.getElementById('equipmentIdRent').value;
-                // Construct the API URL using a template string
-                const searchUrl = `/api-get-tvi-equipment-equipmentID/?equipmentID=${equipmentID}`;
+        // equipmentID = document.getElementById('equipmentIdRent').value;
+        async function dislayRentalRate() {
+        try {
+            equipmentID = document.getElementById('equipmentIdRent').value;
+            // Construct the API URL using a template string
+            const searchUrl = `/api-search-tvi-equipmentID/?term=${equipmentID}`;
 
-                // Call the API using the fetch API
-                const responce = await fetch(searchUrl);
-                const data = await responce.json();
-                console.log(data)
-                // Check if the API call was successful
-                if (!responce.ok) {
-                window.alert("Unauthorized Please Login");
-                }
+            // Call the API using the fetch API
+            const responce = await fetch(searchUrl);
+            const data = await responce.json();
+            console.log(data)
+            // Check if the API call was successful
+            if (!responce.ok) {
+            window.alert("Unauthorized Please Login");
+            }
 
-                // Check if any data was returned
-                if (data.length === 0) {
-                window.alert(`No ID store for ${equipmentID}`);
-                } else {
-                // Get the data for the equipment
-                const rentalRate = data[0].rentalRate;
-                const owner = data[0].owner;
-                // Update the input fields with the equipment data
-                
-                document.getElementById("ownerRentaltrans").value = owner;
-                document.getElementById("rentalRateTransaction").value = rentalRate;
-                }
-            } catch (error) {
-                // Handle any errors that occurred in the fetch call
-                console.error(error);
-                window.alert("Error occurred while fetching data");
+            // Check if any data was returned
+            if (data.length === 0) {
+            window.alert(`No ID store for ${equipmentID}`);
+            } else {
+            // Get the data for the equipment
+            const rentalRate = data[0].rentalRate;
+            const owner = data[0].owner;
+
+            // Update the input fields with the equipment data
+
+            
+            document.getElementById("rentalRateTransaction").value = rentalRate;
+            document.getElementById("ownerRentaltrans").value = owner;
+        
+
+
             }
-            }
+        } catch (error) {
+            // Handle any errors that occurred in the fetch call
+            console.error(error);
+            window.alert("Error occurred while fetching data");
+        }
+        }
 
     </script>
+
+
+
+
+
+    
+
+            <!-- <script>
+                $("#equipmentIdRent").autocomplete({
+                source: function (request,response){
+                    $.ajax({
+                        url: `/api-search-autocomplete-tvi-equipment2/`,
+                        dataType: "json",
+                        data: {term: request.term},
+                        success: function(data) {
+                        console.log(data) 
+                            response ($.filter(data, function(item){
+                                return {
+                                    value: item.equipmentID,
+                                    // id: item.id_productID,
+                                    // brand: item.brand_purchases,
+                                    // description: item.descriptions_pruchases,
+                                    // price: item.price_purchases,
+                                    // unit: item.unit_purchases,
+                                    // category: item.category_purchases
+                                    
+                                }
+                            }))
+                        },
+                            error: function(e){
+                            console.log(e)
+                        }
+                    });
+                },
+                select: function(event, ui){
+                    $(this).val(ui.item.value);
+                    // $('#id_productID').val(ui.item.id);
+                    // $('#brand_purchases').val(ui.item.brand);
+                    // $('#descriptions_pruchases').val(ui.item.description);
+                    // $('#price_purchases').val(ui.item.price);
+                    // $('#unit_purchases').val(ui.item.unit)
+                    // $('#category_purchases').val(ui.item.category)
+                    
+                    
+                },
+                minLength: 2
+            }); 
+            </script> -->
 
     <!-- This is for  computation of Gross Amount -->
     <script type="text/javascript">
@@ -1033,11 +1087,15 @@
         }
     </script>
 
-     <!-- This is to insert Equipment to tvi table -->
+     <!-- This is to insert Equipment Rental DATA to tvi table -->
      <script type="text/javascript">
         // Define an async function to insert equipment
         async function insertRentalTrans() {
           // Get the values of the input fields
+          var vat_output = document.getElementById("vatOutputRentalTrans").value;
+          var taxRate =document.getElementById("netOfVAtRentalTrans").value;
+          var transDate = document.getElementById("transactionDateRentTrans").value;
+          console.log(vat_output,taxRate,transDate)
           const data = {
             transDate: document.getElementById("transactionDateRentTrans").value,
             equipmentId: document.getElementById("equipmentIdRent").value,
@@ -1046,6 +1104,7 @@
             totalAmount: document.getElementById("grossAmountTransaction").value,
             taxRate: document.getElementById("taxRateTransaction").value,
             vat_output: document.getElementById("vatOutputRentalTrans").value,
+            net_of_vat: document.getElementById("netOfVAtRentalTrans").value,
             driverOperator: document.getElementById("driverOperatorRentaltrans").value,
             owner: document.getElementById("ownerRentaltrans").value,
             
@@ -1053,7 +1112,7 @@
       
           // Use the fetch API to send the POST request
           try {
-            const response = await fetch(`/api-insert-tvi-rental-transaction/`, {
+            const response = await fetch(`/api-insert-tvi-rental-sqlModel/`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(data)

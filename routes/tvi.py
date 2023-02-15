@@ -157,7 +157,7 @@ def autocomplete_equipmentID(term: Optional[str]):
     return suggestions
 
 #===================================================Rental Transaction=====================================
-from models.model import tviRentalTrans
+from models.model import tviRentalTrans,TVIRentalTransaction
 
 @ tviProject.get('/api-get-tvi-equipment-equipmentID/')
 def getEquipmentID(equipmentID,username: str = Depends(validateLogin)):
@@ -293,7 +293,8 @@ def updateRentalTransaction(id,item:tviRentalTrans,username: str = Depends(valid
 from config.tvi_models import equipment_details_tvi, rentaltransaction
 from config.tvi_models import (insertEquipment_tvi,select_tivEquipment_id,
                                 getEquipmentTVI,select_tivEquipment_with_id,
-                                updateTVIequipment,getEquipmentTVI2,insertRental_tvi,getRentalTVI)
+                                updateTVIequipment,getEquipmentTVI2,insertRental_tvi,getRentalTVI,
+                                getRentalTVI_id)
 @tviProject.post("/api-insert-tvi-equipment-sqlModel/")
 async def insertCostapi(items:equipment_details_tvi,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
@@ -400,15 +401,52 @@ async def updateRzEquipment(id: int,items:equipment_details_tvi,username: str = 
     return  {'Messeges':'Data has been Updated'}
 
 
+#===============================================TVi Rental Frame ==============================================
+@tviProject.get("/api-search-autocomplete-tvi-equipment2/")
+
+def autocomplete_tvi_equipment(term: Optional[str]):
+    items = getRentalTVI_id(term=term)
+
+    
+    suggestions = []
+    for item in items:
+        suggestions.append(item.equipmentID)
+ 
+    return suggestions
+
+
+    # data = getRentalTVI_id(term=term)
+    
+    # costData = [
+
+    #     {
+            
+    #         # "id": x.id,
+    #         "equipmentID": x.equipmentID,
+    #         # "purchase_date": x.purchase_date,
+    #         # "equipmentDesc": x.equipmentDesc,
+    #         # "purchase_amount": x.purchase_amount,
+    #         # "rentalRate": x.rentalRate,
+    #         # "plate_number": x.plate_number,
+    #         # "status": x.status,
+    #         # "remarks": x.remarks,
+    #         # "owner": x.owner,
+        
+    #     }
+    #     for x in data
+    # ]
+
+    # return costData
 
 @tviProject.post("/api-insert-tvi-rental-sqlModel/")
-async def insertRentalTvi(items:rentaltransaction,username: str = Depends(validateLogin)):
+async def insertRentalTvi(items:TVIRentalTransaction,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
+    today = datetime.now()
     insertRental_tvi(transDate=items.transDate,equipmentId=items.equipmentId,
                         totalHours=items.totalHours,rentalRate=items.rentalRate,
-                        totalAmount=items.totalAmount, taxRate=items.vat_output,vat_output=items.vat_output,
-                        net_of_vat=items.net_of_vat,driverOperator=items.driverOperator,user=items.user,
-                        date_updated=items.date_updated,date_credited=items.date_credited)
+                        totalAmount=items.totalAmount,taxRate=items.taxRate,vat_output=items.vat_output,
+                        net_of_vat=items.net_of_vat,driverOperator=items.driverOperator,user=username,
+                        date_credited=today)
 
 
     return  {'Messeges':'Data has been Save'}  
@@ -438,6 +476,35 @@ def get_RentalData(username: str = Depends(validateLogin)):
         ]
        
     return Data
+
+
+@tviProject.get("/api-search-tvi-equipmentID/")
+
+def search_tvi_equipment_insert(term: Optional[str]):
+   
+
+    data = getRentalTVI_id(term=term)
+    
+    costData = [
+
+        {
+            
+            "id": x.id,
+            "equipmentID": x.equipmentID,
+            "purchase_date": x.purchase_date,
+            "equipmentDesc": x.equipmentDesc,
+            "purchase_amount": x.purchase_amount,
+            "rentalRate": x.rentalRate,
+            "plate_number": x.plate_number,
+            "status": x.status,
+            "remarks": x.remarks,
+            "owner": x.owner,
+        
+        }
+        for x in data
+    ]
+
+    return costData
 
 
 # @tviProject.get("/api-search-tiv-test/")

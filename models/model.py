@@ -211,6 +211,18 @@ class tviRentalTrans(BaseModel):
     vat_output: float
     driverOperator: str
     owner: str
+
+class TVIRentalTransaction(BaseModel):
+    transDate: date
+    equipmentId: str
+    totalHours: float
+    rentalRate: float
+    totalAmount: float
+    taxRate: float
+    vat_output: float
+    net_of_vat: float
+    driverOperator: str
+    owner: str
     
 #=========================================Employee Frame==========================================
 class EmployeeReg(BaseModel):
