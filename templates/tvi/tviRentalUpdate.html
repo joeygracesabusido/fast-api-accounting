@@ -5,19 +5,16 @@
 {% block content %}
 <style>
 
-div.transactions {
-            width: 50%; /* Set a fixed width for the element */
-            margin: 0 auto; /* Center the element horizontally */
-            position: absolute; /* Position the element absolutely */
-            top: 50%; /* Move the element down by 50% of its own height */
-            left: 50%; /* Move the element right by 50% of its own width */
-            transform: translate(-50%, -50%); /* Offset the element by its own width and height */
+#div1 {
+            width: 40%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: gray;
             
     }
 
-    .red-text {
-    color: black;
-  }
  /* input.form-control{
     
     background-color: blue;
@@ -26,150 +23,138 @@ div.transactions {
 
 </style>
 <body>
-    <div class="container">
-        
-        <div class="transactions">
-            {% for list in rentalData%}
-            <label class="red-text" for="EquipmentID"
-                    >Transaction ID</label>
-                    
-                    <input 
-                    type="text" hidden
-                    name="transID"
-                    id="transID"
-                    value="{{list.id}}"
-                    class="form-control"
-                    >
+    <div class="container mt-3" id="div1">
+        <h2 style="color:yellow;">UPDATE COST TRANSACTION</h2>
+                {% for list in Data %}
+                        
+                        <input 
+                        type="text" hidden
+                        name="transID"
+                        id="transID"
+                        value="{{list.id}}"
+                        class="form-control"
+                        >
 
-            <label class="red-text" for="EquipmentID"
-                    >Equipment ID</label>
-                    
-                    <input 
-                   
-                    type="date"
-                    name="transactionDateRentTrans"
-                    id="transactionDateRentTrans"
-                    value="{{list.transDate}}"
-                    class="form-control"
-                    >
+                        <label for=""style="color:yellow;">Equipment ID</label>
+                        <input 
+                        
+                        type="date"
+                        name="transactionDateRentTrans"
+                        id="transactionDateRentTrans"
+                        value="{{list.transDate}}"
+                        class="form-control"
+                        >
 
-            <label class="red-text" for="EquipmentID"
-                    >Equipment ID</label>
-                    
-                    <input 
-                    type="text"
-                    name="equipmentId"
-                    id="equipmentId"
-                    value="{{list.equipmentID}}"
-                    class="form-control"
-                    >
+                <label class="red-text" for="EquipmentID"style="color:yellow;"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipmentId"
+                        id="equipmentId"
+                        value="{{list.equipmentId}}"
+                        class="form-control"
+                        >
 
 
-                    
+                        
 
-            <label for="Total Hours"
-                    >Total Hours</label>
-                    
-                    <input 
-                    type="number"
-                    name="totalHoursRentalTrans"
-                    id="totalHoursRentalTrans"
-                    step="0.01"
-                    value="{{list.totalHours}}"
-                    class="form-control"
-                    >
+                <label for="Total Hours"style="color:yellow;"
+                        >Total Hours</label>
+                        
+                        <input 
+                        type="number"
+                        name="totalHoursRentalTrans"
+                        id="totalHoursRentalTrans"
+                        step="0.01"
+                        value="{{list.totalHours}}"
+                        class="form-control"
+                        >
 
-            <label for="Rental Rate"
-                    >Rental Rate</label>
-                    
-                    <input 
-                    type="number"
-                    name="rentalRateTransaction"
-                    id="rentalRateTransaction"
-                    step="0.01"
-                    value="{{list.rentalRate}}"
-                    class="form-control"
-                    >
+                <label for="Rental Rate" style="color:yellow;"
+                        >Rental Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="rentalRateTransaction"
+                        id="rentalRateTransaction"
+                        step="0.01"
+                        value="{{list.rentalRate}}"
+                        class="form-control"
+                        >
 
-            <label for="Total Amount"
-                    >Gross Amount</label>
-                    
-                    <input 
-                    type="number"
-                    name="grossAmountTransaction"
-                    id="grossAmountTransaction"
-                    step="0.01"
-                    value="{{list.totalAmount}}"
-                    class="form-control"
-                    >
-            <label for="Tax Rate"
-                    >Tax Rate</label>
-                    
-                    <input 
-                    type="number"
-                    name="taxRateTransaction"
-                    id="taxRateTransaction"
-                    step="0.01"
-                    value="{{list.taxRate}}"
-                  
-                    class="form-control"
-                    >
+                <label for="Total Amount"style="color:yellow;"
+                        >Gross Amount</label>
+                        
+                        <input 
+                        type="number"
+                        name="grossAmountTransaction"
+                        id="grossAmountTransaction"
+                        step="0.01"
+                        value="{{list.totalAmount}}"
+                        class="form-control"
+                        >
+                <label for="Tax Rate"style="color:yellow;"
+                        >Tax Rate</label>
+                        
+                        <input 
+                        type="number"
+                        name="taxRateTransaction"
+                        id="taxRateTransaction"
+                        step="0.01"
+                        value="{{list.taxRate}}"
+                        
+                        class="form-control"
+                        >
 
-            <label for="Vat Output"
-                    >Vat Output</label>
-                    
-                    <input 
-                    type="number"
-                    name="vatOutputRentalTrans"
-                    id="vatOutputRentalTrans"
-                    step="0.01"
-                    value="{{list.vat_output}}"
-                    class="form-control"
-                    >
+                <label for="Vat Output"style="color:yellow;"
+                        >Vat Output</label>
+                        
+                        <input 
+                        type="number"
+                        name="vatOutputRentalTrans"
+                        id="vatOutputRentalTrans"
+                        step="0.01"
+                        value="{{list.vat_output}}"
+                        class="form-control"
+                        >
 
-            <label for="NetofVat"
-                    >Net of VAt</label>
-                    
-                    <input 
-                    type="number"
-                    name="netOfVAtRentalTrans"
-                    id="netOfVAtRentalTrans"
-                    step="0.01"
-                    value="{{list.net_of_vat}}"
-                    class="form-control"
-                    >
+                <label for="NetofVat"style="color:yellow;"
+                        >Net of VAt</label>
+                        
+                        <input 
+                        type="number"
+                        name="netOfVAtRentalTrans"
+                        id="netOfVAtRentalTrans"
+                        step="0.01"
+                        value="{{list.net_of_vat}}"
+                        class="form-control"
+                        >
 
-            <label for="driverOperator"
-                    >Driver/Operator</label>
-                    
-                    <input 
-                    type="text"
-                    name="driverOperatorRentaltrans"
-                    id="driverOperatorRentaltrans"
-                    value="{{list.driverOperator}}"
-                    class="form-control"
-                    >
+                <label for="driverOperator"style="color:yellow;"
+                        >Driver/Operator</label>
+                        
+                        <input 
+                        type="text"
+                        name="driverOperatorRentaltrans"
+                        id="driverOperatorRentaltrans"
+                        value="{{list.driverOperator}}"
+                        class="form-control"
+                        > 
 
-            <label for="Owner"
-                    >Owner</label>
-                    
-                    <input 
-                    type="text"
-                    name="ownerRentaltrans"
-                    id="ownerRentaltrans"
-                    value="{{list.owner}}"
-                    class="form-control"
-                    >
+
+                {% endfor %}
+                
 
 
 
-            {% endfor %}
+            
 
             <button type="submit"  onclick="update_rentalData()" class="btn btn-success">
                 Update
                 <i class="fas fa-database"></i>
             </button>
-        </div>
+        
         
     </div>
 
@@ -269,10 +254,12 @@ div.transactions {
                 data["equipmentId"] = document.getElementById("equipmentId").value;
                 data["totalHours"] = document.getElementById("totalHoursRentalTrans").value;
                 data["rentalRate"] = document.getElementById("rentalRateTransaction").value;
+                data["totalAmount"] = document.getElementById("grossAmountTransaction").value;
                 data["taxRate"] = document.getElementById("taxRateTransaction").value;
                 data["vat_output"] = document.getElementById("vatOutputRentalTrans").value;
+                data["net_of_vat"] = document.getElementById("netOfVAtRentalTrans").value;
                 data["driverOperator"] = document.getElementById("driverOperatorRentaltrans").value;
-                data["owner"] = document.getElementById("ownerRentaltrans").value;
+                
 
 
                 console.log(data);

@@ -9,7 +9,7 @@ from config.db import mydb
 from bson import ObjectId
 from typing import Optional
 
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 
 
 from jose import jwt
@@ -294,7 +294,8 @@ from config.tvi_models import equipment_details_tvi, rentaltransaction
 from config.tvi_models import (insertEquipment_tvi,select_tivEquipment_id,
                                 getEquipmentTVI,select_tivEquipment_with_id,
                                 updateTVIequipment,getEquipmentTVI2,insertRental_tvi,getRentalTVI,
-                                getRentalTVI_id)
+                                getRentalTVI_id,getRentalTVI_all,getRentalTVI_id_update,
+                                updateTVIrental)
 @tviProject.post("/api-insert-tvi-equipment-sqlModel/")
 async def insertCostapi(items:equipment_details_tvi,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
@@ -388,7 +389,7 @@ async def get_costData_id(id: int,username: str = Depends(validateLogin)):
 
 
 @tviProject.put("/api-update-tvi-equipment-sqlModel/")
-async def updateRzEquipment(id: int,items:equipment_details_tvi,username: str = Depends(validateLogin)):
+async def updateTVIEquipment(id: int,items:equipment_details_tvi,username: str = Depends(validateLogin)):
 
     """This function is for updating Rizal Equipment"""
     updateTVIequipment(equipmentID=items.equipmentID,purchase_date=items.purchase_date,
@@ -474,8 +475,39 @@ def get_RentalData(username: str = Depends(validateLogin)):
             }
             for x in rentalList
         ]
-       
+    
     return Data
+
+
+@ tviProject.get('/api-get-tvi-all-rentalTransaction-sqlModel/')
+def get_RentalData(datefrom,dateto,equipmentId: str,
+                     username: str = Depends(validateLogin)):
+    """This function is for querying all Equipment"""
+    rentalList = getRentalTVI_all(datefrom=datefrom,dateto=dateto,
+                                        equipmentId=equipmentId)
+
+    Data = [
+            {
+                "id": x.id,
+                "transDate": x.transDate ,
+                "equipmentId": x.equipmentId,
+                "totalHours": x.totalHours,
+                "rentalRate": x.rentalRate,
+                "totalAmount": x.totalAmount,
+                "taxRate": x.taxRate,
+                "vat_output": x.vat_output,
+                "net_of_vat": x.net_of_vat,
+                "driverOperator": x.driverOperator,
+                "user": x.user,
+                "date_updated": x.date_updated,
+                "date_credited": x.date_credited,
+            }
+            for x in rentalList
+        ]
+    
+    return Data
+
+
 
 
 @tviProject.get("/api-search-tvi-equipmentID/")
@@ -505,6 +537,45 @@ def search_tvi_equipment_insert(term: Optional[str]):
     ]
 
     return costData
+
+
+
+@tviProject.get("/api-get-update-tvi-rentalTransaction-sqlModel/{id}", response_class=HTMLResponse)
+async def getTviTrans(id: int,request:Request,username: str = Depends(validateLogin)):
+    """This function is for querying from Rental Transactions for update purposes"""
+
+    rentalList = getRentalTVI_id_update(id=id)
+
+    Data = [
+            {
+                "id": x.id,
+                "transDate": x.transDate ,
+                "equipmentId": x.equipmentId,
+                "totalHours": x.totalHours,
+                "rentalRate": x.rentalRate,
+                "totalAmount": x.totalAmount,
+                "taxRate": x.taxRate,
+                "vat_output": x.vat_output,
+                "net_of_vat": x.net_of_vat,
+                "driverOperator": x.driverOperator,
+                "user": x.user,
+                "date_updated": x.date_updated,
+                "date_credited": x.date_credited,
+            }
+            for x in rentalList
+        ]
+    
+    
+    return templates.TemplateResponse("tvi/tviRentalUpdate.html",{'request':request,'Data':Data})
+
+@tviProject.put("/api-update-tvi-rental-sqlModel/")
+async def updateTVIRental(id: int,items:equipment_details_tvi,username: str = Depends(validateLogin)):
+
+    """This function is for updating Rizal Equipment"""
+    updateTVIrental(equipmentID=items.equipmentID,purchase_date=items.purchase_date,
+                        equipmentDesc=items.equipmentDesc,purchase_amount=items.purchase_amount,
+                        rentalRate=items.rentalRate,plate_number=items.plate_number,
+                        status=items.status,remarks=items.remarks, owner=items.owner,id=id)
 
 
 # @tviProject.get("/api-search-tiv-test/")

@@ -210,6 +210,34 @@ def getRentalTVI():
         
         return data
 
+def getRentalTVI_id_update(id):
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        statement = select(rentaltransaction).where(rentaltransaction.id == id)
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
+
+
+def getRentalTVI_all(datefrom,dateto,equipmentId):
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        statement = select(rentaltransaction).where(rentaltransaction.transDate >= datefrom ,
+                         rentaltransaction.transDate <= dateto ) \
+                         .filter(rentaltransaction.equipmentId.like ('%'+ equipmentId +'%')) \
+                         .order_by(rentaltransaction.id.asc())
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
+
 
 def insertRental_tvi(transDate,equipmentId,totalHours,
                        rentalRate,totalAmount,taxRate,vat_output,net_of_vat,
@@ -229,8 +257,37 @@ def insertRental_tvi(transDate,equipmentId,totalHours,
     
     session.commit()
 
-
     session.close()
+
+def updateTVIrental(id,transDate,equipmentId,totalHours,
+                       rentalRate,totalAmount,taxRate,vat_output,net_of_vat,
+                       driverOperator,user,date_updated):
+    """This function is for updating Rizal Equipment"""
+
+    with Session(engine) as session:
+        statement = select(rentaltransaction).where(rentaltransaction.id == id)
+        results = session.exec(statement)
+
+        result = results.one()
+
+           
+        result.transDate = transDate
+        result.equipmentId = equipmentId
+        result.totalHours = totalHours
+        result.rentalRate = rentalRate
+        result.totalAmount = totalAmount
+        result.taxRate = taxRate
+        result.vat_output = vat_output
+        result.net_of_vat = net_of_vat
+        result.driverOperator = driverOperator
+        result.user = user
+        result.date_updated = date_updated
+        
+
+    
+        session.add(result)
+        session.commit()
+        session.refresh(result) 
 
 
 # getRentalTVI_id('181')

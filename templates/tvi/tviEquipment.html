@@ -542,20 +542,11 @@
                         class="form-control"
                         >
 
-                    <label for="Owner"
-                        >Owner</label>
-                        
-                        <input 
-                        type="text"
-                        name="ownerRentaltrans"
-                        id="ownerRentaltrans"
-                        
-                        class="form-control"
-                        >
+                    
 
                     
                     
-                    <br><br>
+                    <br>
                     
         
                 
@@ -613,15 +604,7 @@
                             id="equipmentSearchRentTrans"
                             
                             >
-                        <label for="Owner"
-                            >Owner</label>
                         
-                            <input 
-                            type="text"
-                            name="ownerSearchRentTrans"
-                            id="ownerSearchRentTrans"
-                            
-                            >
                         <button type="submit" onclick="displayRentalData()" class="btn btn-primary">Search</button>
 
                         <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
@@ -640,9 +623,11 @@
                                     <td>Total Hour</td>
                                     <td>Rental Rate</td>
                                     <td>Total Amount</td>
-                                    <td>Owner</td>
-                                    <td>Delete</td>
-                                    <td>Update</td>
+                                    <td>Tax Rate</td>
+                                    <td>VAT output</td>
+                                    <td>Net of Vat</td>
+                                    <td>Operator/Driver</td>
+                                    <td>Action</td>
                                 </tr>
                             </thead>
                             <tbody id="table_body2">
@@ -650,6 +635,8 @@
                                     
                                     <tr>
                                         
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -1106,7 +1093,7 @@
             vat_output: document.getElementById("vatOutputRentalTrans").value,
             net_of_vat: document.getElementById("netOfVAtRentalTrans").value,
             driverOperator: document.getElementById("driverOperatorRentaltrans").value,
-            owner: document.getElementById("ownerRentaltrans").value,
+            
             
           };
       
@@ -1143,9 +1130,9 @@
                 var datefrom = document.getElementById('dateFromRentTrans').value;
                 var dateto = document.getElementById('dateToRentTrans').value;
                 var equipmentID = document.getElementById('equipmentSearchRentTrans').value;
-                var owner = document.getElementById('ownerSearchRentTrans').value;
-            const search_url = `/api-get-tvi-rental-transactions/?datefrom=${datefrom}&dateto=${dateto}
-                                &equipmentID=${equipmentID}&owner=${owner}`;
+                
+            const search_url = `/api-get-tvi-all-rentalTransaction-sqlModel/?datefrom=${datefrom}&dateto=${dateto}
+                                &equipmentId=${equipmentID}`;
 
             
             const responce = await fetch(search_url)
@@ -1158,27 +1145,24 @@
                     tableData2+= ` <tr>
                                 <td>${values.id}</td>
                                 <td>${values.transDate}</td>
-                                <td>${values.equipmentID}</td>
+                                <td>${values.equipmentId}</td>
                                 <td>${values.totalHours}</td>
                                 <td>${values.rentalRate}</td>
-                                <td>${values.owner}</td>
                                 <td>${values.totalAmount}</td>
+                                <td>${values.taxRate}</td>
+                                <td>${values.vat_output}</td>
+                                <td>${values.net_of_vat}</td>
+                                <td>${values.driverOperator}</td>
+                                
                             
                                 
                                 <td>
-                                    <button type="button"  id="remove_button" onclick="delete_rental_transactions(${values.id})" class="btn btn-danger">
-                                        <i class="fas fa-database">
-                                        </i>Remove</button>
+                                    <a href="/api-get-update-tvi-rentalTransaction-sqlModel/${values.id}"
+                                    <button type="button" class="btn btn-primary">
+                                    <i class="fas fa-database"></i> Edit</button></a> 
                                 </td>
 
-                                <td>
-                                    
-                                    <a href="/api-update-tiv-rental-withID/${values.id}"
-                                    <button type="button" class="btn btn-primary">
-                                    <i class="fas fa-database"></i> Edit</button></a>
-                                                       
-                           </td>
-
+                               
                                
                             
                             </tr>`;
