@@ -969,7 +969,7 @@ async def test(username: str = Depends(validateLogin)):
 
 
 @rizal_project.post("/api-insert-rizal-equipment/")
-async def insertCostapi(items:equipment_details,username: str = Depends(validateLogin)):
+async def insertEquipment(items:equipment_details,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
     insertEquipment(equipment_id=items.equipment_id,purchase_date=items.purchase_date,
                         description=items.description,purchase_amount=items.purchase_amount,
