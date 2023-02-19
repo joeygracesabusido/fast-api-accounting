@@ -272,7 +272,7 @@
                         try {
                                 // Use template literals to build the URL
                                 if (confirm('Are you sure you want to update this rental transaction?')){
-                                        const response = await fetch("/api-update-tiv-rental-withID/"+ id, {
+                                        const response = await fetch("/api-update-tvi-rental-sqlModel/"+ id, {
                                         method: "PUT",
                                         headers: { "Content-Type": "application/json" },
                                         body: JSON.stringify(data)

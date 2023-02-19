@@ -157,7 +157,7 @@ def autocomplete_equipmentID(term: Optional[str]):
     return suggestions
 
 #===================================================Rental Transaction=====================================
-from models.model import tviRentalTrans,TVIRentalTransaction
+from models.model import tviRentalTrans,TVIRentalTransaction,TVIDiesel
 
 @ tviProject.get('/api-get-tvi-equipment-equipmentID/')
 def getEquipmentID(equipmentID,username: str = Depends(validateLogin)):
@@ -295,7 +295,7 @@ from config.tvi_models import (insertEquipment_tvi,select_tivEquipment_id,
                                 getEquipmentTVI,select_tivEquipment_with_id,
                                 updateTVIequipment,getEquipmentTVI2,insertRental_tvi,getRentalTVI,
                                 getRentalTVI_id,getRentalTVI_all,getRentalTVI_id_update,
-                                updateTVIrental)
+                                updateTVIrental,insertDiesel_tvi)
 @tviProject.post("/api-insert-tvi-equipment-sqlModel/")
 async def insertCostapi(items:equipment_details_tvi,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
@@ -568,15 +568,33 @@ async def getTviTrans(id: int,request:Request,username: str = Depends(validateLo
     
     return templates.TemplateResponse("tvi/tviRentalUpdate.html",{'request':request,'Data':Data})
 
-@tviProject.put("/api-update-tvi-rental-sqlModel/")
-async def updateTVIRental(id: int,items:equipment_details_tvi,username: str = Depends(validateLogin)):
+@tviProject.put("/api-update-tvi-rental-sqlModel/{id}")
+async def updateTVIRental(id: int,items:TVIRentalTransaction,username: str = Depends(validateLogin)):
 
     """This function is for updating Rizal Equipment"""
-    updateTVIrental(equipmentID=items.equipmentID,purchase_date=items.purchase_date,
-                        equipmentDesc=items.equipmentDesc,purchase_amount=items.purchase_amount,
-                        rentalRate=items.rentalRate,plate_number=items.plate_number,
-                        status=items.status,remarks=items.remarks, owner=items.owner,id=id)
+    today = datetime.now()
+    updateTVIrental(transDate=items.transDate,equipmentId=items.equipmentId,
+                        totalHours=items.totalHours,rentalRate=items.rentalRate,
+                        totalAmount=items.totalAmount,taxRate=items.taxRate,
+                        vat_output=items.vat_output,net_of_vat=items.net_of_vat,
+                        driverOperator=items.driverOperator,user=username,
+                        date_updated=today,id=id)
 
+    return  {'Messeges':'Data has been Updated'}
+
+#=================================================TVI Diesel Transaction Frame===================================
+
+@tviProject.post("/api-insert-tvi-diesel-sqlModel/")
+async def insertDieselTvi(items:TVIDiesel,username: str = Depends(validateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+    insertDiesel_tvi(transDate=items.transDate,equipmentId=items.equipmentId,
+                        withdrawalSlip=items.withdrawalSlip,totalliters=items.totalliters,
+                        price=items.price,totalAmount=items.totalAmount,
+                        user=username,date_credited=today)
+
+
+    return  {'Messeges':'Data has been Save'}
 
 # @tviProject.get("/api-search-tiv-test/")
 # async def get_costData_id(items:equipment_details_tvi | None = None,username: str = Depends(validateLogin)):

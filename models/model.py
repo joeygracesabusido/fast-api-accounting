@@ -222,7 +222,17 @@ class TVIRentalTransaction(BaseModel):
     vat_output: float
     net_of_vat: float
     driverOperator: str
-    owner: str
+
+
+class TVIDiesel(BaseModel):
+    transDate: date
+    equipmentId: str
+    withdrawalSlip: float
+    totalliters: float
+    price: float
+    totalAmount: float
+    
+   
     
 #=========================================Employee Frame==========================================
 class EmployeeReg(BaseModel):

@@ -47,7 +47,7 @@ class rentaltransaction(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     transDate: date
-    equipmentId: str = Field(index=True,unique=True)
+    equipmentId: str = Field(index=True)
     totalHours: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     rentalRate: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     totalAmount: condecimal(max_digits=9, decimal_places=2)
@@ -55,6 +55,23 @@ class rentaltransaction(SQLModel, table=True):
     vat_output:  condecimal(max_digits=9, decimal_places=2)
     net_of_vat: condecimal(max_digits=9, decimal_places=2)
     driverOperator: str = Field(default=None)
+    user: str = Field(default=None)
+    date_updated: datetime = Field(default=None)
+    date_credited: datetime
+
+class tvidieseltransaction(SQLModel, table=True):
+    """This is for rental table in TVI"""  
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.d = SQLModel.util._collections.Properties({})
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    equipmentId: str = Field(index=True)
+    withdrawalSlip: str = Field(default=None)
+    totalliters: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    price: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    totalAmount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     user: str = Field(default=None)
     date_updated: datetime = Field(default=None)
     date_credited: datetime
@@ -183,7 +200,7 @@ def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
         session.refresh(result)
 
 
-#=============================================TVI Frame=======================================
+#=====================================================TVI Rental Frame =======================================
 def getRentalTVI_id(term):
     """This function is for querying all equipment in Rizal"""
     with Session(engine) as session:
@@ -288,6 +305,26 @@ def updateTVIrental(id,transDate,equipmentId,totalHours,
         session.add(result)
         session.commit()
         session.refresh(result) 
+
+
+#===================================================TVI Diesel Transaction ====================================
+def insertDiesel_tvi(transDate,equipmentId,withdrawalSlip,
+                        totalliters,price,totalAmount,user,date_credited):
+    """This function is for inserting Rental Transaction in TVI """
+    
+    insertData = tvidieseltransaction(transDate=transDate,equipmentId=equipmentId,withdrawalSlip=withdrawalSlip,
+                                        totalliters=totalliters,price=price,
+                                        totalAmount=totalAmount,user=user,date_credited=date_credited)
+    
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
 
 
 # getRentalTVI_id('181')
