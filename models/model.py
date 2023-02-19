@@ -227,7 +227,7 @@ class TVIRentalTransaction(BaseModel):
 class TVIDiesel(BaseModel):
     transDate: date
     equipmentId: str
-    withdrawalSlip: float
+    withdrawalSlip: str
     totalliters: float
     price: float
     totalAmount: float

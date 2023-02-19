@@ -511,9 +511,7 @@ def get_RentalData(datefrom,dateto,equipmentId: str,
 
 
 @tviProject.get("/api-search-tvi-equipmentID/")
-
 def search_tvi_equipment_insert(term: Optional[str]):
-   
 
     data = getRentalTVI_id(term=term)
     
@@ -595,6 +593,79 @@ async def insertDieselTvi(items:TVIDiesel,username: str = Depends(validateLogin)
 
 
     return  {'Messeges':'Data has been Save'}
+
+from config.tvi_models import getDieselTVI_all
+@tviProject.get("/api-search-tvi-diesel-trans/")
+def search_tvi_dieseltransAll(datefrom,dateto,equipmentId: Optional[str]):
+    """This is for searching all Data from Diesel table"""
+    data = getDieselTVI_all(datefrom=datefrom,dateto=dateto,equipmentId=equipmentId)
+    
+    costData = [
+
+        {
+            
+            "id": x.id,
+            "transDate": x.transDate,
+            "equipmentId": x.equipmentId,
+            "withdrawalSlip": x.withdrawalSlip,
+            "totalliters": x.totalliters,
+            "price": x.price,
+            "totalAmount":"{:,.2f}".format(x.totalAmount),
+            "user": x.user,
+            "date_updated": x.date_updated,
+            "date_credited": x.date_credited,
+            
+        
+        }
+        for x in data
+    ]
+
+    return costData
+
+from config.tvi_models import getDieselTVI_id
+@tviProject.get("/api-get-update-tvi-dieselTrans-sqlModel/{id}", response_class=HTMLResponse)
+async def getTviTrans(id: int,request:Request,username: str = Depends(validateLogin)):
+    """This function is for querying from Rental Transactions for update purposes"""
+
+    DieselList = getDieselTVI_id(id=id)
+
+    Data = [
+            {
+            "id": x.id,
+            "transDate": x.transDate,
+            "equipmentId": x.equipmentId,
+            "withdrawalSlip": x.withdrawalSlip,
+            "totalliters": x.totalliters,
+            "price": x.price,
+            "totalAmount": x.totalAmount,
+            "user": x.user,
+            "date_updated": x.date_updated,
+            "date_credited": x.date_credited,
+            }
+            for x in DieselList
+        ]
+    
+    # print(Data)
+    return templates.TemplateResponse("tvi/tviDieselUpdate.html",{'request':request,'Data':Data})
+
+from config.tvi_models import updateTVIDiesel
+@tviProject.put("/api-update-tvi-diesel-sqlModel/{id}")
+async def updateTVIdiesel(id: int,items:TVIDiesel,username: str = Depends(validateLogin)):
+
+    """This function is for updating Rizal Equipment"""
+    today = datetime.now()
+    updateTVIDiesel(transDate=items.transDate,equipmentId=items.equipmentId,
+                        withdrawalSlip=items.withdrawalSlip,totalliters=items.totalliters,
+                        price=items.price,totalAmount=items.totalAmount,
+                        user=username,date_updated=today,id=id)
+
+    return  {'Messeges':'Data has been Updated'}
+
+
+
+
+
+    
 
 # @tviProject.get("/api-search-tiv-test/")
 # async def get_costData_id(items:equipment_details_tvi | None = None,username: str = Depends(validateLogin)):

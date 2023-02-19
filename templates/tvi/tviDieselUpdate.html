@@ -1,0 +1,222 @@
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<style>
+
+#div1 {
+            width: 40%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: gray;
+            
+    }
+
+ /* input.form-control{
+    
+    background-color: blue;
+  } */
+ 
+
+</style>
+<body>
+    <div class="container mt-3" id="div1">
+        <h2 style="color:yellow;">UPDATE Diesel Transaction</h2>
+                {% for list in Data %}
+                        
+                        <input 
+                        type="text" hidden
+                        name="transID"
+                        id="transID"
+                        value="{{list.id}}"
+                        class="form-control"
+                        >
+
+                <label for=""style="color:yellow;">Transaction Date</label>
+                        <input 
+                        
+                        type="date"
+                        name="transDateDiesel"
+                        id="transDateDiesel"
+                        value="{{list.transDate}}"
+                        class="form-control"
+                        >
+
+                <label class="red-text" for="EquipmentID"style="color:yellow;"
+                        >Equipment ID</label>
+                        
+                        <input 
+                        type="text"
+                        name="equipmentIdDiesel"
+                        id="equipmentIdDiesel"
+                        value="{{list.equipmentId}}"
+                        class="form-control"
+                        >
+
+
+                        
+
+                <label for="Total Hours"style="color:yellow;"
+                        >Withdrawal Slip</label>
+                        
+                        <input 
+                        type="text"
+                        name="withdrawalSlipDiesel"
+                        id="withdrawalSlipDiesel"
+                        value="{{list.withdrawalSlip}}"
+                        class="form-control"
+                        >
+
+                <label for="Rental Rate" style="color:yellow;"
+                        >Liters</label>
+                        
+                        <input 
+                        type="number"
+                        name="totalliters"
+                        id="totalliters"
+                        step="0.01"
+                        value="{{list.totalliters}}"
+                        class="form-control"
+                        >
+
+                <label for="Price"style="color:yellow;"
+                        >Price</label>
+                        
+                        <input 
+                        type="number"
+                        name="priceDiesel"
+                        id="priceDiesel"
+                        step="0.01"
+                        value="{{list.price}}"
+                        class="form-control"
+                        >
+                <label for="Total Amount"style="color:yellow;"
+                        >Total Amount</label>
+                        
+                        <input 
+                        type="number"
+                        name="totalAmountDiesel"
+                        id="totalAmountDiesel"
+                        step="0.01"
+                        value="{{list.totalAmount}}"
+                        
+                        class="form-control"
+                        >
+
+                
+
+
+                {% endfor %}
+                
+
+
+
+            
+
+            <button type="submit"  onclick="update_dieselData()" class="btn btn-success">
+                Update
+                <i class="fas fa-database"></i>
+            </button>
+        
+        
+    </div>
+
+
+         <!-- This is for auto complete of Equipment ID -->
+         <script>
+            $( function() { 
+                        $("#equipmentIdDiesel").autocomplete({
+                        source: "/api-search-autocomplete-tvi-equipment2/"
+                        });
+
+                    } );
+
+        </script>
+
+        <script>
+
+                $(document).ready(function() {
+                $('#totalliters, #priceDiesel').on('input', function() {
+                    calculateProduct();
+                });
+                });
+
+                function calculateProduct() {
+                var input1 = $('#totalliters').val();
+                var input2 = $('#priceDiesel').val();
+                var product = input1 * input2;
+                $('#totalAmountDiesel').val(product);
+                }
+
+
+        </script>
+
+
+    
+
+   
+
+    <!-- This function is for updating Rental Transactions -->
+        <script type="text/javascript">
+                function update_dieselData() {
+                var data = {};
+                var id = document.getElementById("transID").value;
+                data["transDate"] = document.getElementById("transDateDiesel").value;
+                data["equipmentId"] = document.getElementById("equipmentIdDiesel").value;
+                data["withdrawalSlip"] = document.getElementById("withdrawalSlipDiesel").value;
+                data["totalliters"] = document.getElementById("totalliters").value;
+                data["price"] = document.getElementById("priceDiesel").value;
+                data["totalAmount"] = document.getElementById("totalAmountDiesel").value;
+               
+                
+
+
+                console.log(data);
+
+                if (id === '') {
+                        window.alert("Trans ID field is requires");
+                } else {
+                        // Use async/await to simplify the fetch call
+                        (async () => {
+                        try {
+                                // Use template literals to build the URL
+                                if (confirm('Are you sure you want to update this rental transaction?')){
+                                        const response = await fetch("/api-update-tvi-diesel-sqlModel/"+ id, {
+                                        method: "PUT",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(data)
+                                        });
+
+                                        // Use response.ok to check if the response was successful
+                                        if (response.ok) {
+                                        window.alert("Your Data has been Updated");
+                                        window.location.assign("/tvi-transaction/");
+                                        console.log(await response.json());
+                                        } else if (response.status === 401) {
+                                        window.alert("Unauthorized credential Please Login");
+                                        }
+
+                                } else {
+                                        throw new Error('Failed to delete data');
+                                        }
+                               
+                        } catch (error) {
+                                // Catch errors
+                                window.alert(error);
+                                console.log(error);
+                        }
+                        })();
+                }
+                }
+        </script>
+
+
+    
+
+
+</body>
+
+{% endblock %}

@@ -325,6 +325,64 @@ def insertDiesel_tvi(transDate,equipmentId,withdrawalSlip,
 
     session.close()
 
+def getDieselTVI_all(datefrom,dateto,equipmentId):
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        statement = select(tvidieseltransaction).where(tvidieseltransaction.transDate >= datefrom ,
+                         tvidieseltransaction.transDate <= dateto ) \
+                         .filter(tvidieseltransaction.equipmentId.like ('%'+ equipmentId +'%')) \
+                         .order_by(tvidieseltransaction.id.asc())
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
+
+
+def getDieselTVI_id(id):
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        
+
+        statement = select(tvidieseltransaction).where(tvidieseltransaction.id == id)
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+       
+        return data
+
+
+def updateTVIDiesel(id,transDate,equipmentId,withdrawalSlip,
+                        totalliters,price,totalAmount,user,date_updated):
+    """This function is for updating Rizal Equipment"""
+
+    with Session(engine) as session:
+        statement = select(tvidieseltransaction).where(tvidieseltransaction.id == id)
+        results = session.exec(statement)
+
+        result = results.one()
+
+           
+        result.transDate = transDate
+        result.equipmentId = equipmentId
+        result.withdrawalSlip = withdrawalSlip
+        result.totalliters = totalliters
+        result.price = price
+        result.totalAmount = totalAmount
+        result.user = user
+        result.date_updated = date_updated
+        
+
+    
+        session.add(result)
+        session.commit()
+        session.refresh(result) 
+
+
+
 
 
 # getRentalTVI_id('181')

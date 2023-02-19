@@ -67,7 +67,7 @@
             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#insertDieselTransaction">
                 Insert Diesel
             </button>
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#rentalList">
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#dieselList">
                 Diesel List
             </button>
         </div>
@@ -790,7 +790,118 @@
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" onclick="insertEquipment()" class="btn btn-primary">Save</button>
+                <button type="submit" onclick="insertDiesel()" class="btn btn-primary">Save</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- This for table of Diesel Transaction -->
+
+        <div class="modal fade" id="dieselList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Diesel Transaction List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <label for="dateFrom"
+                        >From</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateFromDiesel"
+                            id="dateFromDiesel"
+                           
+                            >
+
+                    
+                        <label for="dateTo"
+                        >To</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateToDiesel"
+                            id="dateToDiesel"
+                           
+                            >
+                        <label for="Equipment"
+                            >Equipment</label>
+                            <input 
+                            type="text"
+                            name="equipmentSearchDieselTrans"
+                            id="equipmentSearchDieselTrans"
+                            
+                            >
+                        
+                        <button type="submit" onclick="displayRentalData()" class="btn btn-primary">Search</button>
+
+                        <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                            Export Excel
+                            <i class="fas fa-database"></i>
+                        </button>
+                    </div>
+
+                    <div  class="container mt-3">
+                        <table id="myTableDiesel" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                            
+                                    <td>ID</td>
+                                    <td>Trans Date</td>
+                                    <td>Equipment ID</td>
+                                    <td>Withdrawal Slip</td>
+                                    <td>Liters</td>
+                                    <td>Price</td>
+                                    <td>Total Amount</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body_diesel">
+                               
+                                    
+                                    <tr>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                      
+                                    </tr>
+                                   
+                                
+                            </tbody>
+            
+                           
+            
+                        </table>
+            
+                        
+                            
+                            
+                    </div>
+        
+                  
+           </div>
+        
+
+                   
+        
+                
+                </div>
+                <div class="modal-footer">
+                
                 <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                 </div>
             </div>
@@ -1351,7 +1462,126 @@
                         } );
 
             </script>
-  
+
+            <script>
+
+                    $(document).ready(function() {
+                    $('#totalliters, #priceDiesel').on('input', function() {
+                        calculateProduct();
+                    });
+                    });
+
+                    function calculateProduct() {
+                    var input1 = $('#totalliters').val();
+                    var input2 = $('#priceDiesel').val();
+                    var product = input1 * input2;
+                    $('#totalAmountDiesel').val(product);
+                    }
+
+
+            </script>
+
+
+            <!-- This is to insert Equipment Rental DATA to tvi table -->
+            <script type="text/javascript">
+                // Define an async function to insert equipment
+                async function insertDiesel() {
+                // Get the values of the input fields
+               
+                const data = {
+                    transDate: document.getElementById("transDateDiesel").value,
+                    equipmentId: document.getElementById("equipmentIdDiesel").value,
+                    withdrawalSlip: document.getElementById("withdrawalSlipDiesel").value,
+                    totalliters: document.getElementById("totalliters").value,
+                    price: document.getElementById("priceDiesel").value,
+                    totalAmount: document.getElementById("totalAmountDiesel").value,
+                   
+                    
+                    
+                };
+            
+                // Use the fetch API to send the POST request
+                try {
+                    const response = await fetch(`/api-insert-tvi-diesel-sqlModel/`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                    });
+            
+                    // Check if the response was successful
+                    if (response.status === 200) {
+                    window.alert("Your data has been saved");
+                    console.log(data);
+                    window.location.assign("/tvi-transaction/");
+                    
+                    } else if (response.status === 401) {
+                    window.alert("Unauthorized credential. Please login");
+                    }
+                } catch (error) {
+                    // Catch any errors and log them to the console
+                    window.alert(error);
+                    console.log(error);
+                }
+                }
+            </script>
+
+
+            <!-- This function is for displaying Rental Data -->
+
+            <script type="text/javascript">
+                // const rental_url =search_url ;
+                async function displayRentalData(){
+                    var datefrom = document.getElementById('dateFromDiesel').value;
+                    var dateto = document.getElementById('dateToDiesel').value;
+                    var equipmentID = document.getElementById('equipmentSearchRentTrans').value;
+                    
+                const search_url = `/api-search-tvi-diesel-trans/?datefrom=${datefrom}&dateto=${dateto}
+                                    &equipmentId=${equipmentID}`;
+
+                
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                if (responce.status === 200) {
+                    let tableData2="";
+                    data.map((values)=>{
+                        tableData2+= ` <tr>
+                                    <td>${values.id}</td>
+                                    <td>${values.transDate}</td>
+                                    <td>${values.equipmentId}</td>
+                                    <td>${values.withdrawalSlip}</td>
+                                    <td>${values.totalliters}</td>
+                                    <td>${values.price}</td>
+                                    <td>${values.totalAmount}</td>
+                                    
+                                    
+                                
+                                    
+                                    <td>
+                                        <a href="/api-get-update-tvi-dieselTrans-sqlModel/${values.id}"
+                                        <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-database"></i> Edit</button></a> 
+                                    </td>
+
+                                
+                                
+                                
+                                </tr>`;
+                    });
+                        document.getElementById("table_body_diesel").innerHTML=tableData2;
+                    }else if (responce.status === 401){
+                        window.alert("Unauthorized credential. Please login");
+                    }
+                
+                }
+                
+                
+
+
+            </script>
+
+            
    
       
 </body>
