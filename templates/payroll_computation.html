@@ -473,7 +473,164 @@
 
                     </div>          
 
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="Provi OT"
+                        >Provi OT</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="proviOT_total"
+                                id="proviOT_total"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="Prov OT Cal"
+                        >Provi OT Cal</label>
+                     
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="proviOT_total_cal"
+                                id="proviOT_total_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>          
+
+
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="Provi OT"
+                        >Provi Sunday</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="provisun_total"
+                                id="provisun_total"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="Prov OT Cal"
+                        >Provi Sunday Cal</label>
+                     
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="provisun_total_cal"
+                                id="provisun_total_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>          
+
+
+
                 </div>
+
+
+                <div  class="d-flex justify-content-center">
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="Prov OT Sun"
+                        >Provi Sun OT</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="provisunOT_total"
+                                id="provisunOT_total"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="SPL"
+                        >Provi Sun OT Calculation</label>
+                     
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="provisunOT_total_cal"
+                                id="provisunOT_total_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>              
+                    
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="Night Diff"
+                        >Night Diff</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="nightDiff"
+                                id="nightDiff"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="SPL"
+                        >Night Diff Cal</label>
+                     
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="nightDiff_cal"
+                                id="nightDiff_cal"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>          
+
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="Provi OT"
+                        >Adjustment</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="adjustment"
+                                id="adjustment"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <h1>
+                        This is for Mandatory Computatin
+                    </h1>
+                </div> 
+
+
+                
+
 
                 <div class="container">
                     <button onclick="printPage()">Print</button>
@@ -529,7 +686,21 @@
                     document.getElementById('emp_class').value = off_on_details
                     document.getElementById('salary_details').value = salary_details
 
-                }
+                    if (employee_id <= 2021) {
+                        provi_rate = 570
+                        document.getElementById('provi_rate').value = provi_rate
+                    }else if(employee_id >= 2022 && employee_id <=2999){
+                        provi_rate = 429
+                        document.getElementById('provi_rate').value = provi_rate
+                    }else if (employee_id >= 5000 && employee_id <=7000){
+                        provi_rate = 351
+                        document.getElementById('provi_rate').value = provi_rate
+                    } else {
+                        provi_rate = 429
+                        document.getElementById('provi_rate').value = provi_rate
+                    }
+
+                } 
                 
                 
                 
@@ -804,6 +975,132 @@
                 }
 
         </script>
+
+
+<!-- ====================================This is for computation of SPL==================================== -->
+        <script>
+             $(document).ready(function() {
+                $('#shoprate, #salary_rate').on('input', function() {
+                    calculateProduct();
+                });
+                });
+
+                function calculateProduct() {
+
+                var salaryRate = $('#salary_rate').val();
+                var shoprate = $('#shoprate').val();
+               
+                var product = salaryRate / 2 * shoprate;
+                $('#shopRate_cal').val(product).toFixed(2);
+                }
+
+
+        </script>
+
+<!-- ====================================This is for computation of ProviRate Calcuation==================================== -->
+            <script>
+                $(document).ready(function() {
+                $('#provirateNo, #provi_rate').on('input', function() {
+                    calculateProvi();
+                });
+                });
+
+                function calculateProvi() {
+
+                var totalProvi = $('#provirateNo').val();
+                var proviRate = $('#provi_rate').val();
+                
+                var product = totalProvi  * proviRate;
+                $('#provirate_cal').val(product).toFixed(2);
+                }
+
+
+            </script>
+
+<!-- ====================================This is for computation of ProviRate Calcuation==================================== -->
+                <script>
+                    $(document).ready(function() {
+                    $('#proviOT_total, #provi_rate').on('input', function() {
+                        calculateProviOT();
+                    });
+                    });
+
+                    function calculateProviOT() {
+
+                    var totalProvi = $('#proviOT_total').val();
+                    var proviRate = $('#provi_rate').val();
+                    
+                    var product = totalProvi  * ((proviRate) / 8 * 1.25);
+                    $('#proviOT_total_cal').val(product).toFixed(2);
+                    }
+
+
+                </script>
+
+<!-- ====================================This is for computation of ProviRate Calcuation==================================== -->
+                <script>
+                    $(document).ready(function() {
+                    $('#provisun_total, #provi_rate').on('input', function() {
+                        calculateProviSun();
+                    });
+                    });
+
+                    function calculateProviSun() {
+
+                    var totalProvi = $('#provisun_total').val();
+                    var proviRate = $('#provi_rate').val();
+                    
+                    var product = totalProvi  * (proviRate * 1.30);
+                    $('#provisun_total_cal').val(product).toFixed(2);
+                    }
+
+
+                </script>
+
+
+<!-- ====================================This is for computation of Provi Sun OT Cal==================================== -->
+                <script>
+                    $(document).ready(function() {
+                    $('#provisunOT_total, #provi_rate').on('input', function() {
+                        calculateProviSunOT();
+                    });
+                    });
+
+                    function calculateProviSunOT() {
+
+                    var totalProvi = $('#provisunOT_total').val();
+                    var proviRate = $('#provi_rate').val();
+                    
+                    var product = totalProvi  * ((proviRate)/8 * 1.69);
+                    $('#provisunOT_total_cal').val(product).toFixed(2);
+                    }
+
+
+                </script>
+
+<!-- ====================================This is for computation of Provi Sun OT Cal==================================== -->
+                <script>
+                    $(document).ready(function() {
+                    $('#nightDiff, #salary_rate').on('input', function() {
+                        calculateProviSun();
+                    });
+                    });
+
+                    function calculateProviSun() {
+
+                    var nightDiff = $('#nightDiff').val();
+                    var salaryRate = $('#salary_rate').val();
+                    
+                    var product = nightDiff  * ((salaryRate)/8 * 0.10);
+                    $('#nightDiff_cal').val(product).toFixed(2);
+                    }
+
+
+                </script>
+
+
+
+<!-- ================================This is to Print Form to PDF==================================== -->
 
         <script>
             function printPage() {
