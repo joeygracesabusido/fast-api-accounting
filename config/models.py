@@ -72,6 +72,22 @@ class equipment_details(SQLModel, table=True):
     owner: str = Field(default=None,max_length=150)
 
 
+# ============================================Equipment Rental ===========================================
+class equipment_rental(SQLModel, table=True):
+    """This is to create table equipment rental"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transaction_id: str = Field(default=None)
+    transaction_date: date
+    equipment_id:  str = Field(index=True)
+    total_rental_hour: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    rental_rate: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    rental_amount: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    username: str = Field(default=None)
+    date_update: date
+    
+
+
+
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
@@ -268,6 +284,20 @@ def updateRizalequipment(id,equipment_id,purchase_date,description,
         session.commit()
         session.refresh(result)
 
-      
+#==========================================This is Rental Transaction Frame=========================================    
+def insertEquipmentRental(transaction_date,equipment_id,
+                        total_rental_hour,rental_rate,rental_amount,username):
+    """This function is for inserting Equipmnet of Rizal """
+    insertData = equipment_rental(transaction_date=transaction_date,equipment_id=equipment_id,
+                            total_rental_hour=total_rental_hour,rental_rate=rental_rate,
+                            rental_amount=rental_amount,username=username)
+    
 
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
 # create_db_and_tables()

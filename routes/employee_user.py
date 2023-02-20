@@ -239,3 +239,8 @@ def get_equipment(username: str = Depends(EmployeevalidateLogin)):
         agg_result_list.append(data)
         # print(agg_result_list)
     return (agg_result_list)
+
+@employee_user.get("/employee-rizal-equipment-rental/", response_class=HTMLResponse)
+async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
+    return templates.TemplateResponse("employee/rizal_employee_trans.html", {"request":request}) 
+

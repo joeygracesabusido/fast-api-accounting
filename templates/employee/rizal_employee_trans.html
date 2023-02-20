@@ -1,0 +1,122 @@
+
+{% extends 'index.html' %}
+
+
+
+{% block content %}
+<body>
+    <div class="container">
+        <h2>
+            EMPLOYEE TRANSACTIONS
+        </h2>
+    </div>
+   
+   <div class="container">
+
+        <div class="container mt-3">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertEquipmentRental">
+                Insert Rental Transactions
+            </button>
+
+           
+            
+        </div>
+            <!-- Modal -->
+            <div class="modal fade" id="insertEquipmentRental" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Insert Rental Transaction</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+
+                        <label for="TransactionDate" >Transaction Date</label><br>
+                        <input
+                            type="date"
+                            name="trans_date"
+                            id="trans_date"
+                            class="form-control"
+                            >
+                        </input>
+
+                        <label for="Equipment" >Equipment</label><br>
+                        <input
+                            type="text"
+                            name="equipment"
+                            id="equipment"
+                           
+                            class="form-control"
+                            >
+                        </input>  
+
+                        <label for="Total Hours" >Total Hours</label>
+                            <input
+                            type="number"
+                            name="total_rental_hour"
+                            id="total_rental_hour"
+                            step="0.01"
+                            class="form-control"
+                            onkeyup="getTotalamount();"
+                            >
+                            </input>  
+
+                        <label for="Rental Rate" >Rental Rate</label>
+                            <input
+                                type="number"
+                                name="rantal_rate"
+                                id="rantal_rate"
+                                step="0.01"
+                                class="form-control"
+                                onkeyup="getTotalamount();"
+                                >
+                            </input> 
+
+                        <label for="Amount" >Amount</label><br>
+                            <input
+                                type="text"
+                                name="rantal_amount"
+                                id="rantal_amount"
+                                class="form-control"
+                                
+                                >
+                            </input>  
+                        
+            
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="update_equipment()" class="btn btn-primary">Save</button>
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            <script>
+
+                $( function() {
+                    
+                    $("#equipment").autocomplete({
+                    source: "/autocomplete-rizal-equipment/"
+                    });
+
+                } );
+
+              
+    
+            </script>
+
+
+        
+
+</body>
+
+{% endblock %}
