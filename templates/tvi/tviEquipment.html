@@ -844,7 +844,7 @@
                             
                             >
                         
-                        <button type="submit" onclick="displayRentalData()" class="btn btn-primary">Search</button>
+                        <button type="submit" onclick="displayDieselData()" class="btn btn-primary">Search</button>
 
                         <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
                             Export Excel
@@ -1535,7 +1535,7 @@
 
             <script type="text/javascript">
                 // const rental_url =search_url ;
-                async function displayRentalData(){
+                async function displayDieselData(){
                     var datefrom = document.getElementById('dateFromDiesel').value;
                     var dateto = document.getElementById('dateToDiesel').value;
                     var equipmentID = document.getElementById('equipmentSearchRentTrans').value;

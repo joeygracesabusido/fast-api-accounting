@@ -48,6 +48,11 @@
                 Search
                 <i class="fas fa-database"></i>
             </button>
+
+            <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                Export Excel
+                <i class="fas fa-database"></i>
+            </button>
     </div>
 
     <div  class="container mt-3">
@@ -149,6 +154,19 @@
                 source: "/autocomplete/"
                 });
             } );
+        </script>
+
+
+        <script>
+            function html_table_excel(type){
+                var data = document.getElementById('table_body2');
+                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                XLSX.writeFile(file, 'journalEntry.' + type);
+
+            }
+
+            
         </script>
 
 
