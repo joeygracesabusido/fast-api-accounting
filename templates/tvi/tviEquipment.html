@@ -562,6 +562,8 @@
                         class="form-control"
                         >
 
+
+
                     
 
                     
@@ -1176,12 +1178,15 @@
 
             
             document.getElementById("rentalRateTransaction").value = rentalRate;
-            document.getElementById("ownerRentaltrans").value = owner;
+            
         
 
 
             }
-        } catch (error) {
+        } 
+        
+        
+        catch (error) {
             // Handle any errors that occurred in the fetch call
             console.error(error);
             window.alert("Error occurred while fetching data");

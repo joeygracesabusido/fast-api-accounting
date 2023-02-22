@@ -534,6 +534,8 @@ def search_tvi_equipment_insert(term: Optional[str]):
         for x in data
     ]
 
+    
+
     return costData
 
 
