@@ -83,7 +83,7 @@ class equipment_rental(SQLModel, table=True):
     rental_rate: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
     rental_amount: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
     username: str = Field(default=None)
-    date_update: date
+    date_update: datetime
     
 
 
@@ -286,11 +286,11 @@ def updateRizalequipment(id,equipment_id,purchase_date,description,
 
 #==========================================This is Rental Transaction Frame=========================================    
 def insertEquipmentRental(transaction_date,equipment_id,
-                        total_rental_hour,rental_rate,rental_amount,username):
+                        total_rental_hour,rental_rate,rental_amount,username,date_update):
     """This function is for inserting Equipmnet of Rizal """
     insertData = equipment_rental(transaction_date=transaction_date,equipment_id=equipment_id,
                             total_rental_hour=total_rental_hour,rental_rate=rental_rate,
-                            rental_amount=rental_amount,username=username)
+                            rental_amount=rental_amount,username=username,date_update=date_update)
     
 
     session = Session(engine)
@@ -300,4 +300,16 @@ def insertEquipmentRental(transaction_date,equipment_id,
     session.commit()
 
     session.close()
+
+def getallRental(datefrom,dateto,equipment_id):
+    """This function is for queyring all Data fro Rental Transaction Rizal"""
+    with Session(engine) as session:
+        statement = select(equipment_rental).where(equipment_rental.transaction_date >=datefrom,
+        equipment_rental.transaction_date <=dateto,equipment_rental.equipment_id.like ('%'+equipment_id +'%') )
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
 # create_db_and_tables()

@@ -240,7 +240,78 @@ def get_equipment(username: str = Depends(EmployeevalidateLogin)):
         # print(agg_result_list)
     return (agg_result_list)
 
+
+#=================================================Employee Rizal Transaction ======================================
+
 @employee_user.get("/employee-rizal-equipment-rental/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
     return templates.TemplateResponse("employee/rizal_employee_trans.html", {"request":request}) 
 
+
+from config.models import insertEquipmentRental,getallRental
+from models.model import RizalRental
+@employee_user.post("/api-insert-employee-rizal-rental/")
+async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+    insertEquipmentRental(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
+                            total_rental_hour=items.total_rental_hour,rental_rate=items.rental_rate,
+                            rental_amount=items.rental_amount, username=username,date_update=today)
+
+
+    return  {'Messeges':'Data has been Save'} 
+
+
+@employee_user.get("/api-get-rental-rizal-employee_login/")
+async def getAllRentalRizal(datefrom,dateto,equipment_id,username: str = Depends(EmployeevalidateLogin)):
+    """This function is for testing"""
+
+
+    data = getallRental(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    rentalData = []
+    totalAmount = 0
+    for i in data:
+       
+        totalAmount+=i.rental_amount
+        
+
+        data={}   
+        
+        data.update({
+                "id": i.id,
+                "transaction_date": i.transaction_date,
+                "equipment_id": i.equipment_id,
+                "total_rental_hour": "{:,.2f}".format(i.total_rental_hour),
+                "rental_rate": "{:,.2f}".format(i.rental_rate),
+                "rental_amount": "{:,.2f}".format(i.rental_amount),
+                "username": i.username,
+                "totalAmount": "{:,.2f}".format(totalAmount),
+                "date_update": i.date_update,
+        })
+
+        rentalData.append(data)
+    
+    
+    # rentalData = [
+           
+
+    #         {
+    #             "id": i.id,
+    #             "transaction_date": i.transaction_date,
+    #             "equipment_id": i.equipment_id,
+    #             "total_rental_hour": i.total_rental_hour,
+    #             "rental_rate": i.rental_rate,
+    #             "rental_amount": i.rental_amount,
+    #             "username": i.username,
+    #             "totalAmount": 0,
+    #             "date_update": i.date_update,               
+    #             # "equipmentID": i['equipment_id']
+            
+    #         }
+          
+    #       for i in data
+    #     ]
+    
+
+    return rentalData

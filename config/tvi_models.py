@@ -35,6 +35,7 @@ class equipment_details_tvi(SQLModel, table=True):
     rentalRate: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
     plate_number: str = Field(default=None)
     status: str = Field(default=None,max_length=250)
+    project_site: str = Field(default=None,max_length=250)
     remarks: str = Field(default=None,max_length=150)
     owner: str = Field(default=None,max_length=150)
 
@@ -87,12 +88,12 @@ def create_db_and_tables2():
 
 
 def insertEquipment_tvi(equipmentID,purchase_date,equipmentDesc,
-                        purchase_amount,rentalRate,plate_number,status,remarks,owner):
+                        purchase_amount,rentalRate,plate_number,status, project_site ,remarks,owner):
     """This function is for inserting Equipmnet of Rizal """
     insertData = equipment_details_tvi(equipmentID=equipmentID,purchase_date=purchase_date,
                     equipmentDesc=equipmentDesc,purchase_amount=purchase_amount,
-                    rentalRate=rentalRate,plate_number=plate_number,status=status,remarks=remarks,
-                    owner=owner)
+                    rentalRate=rentalRate,plate_number=plate_number,status=status,project_site=project_site,
+                     remarks=remarks,owner=owner)
     
 
     session = Session(engine)
@@ -135,6 +136,7 @@ def getEquipmentTVI2():
             "rentalRate": x.rentalRate,
             "plate_number": x.plate_number,
             "status": x.status,
+            " project_site ": x. project_site,
             "remarks": x.remarks,
             "owner": x.owner,
         }
@@ -173,7 +175,7 @@ def select_tivEquipment_with_id(id):
 
 
 def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
-                        purchase_amount,rentalRate,plate_number,status,remarks,owner):
+                        purchase_amount,rentalRate,plate_number,status,project_site,remarks,owner):
     """This function is for updating Rizal Equipment"""
 
     with Session(engine) as session:
@@ -190,6 +192,7 @@ def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
         result.rentalRate = rentalRate
         result.plate_number = plate_number
         result.status = status
+        result.project_site = project_site
         result.remarks = remarks
         result.owner = owner
         

@@ -1022,4 +1022,7 @@ async def updateRzEquipment(id,items:equipment_details,username: str = Depends(v
 
     return  {'Messeges':'Data has been Updated'}
 
+
+#==============================================Rizal Employee Credential ============================================
+
   

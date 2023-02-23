@@ -165,7 +165,18 @@
                             <option value="Disposed">Disposed</option>
                     
                         </select> 
-
+                        
+                    <label for="Project Site"
+                        >Project Site</label>
+        
+                            <select name="project_site" id="project_site"class="form-control">
+    
+                                <option value="TVI">TVI</option>
+                                <option value="THEO">THEO</option>
+                                
+                        
+                            </select> 
+                        
                     <label for="Owner"
                     >Owner</label>
     
@@ -234,6 +245,7 @@
                                     <td>Plate No.</td>
                                     <td>Rental Rate</td>
                                     <td>Status</td>
+                                    <td>Project</td>
                                     <td>Remarks</td>
                                     <td>Owner</td>
                                    
@@ -245,6 +257,7 @@
                                     
                                     <tr>
                                         
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -396,6 +409,18 @@
                             <option value="Disposed">Disposed</option>
                     
                         </select> 
+                    
+                    <label for="Project Site"
+                    >Project Site</label>
+    
+                        <select name="project_site_up" id="project_site_up"class="form-control">
+
+                            <option value="TVI">TVI</option>
+                            <option value="THEO">THEO</option>
+                            
+                    
+                        </select> 
+                    
 
                     <label for="Owner"
                     >Owner</label>
@@ -933,6 +958,7 @@
             rentalRate: document.getElementById("rentalRate").value,
             plate_number: document.getElementById("plate_number").value,
             status: document.getElementById("status").value,
+            project_site: document.getElementById("project_site").value,
             remarks: document.getElementById("remarks").value,
             owner: document.getElementById("owner").value
 
@@ -1006,6 +1032,7 @@
                             <td>${values.rentalRate}</td>
                             <td>${values.plate_number}</td>
                             <td>${values.status}</td>
+                            <td>${values.project_site}</td>
                             <td>${values.remarks}</td>
                             
                             <td>${values.owner}</td>
@@ -1057,6 +1084,7 @@
                     var rentalRate = data[0].rentalRate
                     var plate_number = data[0].plate_number
                     var status = data[0].status
+                    var status = data[0].project_site
                     var remarks = data[0].remarks
                     var owner = data[0].owner
                     
@@ -1069,6 +1097,7 @@
                     document.getElementById("rentalRate_up").value = rentalRate;
                     document.getElementById("plate_number_up").value = plate_number;
                     document.getElementById("status_up").value = status;
+                    document.getElementById("project_site").value = status;
                     document.getElementById("remarks_up").value = remarks;
                     document.getElementById("owner_up").value = owner;
 
@@ -1097,6 +1126,7 @@
             data["rentalRate"] = document.getElementById("rentalRate_up").value;
             data["plate_number"] = document.getElementById("plate_number_up").value;
             data["status"] = document.getElementById("status_up").value;
+            data["project_site"] = document.getElementById("project_site_up").value;
             data["remarks"] = document.getElementById("remarks_up").value;
             data["owner"] = document.getElementById("owner_up").value;
 

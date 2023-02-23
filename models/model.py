@@ -260,6 +260,15 @@ class EmployeeReg(BaseModel):
     off_on_details: str
     Salary_Detail: str
 
+class RizalRental(BaseModel):
+    """This is for employee transaction Inserting Rental"""
+
+    transaction_date: date
+    equipment_id:  str 
+    total_rental_hour: float
+    rental_rate: float
+    rental_amount: float
+
 
 class RizalTonnagehaul(BaseModel):
     """This is for Tonnage Hauling in Rizal Model"""

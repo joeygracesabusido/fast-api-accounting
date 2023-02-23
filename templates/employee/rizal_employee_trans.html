@@ -16,13 +16,21 @@
         <div class="container mt-3">
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertEquipmentRental">
-                Insert Rental Transactions
+                Insert Rental
+            </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalList">
+                Rental List
+            </button><br><br>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertDieselTransaction">
+                Insert Diesel
             </button>
 
            
             
         </div>
-            <!-- Modal -->
+            <!-- Modal Rental -->
             <div class="modal fade" id="insertEquipmentRental" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -48,8 +56,8 @@
                         <label for="Equipment" >Equipment</label><br>
                         <input
                             type="text"
-                            name="equipment"
-                            id="equipment"
+                            name="equipment_id"
+                            id="equipment_id"
                            
                             class="form-control"
                             >
@@ -62,26 +70,37 @@
                             id="total_rental_hour"
                             step="0.01"
                             class="form-control"
-                            onkeyup="getTotalamount();"
+                            
                             >
                             </input>  
 
                         <label for="Rental Rate" >Rental Rate</label>
                             <input
                                 type="number"
-                                name="rantal_rate"
-                                id="rantal_rate"
+                                name="rental_rate"
+                                id="rental_rate"
                                 step="0.01"
                                 class="form-control"
-                                onkeyup="getTotalamount();"
+                                
                                 >
                             </input> 
 
-                        <label for="Amount" >Amount</label><br>
+                        
+                            <input
+                                type="text" hidden
+                                name="rental_amount"
+                                id="rental_amount"
+                                class="form-control"
+                                
+                                >
+                            </input>  
+
+                        
+                        <label for="Amount" >Amount</label>
                             <input
                                 type="text"
-                                name="rantal_amount"
-                                id="rantal_amount"
+                                name="rental_amount2"
+                                id="rental_amount2"
                                 class="form-control"
                                 
                                 >
@@ -92,28 +111,365 @@
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" onclick="update_equipment()" class="btn btn-primary">Save</button>
+                    <button type="submit" id="buttonSave" onclick="insertRental()"class="btn btn-primary">Save</button>
                     <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                     </div>
                 </div>
                 </div>
             </div>
 
+            <!-- Modal Insert Diesel Transactions -->
+        <div class="modal fade" id="insertDieselTransaction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Diesel Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+
+                    <label for="TransactionDate"
+                    >TransactionDate</label>
+                    
+                    <input 
+                    type="date"
+                    name="transDateDiesel"
+                    id="transDateDiesel"
+                    
+                    class="form-control"
+                    >
+
+                
+                    <label for="EquipmentID"
+                    >Equipment ID</label>
+                    
+                    <input 
+                    type="text"
+                    name="equipmentIdDiesel"
+                    id="equipmentIdDiesel"
+                    
+                    class="form-control"
+                    >
+
+
+                    
+
+                    <label for="WithSlpi"
+                    >Withdrawal Slip</label>
+                    
+                    <input 
+                    type="text"
+                    name="withdrawalSlipDiesel"
+                    id="withdrawalSlipDiesel"
+                    
+                    class="form-control"
+                    >
+
+                   
+
+                    <label for="TotalLiters"
+                        >Total Liters</label>
+                        
+                        <input 
+                        type="number"
+                        name="totalliters"
+                        id="totalliters"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                    <label for="Price"
+                        >Price</label>
+                        
+                        <input 
+                        type="number"
+                        name="priceDiesel"
+                        id="priceDiesel"
+                        step="0.01"
+                        class="form-control"
+                        >
+
+                    <label for="Plate Number"
+                        >Total Amount</label>
+    
+                        <input 
+                        type="number"
+                        name="totalAmountDiesel"
+                        id="totalAmountDiesel"
+                        step="0.01"
+                        class="form-control">
+
+                    
+                  
+        
+                
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="insertDiesel()" class="btn btn-primary">Save</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+
+
+    
+            <!-- this is for Rental Modal List -->
+            <div class="modal fade" id="rentalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Rental List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+            <div class="modal-body">
+                <div class="container mt-3">
+                    <label for="TransactionDate" >Date From</label>
+                    <input
+                        type="date"
+                        name="datefrom"
+                        id="datefrom"
+                        >
+                    </input>  
+
+                <label for="TransactionDate" >Date To</label>
+                    <input
+                        type="date"
+                        name="dateto"
+                        id="dateto"
+                        >
+                    </input>  
+
+                <label for="Equipment" >Equipment</label>
+                    <input
+                        type="text"
+                        name="equipment_id"
+                        id="equipment_id"
+                        >
+                    </input>  
+
+                    <button type="submit"  onclick="display_data()" class="btn btn-success">
+                        Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
+
+        </div>
+        <div  class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                
+                        <td>ID</td>
+                        <td>Date</td>
+                        <td>Equipment ID</td>
+                        <td>Total Hour</td>
+                        <td>Rental Rate</td>
+                        <td>Total Amount</td>
+                        <td>Running Bal</td>
+                        <td>Action</td>
+                        
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+                   
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                      
+                        </tr>
+                       
+                    
+                </tbody>
+
+               
+
+                </table>
+
+           
+            </div>
+    
+              
+        </div>
+
+
+
+        
+        
+            
 
             <script>
 
                 $( function() {
                     
-                    $("#equipment").autocomplete({
-                    source: "/autocomplete-rizal-equipment/"
+                    $( "#equipment_id" ).autocomplete({
+                    source: "/api-search-autocomplete-equipment-rizal/"
                     });
-
                 } );
-
-              
+    
     
             </script>
 
+<!-- ================================This is for inserting Rizal Equipment Rental By employee Login=================== -->
+            <script type="text/javascript">
+                // Define an async function to insert equipment
+                async function insertRental() {
+                // Get the values of the input fields
+                const data = {
+                    transaction_date: document.getElementById("trans_date").value,
+                    equipment_id: document.getElementById("equipment_id").value,
+                    total_rental_hour: document.getElementById("total_rental_hour").value,
+                    rental_rate: document.getElementById("rental_rate").value,
+                    rental_amount: document.getElementById("rental_amount").value,
+                   
+                
+                    
+                };
+            
+                // Use the fetch API to send the POST request
+                try {
+                    const response = await fetch(`/api-insert-employee-rizal-rental/`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                    });
+            
+                    // Check if the response was successful
+                    if (response.status === 200) {
+                    window.alert("Your data has been saved");
+                    console.log(data);
+                    window.location.assign("/employee-rizal-equipment-rental/");
+                    
+                    } else if (response.status === 401) {
+                    window.alert("Unauthorized credential. Please login");
+                    }
+                } catch (error) {
+                    // Catch any errors and log them to the console
+                    window.alert(error);
+                    console.log(error);
+                }
+                }
+            </script>
+
+
+
+<!-- ====================================This is for computation of Total amount==================================== -->
+        <script>
+            $(document).ready(function() {
+               $('#total_rental_hour, #rental_rate').on('input', function() {
+                   calculateProduct();
+               });
+               });
+
+               function calculateProduct() {
+
+               var rental_rate = $('#rental_rate').val();
+               
+               var total_rental_hour = $('#total_rental_hour').val();
+               
+               
+               var product = total_rental_hour * rental_rate;
+               $('#rental_amount').val(product);
+               }
+
+            //    let comma = product.toLocaleString("en-US");
+            //     // let comma = formatter.format(totalAmount);
+            //     document.getElementById('rental_amount2').value=comma;
+
+
+        </script>
+
+<!-- ============================ This function is for computaion of rental Amount with Comma ================ -->
+            <script type="text/javascript">
+                                // Get input fields and result element
+                var input1 = document.getElementById("total_rental_hour");
+                var input2 = document.getElementById("rental_rate");
+                
+
+                // Add event listener to inputs
+                input1.addEventListener("input", calculateProduct);
+                input2.addEventListener("input", calculateProduct);
+
+                function calculateProduct() {
+                // Get input field values
+                var value1 = parseFloat(input1.value);
+                var value2 = parseFloat(input2.value);
+
+                // Calculate product
+                var product = value1 * value2;
+
+                let comma = product.toLocaleString("en-US");
+
+                document.getElementById("rental_amount2").value = comma;
+
+                }
+
+            </script>
+
+
+
+<!-- ====================================This function is for Displaying Rental Data to Table========================= -->
+        <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function display_data(){
+                var datefrom = document.getElementById("datefrom").value
+                var dateto = document.getElementById("dateto").value
+                var equipmentID = document.getElementById("equipment_id").value
+
+                const search_url = `/api-get-rental-rizal-employee_login/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+
+                if (data.length === 0) {
+                        window.alert('No Data available');
+                    };
+                
+                
+                if (responce.status === 200){
+                    let tableData="";
+                    data.map((values)=>{
+                        tableData+= ` <tr>
+                                    <td>${values.id}</td>
+                                    <td>${values.transaction_date}</td>
+                                    <td>${values.equipment_id}</td>
+                                    <td>${values.total_rental_hour}</td>
+                                    <td>${values.rental_rate}</td>
+                                    <td>${values.rental_amount}</td>
+                                    <td>${values.totalAmount}</td>
+                                   
+                                
+                                </tr>`;
+                    });
+                    document.getElementById("table_body").innerHTML=tableData;
+
+                }else if (responce.status === 401){
+                    window.alert("Unauthorized Credentials Please Log in")
+                }
+            
+            }
+
+        </script>
 
         
 

@@ -302,7 +302,7 @@ async def insertCostapi(items:equipment_details_tvi,username: str = Depends(vali
     insertEquipment_tvi(equipmentID=items.equipmentID,purchase_date=items.purchase_date,
                     equipmentDesc=items.equipmentDesc,purchase_amount=items.purchase_amount,
                     rentalRate=items.rentalRate,plate_number=items.plate_number,
-                    status=items.status,remarks=items.remarks,owner=items.owner)
+                    status=items.status,project_site=items.project_site,remarks=items.remarks,owner=items.owner)
 
 
     return  {'Messeges':'Data has been Save'}   
@@ -322,6 +322,7 @@ def get_equipment(username: str = Depends(validateLogin)):
                 "rentalRate": x.rentalRate,
                 "plate_number": x.plate_number,
                 "status": x.status,
+                "project_site": x.project_site,
                 "remarks": x.remarks,
                 "owner": x.owner,
             }
@@ -345,6 +346,7 @@ async def get_costData_id(id: int,username: str = Depends(validateLogin)):
                 "rentalRate": x.rentalRate,
                 "plate_number": x.plate_number,
                 "status": x.status,
+                "project_site": x.project_site,
                 "remarks": x.remarks,
                 "owner": x.owner,
             }
@@ -377,6 +379,7 @@ async def get_costData_id(id: int,username: str = Depends(validateLogin)):
             "rentalRate": x.rentalRate,
             "plate_number": x.plate_number,
             "status": x.status,
+            "project_site": x.project_site,
             "remarks": x.remarks,
             "owner": x.owner,
         
@@ -395,7 +398,8 @@ async def updateTVIEquipment(id: int,items:equipment_details_tvi,username: str =
     updateTVIequipment(equipmentID=items.equipmentID,purchase_date=items.purchase_date,
                         equipmentDesc=items.equipmentDesc,purchase_amount=items.purchase_amount,
                         rentalRate=items.rentalRate,plate_number=items.plate_number,
-                        status=items.status,remarks=items.remarks, owner=items.owner,id=id)
+                        status=items.status,project_site=items.project_site,
+                         remarks=items.remarks, owner=items.owner,id=id)
 
     
 
