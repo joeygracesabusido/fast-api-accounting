@@ -85,6 +85,18 @@ class equipment_rental(SQLModel, table=True):
     username: str = Field(default=None)
     date_update: datetime
     
+class diesel_consumption(SQLModel, table=True):
+    """This is to create table diesel_consumption"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transaction_date: date
+    equipment_id: str = Field(index=True,default=None,max_length=250)
+    withdrawal_slip: str = Field(default=None,max_length=250)
+    use_liter: str = Field(default=None,max_length=250)
+    price: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    amount: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    username: str = Field(default=None,max_length=250)
+
+
 
 
 
@@ -311,5 +323,33 @@ def getallRental(datefrom,dateto,equipment_id):
 
         data = results.all()
         return data
+
+def insertRizalDiesel(transaction_date,equipment_id,withdrawal_slip,
+                        use_liter,price,amount,username):
+    """This function is for inserting Equipmnet of Rizal """
+    insertData = diesel_consumption(transaction_date=transaction_date,
+                                        equipment_id=equipment_id,withdrawal_slip=withdrawal_slip,
+                                        use_liter=use_liter,price=price,amount=amount,username=username)
+    
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
+def getallDiesel(datefrom,dateto,equipment_id):
+    """This function is for queyring all Data for Diesel Transaction Rizal"""
+    with Session(engine) as session:
+        statement = select(diesel_consumption).where(diesel_consumption.transaction_date >=datefrom,
+        diesel_consumption.transaction_date <=dateto,diesel_consumption.equipment_id.like ('%'+equipment_id +'%') )
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
 
 # create_db_and_tables()

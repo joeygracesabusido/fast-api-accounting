@@ -248,8 +248,9 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
     return templates.TemplateResponse("employee/rizal_employee_trans.html", {"request":request}) 
 
 
-from config.models import insertEquipmentRental,getallRental
-from models.model import RizalRental
+from config.models import (insertEquipmentRental,getallRental,
+                            insertRizalDiesel,diesel_consumption,getallDiesel)
+from models.model import RizalRental,RizalDiesel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
     """This function is to update employee Details"""
@@ -291,27 +292,50 @@ async def getAllRentalRizal(datefrom,dateto,equipment_id,username: str = Depends
         })
 
         rentalData.append(data)
-    
-    
-    # rentalData = [
-           
-
-    #         {
-    #             "id": i.id,
-    #             "transaction_date": i.transaction_date,
-    #             "equipment_id": i.equipment_id,
-    #             "total_rental_hour": i.total_rental_hour,
-    #             "rental_rate": i.rental_rate,
-    #             "rental_amount": i.rental_amount,
-    #             "username": i.username,
-    #             "totalAmount": 0,
-    #             "date_update": i.date_update,               
-    #             # "equipmentID": i['equipment_id']
-            
-    #         }
-          
-    #       for i in data
-    #     ]
-    
 
     return rentalData
+
+
+@employee_user.post("/api-insert-rizalDiesel-employeeLogin/")
+async def insertRental(items: RizalDiesel,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+    insertRizalDiesel(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
+                            withdrawal_slip=items.withdrawal_slip,
+                            use_liter=items.use_liter,price=items.price,
+                            amount=items.amount, username=username)
+
+    return  {'Messeges':'Data has been Save'} 
+
+@employee_user.get("/api-get-diesel-rizal-employeeLogin/")
+async def getAllDieselRizal(datefrom,dateto,equipment_id:Optional[str],username: str = Depends(EmployeevalidateLogin)):
+    """This function is for testing"""
+
+
+    data = getallDiesel(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    rentalData = []
+    totalAmount = 0
+    for i in data:
+       
+        totalAmount+=i.amount
+        
+
+        data={}   
+        
+        data.update({
+                "id": i.id,
+                "transaction_date": i.transaction_date,
+                "equipment_id": i.equipment_id,
+                "withdrawal_slip": i.withdrawal_slip,
+                "use_liter": "{:,.2f}".format(i.use_liter),
+                "price": "{:,.2f}".format(i.price),
+                "amount": "{:,.2f}".format(i.amount),
+                "totalAmount": "{:,.2f}".format(totalAmount),
+                
+        })
+
+        rentalData.append(data)
+
+    return rentalData
+

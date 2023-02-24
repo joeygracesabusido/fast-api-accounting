@@ -23,8 +23,12 @@
                 Rental List
             </button><br><br>
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insertDieselTransaction">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#insertDieselTransaction">
                 Insert Diesel
+            </button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dieselList">
+                Diesel List
             </button>
 
            
@@ -193,14 +197,24 @@
                         class="form-control"
                         >
 
-                    <label for="Plate Number"
-                        >Total Amount</label>
+                    
     
                         <input 
-                        type="number"
+                        type="number" hidden
                         name="totalAmountDiesel"
                         id="totalAmountDiesel"
                         step="0.01"
+                        class="form-control">
+
+
+                    <label for="Total Amount"
+                        >Total Amount</label>
+    
+                        <input 
+                        type="text"
+                        name="totalAmountDiesel2"
+                        id="totalAmountDiesel2"
+                       
                         class="form-control">
 
                     
@@ -218,51 +232,47 @@
         </div>
 
 
+         <!-- this is for Rental Modal List -->
+         <div class="modal fade" id="rentalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Rental List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
 
+        <div class="modal-body">
+            <div class="container mt-3">
+                <label for="TransactionDate" >Date From</label>
+                <input
+                    type="date"
+                    name="datefrom"
+                    id="datefrom"
+                    >
+                </input>  
 
+            <label for="TransactionDate" >Date To</label>
+                <input
+                    type="date"
+                    name="dateto"
+                    id="dateto"
+                    >
+                </input>  
 
-    
-            <!-- this is for Rental Modal List -->
-            <div class="modal fade" id="rentalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Rental List</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
+            <label for="Equipment" >Equipment</label>
+                <input
+                    type="text"
+                    name="equipment_id"
+                    id="equipment_id"
+                    >
+                </input>  
 
-            <div class="modal-body">
-                <div class="container mt-3">
-                    <label for="TransactionDate" >Date From</label>
-                    <input
-                        type="date"
-                        name="datefrom"
-                        id="datefrom"
-                        >
-                    </input>  
-
-                <label for="TransactionDate" >Date To</label>
-                    <input
-                        type="date"
-                        name="dateto"
-                        id="dateto"
-                        >
-                    </input>  
-
-                <label for="Equipment" >Equipment</label>
-                    <input
-                        type="text"
-                        name="equipment_id"
-                        id="equipment_id"
-                        >
-                    </input>  
-
-                    <button type="submit"  onclick="display_data()" class="btn btn-success">
-                        Search Data
-                        <i class="fas fa-database"></i>
-                    </button>
+                <button type="submit"  onclick="display_data()" class="btn btn-success">
+                    Search Data
+                    <i class="fas fa-database"></i>
+                </button>
 
         </div>
         <div  class="container mt-3">
@@ -281,7 +291,7 @@
                     </tr>
                 </thead>
                 <tbody id="table_body">
-                   
+                
                         
                         <tr>
                             
@@ -293,21 +303,150 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                      
+                    
                         </tr>
-                       
+                    
                     
                 </tbody>
 
-               
+            
 
                 </table>
 
-           
+        
             </div>
-    
-              
+
+            
         </div>
+
+
+            <div class="modal-footer">
+                    
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+
+       <!-- Modal for Diesel List -->
+
+        <div class="modal fade" id="dieselList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Diesel Transaction List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <label for="dateFrom"
+                        >From</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateFromDiesel"
+                            id="dateFromDiesel"
+                           
+                            >
+
+                    
+                        <label for="dateTo"
+                        >To</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateToDiesel"
+                            id="dateToDiesel"
+                           
+                            >
+                        <label for="Equipment"
+                            >Equipment</label>
+                            <input 
+                            type="text"
+                            name="equipmentSearchDieselTrans"
+                            id="equipmentSearchDieselTrans"
+                            
+                            >
+                        
+                        <button type="submit" onclick="displayDieselData()" class="btn btn-primary">Search</button>
+
+                        <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                            Export Excel
+                            <i class="fas fa-database"></i>
+                        </button>
+                    </div>
+
+                    <div  class="container mt-3">
+                        <table id="myTableDiesel" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                            
+                                    <td>ID</td>
+                                    <td>Trans Date</td>
+                                    <td>Equipment ID</td>
+                                    <td>Withdrawal Slip</td>
+                                    <td>Liters</td>
+                                    <td>Price</td>
+                                    <td>Total Amount</td>
+                                    <td>Cummulative Amount</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body_diesel">
+                               
+                                    
+                                    <tr>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                      
+                                    </tr>
+                                   
+                                
+                            </tbody>
+            
+                           
+            
+                        </table>
+            
+                        
+                            
+                            
+                    </div>
+        
+                  
+           </div>
+        
+
+  
+                </div>
+                <div class="modal-footer">
+                
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+
+
+    
+           
+
+         
 
 
 
@@ -325,6 +464,19 @@
                 } );
     
     
+            </script>
+
+
+            <script>
+
+                $( function() {
+                    
+                    $( "#equipmentIdDiesel" ).autocomplete({
+                    source: "/api-search-autocomplete-equipment-rizal/"
+                    });
+                } );
+
+
             </script>
 
 <!-- ================================This is for inserting Rizal Equipment Rental By employee Login=================== -->
@@ -470,6 +622,162 @@
             }
 
         </script>
+
+<!-- ====================================This is for computation of Total amount Diesel==================================== -->
+        <script>
+            $(document).ready(function() {
+            $('#totalliters, #priceDiesel').on('input', function() {
+                calculateProduct4();
+            });
+            });
+
+            function calculateProduct4() {
+
+            var totalLiters = $('#totalliters').val();
+            
+            var priceDiesel = $('#priceDiesel').val();
+            
+            
+            var product = totalLiters * priceDiesel;
+           
+            $('#totalAmountDiesel').val(product);
+            }
+
+        
+
+
+        </script>
+
+<!-- ============================ This function is for computaion of Diesel Total Amount with Comma ================ -->
+            <script>
+                $(document).ready(function() {
+                $('#totalliters, #priceDiesel').on('input', function() {
+                    calculateProduct2();
+                });
+                });
+
+                function calculateProduct2() {
+
+                var totalLiters = $('#totalliters').val();
+                
+                var priceDiesel = $('#priceDiesel').val();
+                
+                
+                var product = totalLiters * priceDiesel;
+
+                // var floatValue = product.toLocaleString('en-US');
+                const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                $('#totalAmountDiesel2').val(stringNumber);
+                }
+
+
+
+
+            </script>
+
+<!-- ================================This is for inserting Diesel  By employee Login=================== -->
+                <script type="text/javascript">
+                    // Define an async function to insert equipment
+                    async function insertDiesel() {
+                    // Get the values of the input fields
+                    const data = {
+                        transaction_date: document.getElementById("transDateDiesel").value,
+                        equipment_id: document.getElementById("equipmentIdDiesel").value,
+                        withdrawal_slip: document.getElementById("withdrawalSlipDiesel").value,
+                        use_liter: document.getElementById("totalliters").value,
+                        price: document.getElementById("priceDiesel").value,
+                        amount: document.getElementById("totalAmountDiesel").value,
+                        
+                        
+                    };
+                    // console.log(data)
+
+                    // Use the fetch API to send the POST request
+                    try {
+                        const response = await fetch(`/api-insert-rizalDiesel-employeeLogin/`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data)
+                        });
+
+                        // Check if the response was successful
+                        if (response.status === 200) {
+                        window.alert("Your data has been saved");
+                        console.log(data);
+                        window.location.assign("/employee-rizal-equipment-rental/");
+                        
+                        } else if (response.status === 401) {
+                        window.alert("Unauthorized credential. Please login");
+                        }
+                    } catch (error) {
+                        // Catch any errors and log them to the console
+                        window.alert(error);
+                        console.log(error);
+                    }
+                    }
+                </script>
+
+                   
+<!-- ====================================This function is for Displaying Rental Data to Table========================= -->
+            <script type="text/javascript">
+
+                // const rental_url =search_url ;
+                async function displayDieselData(){
+                    var datefrom = document.getElementById("dateFromDiesel").value
+                    var dateto = document.getElementById("dateToDiesel").value
+                    var equipmentID = document.getElementById("equipmentSearchDieselTrans").value
+
+                    const search_url = `/api-get-diesel-rizal-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+
+
+                    const responce = await fetch(search_url)
+                    const data = await responce.json();
+                    console.log(data)
+
+                    if (data.length === 0) {
+                            window.alert('No Data available');
+                        };
+                    
+                    
+                    if (responce.status === 200){
+                        let tableData="";
+                        data.map((values)=>{
+                            tableData+= ` <tr>
+                                        <td>${values.id}</td>
+                                        <td>${values.transaction_date}</td>
+                                        <td>${values.equipment_id}</td>
+                                        <td>${values.withdrawal_slip}</td>
+                                        <td>${values.use_liter}</td>
+                                        <td>${values.price}</td>
+                                        <td>${values.amount}</td>
+                                        <td>${values.totalAmount}</td>
+                                    
+                                    
+                                    </tr>`;
+                        });
+                        document.getElementById("table_body_diesel").innerHTML=tableData;
+
+                    }else if (responce.status === 401){
+                        window.alert("Unauthorized Credentials Please Log in")
+                    }
+                
+                }
+
+            </script>
+
+
+        <script>
+            function html_table_excel(type){
+                var data = document.getElementById('table_body_diesel');
+                var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                XLSX.writeFile(file, 'dieselList.' + type);
+
+            }
+
+            
+        </script>
+
 
         
 

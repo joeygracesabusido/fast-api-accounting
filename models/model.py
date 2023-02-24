@@ -269,6 +269,16 @@ class RizalRental(BaseModel):
     rental_rate: float
     rental_amount: float
 
+class RizalDiesel(BaseModel):
+    """This is for employee transaction Inserting Diesel"""
+    transaction_date: date
+    equipment_id: str 
+    withdrawal_slip: str 
+    use_liter: float
+    price: float
+    amount: float
+    
+
 
 class RizalTonnagehaul(BaseModel):
     """This is for Tonnage Hauling in Rizal Model"""
