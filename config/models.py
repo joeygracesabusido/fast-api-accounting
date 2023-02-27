@@ -96,8 +96,20 @@ class diesel_consumption(SQLModel, table=True):
     amount: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
     username: str = Field(default=None,max_length=250)
 
-
-
+class hauling_tonnage(SQLModel, table=True):
+    """This function is for creating table of Tonnage Rizal"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    equipment_id: str = Field(index=True,default=None,max_length=100)
+    tripTicket: str = Field(default=None,max_length=100)
+    totalTrip: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    totalTonnage: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    rate: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    amount: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
+    driverOperator: str = Field(default=None,max_length=100)
+    user: str = Field(default=None,max_length=100)
+    date_updated: datetime =  Field(default=None)
+    date_credited: datetime
 
 
 
@@ -345,6 +357,35 @@ def getallDiesel(datefrom,dateto,equipment_id):
     with Session(engine) as session:
         statement = select(diesel_consumption).where(diesel_consumption.transaction_date >=datefrom,
         diesel_consumption.transaction_date <=dateto,diesel_consumption.equipment_id.like ('%'+equipment_id +'%') )
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+    
+
+def insertTonnageRizal(transDate,equipment_id,tripTicket,
+                        totalTrip,totalTonnage,rate,amount,driverOperator,
+                        user,date_credited):
+    """This function is for Inserting Tonnage Data in Rizal"""
+    insertData = hauling_tonnage(transDate=transDate,equipment_id=equipment_id,tripTicket=tripTicket,
+                                 totalTrip=totalTrip,totalTonnage=totalTonnage,rate=rate,
+                                 amount=amount,driverOperator=driverOperator,user=user,date_credited=date_credited)
+    
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
+def getallTonnage(datefrom,dateto,equipment_id):
+    """This function is for queyring all Data for Diesel Transaction Rizal"""
+    with Session(engine) as session:
+        statement = select(hauling_tonnage).where(hauling_tonnage.transDate >=datefrom,
+        hauling_tonnage.transDate <=dateto,hauling_tonnage.equipment_id.like ('%'+equipment_id +'%') )
                     
         results = session.exec(statement) 
 

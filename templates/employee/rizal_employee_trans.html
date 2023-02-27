@@ -29,9 +29,20 @@
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dieselList">
                 Diesel List
+            </button><br><br>
+
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#insertTonnage">
+                Insert Tons
+            </button>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#tonnageList">
+                Tonnage List
             </button>
 
            
+
+            
             
         </div>
             <!-- Modal Rental -->
@@ -443,8 +454,249 @@
 
 
 
-    
-           
+        <!-- Modal Insert Tonnage Transactions -->
+        <div class="modal fade" id="insertTonnage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Tonnage Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <label >
+                        Date
+                    </label>
+                    <input 
+                        type="date" 
+                        name="transDate_Tons"
+                        id="transDate_Tons"
+                        
+                        class="form-control"
+                        
+                        >
+            
+                    <label >
+                        Equipment ID
+                        </label>
+                        <input 
+                            type="text" 
+                            name="equipmentID_Tons"
+                            id="equipmentID_Tons"
+                            
+                            class="form-control"
+                            
+                        >
+            
+                    <label >
+                        Trip Ticket
+                        </label>
+                        <input 
+                            type="text" 
+                            name="tripTicket_Tons"
+                            id="tripTicket_Tons"
+                            
+                            class="form-control"
+                            
+                        >
+            
+                    <label >
+                        Total Trip
+                        </label>
+                        <input 
+                            type="number" 
+                            name="totalTrip_Tons"
+                            id="totalTrip_Tons"
+                            step="0.0"
+                            class="form-control"
+                            
+                        >
+            
+            
+                    <label >
+                        Total Tonnage
+                        </label>
+                        <input 
+                            type="number" 
+                            name="totalTons_Tons"
+                            id="totalTons_Tons"
+                            step="0.0"
+                            class="form-control"
+                            
+                        >
+            
+                    <label >
+                        Rate
+                        </label>
+                        <input 
+                            type="number" 
+                            name="rate_Tons"
+                            id="rate_Tons"
+                            step="0.0"
+                            class="form-control"
+                            
+                        >
+            
+                        <label >
+                        Amount
+                        </label>
+                        <input 
+                            type="number" hidden
+                            name="amount_Tons"
+                            id="amount_Tons"
+                            step="0.0"
+                            class="form-control"
+                            
+                        >
+
+                        <input 
+                            type="text" 
+                            name="amount_Tons2"
+                            id="amount_Tons2"
+                            
+                            class="form-control"
+                            
+                        >
+            
+                    <label >
+                        Driver/Operator
+                        </label>
+                        <input 
+                            type="text" 
+                            name="driver_operator_Tons"
+                            id="driver_operator_Tons"
+                            
+                            class="form-control"
+                            
+                        >
+                    
+                    
+            
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="inserttonnageHauling()" class="btn btn-primary">Save</button>
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="tonnageList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tonnage Transaction List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <label for="dateFrom"
+                        >From</label>
+                        
+                       
+                        
+                            <input 
+                            type="date"
+                            name="dateFrom_Tons"
+                            id="dateFrom_Tons"
+                           
+                            >
+                
+                        <label for="dateTo"
+                        >Date To</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateTo_Tons"
+                            id="dateTo_Tons"
+                            
+                            >
+                
+                        <label for="dateTo"
+                        >Equipment ID</label>
+                        
+                            <input 
+                            type="text"
+                            name="equipmentIDSearch_Tons"
+                            id="equipmentIDSearch_Tons"
+                            
+                            >
+                        
+                        <button type="submit" onclick="displayTonnageData()" class="btn btn-primary">Search</button>
+
+                        <button type="submit"  onclick="html_table_excel_tonnage('xlsx')" class="btn btn-secondary">
+                            Export Excel
+                            <i class="fas fa-database"></i>
+                        </button>
+                    </div>
+
+                    <div  class="container mt-3">
+                        <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                                <tr>
+                                    <td>Date</td>
+                                    <td>Equipment ID</td>
+                                    <td>Total Trip</td>
+                                    <td>Total Tonnage</td>
+                                    <td>Rate</td>
+                                    <td>Amount</td>
+                                    <td>Cum Total</td>
+                                    <td>Driver Operator</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body_tonnage">
+                               
+                                    
+                                    <tr>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                   
+                                
+                            </tbody>
+            
+                           
+            
+                        </table>
+            
+                        
+                            
+                            
+                    </div>
+        
+                  
+           </div>
+        
+
+  
+                </div>
+                <div class="modal-footer">
+                
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+                
 
          
 
@@ -452,7 +704,7 @@
 
         
         
-            
+            <!-- this is for auto complete input  -->
 
             <script>
 
@@ -472,6 +724,19 @@
                 $( function() {
                     
                     $( "#equipmentIdDiesel" ).autocomplete({
+                    source: "/api-search-autocomplete-equipment-rizal/"
+                    });
+                } );
+
+
+            </script>
+
+
+            <script>
+
+                $( function() {
+                    
+                    $( "#equipmentID_Tons" ).autocomplete({
                     source: "/api-search-autocomplete-equipment-rizal/"
                     });
                 } );
@@ -777,6 +1042,160 @@
 
             
         </script>
+
+
+<!-- ===================================This function is for Tonnage Employee Login============================ -->
+            <!-- This function is for calculating Total Amount for Tons -->
+            <script>
+                $(document).ready(function() {
+                $('#totalTons_Tons, #rate_Tons').on('input', function() {
+                    calculateProduct_amountTons();
+                });
+                });
+
+                function calculateProduct_amountTons() {
+
+                var totalTons_Tons = $('#totalTons_Tons').val();
+                
+                var rate_Tons = $('#rate_Tons').val();
+                
+                var product = totalTons_Tons * rate_Tons;
+            
+                $('#amount_Tons').val(product);
+                }
+
+            </script>
+
+
+            <script>
+                $(document).ready(function() {
+                $('#totalTons_Tons, #rate_Tons').on('input', function() {
+                    calculateProduct_amountTons2();
+                });
+                });
+
+                function calculateProduct_amountTons2() {
+
+                var totalTons_Tons = $('#totalTons_Tons').val();
+                
+                var rate_Tons = $('#rate_Tons').val();
+                
+                var product = totalTons_Tons * rate_Tons;
+                
+                // var floatValue = product.toLocaleString('en-US');
+                const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                $('#amount_Tons2').val(stringNumber);
+                }
+
+
+
+
+            </script>
+
+
+            <!-- This is to insert Equipment to tvi table -->
+            <script type="text/javascript">
+                // Define an async function to insert equipment
+                async function inserttonnageHauling() {
+                // Get the values of the input fields
+                const data = {
+                    transDate: document.getElementById("transDate_Tons").value,
+                    equipment_id: document.getElementById("equipmentID_Tons").value,
+                    tripTicket: document.getElementById("tripTicket_Tons").value,
+                    totalTrip: document.getElementById("totalTrip_Tons").value,
+                    totalTonnage: document.getElementById("totalTons_Tons").value,
+                    rate: document.getElementById("rate_Tons").value,
+                    amount: document.getElementById("amount_Tons").value,
+                    driverOperator: document.getElementById("driver_operator_Tons").value,
+                    
+                    
+                };
+            
+                // Use the fetch API to send the POST request
+                try {
+                    const response = await fetch(`/api-insert-rizalTonnage-employeeLogin/`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                    });
+            
+                    // Check if the response was successful
+                    if (response.status === 200) {
+                    window.alert("Your data has been saved");
+                    console.log(data);
+                    // window.location.assign("/employee-rizal-equipment-rental/");
+                    
+                    } else if (response.status === 401) {
+                    window.alert("Unauthorized credential. Please login");
+                    }
+                } catch (error) {
+                    // Catch any errors and log them to the console
+                    window.alert(error);
+                    console.log(error);
+                }
+                }
+            </script>
+
+
+            <!-- This function is to Display List from Tonnage Transaction -->
+
+
+            <script type="text/javascript">
+                // const rental_url =search_url ;
+                async function displayTonnageData(){
+                    var dateFrom = document.getElementById('dateFrom_Tons').value;
+                    var dateTo = document.getElementById('dateTo_Tons').value;
+                    var equipmentIDSearch = document.getElementById('equipmentIDSearch_Tons').value;
+                
+                const search_url = `/api-get-tonnage-rizal-employeeLogin/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
+    
+                
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                if (responce.status === 200) {
+                    let tableData2="";
+                    data.map((values)=>{
+                        tableData2+= ` <tr>
+                                   
+                                    <td>${values.transDate}</td>
+                                    <td>${values.equipment_id}</td>
+                                    <td>${values.totalTrip}</td>
+                                    <td>${values.totalTonnage}</td>
+                                    <td>${values.rate}</td>
+                                    <td>${values.amount}</td>
+                                    <td>${values.totalAmount}</td>
+                                    <td>${values.driverOperator}</td>
+    
+                                    <td>
+                                        
+                                    </td>
+                            
+                                
+                                </tr>`;
+                    });
+                        document.getElementById("table_body_tonnage").innerHTML=tableData2;
+                    }else if (responce.status === 401){
+                        window.alert("Unauthorized credential. Please login");
+                    }
+                
+                }
+                
+            
+            </script>
+
+            <script>
+                function html_table_excel_tonnage(type){
+                    var data = document.getElementById('table_body_tonnage');
+                    var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                    XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                    XLSX.writeFile(file, 'tonnageList.' + type);
+
+                }
+
+                
+            </script>
 
 
         

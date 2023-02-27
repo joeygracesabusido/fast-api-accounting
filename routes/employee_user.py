@@ -339,3 +339,52 @@ async def getAllDieselRizal(datefrom,dateto,equipment_id:Optional[str],username:
 
     return rentalData
 
+
+#============================================Rizal Tonnage Frame=========================================
+from config.models import insertTonnageRizal,getallTonnage
+from models.model import RizalTonnagehaul
+@employee_user.post("/api-insert-rizalTonnage-employeeLogin/")
+async def insertTonnage(items: RizalTonnagehaul,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+    insertTonnageRizal(transDate=items.transDate,equipment_id=items.equipment_id,
+                       tripTicket=items.tripTicket,totalTrip=items.totalTrip, totalTonnage=items.totalTonnage,
+                       rate=items.rate,amount=items.amount,driverOperator=items.driverOperator,
+                       user=username,date_credited=today)
+    print(insertTonnageRizal())
+    return  {'Messeges':'Data has been Save'}
+
+
+@employee_user.get("/api-get-tonnage-rizal-employeeLogin/")
+async def getAllTonnageRizal(datefrom,dateto,equipment_id:Optional[str],username: str = Depends(EmployeevalidateLogin)):
+    """This function is for testing"""
+
+
+    data = getallTonnage(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    rentalData = []
+    totalAmount = 0
+    for i in data:
+       
+        totalAmount+=i.amount
+        
+
+        data={}   
+        
+        data.update({
+                "id": i.id,
+                "transDate": i.transDate,
+                "equipment_id": i.equipment_id,
+                "tripTicket": i.tripTicket,
+                "totalTrip": "{:,.2f}".format(i.totalTrip),
+                "totalTonnage": "{:,.2f}".format(i.totalTonnage),
+                "rate": "{:,.2f}".format(i.rate),
+                "amount": "{:,.2f}".format(i.amount),
+                "totalAmount": "{:,.2f}".format(totalAmount),
+                "driverOperator": i.driverOperator,
+        })
+
+        rentalData.append(data)
+
+    return rentalData
+
