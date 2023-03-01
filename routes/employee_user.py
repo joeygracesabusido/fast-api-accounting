@@ -351,7 +351,7 @@ async def insertTonnage(items: RizalTonnagehaul,username: str = Depends(Employee
                        tripTicket=items.tripTicket,totalTrip=items.totalTrip, totalTonnage=items.totalTonnage,
                        rate=items.rate,amount=items.amount,driverOperator=items.driverOperator,
                        user=username,date_credited=today)
-    print(insertTonnageRizal())
+    # print(insertTonnageRizal())
     return  {'Messeges':'Data has been Save'}
 
 
