@@ -1229,12 +1229,14 @@
 
             function calculateProduct4() {
 
-            var totalLiters = $('#totalliters').val();
+            var totalLiters = parseFloat($('#totalliters').val());
             
-            var priceDiesel = $('#priceDiesel').val();
+            var priceDiesel = parseFloat($('#priceDiesel').val());
             
             
             var product = totalLiters * priceDiesel;
+           
+            var product2 = parseFloat(product).toFixed(2)
            
             $('#totalAmountDiesel').val(product);
             }
