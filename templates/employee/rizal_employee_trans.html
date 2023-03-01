@@ -1126,13 +1126,15 @@
 
                function calculateProductRental() {
 
-               var rental_rate = $('#rental_rate').val();
+               var rental_rate = parseFloat($('#rental_rate').val());
                
-               var total_rental_hour = $('#total_rental_hour').val();
+               var total_rental_hour = parseFloat($('#total_rental_hour').val());
                
                
                var product = total_rental_hour * rental_rate;
-               $('#rental_amount').val(product);
+
+               var product2 = parseFloat(product).toFixed(2)
+               $('#rental_amount').val(product2);
                }
 
             //    let comma = product.toLocaleString("en-US");
