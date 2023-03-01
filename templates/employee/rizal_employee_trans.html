@@ -281,8 +281,8 @@
             <label for="Equipment" >Equipment</label>
                 <input
                     type="text"
-                    name="equipment_id"
-                    id="equipment_id"
+                    name="equipment_id_searchRental"
+                    id="equipment_id_searchRental"
                     >
                 </input>  
 
@@ -1120,11 +1120,11 @@
         <script>
             $(document).ready(function() {
                $('#total_rental_hour, #rental_rate').on('input', function() {
-                   calculateProduct();
+                calculateProductRental();
                });
                });
 
-               function calculateProduct() {
+               function calculateProductRental() {
 
                var rental_rate = $('#rental_rate').val();
                
@@ -1178,7 +1178,7 @@
             async function display_data(){
                 var datefrom = document.getElementById("datefrom").value
                 var dateto = document.getElementById("dateto").value
-                var equipmentID = document.getElementById("equipment_id").value
+                var equipmentID = document.getElementById("equipment_id_searchRental").value
 
                 const search_url = `/api-get-rental-rizal-employee_login/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
 
