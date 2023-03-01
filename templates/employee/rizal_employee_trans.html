@@ -1291,27 +1291,27 @@
                     console.log(data)
 
                     // Use the fetch API to send the POST request
-                    // try {
-                    //     const response = await fetch(`/api-insert-rizalDiesel-employeeLogin/`, {
-                    //     method: "POST",
-                    //     headers: { "Content-Type": "application/json" },
-                    //     body: JSON.stringify(data)
-                    //     });
+                    try {
+                        const response = await fetch(`/api-insert-rizalDiesel-employeeLogin/`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data)
+                        });
 
-                    //     // Check if the response was successful
-                    //     if (response.status === 200) {
-                    //     window.alert("Your data has been saved");
-                    //     console.log(data);
-                    //     window.location.assign("/employee-rizal-equipment-rental/");
+                        // Check if the response was successful
+                        if (response.status === 200) {
+                        window.alert("Your data has been saved");
+                        console.log(data);
+                        window.location.assign("/employee-rizal-equipment-rental/");
                         
-                    //     } else if (response.status === 401) {
-                    //     window.alert("Unauthorized credential. Please login");
-                    //     }
-                    // } catch (error) {
-                    //     // Catch any errors and log them to the console
-                    //     window.alert(error);
-                    //     console.log(error);
-                    // }
+                        } else if (response.status === 401) {
+                        window.alert("Unauthorized credential. Please login");
+                        }
+                    } catch (error) {
+                        // Catch any errors and log them to the console
+                        window.alert(error);
+                        console.log(error);
+                    }
                     }
                 </script>
 
