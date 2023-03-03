@@ -74,7 +74,7 @@
                             >
                         </input>
 
-                        <label for="Equipment" >Equipment</label><br>
+                        <label for="Equipment" >Equipment</label>
                         <input
                             type="text"
                             name="equipment_id"
@@ -83,6 +83,33 @@
                             class="form-control"
                             >
                         </input>  
+
+                        <label for="Equipment" >Time IN</label>
+                            <input
+                                type="datetime-local"
+                                name="start"
+                                id="start"
+                                class="form-control"
+                                >
+                            </input>  
+                        <label for="Equipment" >Time OUT</label>
+                            <input
+                                type="datetime-local"
+                                name="end"
+                                id="end"
+                                class="form-control"
+                                >
+                            </input>  
+                        <label for="Equipment" >Total Rental Hours Computation</label>
+                            <input
+                            type="number"
+                            name="totalHours"
+                            id="totalHours"
+                            step="0.01"
+                            class="form-control"
+                            
+                            >
+                            </input>  
 
                         <label for="Total Hours" >Total Hours</label>
                             <input
@@ -1074,6 +1101,27 @@
             </script>
 
 <!-- ================================This is for inserting Rizal Equipment Rental By employee Login=================== -->
+            
+            <!-- This function is for  -->
+            <script>
+                $(document).ready(function() {
+                $('#start, #end').change(function() {
+                    const startDate = new Date($('#start').val()).getTime();
+                    const endDate = new Date($('#end').val()).getTime();
+                    const elapsed = endDate - startDate;
+                    const elapsedInSeconds = (elapsed / 1000) / 60 / 60;
+                    // console.log(startDate,elapsedInSeconds)
+
+                    totalHours = elapsedInSeconds.toFixed(2)
+                    $('#totalHours').val(totalHours);
+                });
+                });
+            </script>
+            
+            
+            
+            
+            
             <script type="text/javascript">
                 // Define an async function to insert equipment
                 async function insertRental() {
@@ -1288,25 +1336,41 @@
                         
                         
                     };
-                    console.log(data)
+                    console.log(data.transaction_date)
 
                     // Use the fetch API to send the POST request
                     try {
-                        const response = await fetch(`/api-insert-rizalDiesel-employeeLogin/`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data)
-                        });
 
-                        // Check if the response was successful
-                        if (response.status === 200) {
-                        window.alert("Your data has been saved");
-                        console.log(data);
-                        window.location.assign("/employee-rizal-equipment-rental/");
+                        const search_url_SEARCH = `/api-get-rizal-dieselCheck-employeeLogin/?transaction_date=${data.transaction_date}&equipment_id=${data.equipment_id}&withdrawal_slip=${data.withdrawal_slip}`;
+
+
+                        const responceSEARCH = await fetch(search_url_SEARCH)
+                        const dataSEARCH = await responceSEARCH.json();
+                        console.log(dataSEARCH)
+
+                        if (dataSEARCH.length > 0) {
+                            window.alert("Your data has already EXIST please check Diesel List");
+                            
+                            } else {
+                                const response = await fetch(`/api-insert-rizalDiesel-employeeLogin/`, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(data)
+                                });
+
+                                // Check if the response was successful
+                                if (response.status === 200) {
+                                window.alert("Your data has been saved");
+                                console.log(data);
+                                window.location.assign("/employee-rizal-equipment-rental/");
+                                
+                                } else if (response.status === 401) {
+                                window.alert("Unauthorized credential. Please login");
+                                };
+                            }
+
                         
-                        } else if (response.status === 401) {
-                        window.alert("Unauthorized credential. Please login");
-                        }
+                        
                     } catch (error) {
                         // Catch any errors and log them to the console
                         window.alert(error);

@@ -249,7 +249,7 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 
 
 from config.models import (insertEquipmentRental,getallRental,
-                            insertRizalDiesel,diesel_consumption,getallDiesel)
+                            insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking)
 from models.model import RizalRental,RizalDiesel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
@@ -295,6 +295,7 @@ async def getAllRentalRizal(datefrom,dateto,equipment_id,username: str = Depends
 
     return rentalData
 
+#==============================================Diesel Rizal Transaction=======================================
 
 @employee_user.post("/api-insert-rizalDiesel-employeeLogin/")
 async def insertRental(items: RizalDiesel,username: str = Depends(EmployeevalidateLogin)):
@@ -338,6 +339,30 @@ async def getAllDieselRizal(datefrom,dateto,equipment_id:Optional[str],username:
         rentalData.append(data)
 
     return rentalData
+
+
+@employee_user.get("/api-get-rizal-dieselCheck-employeeLogin/")
+async def get_dieselChecker(transaction_date,equipment_id:str=[Optional],withdrawal_slip:str =[Optional],
+                            username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = getAllDiesel_checking(transaction_date=transaction_date,equipment_id=equipment_id,
+                                        withdrawal_slip=withdrawal_slip)
+
+    DieselData = [
+        
+            {
+               "id": i.id,
+                "transaction_date": i.transaction_date,
+                "equipment_id": i.equipment_id,
+                "withdrawal_slip": i.withdrawal_slip,
+            
+            }
+            for i in results
+        ]
+    
+
+    return DieselData
+
 
 
 #============================================Rizal Tonnage Frame=========================================

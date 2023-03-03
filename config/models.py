@@ -335,6 +335,19 @@ def getallRental(datefrom,dateto,equipment_id):
 
         data = results.all()
         return data
+#=============================================Diesel Frame Rizal==================================================
+def getAllDiesel_checking(transaction_date,equipment_id,withdrawal_slip):
+    """This function is for checking If data are already save"""
+    with Session(engine) as session:
+        statement = select(diesel_consumption).where(diesel_consumption.transaction_date ==transaction_date,
+                                        diesel_consumption.equipment_id.like ('%'+equipment_id +'%'),
+                                        diesel_consumption.withdrawal_slip == withdrawal_slip )
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
 
 def insertRizalDiesel(transaction_date,equipment_id,withdrawal_slip,
                         use_liter,price,amount,username):
