@@ -100,7 +100,7 @@
                                 class="form-control"
                                 >
                             </input>  
-                        <label for="Equipment" >Total Rental Hours Computation</label>
+                        <!-- <label for="Equipment" >Total Rental Hours Computation</label>
                             <input
                             type="number"
                             name="totalHours"
@@ -109,7 +109,7 @@
                             class="form-control"
                             
                             >
-                            </input>  
+                            </input>   -->
 
                         <label for="Total Hours" >Total Hours</label>
                             <input
@@ -1113,7 +1113,7 @@
                     // console.log(startDate,elapsedInSeconds)
 
                     totalHours = elapsedInSeconds.toFixed(2)
-                    $('#totalHours').val(totalHours);
+                    $('#total_rental_hour').val(totalHours);
                 });
                 });
             </script>
@@ -1138,27 +1138,37 @@
                 };
                 console.log(data)
                 // Use the fetch API to send the POST request
-                try {
-                    const response = await fetch(`/api-insert-employee-rizal-rental/`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                    });
-            
-                    // Check if the response was successful
-                    if (response.status === 200) {
-                    window.alert("Your data has been saved");
-                    console.log(data);
-                    window.location.assign("/employee-rizal-equipment-rental/");
-                    
-                    } else if (response.status === 401) {
-                    window.alert("Unauthorized credential. Please login");
-                    }
-                } catch (error) {
-                    // Catch any errors and log them to the console
-                    window.alert(error);
-                    console.log(error);
-                }
+
+                if (data.transaction_date == '' || data.equipment_id == '' || data.total_rental_hour,
+                            data.rental_rate == '' || data.rental_amount == ''){
+                                window.alert("Please fill up Blank flieds/field"); 
+                            }
+                            else{
+
+                                try {
+                                        const response = await fetch(`/api-insert-employee-rizal-rental/`, {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(data)
+                                        });
+                                
+                                        // Check if the response was successful
+                                        if (response.status === 200) {
+                                        window.alert("Your data has been saved");
+                                        console.log(data);
+                                        window.location.assign("/employee-rizal-equipment-rental/");
+                                        
+                                        } else if (response.status === 401) {
+                                        window.alert("Unauthorized credential. Please login");
+                                        }
+                                    } catch (error) {
+                                        // Catch any errors and log them to the console
+                                        window.alert(error);
+                                        console.log(error);
+                                    }
+                                                    
+                                 }
+                
                 }
             </script>
 

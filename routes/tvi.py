@@ -654,6 +654,35 @@ async def getTviTrans(id: int,request:Request,username: str = Depends(validateLo
     # print(Data)
     return templates.TemplateResponse("tvi/tviDieselUpdate.html",{'request':request,'Data':Data})
 
+
+from config.tvi_models import getDieselTVI_withSlip
+@tviProject.get("/api-search-tvi-diesel-withDrawalSlip/")
+def search_tvi_dieselWithdrawSlip(withdrawalSlip: Optional[str]):
+    """This is for searching all Data from Diesel table"""
+    data = getDieselTVI_withSlip(withdrawalSlip=withdrawalSlip)
+    
+    costData = [
+
+        {
+            
+            "id": x.id,
+            "transDate": x.transDate,
+            "equipmentId": x.equipmentId,
+            "withdrawalSlip": x.withdrawalSlip,
+            "totalliters": x.totalliters,
+            "price": x.price,
+            "totalAmount":"{:,.2f}".format(x.totalAmount),
+            "user": x.user,
+            "date_updated": x.date_updated,
+            "date_credited": x.date_credited,
+            
+        
+        }
+        for x in data
+    ]
+
+    return costData
+
 from config.tvi_models import updateTVIDiesel
 @tviProject.put("/api-update-tvi-diesel-sqlModel/{id}")
 async def updateTVIdiesel(id: int,items:TVIDiesel,username: str = Depends(validateLogin)):

@@ -1510,7 +1510,9 @@
                     var input1 = $('#totalliters').val();
                     var input2 = $('#priceDiesel').val();
                     var product = input1 * input2;
-                    $('#totalAmountDiesel').val(product);
+
+                    product2 = product.toFixed(2)
+                    $('#totalAmountDiesel').val(product2);
                     }
 
 
@@ -1537,7 +1539,18 @@
             
                 // Use the fetch API to send the POST request
                 try {
-                    const response = await fetch(`/api-insert-tvi-diesel-sqlModel/`, {
+
+                    const search_url_SEARCH = `/api-search-tvi-diesel-withDrawalSlip/?withdrawalSlip=${data.withdrawalSlip}`;
+
+
+                    const responceSEARCH = await fetch(search_url_SEARCH)
+                    const dataSEARCH = await responceSEARCH.json();
+                    console.log(dataSEARCH)
+
+                    if (dataSEARCH.length > 0) {
+                        window.alert("Your data has already EXIST please check Diesel List");
+                    }else{
+                        const response = await fetch(`/api-insert-tvi-diesel-sqlModel/`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)
@@ -1552,6 +1565,10 @@
                     } else if (response.status === 401) {
                     window.alert("Unauthorized credential. Please login");
                     }
+
+                    }
+                    
+                   
                 } catch (error) {
                     // Catch any errors and log them to the console
                     window.alert(error);

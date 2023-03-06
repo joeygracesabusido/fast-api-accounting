@@ -357,6 +357,19 @@ def getDieselTVI_id(id):
        
         return data
 
+def getDieselTVI_withSlip(withdrawalSlip):
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        
+
+        statement = select(tvidieseltransaction).where(tvidieseltransaction.withdrawalSlip == withdrawalSlip)
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+       
+        return data
+
 
 def updateTVIDiesel(id,transDate,equipmentId,withdrawalSlip,
                         totalliters,price,totalAmount,user,date_updated):
