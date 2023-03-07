@@ -268,6 +268,7 @@ class RizalRental(BaseModel):
     total_rental_hour: float
     rental_rate: float
     rental_amount: float
+    eur_form: str
 
 class RizalDiesel(BaseModel):
     """This is for employee transaction Inserting Diesel"""

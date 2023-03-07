@@ -74,6 +74,16 @@
                             >
                         </input>
 
+                        <label for="Equipment" >EUR</label>
+                        <input
+                            type="text"
+                            name="eur_form"
+                            id="eur_form"
+                           
+                            class="form-control"
+                            >
+                        </input>  
+
                         <label for="Equipment" >Equipment</label>
                         <input
                             type="text"
@@ -1132,7 +1142,7 @@
                     total_rental_hour: document.getElementById("total_rental_hour").value,
                     rental_rate: document.getElementById("rental_rate").value,
                     rental_amount: document.getElementById("rental_amount").value,
-                   
+                    eur_form:  document.getElementById("eur_form").value,
                 
                     
                 };
@@ -1140,7 +1150,7 @@
                 // Use the fetch API to send the POST request
 
                 if (data.transaction_date == '' || data.equipment_id == '' || data.total_rental_hour,
-                            data.rental_rate == '' || data.rental_amount == ''){
+                            data.rental_rate == '' || data.rental_amount == '',data.eur_form ==''){
                                 window.alert("Please fill up Blank flieds/field"); 
                             }
                             else{

@@ -257,7 +257,8 @@ async def insertRental(items:RizalRental,username: str = Depends(Employeevalidat
     today = datetime.now()
     insertEquipmentRental(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
                             total_rental_hour=items.total_rental_hour,rental_rate=items.rental_rate,
-                            rental_amount=items.rental_amount, username=username,date_update=today)
+                            rental_amount=items.rental_amount, username=username,date_update=today,
+                            eur_form=items.eur_form)
 
 
     return  {'Messeges':'Data has been Save'} 

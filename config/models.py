@@ -84,6 +84,7 @@ class equipment_rental(SQLModel, table=True):
     rental_amount: condecimal(max_digits=18, decimal_places=2) = Field(default=0)
     username: str = Field(default=None)
     date_update: datetime
+    eur_form: str = Field(index=True)
     
 class diesel_consumption(SQLModel, table=True):
     """This is to create table diesel_consumption"""
@@ -310,11 +311,12 @@ def updateRizalequipment(id,equipment_id,purchase_date,description,
 
 #==========================================This is Rental Transaction Frame=========================================    
 def insertEquipmentRental(transaction_date,equipment_id,
-                        total_rental_hour,rental_rate,rental_amount,username,date_update):
+                        total_rental_hour,rental_rate,rental_amount,username,date_update,eur_form):
     """This function is for inserting Equipmnet of Rizal """
     insertData = equipment_rental(transaction_date=transaction_date,equipment_id=equipment_id,
                             total_rental_hour=total_rental_hour,rental_rate=rental_rate,
-                            rental_amount=rental_amount,username=username,date_update=date_update)
+                            rental_amount=rental_amount,username=username,date_update=date_update,
+                            eur_form=eur_form)
     
 
     session = Session(engine)
