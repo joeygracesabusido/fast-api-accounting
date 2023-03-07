@@ -337,6 +337,43 @@ def getallRental(datefrom,dateto,equipment_id):
 
         data = results.all()
         return data
+    
+def getallRental_id(id):
+    """This function is for queyring all Data fro Rental Transaction Rizal"""
+    with Session(engine) as session:
+        statement = select(equipment_rental).where(equipment_rental.id == id)
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
+
+def updateRentalRizal(id,transaction_date,equipment_id,
+                        total_rental_hour,rental_rate,rental_amount,username,date_update,eur_form):
+    """This function is for updating Rizal Equipment"""
+
+    with Session(engine) as session:
+        statement = select(equipment_rental).where(equipment_rental.id == id)
+        results = session.exec(statement)
+
+        result = results.one()
+
+           
+        result.transaction_date = transaction_date
+        result.equipment_id = equipment_id
+        result.total_rental_hour = total_rental_hour
+        result.rental_rate = rental_rate
+        result.rental_amount = rental_amount
+        result.username = username
+        result.date_update = date_update
+        result.eur_form = eur_form
+        
+
+    
+        session.add(result)
+        session.commit()
+        session.refresh(result)
 #=============================================Diesel Frame Rizal==================================================
 def getAllDiesel_checking(transaction_date,equipment_id,withdrawal_slip):
     """This function is for checking If data are already save"""

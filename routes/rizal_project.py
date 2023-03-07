@@ -395,6 +395,47 @@ async def get_employee_payroll(request: Request,username: str = Depends(validate
     
     return templates.TemplateResponse("rizal/employee_transaction.html",{"request":request})
 
+from config.models import updateRentalRizal,getallRental_id
+@rizal_project.get("/update-rental-rizal/{id}", response_class=HTMLResponse)
+async def get_costData_id(id,request: Request):
+
+    result = getallRental_id(id=id)
+    
+    
+    rentalData = [
+        
+            {
+                "id": i.id,
+                "transaction_date": i.transaction_date,
+                "eur_form": i.eur_form,
+                "equipment_id": i.equipment_id,
+                "total_rental_hour": i.total_rental_hour,
+                "rental_rate": i.rental_rate,
+                "rental_amount": i.rental_amount,
+                "username": i.username,
+                "date_update": i.date_update,
+            
+            }
+           for i in result
+        ]
+    
+   
+   
+    return templates.TemplateResponse("rizal/updateRizalRental.html",{"request":request,"rentalData":rentalData})
+
+from models.model import RizalRental
+@rizal_project.put("/update-rental-rizal/{id}")
+async def updateRizalRental(id,items:RizalRental,username: str = Depends(validateLogin)):
+    """This function is to update Cost"""
+    today = datetime.now()
+
+    updateRentalRizal(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
+                            total_rental_hour=items.total_rental_hour, rental_rate=items.rental_rate,rental_amount=items.rental_amount,
+                             username=username,date_update=today,eur_form=items.eur_form, id=id)
+
+    return  {'Messeges':'Data has been Updated'}
+
+
 #=============================================This is for employee Transaction===========================================
 from config.database import Database
 
@@ -445,6 +486,8 @@ async def get_employee_payroll(employee_id,username: str = Depends(validateLogin
             }
             for x in employeelList
         ]
+    
+    
        
     return employeeData
     
