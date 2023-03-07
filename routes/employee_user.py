@@ -283,6 +283,7 @@ async def getAllRentalRizal(datefrom,dateto,equipment_id,username: str = Depends
         data.update({
                 "id": i.id,
                 "transaction_date": i.transaction_date,
+                "eur_form": i.eur_form,
                 "equipment_id": i.equipment_id,
                 "total_rental_hour": "{:,.2f}".format(i.total_rental_hour),
                 "rental_rate": "{:,.2f}".format(i.rental_rate),
