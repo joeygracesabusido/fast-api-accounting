@@ -249,7 +249,8 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 
 
 from config.models import (insertEquipmentRental,getallRental,
-                            insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking)
+                            insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking,
+                            select_rizalEquipment)
 from models.model import RizalRental,RizalDiesel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
@@ -263,6 +264,24 @@ async def insertRental(items:RizalRental,username: str = Depends(Employeevalidat
 
     return  {'Messeges':'Data has been Save'} 
 
+@employee_user.get("/api-get-rental-rate-employeLogin/")
+async def get_equipmentRate(equipment_id = Optional[str],username: str = Depends(EmployeevalidateLogin)):
+    """This function is to query equipment Rental Rate """
+    result = select_rizalEquipment(equipment_id=equipment_id)
+    
+    
+    equipmentData = [
+        
+            {
+                "id": i.id,
+                "equipment_id": i.equipment_id,
+                "rental_rate": i.rental_rate
+               
+            }
+           for i in result
+        ]
+    print(equipmentData)
+    return equipmentData
 
 @employee_user.get("/api-get-rental-rizal-employee_login/")
 async def getAllRentalRizal(datefrom,dateto,equipment_id,username: str = Depends(EmployeevalidateLogin)):

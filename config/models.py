@@ -274,12 +274,22 @@ def getEquipmentRizal():
 
 
 def select_rizalEquipment_id(id):
-    """This function is for selecting one data from equipment_details table"""
+    """This function is for selecting one data from equipment_details table """
     with Session(engine) as session:
         statement = select(equipment_details).where(equipment_details.id == id)
         results = session.exec(statement)
 
         result = results.one()   
+        
+        return result
+
+def select_rizalEquipment(equipment_id):
+    """This function is for selecting one data from equipment_details table using equipment ID"""
+    with Session(engine) as session:
+        statement = select(equipment_details).where(equipment_details.equipment_id == equipment_id)
+        results = session.exec(statement)
+
+        result = results.all()   
         
         return result
 

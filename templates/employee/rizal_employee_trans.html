@@ -171,6 +171,10 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="buttonSave" onclick="insertRental()"class="btn btn-primary">Save</button>
                     <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    <button type="submit"  onclick="html_table_excel_rental('xlsx')" class="btn btn-secondary">
+                            Export Excel
+                            <i class="fas fa-database"></i>
+                        </button>
                     </div>
                 </div>
                 </div>
@@ -325,6 +329,11 @@
 
                 <button type="submit"  onclick="display_data()" class="btn btn-success">
                     Search Data
+                    <i class="fas fa-database"></i>
+                </button>
+
+                <button type="submit"  onclick="html_table_excel_rental('xlsx')" class="btn btn-secondary">
+                    Export Excel
                     <i class="fas fa-database"></i>
                 </button>
 
@@ -1066,12 +1075,53 @@
                 $( function() {
                     
                     $( "#equipment_id" ).autocomplete({
-                    source: "/api-search-autocomplete-equipment-rizal/"
+                    source: "/api-search-autocomplete-equipment-rizal/",
+                    minLength: 1
                     });
+
+
+
                 } );
     
     
             </script>
+    <!-- This function is for auto generate of Rental Rate -->
+            <script>
+                $(document).ready(function() {
+                $("#equipment_id").on("keyup", async function(event) {
+                    // check if Enter key was pressed
+                    if (event.keyCode === 13 || event.keyCode === 9) {
+                    // trigger button click event
+                        var equipment_id = document.getElementById("equipment_id").value
+
+                        const search_url = `/api-get-rental-rate-employeLogin/?equipment_id=${equipment_id}`;
+
+
+                        const responce =  await fetch(search_url)
+                        const data =  await responce.json();
+                        console.log(data)
+                        
+
+                        if (data.length === 0){
+                            window.alert(`No ID store for ${equipment_id}`)
+                        }else{
+                            var rental_rate = data[0].rental_rate
+                        
+                            document.getElementById("rental_rate").value = rental_rate
+                            
+
+                        }
+                   
+                    }
+                });
+            });       
+
+               
+                                
+
+            </script>
+
+               
 
 
             <script>
@@ -1079,7 +1129,8 @@
                 $( function() {
                     
                     $( "#equipmentIdDiesel" ).autocomplete({
-                    source: "/api-search-autocomplete-equipment-rizal/"
+                    source: "/api-search-autocomplete-equipment-rizal/",
+
                     });
                 } );
 
@@ -1285,6 +1336,20 @@
             }
 
         </script>
+
+
+        <!-- This function is for exporting Excel of Rental transaction -->
+            <script>
+                function html_table_excel_rental(type){
+                    var data = document.getElementById('table_body');
+                    var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                    XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                    XLSX.writeFile(file, 'rentalList.' + type);
+
+                }
+
+                
+            </script>
 
 <!-- ====================================This is for computation of Total amount Diesel==================================== -->
         <script>
