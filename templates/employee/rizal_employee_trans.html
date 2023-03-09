@@ -337,6 +337,12 @@
                     <i class="fas fa-database"></i>
                 </button>
 
+
+                <button type="submit"  onclick="printPageRentalList()" class="btn btn-warning">
+                    Print 
+                    <i class="fas fa-database"></i>
+                </button>
+
         </div>
         <div  class="container mt-3">
             <table id="myTable" class="table table-bordered"  style="text-align: center;">
@@ -1061,7 +1067,13 @@
         </div>
 
                 
+<!-- ===========================================for Java Scripts Function=========================================== -->
 
+            <script>
+                function printPageRentalList() {
+                    window.print();
+                    }
+            </script>
          
 
 
