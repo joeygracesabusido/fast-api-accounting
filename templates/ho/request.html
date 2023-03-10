@@ -9,15 +9,171 @@
 </style>
 
 <body>
-    <div class="container" id="div1">
-        <label for="TransactionDate" class="l-color" >Date</label>
-            <input
-                type="date"
-                name="datefrom"
-                id="datefrom"
-                class="form-control"
+    <div class="container mt-4" id="div1">
+        <label style="color:yellow;">
+            Date
+        </label>
+        <input 
+            type="date" 
+            name="transDate"
+            id="transDate"
+            
+            class="form-control"
+            
             >
-        </input>
+
+        <label style="color:yellow;">
+            Payee
+            </label>
+            <input 
+                type="text" 
+                name="payee"
+                id="payee"
+                
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Particular
+            </label>
+            <input 
+                type="text" 
+                name="particular"
+                id="particular"
+                
+                class="form-control"
+                
+            >
+
+        <label style="color:yellow;">
+            Amount
+            </label>
+            <input 
+                type="number" 
+                name="fuel"
+                id="fuel"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+
+
+        <label style="color:yellow;">
+            Oil & Lubes
+            </label>
+            <input 
+                type="number" 
+                name="oil_lubes"
+                id="oil_lubes"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+
+        <label style="color:yellow;">
+            Mechanical Supplies
+            </label>
+            <input 
+                type="number" 
+                name="mechanicalSupplies"
+                id="mechanicalSupplies"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+
+        <label style="color:yellow;">
+            Repair Maintenance
+            </label>
+            <input 
+                type="number" 
+                name="repairMaintenance"
+                id="repairMaintenance"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+
+        <label style="color:yellow;">
+            Meals
+            </label>
+            <input 
+                type="number" 
+                name="meals"
+                id="meals"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+
+        <label style="color:yellow;">
+            Transpo
+            </label>
+            <input 
+                type="number" 
+                name="transpo"
+                id="transpo"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+        
+        <label style="color:yellow;">
+            Tires
+            </label>
+            <input 
+                type="number" 
+                name="tires"
+                id="tires"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+
+        <label style="color:yellow;">
+            Amortization
+            </label>
+            <input 
+                type="number" 
+                name="amortization"
+                id="amortization"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+
+        <label style="color:yellow;">
+            Others
+            </label>
+            <input 
+                type="number" 
+                name="others"
+                id="others"
+                step="0.0"
+                class="form-control"
+                onkeyup="getTotalamount();"
+            >
+
+        <label style="color:yellow;">
+            Total Amount
+            </label>
+            <input 
+                type="number" 
+                name="totalAmount"
+                id="totalAmount"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+        
+                
+            <br>
+
+            <button type="submit" onclick="insertCosting()" class="btn btn-info">
+            <i class="fas fa-database"></i> Save</button>
+
 
     </div>
 </body>
