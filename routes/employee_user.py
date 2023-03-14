@@ -483,3 +483,18 @@ async def get_cost(datefrom,dateto,equipment_id,username: str = Depends(Employee
     return costData
 
 
+
+#======================================TVI Employee Transaction Frame=======================================
+from config.tvi_models import insertRental_tvi
+@employee_user.get("/employee-transaction-tvi/", response_class=HTMLResponse)
+async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
+    return templates.TemplateResponse("employee/tvi_employee_trans.html", {"request":request}) 
+
+@employee_user.post("/api-insert-employee-tvi-rental/")
+async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+    insertRental_tvi(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
+                            total_rental_hour=items.total_rental_hour,rental_rate=items.rental_rate,
+                            rental_amount=items.rental_amount, username=username,date_update=today,
+                            eur_form=items.eur_form)
