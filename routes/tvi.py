@@ -532,6 +532,7 @@ def search_tvi_equipment_insert(term: Optional[str]):
             "plate_number": x.plate_number,
             "status": x.status,
             "remarks": x.remarks,
+            "project_site": x.project_site,
             "owner": x.owner,
         
         }

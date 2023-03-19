@@ -1132,30 +1132,25 @@
             <!-- this is for auto complete input  -->
 
             <script>
-
-                $( function() {
-                    
-                    $( "#equipment_id" ).autocomplete({
-                    source: "/api-search-autocomplete-equipment-rizal/",
-                    minLength: 1
-                    });
-
-
-
-                } );
-    
-    
+                $( function() { 
+                            $("#equipment_id").autocomplete({
+                            source: "/api-search-autocomplete-tvi-equipment2/"
+                            });
+        
+                        } );
+        
             </script>
+
     <!-- This function is for auto generate of Rental Rate -->
             <script>
                 $(document).ready(function() {
                 $("#equipment_id").on("keyup", async function(event) {
                     // check if Enter key was pressed
-                    if (event.keyCode === 13 || event.keyCode === 9) {
+                    if (event.keyCode === 13 ) {
                     // trigger button click event
                         var equipment_id = document.getElementById("equipment_id").value
 
-                        const search_url = `/api-get-rental-rate-employeLogin/?equipment_id=${equipment_id}`;
+                        const search_url = `/api-search-tvi-equipmentID/?term=${equipment_id}`;
 
 
                         const responce =  await fetch(search_url)
@@ -1166,10 +1161,12 @@
                         if (data.length === 0){
                             window.alert(`No ID store for ${equipment_id}`)
                         }else{
-                            var rental_rate = data[0].rental_rate
+                            var rental_rate = data[0].rentalRate
+                            var project_site = data[0].project_site
                         
                             document.getElementById("rental_rate").value = rental_rate
-                            
+                            document.getElementById("project_site").value = project_site
+                            calculateProduct();
 
                         }
                    
@@ -1237,8 +1234,11 @@
 
                     totalHours = elapsedInSeconds.toFixed(2)
                     $('#total_rental_hour').val(totalHours);
+                    calculateProduct();
                 });
                 });
+
+                
             </script>
             
             
@@ -1298,7 +1298,7 @@
 
 
 <!-- ====================================This is for computation of Total amount==================================== -->
-        <script>
+        <!-- <script>
             $(document).ready(function() {
                $('#total_rental_hour, #rental_rate').on('input', function() {
                 calculateProductRental();
@@ -1320,7 +1320,7 @@
 
            
 
-        </script>
+        </script> -->
 
 <!-- ============================ This function is for computaion of rental Amount with Comma ================ -->
             <script type="text/javascript">
