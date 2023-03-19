@@ -1122,7 +1122,8 @@
                             var rental_rate = data[0].rental_rate
                         
                             document.getElementById("rental_rate").value = rental_rate
-                            calculateRentalAmount();
+                            calculateRentalAmount()
+                            calculateProductRental()
                             
 
                         }
@@ -1191,7 +1192,8 @@
 
                     totalHours = elapsedInSeconds.toFixed(2)
                     $('#total_rental_hour').val(totalHours);
-                    calculateRentalAmount();
+                    calculateRentalAmount()
+                    calculateProductRental()
                 });
                 });
             </script>
@@ -1253,7 +1255,7 @@
 
 
 <!-- ====================================This is for computation of Total amount==================================== -->
-        <!-- <script>
+        <script>
             $(document).ready(function() {
                $('#total_rental_hour, #rental_rate').on('input', function() {
                 calculateProductRental();
@@ -1275,7 +1277,7 @@
 
            
 
-        </script> -->
+        </script>
 
 <!-- ============================ This function is for computaion of rental Amount with Comma ================ -->
             <script type="text/javascript">

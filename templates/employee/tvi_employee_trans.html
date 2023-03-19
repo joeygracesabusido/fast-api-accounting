@@ -1166,7 +1166,8 @@
                         
                             document.getElementById("rental_rate").value = rental_rate
                             document.getElementById("project_site").value = project_site
-                            calculateProduct();
+                            calculateProduct()
+                            calculateProductRental()
 
                         }
                    
@@ -1234,7 +1235,8 @@
 
                     totalHours = elapsedInSeconds.toFixed(2)
                     $('#total_rental_hour').val(totalHours);
-                    calculateProduct();
+                    calculateProduct()
+                    calculateProductRental()
                 });
                 });
 
@@ -1298,7 +1300,7 @@
 
 
 <!-- ====================================This is for computation of Total amount==================================== -->
-        <!-- <script>
+        <script>
             $(document).ready(function() {
                $('#total_rental_hour, #rental_rate').on('input', function() {
                 calculateProductRental();
@@ -1320,7 +1322,7 @@
 
            
 
-        </script> -->
+        </script>
 
 <!-- ============================ This function is for computaion of rental Amount with Comma ================ -->
             <script type="text/javascript">
