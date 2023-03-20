@@ -221,7 +221,9 @@ class TVIRentalTransaction(BaseModel):
     taxRate: float
     vat_output: float
     net_of_vat: float
+    project_site: str
     driverOperator: str
+    
 
 
 class TVIDiesel(BaseModel):
@@ -309,7 +311,23 @@ class Cost(BaseModel):
     amortization: float
     others: float
     totalAmount: float
-   
-   
+
+
+
+class TVIRentalTransactionEmployeeLogin(BaseModel):
+    transDate: date
+    demr: str
+    equipmentId: str
+    time_in: datetime
+    time_out: datetime
+    totalHours: float
+    rentalRate: float
+    totalAmount: float
+    taxRate: float
+    vat_output: float
+    net_of_vat: float
+    project_site: str
+    driverOperator: str
+    
 
     

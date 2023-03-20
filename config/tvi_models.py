@@ -48,13 +48,17 @@ class rentaltransaction(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     transDate: date
+    demr: str = Field(default=None)
     equipmentId: str = Field(index=True)
+    time_in : datetime = Field(default=None)
+    time_out : datetime = Field(default=None)
     totalHours: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     rentalRate: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     totalAmount: condecimal(max_digits=9, decimal_places=2)
     taxRate: condecimal(max_digits=3, decimal_places=2)
     vat_output:  condecimal(max_digits=9, decimal_places=2)
     net_of_vat: condecimal(max_digits=9, decimal_places=2)
+    project_site: str = Field(default=None)
     driverOperator: str = Field(default=None)
     user: str = Field(default=None)
     date_updated: datetime = Field(default=None)
@@ -175,7 +179,7 @@ def select_tivEquipment_with_id(id):
 
 
 def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
-                        purchase_amount,rentalRate,plate_number,status,project_site,remarks,owner):
+                        purchase_amount,rentalRate,plate_number,status,remarks,owner):
     """This function is for updating Rizal Equipment"""
 
     with Session(engine) as session:
@@ -192,7 +196,7 @@ def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
         result.rentalRate = rentalRate
         result.plate_number = plate_number
         result.status = status
-        result.project_site = project_site
+        
         result.remarks = remarks
         result.owner = owner
         
@@ -219,7 +223,7 @@ def getRentalTVI_id(term):
         return data
 
 def getRentalTVI():
-    """This function is for querying all equipment in Rizal"""
+    """This function is for querying all equipment in TVI"""
     with Session(engine) as session:
         statement = select(rentaltransaction).order_by(rentaltransaction.id.asc())
                     
@@ -231,7 +235,7 @@ def getRentalTVI():
         return data
 
 def getRentalTVI_id_update(id):
-    """This function is for querying all equipment in Rizal"""
+    """This function is for querying all equipment in TVI"""
     with Session(engine) as session:
         statement = select(rentaltransaction).where(rentaltransaction.id == id)
                     
@@ -249,6 +253,21 @@ def getRentalTVI_all(datefrom,dateto,equipmentId):
         statement = select(rentaltransaction).where(rentaltransaction.transDate >= datefrom ,
                          rentaltransaction.transDate <= dateto ) \
                          .filter(rentaltransaction.equipmentId.like ('%'+ equipmentId +'%')) \
+                         .order_by(rentaltransaction.id.asc())
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
+
+def getRentalTVI_all_employeeLogin(datefrom,dateto,equipmentId,project_site):
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        statement = select(rentaltransaction).where(rentaltransaction.transDate >= datefrom ,
+                         rentaltransaction.transDate <= dateto ) \
+                        .filter(rentaltransaction.equipmentId.like ('%'+ equipmentId +'%'),rentaltransaction.project_site.like ('%'+ project_site +'%')) \
                          .order_by(rentaltransaction.id.asc())
                     
         results = session.exec(statement) 
@@ -279,8 +298,29 @@ def insertRental_tvi(transDate,equipmentId,totalHours,
 
     session.close()
 
+def insertRental_tvi_employeeLogin(transDate, demr,equipmentId, time_in,time_out,totalHours,
+                       rentalRate,totalAmount,taxRate,vat_output,net_of_vat,project_site,
+                       driverOperator,user,date_credited):
+    """This function is for inserting Rental Transaction in TVI """
+    
+    insertData = rentaltransaction(transDate=transDate,demr=demr, equipmentId=equipmentId,
+                    time_in=time_in,time_out=time_out,totalHours=totalHours,rentalRate=rentalRate,
+                    totalAmount=totalAmount,taxRate=taxRate,
+                    vat_output=vat_output,net_of_vat=net_of_vat,
+                    project_site=project_site, driverOperator=driverOperator,
+                    user=user,date_credited=date_credited)
+    
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
 def updateTVIrental(id,transDate,equipmentId,totalHours,
-                       rentalRate,totalAmount,taxRate,vat_output,net_of_vat,
+                       rentalRate,totalAmount,taxRate,vat_output,net_of_vat,project_site,
                        driverOperator,user,date_updated):
     """This function is for updating Rizal Equipment"""
 
@@ -299,6 +339,7 @@ def updateTVIrental(id,transDate,equipmentId,totalHours,
         result.taxRate = taxRate
         result.vat_output = vat_output
         result.net_of_vat = net_of_vat
+        result.project_site = project_site
         result.driverOperator = driverOperator
         result.user = user
         result.date_updated = date_updated

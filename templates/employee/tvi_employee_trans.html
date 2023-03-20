@@ -77,8 +77,8 @@
                         <label for="Equipment" >DEMR</label>
                         <input
                             type="text"
-                            name="eur_form"
-                            id="eur_form"
+                            name="demr_form"
+                            id="demr_form"
                            
                             class="form-control"
                             >
@@ -209,6 +209,17 @@
                                 
                                 >
                         </input> 
+
+
+                        <label for="driverOperator" >Driver/Operator</label>
+                            <input
+                                type="text"
+                                name="driverOperator"
+                                id="driverOperator"
+                                class="form-control"
+                                
+                                >
+                        </input> 
                         
             
                     
@@ -217,10 +228,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="buttonSave" onclick="insertRental()"class="btn btn-primary">Save</button>
                     <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
-                    <button type="submit"  onclick="html_table_excel_rental('xlsx')" class="btn btn-secondary">
-                            Export Excel
-                            <i class="fas fa-database"></i>
-                        </button>
+                    
                     </div>
                 </div>
                 </div>
@@ -243,16 +251,16 @@
                 <label for="TransactionDate" >Date From</label>
                 <input
                     type="date"
-                    name="datefrom"
-                    id="datefrom"
+                    name="datefromRental"
+                    id="datefromRental"
                     >
                 </input>  
 
             <label for="TransactionDate" >Date To</label>
                 <input
                     type="date"
-                    name="dateto"
-                    id="dateto"
+                    name="datetoRental"
+                    id="datetoRental"
                     >
                 </input>  
 
@@ -262,7 +270,15 @@
                     name="equipment_id_searchRental"
                     id="equipment_id_searchRental"
                     >
-                </input>  
+                </input> 
+                
+            <label for="ProjectSite" >Project Site</label>
+                <input
+                    type="text"
+                    name="project_site_search"
+                    id="project_site_search"
+                    >
+                </input> 
 
                 <button type="submit"  onclick="display_data()" class="btn btn-success">
                     Search Data
@@ -292,7 +308,7 @@
                         <td>Total Hour</td>
                         <td>Rental Rate</td>
                         <td>Total Amount</td>
-                        <td>Running Bal</td>
+                        <td>Net of Vat</td>
                         <td>Action</td>
                         
                     </tr>
@@ -1237,6 +1253,7 @@
                     $('#total_rental_hour').val(totalHours);
                     calculateProduct()
                     calculateProductRental()
+                    
                 });
                 });
 
@@ -1253,25 +1270,31 @@
                 // Get the values of the input fields
                 const data = {
                     transaction_date: document.getElementById("trans_date").value,
-                    equipment_id: document.getElementById("equipment_id").value,
-                    total_rental_hour: document.getElementById("total_rental_hour").value,
-                    rental_rate: document.getElementById("rental_rate").value,
-                    rental_amount: document.getElementById("rental_amount").value,
-                    eur_form:  document.getElementById("eur_form").value,
-                
-                    
+                    demr_form:  document.getElementById("demr_form").value,
+                    equipmentId: document.getElementById("equipment_id").value,
+                    time_in: document.getElementById("start").value,
+                    time_out: document.getElementById("end").value,
+                    totalHours: document.getElementById("total_rental_hour").value,
+                    rentalRate: document.getElementById("rental_rate").value,
+                    totalAmount: document.getElementById("rental_amount").value,
+                    taxRate: document.getElementById("taxRateTransaction").value,
+                    vat_output: document.getElementById("vatOutputRentalTrans").value,
+                    net_of_vat: document.getElementById("netOfVAtRentalTrans").value,
+                    project_site: document.getElementById("project_site").value,
+                    driverOperator: document.getElementById("driverOperator").value,
                 };
                 console.log(data)
                 // Use the fetch API to send the POST request
 
-                if (data.transaction_date == '' || data.equipment_id == '' || data.total_rental_hour,
-                            data.rental_rate == '' || data.rental_amount == '',data.eur_form ==''){
+                if (data.transaction_date == '' || data.demr_form || data.equipmentId == ''
+                             || data.time_in == '' || data.time_in == '' || data.time_out == '' ||
+                            data.rentalRate == '' || data.taxRate == ''){
                                 window.alert("Please fill up Blank flieds/field"); 
                             }
                             else{
 
                                 try {
-                                        const response = await fetch(`/api-insert-employee-rizal-rental/`, {
+                                        const response = await fetch(`/api-insert-tvi-rental-employeeLogin/`, {
                                         method: "POST",
                                         headers: { "Content-Type": "application/json" },
                                         body: JSON.stringify(data)
@@ -1326,7 +1349,7 @@
 
 <!-- ============================ This function is for computaion of rental Amount with Comma ================ -->
             <script type="text/javascript">
-                                // Get input fields and result element
+                    // Get input fields and result element
                 var input1 = document.getElementById("total_rental_hour");
                 var input2 = document.getElementById("rental_rate");
                 
@@ -1351,6 +1374,37 @@
 
             </script>
 
+<!-- ==================================This function is for Computation of Vat and Net of Vat===================== -->
+            <script>
+                $(document).ready(function() {
+                    $('#rental_amount2, #taxRateTransaction \
+                    ').on('input', function() {
+                        calculateVAT();
+                    });
+                    });
+
+                    function calculateVAT() {
+
+                    var rental_amount = parseFloat($('#rental_amount').val());
+                    
+                    var taxRateTransaction = parseFloat($('#taxRateTransaction').val());
+                    
+                    
+                    
+                    var vatComputation = rental_amount / 1.12 * taxRateTransaction;
+                    var netOfVAtRentalTrans = rental_amount - vatComputation;
+                   
+
+                    var vatComputation2 = parseFloat(vatComputation).toFixed(2)
+                    var netOfVAtRentalTrans2 = parseFloat(netOfVAtRentalTrans).toFixed(2)   
+
+                    $('#vatOutputRentalTrans').val(vatComputation2);
+                    $('#netOfVAtRentalTrans').val(netOfVAtRentalTrans2);
+                    }
+
+
+            </script>
+
 
 
 <!-- ====================================This function is for Displaying Rental Data to Table========================= -->
@@ -1358,11 +1412,12 @@
 
             // const rental_url =search_url ;
             async function display_data(){
-                var datefrom = document.getElementById("datefrom").value
-                var dateto = document.getElementById("dateto").value
+                var datefrom = document.getElementById("datefromRental").value
+                var dateto = document.getElementById("datetoRental").value
                 var equipmentID = document.getElementById("equipment_id_searchRental").value
+                var project_site = document.getElementById("project_site_search").value
 
-                const search_url = `/api-get-rental-rizal-employee_login/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+                const search_url = `/api-get-tvi-rental-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipmentId=${equipmentID}&project_site=${project_site}`;
 
 
                 const responce = await fetch(search_url)
@@ -1379,13 +1434,13 @@
                     data.map((values)=>{
                         tableData+= ` <tr>
                                     <td>${values.id}</td>
-                                    <td>${values.transaction_date}</td>
-                                    <td>${values.equipment_id}</td>
-                                    <td>${values.eur_form}</td>
-                                    <td>${values.total_rental_hour}</td>
-                                    <td>${values.rental_rate}</td>
-                                    <td>${values.rental_amount}</td>
+                                    <td>${values.transDate}</td>
+                                    <td>${values.equipmentId}</td>
+                                    <td>${values.demr}</td>
+                                    <td>${values.totalHours}</td>
+                                    <td>${values.rentalRate}</td>
                                     <td>${values.totalAmount}</td>
+                                    <td>${values.net_of_vat}</td>
                                    
                                 
                                 </tr>`;

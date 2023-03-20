@@ -485,16 +485,56 @@ async def get_cost(datefrom,dateto,equipment_id,username: str = Depends(Employee
 
 
 #======================================TVI Employee Transaction Frame=======================================
-from config.tvi_models import insertRental_tvi
+from config.tvi_models import insertRental_tvi,insertRental_tvi_employeeLogin,getRentalTVI_all_employeeLogin
+
+from models.model import TVIRentalTransactionEmployeeLogin
 @employee_user.get("/employee-transaction-tvi/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
     return templates.TemplateResponse("employee/tvi_employee_trans.html", {"request":request}) 
 
-@employee_user.post("/api-insert-employee-tvi-rental/")
-async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
+@employee_user.post("/api-insert-tvi-rental-employeeLogin/")
+async def insertRentalTVI(items:TVIRentalTransactionEmployeeLogin,username: str = Depends(EmployeevalidateLogin)):
     """This function is to update employee Details"""
     today = datetime.now()
-    insertRental_tvi(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
+    insertRental_tvi_employeeLogin(transaction_date=items.transaction_date,demr=items.demr,
+                            equipment_id=items.equipment_id,time_in=items.time_in,time_out=items.time_out,
                             total_rental_hour=items.total_rental_hour,rental_rate=items.rental_rate,
                             rental_amount=items.rental_amount, username=username,date_update=today,
-                            eur_form=items.eur_form)
+                            project_site=items.project_site,driverOperator=items.driverOperator)
+    return  {'Messeges':'Data has been Save'}                        
+
+
+@employee_user.get("/api-get-tvi-rental-employeeLogin/")
+async def get_cost(datefrom,dateto,equipmentId:Optional[str],
+                    project_site:Optional[str],username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = getRentalTVI_all_employeeLogin(datefrom=datefrom,dateto=dateto,
+                                                project_site=project_site,equipmentId=equipmentId)
+
+    rentalData = [
+        
+            {
+                "id": x.id,
+                "transDate": x.transDate,
+                "demr": x.demr,
+                "equipmentId": x.equipmentId,
+                "time_in": x.time_in,
+                "time_out": x.time_out,
+                "totalHours": "{:,.2f}".format(x.totalHours),
+                "rentalRate": "{:,.2f}".format(x.rentalRate),
+                "totalAmount": "{:,.2f}".format(x.totalAmount),
+                "taxRate": "{:,.2f}".format(x.taxRate),
+                "vat_output": "{:,.2f}".format(x.vat_output),
+                "net_of_vat": "{:,.2f}".format(x.net_of_vat),
+                "project_site":x.project_site,
+                "driverOperator":x.driverOperator,
+                "user": x.user,
+                "date_updated": x.date_updated,
+                "date_credited": x. date_credited
+            
+            }
+            for x in results
+        ]
+    
+
+    return rentalData

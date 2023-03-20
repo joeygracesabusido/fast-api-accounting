@@ -142,6 +142,17 @@
                         class="form-control"
                         > 
 
+                <label for="driverOperator"style="color:yellow;"
+                        >Project Site</label>
+                        
+                        <input 
+                        type="text"
+                        name="project_siteTrans"
+                        id="project_siteTrans"
+                        value="{{list.project_site}}"
+                        class="form-control"
+                        > 
+
 
                 {% endfor %}
                 
@@ -258,6 +269,7 @@
                 data["taxRate"] = document.getElementById("taxRateTransaction").value;
                 data["vat_output"] = document.getElementById("vatOutputRentalTrans").value;
                 data["net_of_vat"] = document.getElementById("netOfVAtRentalTrans").value;
+                data["project_site"] = document.getElementById("project_siteTrans").value;
                 data["driverOperator"] = document.getElementById("driverOperatorRentaltrans").value;
                 
 

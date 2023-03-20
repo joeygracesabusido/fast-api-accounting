@@ -563,6 +563,7 @@ async def getTviTrans(id: int,request:Request,username: str = Depends(validateLo
                 "vat_output": x.vat_output,
                 "net_of_vat": x.net_of_vat,
                 "driverOperator": x.driverOperator,
+                "project_site": x.project_site,
                 "user": x.user,
                 "date_updated": x.date_updated,
                 "date_credited": x.date_credited,
@@ -581,7 +582,7 @@ async def updateTVIRental(id: int,items:TVIRentalTransaction,username: str = Dep
     updateTVIrental(transDate=items.transDate,equipmentId=items.equipmentId,
                         totalHours=items.totalHours,rentalRate=items.rentalRate,
                         totalAmount=items.totalAmount,taxRate=items.taxRate,
-                        vat_output=items.vat_output,net_of_vat=items.net_of_vat,
+                        vat_output=items.vat_output,net_of_vat=items.net_of_vat,project_site=items.project_site,
                         driverOperator=items.driverOperator,user=username,
                         date_updated=today,id=id)
 
