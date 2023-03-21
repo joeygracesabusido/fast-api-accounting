@@ -1370,7 +1370,7 @@
                 async function insertRental() {
                 // Get the values of the input fields
                 const data = {
-                    transaction_date: document.getElementById("trans_date").value,
+                    transDate: document.getElementById("trans_date").value,
                     demr_form:  document.getElementById("demr_form").value,
                     equipmentId: document.getElementById("equipment_id").value,
                     time_in: document.getElementById("start").value,
@@ -1387,7 +1387,7 @@
                 console.log(data)
                 // Use the fetch API to send the POST request
 
-                if (data.transaction_date == '' || data.demr_form || data.equipmentId == ''
+                if (data.transDate == '' || data.demr_form || data.equipmentId == ''
                              || data.time_in == '' || data.time_in == '' || data.time_out == '' ||
                             data.rentalRate == '' || data.taxRate == ''){
                                 window.alert("Please fill up Blank flieds/field"); 

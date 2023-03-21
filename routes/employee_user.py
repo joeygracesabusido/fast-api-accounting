@@ -486,9 +486,10 @@ async def get_cost(datefrom,dateto,equipment_id,username: str = Depends(Employee
 
 #======================================TVI Employee Transaction Frame=======================================
 from config.tvi_models import (insertRental_tvi,insertRental_tvi_employeeLogin,
-                                getRentalTVI_all_employeeLogin,rentalSumTVI)
+                                getRentalTVI_all_employeeLogin,rentalSumTVI,
+                                insertDiesel_tvi)
 
-from models.model import TVIRentalTransactionEmployeeLogin
+from models.model import TVIRentalTransactionEmployeeLogin,TVIDiesel
 @employee_user.get("/employee-transaction-tvi/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
     return templates.TemplateResponse("employee/tvi_employee_trans.html", {"request":request}) 
@@ -569,3 +570,15 @@ async def getRentalSum(datefrom,dateto,equipmentId:Optional[str],username: str =
         rentalData.append(data)
 
     return rentalData
+
+
+#=================================================TVI Diesel Transaction Frame===================================
+
+@employee_user.post("/api-insert-tvi-diesel-sqlModel/")
+async def insertDieselTvi(items:TVIDiesel,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to insert """
+    today = datetime.now()
+    insertDiesel_tvi(transDate=items.transDate,equipmentId=items.equipmentId,
+                        withdrawalSlip=items.withdrawalSlip,totalliters=items.totalliters,
+                        price=items.price,totalAmount=items.totalAmount,
+                        user=username,date_credited=today)

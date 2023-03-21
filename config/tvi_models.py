@@ -179,7 +179,7 @@ def select_tivEquipment_with_id(id):
 
 
 def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
-                        purchase_amount,rentalRate,plate_number,status,remarks,owner):
+                        purchase_amount,rentalRate,plate_number,status,remarks,owner,project_site):
     """This function is for updating Rizal Equipment"""
 
     with Session(engine) as session:
@@ -195,8 +195,8 @@ def updateTVIequipment(id,equipmentID,purchase_date,equipmentDesc,
         result.purchase_amount = purchase_amount
         result.rentalRate = rentalRate
         result.plate_number = plate_number
+        result.project_site = project_site
         result.status = status
-        
         result.remarks = remarks
         result.owner = owner
         
