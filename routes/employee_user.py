@@ -485,7 +485,8 @@ async def get_cost(datefrom,dateto,equipment_id,username: str = Depends(Employee
 
 
 #======================================TVI Employee Transaction Frame=======================================
-from config.tvi_models import insertRental_tvi,insertRental_tvi_employeeLogin,getRentalTVI_all_employeeLogin
+from config.tvi_models import (insertRental_tvi,insertRental_tvi_employeeLogin,
+                                getRentalTVI_all_employeeLogin,rentalSumTVI)
 
 from models.model import TVIRentalTransactionEmployeeLogin
 @employee_user.get("/employee-transaction-tvi/", response_class=HTMLResponse)
@@ -536,5 +537,35 @@ async def get_cost(datefrom,dateto,equipmentId:Optional[str],
             for x in results
         ]
     
+
+    return rentalData
+
+
+@employee_user.get("/api-get-rentalSum-employeeLogin/")
+async def getRentalSum(datefrom,dateto,equipmentId:Optional[str],username: str = Depends(EmployeevalidateLogin)):
+    """This function is for testing"""
+
+
+    data = rentalSumTVI(datefrom=datefrom,dateto=dateto,equipmentId=equipmentId)
+
+    rentalData = []
+
+    for i in data:
+       
+        # totalAmount+=i.amount
+        totalHours = i.totalHours
+        rentalRate = i.rentalRate
+        totalAmount = float(totalHours) * float(rentalRate)
+
+        data={}   
+        
+        data.update({
+                "equipmentId": i.equipmentId,
+                "totalHours": i.totalHours,
+                "rentalRate": i.rentalRate,
+                "totalAmount":  "{:,.2f}".format(totalAmount)
+        })
+
+        rentalData.append(data)
 
     return rentalData

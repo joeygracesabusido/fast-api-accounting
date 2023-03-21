@@ -263,7 +263,7 @@ def getRentalTVI_all(datefrom,dateto,equipmentId):
         return data
 
 def getRentalTVI_all_employeeLogin(datefrom,dateto,equipmentId,project_site):
-    """This function is for querying all equipment in Rizal"""
+    """This function is for querying all Rental Equipment in TVI"""
     with Session(engine) as session:
         statement = select(rentaltransaction).where(rentaltransaction.transDate >= datefrom ,
                          rentaltransaction.transDate <= dateto ) \
@@ -275,6 +275,21 @@ def getRentalTVI_all_employeeLogin(datefrom,dateto,equipmentId,project_site):
         data = results.all()
 
         
+        return data
+
+def rentalSumTVI(datefrom,dateto,equipmentId):
+    """This function is for selecting SUM for Rental Record"""
+    with Session(engine) as session:
+        # statement = select(func.sum(cost.salaries)).scalar()
+        statement = select(rentaltransaction.equipmentId,
+                    func.sum(rentaltransaction.totalHours).label('totalHours'),
+                    rentaltransaction.rentalRate).where(rentaltransaction.transDate >= datefrom ,
+                         rentaltransaction.transDate <= dateto
+                    ).filter(rentaltransaction.equipmentId.like ('%'+ equipmentId +'%')) \
+                    .group_by(rentaltransaction.equipmentId,rentaltransaction.rentalRate)
+        results = session.exec(statement) 
+
+        data = results.all()
         return data
 
 

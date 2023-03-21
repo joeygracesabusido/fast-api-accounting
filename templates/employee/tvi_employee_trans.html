@@ -21,7 +21,13 @@
 
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalList">
                 Rental List
-            </button><br><br>
+            </button>
+            
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalReportList">
+                Rental Report List
+            </button>
+            
+            <br><br>
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#insertDieselTransaction">
                 Insert Diesel
@@ -327,6 +333,101 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                        </tr>
+                    
+                    
+                </tbody>
+
+            
+
+                </table>
+
+        
+            </div>
+
+            
+        </div>
+
+
+            <div class="modal-footer">
+                    
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+         <!-- this is for Rental  REPORT Modal List -->
+         <div class="modal fade" id="rentalReportList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Rental List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+        <div class="modal-body">
+            <div class="container mt-3">
+                <label for="TransactionDate" >Date From</label>
+                <input
+                    type="date"
+                    name="datefromRental2"
+                    id="datefromRental2"
+                    >
+                </input>  
+
+            <label for="TransactionDate" >Date To</label>
+                <input
+                    type="date"
+                    name="datetoRental2"
+                    id="datetoRental2"
+                    >
+                </input>  
+
+            <label for="Equipment" >Equipment</label>
+                <input
+                    type="text"
+                    name="equipment_id_searchRental2"
+                    id="equipment_id_searchRental2"
+                    >
+                </input> 
+                
+            
+
+                <button type="submit"  onclick="display_RentalSum()" class="btn btn-success">
+                    Search Data
+                    <i class="fas fa-database"></i>
+                </button>
+
+                
+
+        </div>
+        <div  class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                
+                        
+                        <td>Equipment ID</td>
+                        <td>Total Hour</td>
+                        <td>Rental Rate</td>
+                        <td>Total Amount</td>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody id="table_bodyRentalReport">
+                
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            
                         </tr>
                     
                     
@@ -1454,6 +1555,53 @@
             }
 
         </script>
+
+<!-- ====================================This function is for Displaying Rental Data to Table========================= -->
+        <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function display_RentalSum(){
+                var datefrom = document.getElementById("datefromRental2").value
+                var dateto = document.getElementById("datetoRental2").value
+                var equipmentID = document.getElementById("equipment_id_searchRental2").value
+               
+
+                const search_url = `/api-get-rentalSum-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipmentId=${equipmentID}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+
+                if (data.length === 0) {
+                        window.alert('No Data available');
+                    };
+                
+                
+                if (responce.status === 200){
+                    let tableData="";
+                    data.map((values)=>{
+                        tableData+= ` <tr>
+                                    
+                                    <td>${values.equipmentId}</td>
+                                    <td>${values.totalHours}</td>
+                                    <td>${values.rentalRate}</td>
+                                    <td>${values.totalAmount}</td>
+                                    
+                                
+                                
+                                </tr>`;
+                    });
+                    document.getElementById("table_bodyRentalReport").innerHTML=tableData;
+
+                }else if (responce.status === 401){
+                    window.alert("Unauthorized Credentials Please Log in")
+                }
+            
+            }
+
+        </script>
+
 
 
         <!-- This function is for exporting Excel of Rental transaction -->
