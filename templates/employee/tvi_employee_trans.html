@@ -35,7 +35,14 @@
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dieselList">
                 Diesel List
-            </button><br><br>
+            </button>
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dieselReportList">
+                Diesel Report List
+            </button>
+
+            
+            <br><br>
 
 
             <!-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#insertTonnage">
@@ -471,26 +478,26 @@
                     <label for="TransactionDate"
                     >TransactionDate</label>
                     
-                    <input 
-                    type="date"
-                    name="transDateDiesel"
-                    id="transDateDiesel"
-                    
-                    class="form-control"
-                    >
-
+                        <input 
+                            type="date"
+                            name="transDateDiesel"
+                            id="transDateDiesel"
+                            
+                            class="form-control"
+                            >
+                        </input>
                 
                     <label for="EquipmentID"
                     >Equipment ID</label>
                     
-                    <input 
-                    type="text"
-                    name="equipmentIdDiesel"
-                    id="equipmentIdDiesel"
-                    
-                    class="form-control"
-                    >
-
+                        <input 
+                            type="text"
+                            name="equipmentIdDiesel"
+                            id="equipmentIdDiesel"
+                            
+                            class="form-control"
+                        >
+                        </input>
 
                     
 
@@ -498,57 +505,55 @@
                     >Withdrawal Slip</label>
                     
                     <input 
-                    type="text"
-                    name="withdrawalSlipDiesel"
-                    id="withdrawalSlipDiesel"
-                    
-                    class="form-control"
-                    >
-
+                        type="text"
+                        name="withdrawalSlipDiesel"
+                        id="withdrawalSlipDiesel"
+                        
+                        class="form-control"
+                        >
+                    </input>
                    
 
                     <label for="TotalLiters"
                         >Total Liters</label>
                         
                         <input 
-                        type="number"
-                        name="totalliters"
-                        id="totalliters"
-                        step="0.01"
-                        class="form-control"
-                        >
-
+                            type="number"
+                            name="totalliters"
+                            id="totalliters"
+                            step="0.01"
+                            class="form-control"
+                            >
+                        </input>
                     <label for="Price"
                         >Price</label>
                         
                         <input 
-                        type="number"
-                        name="priceDiesel"
-                        id="priceDiesel"
-                        step="0.01"
-                        class="form-control"
-                        >
-
-                    
-    
-                        <input 
-                        type="number" hidden
-                        name="totalAmountDiesel"
-                        id="totalAmountDiesel"
-                        step="0.01"
-                        class="form-control">
-
-
-                    <label for="Total Amount"
+                            type="number"
+                            name="priceDiesel"
+                            id="priceDiesel"
+                            step="0.01"
+                            class="form-control"
+                            >
+                        </input>
+                    <label for="Plate Number"
                         >Total Amount</label>
     
                         <input 
-                        type="text"
-                        name="totalAmountDiesel2"
-                        id="totalAmountDiesel2"
-                       
-                        class="form-control">
+                            type="number" hidden
+                            name="totalAmountDiesel"
+                            id="totalAmountDiesel"
+                            step="0.01"
+                            class="form-control">
+                        </input>
 
+                        <input 
+                            type="text" 
+                            name="totalAmountDiesel2"
+                            id="totalAmountDiesel2"
+                            step="0.01"
+                            class="form-control">
+                        </input>
                     
                   
         
@@ -630,7 +635,7 @@
                                     <td>Liters</td>
                                     <td>Price</td>
                                     <td>Total Amount</td>
-                                    <td>Cummulative Amount</td>
+                                    
                                 </tr>
                             </thead>
                             <tbody id="table_body_diesel">
@@ -645,7 +650,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
+                                        
                                       
                                     </tr>
                                    
@@ -674,6 +679,109 @@
             </div>
             </div>
         </div>
+
+
+        <!-- Modal for Diesel List -->
+
+        <div class="modal fade" id="dieselReportList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Diesel Transaction List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <label for="dateFrom"
+                        >From</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateFromDiesel2"
+                            id="dateFromDiesel2"
+                           
+                            >
+
+                    
+                        <label for="dateTo"
+                        >To</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateToDiesel2"
+                            id="dateToDiesel2"
+                           
+                            >
+                        <!-- <label for="Equipment"
+                            >Equipment</label>
+                            <input 
+                            type="text"
+                            name="equipmentSearchDieselTrans2"
+                            id="equipmentSearchDieselTrans2"
+                            
+                            > -->
+                        
+                        <button type="submit" onclick="displayDieselData2()" class="btn btn-primary">Search</button>
+
+                        
+                    </div>
+
+                    <div  class="container mt-3">
+                        <table id="myTableDiesel" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                            
+                                    <td>Equipment ID</td>
+                                    <td>Total Liters</td>
+                                    <td>Total Amount</td>
+                                    
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="table_body_diesel2">
+                               
+                                    
+                                    <tr>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                       
+                                        
+                                      
+                                    </tr>
+                                   
+                                
+                            </tbody>
+            
+                           
+            
+                        </table>
+            
+                        
+                            
+                            
+                    </div>
+        
+                  
+           </div>
+        
+
+  
+                </div>
+                <div class="modal-footer">
+                
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
 
 
 
@@ -1658,8 +1766,8 @@
                 
                 
                 var product = totalLiters * priceDiesel;
-
-                // var floatValue = product.toLocaleString('en-US');
+                var product2 = parseFloat(product).toFixed(2)
+                // var floatValue = product2.toLocaleString('en-US');
                 const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                 $('#totalAmountDiesel2').val(stringNumber);
                 }
@@ -1670,17 +1778,29 @@
             </script>
 
 <!-- ================================This is for inserting Diesel  By employee Login=================== -->
+
+            <!-- This is for auto complete of Equipment ID -->
+            <script>
+                $( function() { 
+                            $("#equipmentIdDiesel").autocomplete({
+                            source: "/api-search-autocomplete-tvi-equipment2/"
+                            });
+
+                        } );
+
+            </script>
+
                 <script type="text/javascript">
                     // Define an async function to insert equipment
                     async function insertDiesel() {
                     // Get the values of the input fields
                     const data = {
-                        transaction_date: document.getElementById("transDateDiesel").value,
-                        equipment_id: document.getElementById("equipmentIdDiesel").value,
-                        withdrawal_slip: document.getElementById("withdrawalSlipDiesel").value,
-                        use_liter: document.getElementById("totalliters").value,
+                        transDate: document.getElementById("transDateDiesel").value,
+                        equipmentId: document.getElementById("equipmentIdDiesel").value,
+                        withdrawalSlip: document.getElementById("withdrawalSlipDiesel").value,
+                        totalliters: document.getElementById("totalliters").value,
                         price: document.getElementById("priceDiesel").value,
-                        amount: document.getElementById("totalAmountDiesel").value,
+                        totalAmount: document.getElementById("totalAmountDiesel").value,
                         
                         
                     };
@@ -1689,7 +1809,7 @@
                     // Use the fetch API to send the POST request
                     try {
 
-                        const search_url_SEARCH = `/api-get-rizal-dieselCheck-employeeLogin/?transaction_date=${data.transaction_date}&equipment_id=${data.equipment_id}&withdrawal_slip=${data.withdrawal_slip}`;
+                        const search_url_SEARCH = `/api-search-tvi-diesel-withDrawalSlip/?withdrawalSlip=${data.withdrawal_slip}`;
 
 
                         const responceSEARCH = await fetch(search_url_SEARCH)
@@ -1700,7 +1820,7 @@
                             window.alert("Your data has already EXIST please check Diesel List");
                             
                             } else {
-                                const response = await fetch(`/api-insert-rizalDiesel-employeeLogin/`, {
+                                const response = await fetch(`/api-insert-tvi-diesel-employeeLogin/`, {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify(data)
@@ -1737,7 +1857,7 @@
                     var dateto = document.getElementById("dateToDiesel").value
                     var equipmentID = document.getElementById("equipmentSearchDieselTrans").value
 
-                    const search_url = `/api-get-diesel-rizal-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+                    const search_url = `/api-search-tvi-diesel-trans/?datefrom=${datefrom}&dateto=${dateto}&equipmentId=${equipmentID}`;
 
 
                     const responce = await fetch(search_url)
@@ -1754,13 +1874,13 @@
                         data.map((values)=>{
                             tableData+= ` <tr>
                                         <td>${values.id}</td>
-                                        <td>${values.transaction_date}</td>
-                                        <td>${values.equipment_id}</td>
-                                        <td>${values.withdrawal_slip}</td>
-                                        <td>${values.use_liter}</td>
+                                        <td>${values.transDate}</td>
+                                        <td>${values.equipmentId}</td>
+                                        <td>${values.withdrawalSlip}</td>
+                                        <td>${values.totalliters}</td>
                                         <td>${values.price}</td>
-                                        <td>${values.amount}</td>
                                         <td>${values.totalAmount}</td>
+                                        
                                     
                                     
                                     </tr>`;
@@ -1774,6 +1894,51 @@
                 }
 
             </script>
+
+
+<!-- ====================================This function is for Displaying Rental Data to Table========================= -->
+        <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function displayDieselData2(){
+                var datefrom = document.getElementById("dateFromDiesel2").value
+                var dateto = document.getElementById("dateToDiesel2").value
+                // var equipmentID = document.getElementById("equipmentSearchDieselTrans2").value
+
+                const search_url = `/api-get-tvi-diesel-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+
+                if (data.length === 0) {
+                        window.alert('No Data available');
+                    };
+                
+                
+                if (responce.status === 200){
+                    let tableData="";
+                    data.map((values)=>{
+                        tableData+= ` <tr>
+                                    <td>${values.equipmentId}</td>
+                                    <td>${values.totalliters}</td>
+                                    <td>${values.totalAmount}</td>
+                                  
+                                
+                                
+                                </tr>`;
+                    });
+                    document.getElementById("table_body_diesel2").innerHTML=tableData;
+
+                }else if (responce.status === 401){
+                    window.alert("Unauthorized Credentials Please Log in")
+                }
+            
+            }
+
+        </script>
+
 
 
         <script>

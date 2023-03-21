@@ -426,6 +426,22 @@ def getDieselTVI_withSlip(withdrawalSlip):
        
         return data
 
+def DiesellSumTVI(datefrom,dateto):
+    """This function is for selecting SUM for Diesel Record"""
+    with Session(engine) as session:
+        # statement = select(func.sum(cost.salaries)).scalar()
+        statement = select(tvidieseltransaction.equipmentId,
+                    func.sum(tvidieseltransaction.totalliters).label('totalliters'),
+                    func.sum(tvidieseltransaction.totalAmount).label('totalAmount')) \
+                    .where(tvidieseltransaction.transDate >= datefrom ,
+                         tvidieseltransaction.transDate <= dateto
+                    ) \
+                    .group_by(tvidieseltransaction.equipmentId)
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
 
 def updateTVIDiesel(id,transDate,equipmentId,withdrawalSlip,
                         totalliters,price,totalAmount,user,date_updated):

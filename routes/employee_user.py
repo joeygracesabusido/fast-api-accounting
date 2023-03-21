@@ -574,12 +574,35 @@ async def getRentalSum(datefrom,dateto,equipmentId:Optional[str],username: str =
 
 
 #=================================================TVI Diesel Transaction Frame===================================
-
-@employee_user.post("/api-insert-tvi-diesel-sqlModel/")
-async def insertDieselTvi(items:TVIDiesel,username: str = Depends(EmployeevalidateLogin)):
+from config.tvi_models import DiesellSumTVI
+@employee_user.post("/api-insert-tvi-diesel-employeeLogin/")
+async def insertDieselTviEmployeeLogin(items:TVIDiesel,username: str = Depends(EmployeevalidateLogin)):
     """This function is to insert """
     today = datetime.now()
     insertDiesel_tvi(transDate=items.transDate,equipmentId=items.equipmentId,
                         withdrawalSlip=items.withdrawalSlip,totalliters=items.totalliters,
                         price=items.price,totalAmount=items.totalAmount,
                         user=username,date_credited=today)
+
+
+@employee_user.get("/api-get-tvi-diesel-employeeLogin/")
+async def getDieselSum(datefrom,dateto,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = DiesellSumTVI(datefrom=datefrom,dateto=dateto)
+
+    dieselData = [
+        
+            {
+                "equipmentId": x.equipmentId,
+                "totalliters": "{:,.2f}".format(x.totalliters),
+                "totalAmount": "{:,.2f}".format(x.totalAmount),
+               
+            }
+            for x in results
+        ]
+    
+
+    return dieselData
+
+
+
