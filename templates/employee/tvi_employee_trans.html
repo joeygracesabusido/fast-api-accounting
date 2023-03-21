@@ -1371,7 +1371,7 @@
                 // Get the values of the input fields
                 const data = {
                     transDate: document.getElementById("trans_date").value,
-                    demr_form:  document.getElementById("demr_form").value,
+                    demr:  document.getElementById("demr_form").value,
                     equipmentId: document.getElementById("equipment_id").value,
                     time_in: document.getElementById("start").value,
                     time_out: document.getElementById("end").value,
@@ -1387,9 +1387,7 @@
                 console.log(data)
                 // Use the fetch API to send the POST request
 
-                if (data.transDate == '' || data.demr_form || data.equipmentId == ''
-                             || data.time_in == '' || data.time_in == '' || data.time_out == '' ||
-                            data.rentalRate == '' || data.taxRate == ''){
+                if (data.taxRate=='' || data.transDate == ''){
                                 window.alert("Please fill up Blank flieds/field"); 
                             }
                             else{

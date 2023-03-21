@@ -495,14 +495,15 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
     return templates.TemplateResponse("employee/tvi_employee_trans.html", {"request":request}) 
 
 @employee_user.post("/api-insert-tvi-rental-employeeLogin/")
-async def insertRentalTVI(items:TVIRentalTransactionEmployeeLogin,username: str = Depends(EmployeevalidateLogin)):
+async def insertRentalTVI(items:TVIRentalTransactionEmployeeLogin,user: str = Depends(EmployeevalidateLogin)):
     """This function is to update employee Details"""
     today = datetime.now()
-    insertRental_tvi_employeeLogin(transaction_date=items.transaction_date,demr=items.demr,
-                            equipment_id=items.equipment_id,time_in=items.time_in,time_out=items.time_out,
-                            total_rental_hour=items.total_rental_hour,rental_rate=items.rental_rate,
-                            rental_amount=items.rental_amount, username=username,date_update=today,
-                            project_site=items.project_site,driverOperator=items.driverOperator)
+    insertRental_tvi_employeeLogin(transDate=items.transDate,demr=items.demr,
+                            equipmentId=items.equipmentId,time_in=items.time_in,time_out=items.time_out,
+                            totalHours=items.totalHours,rentalRate=items.rentalRate,
+                            totalAmount=items.totalAmount,taxRate=items.taxRate, vat_output=items.vat_output,
+                            net_of_vat=items.net_of_vat,date_credited=today, 
+                            project_site=items.project_site,driverOperator=items.driverOperator,user=user)
     return  {'Messeges':'Data has been Save'}                        
 
 
