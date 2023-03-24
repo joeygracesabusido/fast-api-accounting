@@ -428,6 +428,7 @@ async def getAllTonnageRizal(datefrom,dateto,equipment_id:Optional[str],username
                 "amount": "{:,.2f}".format(i.amount),
                 "totalAmount": "{:,.2f}".format(totalAmount),
                 "driverOperator": i.driverOperator,
+                "user": i.user,
         })
 
         rentalData.append(data)

@@ -447,7 +447,7 @@ def getallTonnage(datefrom,dateto,equipment_id):
     """This function is for queyring all Data for Diesel Transaction Rizal"""
     with Session(engine) as session:
         statement = select(hauling_tonnage).where(hauling_tonnage.transDate >=datefrom,
-        hauling_tonnage.transDate <=dateto,hauling_tonnage.equipment_id.like ('%'+equipment_id +'%') )
+        hauling_tonnage.transDate <=dateto,hauling_tonnage.equipment_id.like ('%'+equipment_id +'%')).order_by(hauling_tonnage.transDate.asc())
                     
         results = session.exec(statement) 
 

@@ -728,6 +728,7 @@
                         <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                             <thead class="table-dark">
                                 <tr>
+                                    <td>ID</td>
                                     <td>Date</td>
                                     <td>Equipment ID</td>
                                     <td>Trip Ticket</td>
@@ -737,6 +738,7 @@
                                     <td>Amount</td>
                                     <td>Cum Total</td>
                                     <td>Driver Operator</td>
+                                    <td>User</td>
                                     <td>Action</td>
                                 </tr>
                             </thead>
@@ -744,7 +746,8 @@
                                
                                     
                                     <tr>
-                                        
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -1732,7 +1735,7 @@
                     let tableData2="";
                     data.map((values)=>{
                         tableData2+= ` <tr>
-                                   
+                                    <td>${values.id}</td>
                                     <td>${values.transDate}</td>
                                     <td>${values.equipment_id}</td>
                                     <td>${values.tripTicket}</td>
@@ -1742,7 +1745,7 @@
                                     <td>${values.amount}</td>
                                     <td>${values.totalAmount}</td>
                                     <td>${values.driverOperator}</td>
-    
+                                    <td>${values.user}</td>
                                     <td>
                                         
                                     </td>
