@@ -453,6 +453,14 @@ def getallTonnage(datefrom,dateto,equipment_id):
 
         data = results.all()
         return data
+def getAllTonnage_checking(tripTicket):
+    """This function is for checking If data are already save"""
+    with Session(engine) as session:
+        statement = select(hauling_tonnage).where(hauling_tonnage.tripTicket.like ('%'+tripTicket +'%'))
+                    
+        results = session.exec(statement) 
 
+        data = results.all()
+        return data
 
 # create_db_and_tables()

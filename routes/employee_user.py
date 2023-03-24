@@ -387,7 +387,7 @@ async def get_dieselChecker(transaction_date,equipment_id:str=[Optional],withdra
 
 
 #============================================Rizal Tonnage Frame=========================================
-from config.models import insertTonnageRizal,getallTonnage
+from config.models import insertTonnageRizal,getallTonnage,getAllTonnage_checking
 from models.model import RizalTonnagehaul
 @employee_user.post("/api-insert-rizalTonnage-employeeLogin/")
 async def insertTonnage(items: RizalTonnagehaul,username: str = Depends(EmployeevalidateLogin)):
@@ -433,6 +433,27 @@ async def getAllTonnageRizal(datefrom,dateto,equipment_id:Optional[str],username
         rentalData.append(data)
 
     return rentalData
+
+
+@employee_user.get("/api-get-rizal-insertTonnageCheck-employeeLogin/")
+async def get_dieselChecker(tripTicket:str =[Optional],
+                            username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = getAllTonnage_checking(tripTicket=tripTicket)
+
+    DieselData = [
+        
+            {
+              
+                "tripTicket": i.tripTicket,
+                
+            
+            }
+            for i in results
+        ]
+    
+
+    return DieselData
 #===============================================Cost Frame Function =======================================
 
 from config.models import insertCost,select_cost
