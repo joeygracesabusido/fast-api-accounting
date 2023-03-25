@@ -188,8 +188,10 @@
         <table id="myTable" class="table table-bordered"  style="text-align: center;">
             <thead class="table-dark">
                 <tr>
+                    <td>ID</td>
                     <td>Date</td>
                     <td>Equipment ID</td>
+                    <td>Trip Ticket</td>
                     <td>Total Trip</td>
                     <td>Total Tonnage</td>
                     <td>Rate</td>
@@ -300,9 +302,10 @@
                 let tableData2="";
                 data.map((values)=>{
                     tableData2+= ` <tr>
-                               
+                                <td>${values.id}</td>
                                 <td>${values.transDate}</td>
                                 <td>${values.equipment_id}</td>
+                                <td>${values.tripTicket}</td>
                                 <td>${values.totalTrip}</td>
                                 <td>${values.totalTonnage}</td>
                                 <td>${values.rate}</td>

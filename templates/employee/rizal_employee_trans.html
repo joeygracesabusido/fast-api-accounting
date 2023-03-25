@@ -1589,16 +1589,19 @@
                 if (Backhoe === 'BH 01' || Backhoe === 'BH 03' ){
                     bachoeValue = 2.29
                     totalTons = bachoeValue * Bucket
-                    $('#totalTons_Tons').val(totalTons);
+                    totalTons2 = parseFloat(totalTons).toFixed(2)
+                    $('#totalTons_Tons').val(totalTons2);
                 }else if(Backhoe === 'BH 02'){
                     bachoeValue = 1.42
                     totalTons = bachoeValue * Bucket
-                    $('#totalTons_Tons').val(totalTons);
+                    totalTons2 = parseFloat(totalTons).toFixed(2)
+                    $('#totalTons_Tons').val(totalTons2);
                 }
                 else if(Backhoe === 'TX 1202' || Backhoe === 'TX 1204'){
                     bachoeValue = 1.44
                     totalTons = bachoeValue * Bucket
-                    $('#totalTons_Tons').val(totalTons);
+                    totalTons2 = parseFloat(totalTons).toFixed(2)
+                    $('#totalTons_Tons').val(totalTons2);
                 }
 
                
