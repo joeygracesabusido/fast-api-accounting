@@ -250,7 +250,7 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 
 from config.models import (insertEquipmentRental,getallRental,
                             insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking,
-                            select_rizalEquipment)
+                            select_rizalEquipment,rentalSumRizal)
 from models.model import RizalRental,RizalDiesel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
@@ -315,6 +315,37 @@ async def getAllRentalRizal(datefrom,dateto,equipment_id,username: str = Depends
         rentalData.append(data)
 
     return rentalData
+
+@employee_user.get("/api-get-rentalSum-rizal-employeeLogin/")
+async def getRentalSumRizal(datefrom,dateto,equipment_id:Optional[str],username: str = Depends(EmployeevalidateLogin)):
+    """This function is for testing"""
+
+
+    data = rentalSumRizal(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    rentalData = []
+
+    for i in data:
+       
+        # totalAmount+=i.amount
+        totalHours = i.totalHours
+        rentalRate = i.rental_rate
+        totalAmount = float(totalHours) * float(rentalRate)
+
+        data={}   
+        
+        data.update({
+                "equipmentId": i.equipment_id,
+                "totalHours":  "{:,.2f}".format(i.totalHours),
+                "rentalRate": "{:,.2f}".format(i.rental_rate),
+                "totalAmount":  "{:,.2f}".format(totalAmount),
+                "totalAmount2":  "{:.2f}".format(totalAmount)
+        })
+
+        rentalData.append(data)
+
+    return rentalData
+
 
 #==============================================Diesel Rizal Transaction=======================================
 
@@ -435,9 +466,33 @@ async def getAllTonnageRizal(datefrom,dateto,equipment_id:Optional[str],username
 
     return rentalData
 
+from config.models import tonnageSumRizal
+@employee_user.get("/api-get-rizal-sumTonnage-employeeLogin/")
+async def get_SumTonnageRizal(datefrom,dateto,equipment_id:Optional[str],
+                            username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = tonnageSumRizal(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    tonnageData = [
+        
+            {
+              
+                "equipment_id": i.equipment_id,
+                "totalTons": i.totalTons,
+                "rate": i.rate,
+                "totalAmount":"{:,.2f}".format(float(i.totalTons) * float(i.rate)),
+                "totalAmount2": "{:.2f}".format(float(i.totalTons) * float(i.rate))
+            
+            }
+            for i in results
+        ]
+    
+
+    return tonnageData
+
 
 @employee_user.get("/api-get-rizal-insertTonnageCheck-employeeLogin/")
-async def get_dieselChecker(tripTicket:str =[Optional],
+async def get_dieselChecker(tripTicket:Optional[str],
                             username: str = Depends(EmployeevalidateLogin)):
     """This function is to update employee Details"""
     results = getAllTonnage_checking(tripTicket=tripTicket)
@@ -455,6 +510,9 @@ async def get_dieselChecker(tripTicket:str =[Optional],
     
 
     return DieselData
+
+
+
 #===============================================Cost Frame Function =======================================
 
 from config.models import insertCost,select_cost
@@ -625,6 +683,9 @@ async def getDieselSum(datefrom,dateto,username: str = Depends(EmployeevalidateL
     
 
     return dieselData
+
+
+
 
 
 

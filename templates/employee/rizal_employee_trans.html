@@ -21,7 +21,14 @@
 
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalList">
                 Rental List
-            </button><br><br>
+            </button>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalReportList">
+                Rental Report List
+            </button>
+            
+            
+            <br><br>
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#insertDieselTransaction">
                 Insert Diesel
@@ -38,7 +45,14 @@
 
             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#tonnageList">
                 Tonnage List
-            </button><br><br>
+            </button>
+            
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#tonnageReportList">
+                Tonnage Report List
+            </button>
+            
+            <br><br>
 
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#insertcost">
                 Insert Cost
@@ -399,6 +413,130 @@
         </div>
 
 
+        <!-- this is for Rental  REPORT Modal List -->
+        <div class="modal fade" id="rentalReportList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Rental List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+        <div class="modal-body">
+            <div class="container mt-3">
+                <label for="TransactionDate" >Date From</label>
+                <input
+                    type="date"
+                    name="datefromRental2"
+                    id="datefromRental2"
+                    >
+                </input>  
+
+            <label for="TransactionDate" >Date To</label>
+                <input
+                    type="date"
+                    name="datetoRental2"
+                    id="datetoRental2"
+                    >
+                </input>  
+
+            <label for="Equipment" >Equipment</label>
+                <input
+                    type="text"
+                    name="equipment_id_searchRental2"
+                    id="equipment_id_searchRental2"
+                    >
+                </input> 
+                
+            
+
+                <button type="submit"  onclick="display_RentalSum()" class="btn btn-success">
+                    Search Data
+                    <i class="fas fa-database"></i>
+                </button>
+
+                
+
+        </div>
+        <div  class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                
+                        
+                        <td>Equipment ID</td>
+                        <td>Total Hour</td>
+                        <td>Rental Rate</td>
+                        <td>Total Amount</td>
+                        <td hidden>Total Amount</td>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody id="table_bodyRentalReport">
+                
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td hidden></td>
+                            
+                        </tr>
+                    
+                    
+                </tbody>
+
+            
+
+                </table>
+
+        
+            </div>
+
+            
+        </div>
+
+
+            <div class="modal-footer">
+                    
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+            <label for="Equipment" >Total Hours</label>
+            <input
+                type="text"
+                name="fter_totalHour"
+                id="fter_totalHour"
+                style="text-align: right;"
+                >
+            </input> 
+
+            <input
+                type="number" hidden
+                name="fter_test"
+                id="fter_test"
+                style="text-align: right;"
+                >
+            </input> 
+
+            <label for="Equipment" >Total Amount</label>
+            <input
+                type="text"
+                name="fter_totalAmountl"
+                id="fter_totalAmountl"
+                style="text-align: right;"
+                >
+            </input> 
+            
+            </div>
+            </div>
+            </div>
+        </div>
+
+
+
 
 
        <!-- Modal for Diesel List -->
@@ -671,6 +809,127 @@
         </div>
 
 
+
+        <!-- this is for Tonnage  REPORT Modal List -->
+        <div class="modal fade" id="tonnageReportList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Rental List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+        <div class="modal-body">
+            <div class="container mt-3">
+                <label for="TransactionDate" >Date From</label>
+                <input
+                    type="date"
+                    name="datefromTonnage2"
+                    id="datefromTonnage2"
+                    >
+                </input>  
+
+            <label for="TransactionDate" >Date To</label>
+                <input
+                    type="date"
+                    name="dateToTonnage2"
+                    id="dateToTonnage2"
+                    >
+                </input>  
+
+            <label for="Equipment" >Equipment</label>
+                <input
+                    type="text"
+                    name="equipment_id_searchTonnage2"
+                    id="equipment_id_searchTonnage2"
+                    >
+                </input> 
+                
+            
+
+                <button type="submit"  onclick="display_TonnageSum()" class="btn btn-success">
+                    Search Data
+                    <i class="fas fa-database"></i>
+                </button>
+
+                
+
+        </div>
+        <div  class="container mt-3">
+            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+                <thead class="table-dark">
+                
+                        
+                        <td>Equipment ID</td>
+                        <td>Total Tonnage</td>
+                        <td>Rental Rate</td>
+                        <td>Amount</td>
+                        <td hidden>Total Amount</td>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody id="table_bodyTonnageReport">
+                
+                        
+                        <tr>
+                            
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td hidden></td>
+                            
+                        </tr>
+                    
+                    
+                </tbody>
+
+            
+
+                </table>
+
+        
+            </div>
+
+            
+        </div>
+
+
+            <div class="modal-footer">
+                    
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+            <label for="Equipment" >Total Tonnage</label>
+            <input
+                type="Text"
+                name="fter_totalTons"
+                id="fter_totalTons"
+                style="text-align: right;"
+                >
+            </input> 
+
+           
+
+            <label for="Equipment" >Total Amount</label>
+            <input
+                type="text"
+                name="fter_totalAmountlTons"
+                id="fter_totalAmountlTons"
+                style="text-align: right;"
+                >
+            </input> 
+            
+            </div>
+            </div>
+            </div>
+        </div>
+
+
+
+        
+
         <div class="modal fade" id="tonnageList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog  modal-xl" role="document">
             <div class="modal-content">
@@ -784,6 +1043,9 @@
             </div>
             </div>
         </div>
+
+
+
 
 
         <!-- Modal Insert Cost Transactions -->
@@ -1398,6 +1660,80 @@
                 
             </script>
 
+            <!-- This  function is for displaying Sum of Rental Data  -->
+            <script type="text/javascript">
+
+                // const rental_url =search_url ;
+                async function display_RentalSum(){
+                    var datefrom = document.getElementById("datefromRental2").value
+                    var dateto = document.getElementById("datetoRental2").value
+                    var equipmentID = document.getElementById("equipment_id_searchRental2").value
+                
+
+                    const search_url = `/api-get-rentalSum-rizal-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+
+
+                    const responce = await fetch(search_url)
+                    const data = await responce.json();
+                    console.log(data)
+
+                    if (data.length === 0) {
+                            window.alert('No Data available');
+                        };
+                    
+                    
+                    if (responce.status === 200){
+                        let tableData="";
+                        data.map((values)=>{
+                            tableData+= ` <tr>
+                                        
+                                        <td>${values.equipmentId}</td>
+                                        <td>${values.totalHours}</td>
+                                        <td>${values.rentalRate}</td>
+                                        <td>${values.totalAmount}</td>
+                                        <td hidden>${values.totalAmount2}</td>
+                                    
+                                    
+                                    </tr>`;
+                        });
+                        document.getElementById("table_bodyRentalReport").innerHTML=tableData;
+                        summaryRentalTotal()
+
+                    }else if (responce.status === 401){
+                        window.alert("Unauthorized Credentials Please Log in")
+                    }
+                
+                }
+
+            </script>
+
+
+            <!-- this is for total footer -->
+            <script>
+           
+               
+                function summaryRentalTotal() {
+                    var $table = $("#table_bodyRentalReport");
+                    var sumhours = 0;
+                    var sumTotalAmount = 0;
+
+                    $table.find("tr").each(function(i, row) {
+                        
+                        sumhours += parseFloat($(row).find("td:eq(1)").text());
+                        sumTotalAmount += parseFloat($(row).find("td:eq(4)").text());
+                        console.log()
+                    });
+                    
+                    var sumTotalHoursComa = sumhours.toLocaleString("en-US");
+                    var sumTotalAmount2Coma = sumTotalAmount.toLocaleString("en-US");
+
+                    $("#fter_totalHour").val(sumTotalHoursComa);
+                    $("#fter_totalAmountl").val(sumTotalAmount2Coma);
+                    }
+            </script>
+
+
+
 <!-- ====================================This is for computation of Total amount Diesel==================================== -->
         <script>
             $(document).ready(function() {
@@ -1511,7 +1847,7 @@
                 </script>
 
                    
-<!-- ====================================This function is for Displaying Rental Data to Table========================= -->
+<!-- ====================================This function is for Displaying Diesel Data to Table========================= -->
             <script type="text/javascript">
 
                 // const rental_url =search_url ;
@@ -1777,6 +2113,83 @@
 
                 
             </script>
+
+
+
+            
+             <!-- This  function is for displaying Sum of Tonnage Data  -->
+             <script type="text/javascript">
+
+                // const rental_url =search_url ;
+                async function display_TonnageSum(){
+                    var datefrom = document.getElementById("datefromTonnage2").value
+                    var dateto = document.getElementById("dateToTonnage2").value
+                    var equipmentID = document.getElementById("equipment_id_searchTonnage2").value
+                
+
+                    const search_url = `/api-get-rizal-sumTonnage-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+
+
+                    const responce = await fetch(search_url)
+                    const data = await responce.json();
+                    console.log(data)
+
+                    if (data.length === 0) {
+                            window.alert('No Data available');
+                        };
+                    
+                    
+                    if (responce.status === 200){
+                        let tableData="";
+                        data.map((values)=>{
+                            tableData+= ` <tr>
+                                        
+                                        <td>${values.equipment_id}</td>
+                                        <td>${values.totalTons}</td>
+                                        <td>${values.rate}</td>
+                                        <td>${values.totalAmount}</td>
+                                        <td hidden>${values.totalAmount2}</td>
+                                    
+                                    
+                                    </tr>`;
+                        });
+                        document.getElementById("table_bodyTonnageReport").innerHTML=tableData;
+                        summaryTonnageTotal()
+
+                    }else if (responce.status === 401){
+                        window.alert("Unauthorized Credentials Please Log in")
+                    }
+                
+                }
+
+            </script>
+
+
+            <!-- this is for total footer -->
+            <script>
+           
+               
+                function summaryTonnageTotal() {
+                    var $table = $("#table_bodyTonnageReport");
+                    var sumTons = 0;
+                    var sumTotalAmount = 0;
+
+                    $table.find("tr").each(function(i, row) {
+                        
+                        sumTons += parseFloat($(row).find("td:eq(1)").text());
+                        sumTotalAmount += parseFloat($(row).find("td:eq(4)").text());
+                        console.log()
+                    });
+                    
+                    var sumTotalHoursComa = sumTons.toLocaleString("en-US");
+                    var sumTotalAmount2Coma = sumTotalAmount.toLocaleString("en-US");
+
+                    $("#fter_totalTons").val(sumTotalHoursComa);
+                    $("#fter_totalAmountlTons").val(sumTotalAmount2Coma);
+                    }
+            </script>
+
+
 
 
 <!-- ====================================Cost Transaction =============================================== -->

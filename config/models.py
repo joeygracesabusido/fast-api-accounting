@@ -384,6 +384,23 @@ def updateRentalRizal(id,transaction_date,equipment_id,
         session.add(result)
         session.commit()
         session.refresh(result)
+
+def rentalSumRizal(datefrom,dateto,equipment_id):
+    """This function is for selecting SUM for Rental Record"""
+    with Session(engine) as session:
+        # statement = select(func.sum(cost.salaries)).scalar()
+        statement = select(equipment_rental.equipment_id,
+                    func.sum(equipment_rental.total_rental_hour).label('totalHours'),
+                    equipment_rental.rental_rate).where(equipment_rental.transaction_date >= datefrom ,
+                         equipment_rental.transaction_date <= dateto
+                    ).filter(equipment_rental.equipment_id.like ('%'+ equipment_id +'%')) \
+                    .group_by(equipment_rental.equipment_id,equipment_rental.rental_rate) \
+                        .order_by(equipment_rental.equipment_id)
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
 #=============================================Diesel Frame Rizal==================================================
 def getAllDiesel_checking(transaction_date,equipment_id,withdrawal_slip):
     """This function is for checking If data are already save"""
@@ -425,7 +442,7 @@ def getallDiesel(datefrom,dateto,equipment_id):
         data = results.all()
         return data
     
-
+#=================================================Tonnage Frame================================================
 def insertTonnageRizal(transDate,equipment_id,tripTicket,
                         totalTrip,totalTonnage,rate,amount,driverOperator,
                         user,date_credited):
@@ -458,6 +475,22 @@ def getAllTonnage_checking(tripTicket):
     with Session(engine) as session:
         statement = select(hauling_tonnage).where(hauling_tonnage.tripTicket.like ('%'+tripTicket +'%'))
                     
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
+def tonnageSumRizal(datefrom,dateto,equipment_id):
+    """This function is for selecting SUM for Tonnage Record"""
+    with Session(engine) as session:
+        # statement = select(func.sum(cost.salaries)).scalar()
+        statement = select(hauling_tonnage.equipment_id,
+                    func.sum(hauling_tonnage.totalTonnage).label('totalTons'),
+                    hauling_tonnage.rate).where(hauling_tonnage.transDate >= datefrom ,
+                         hauling_tonnage.transDate <= dateto
+                    ).filter(hauling_tonnage.equipment_id.like ('%'+ equipment_id +'%')) \
+                    .group_by(hauling_tonnage.equipment_id,hauling_tonnage.rate) \
+                        .order_by(hauling_tonnage.equipment_id)
         results = session.exec(statement) 
 
         data = results.all()
