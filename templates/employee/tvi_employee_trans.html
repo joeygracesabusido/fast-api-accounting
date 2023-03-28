@@ -59,6 +59,10 @@
 
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#costList">
                 Cost List
+            </button><br><br>
+
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#employeeList">
+                Employee List
             </button>
 
             
@@ -1342,6 +1346,153 @@
             </div>
         </div>
 
+
+<!-- ==========================================This is for Employee====================================== -->
+        <div class="modal fade" id="employeeList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Employee List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        
+                        <label for="Employee Name"
+                        >Search</label>
+                        
+                            <input 
+                            type="text"
+                            name="searchInput"
+                            id="searchInput"
+                            
+                            >
+                        
+                       
+                    </div>
+
+                    <div  class="container mt-3">
+                        <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                                <tr>
+                                    <td>Employee ID</td>
+                                    <td>First Name</td>
+                                    <td>Last Name</td>
+                                    <td>Position</td>
+                                    <td>Department</td>
+                                    <td>On/Off Details</td>
+                                    <td>Employement Status</td>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="table_body_employee">
+                            
+                                    
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                       
+                                        
+                                    </tr>
+                                
+                                
+                            </tbody>
+            
+                        
+            
+                        </table>
+            
+                        
+                            
+                            
+                    </div>
+
+                
+        </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+
+<!-- =======================================Java Script Function for Automatic Display============================ -->
+        <script type="text/javascript">
+            async function employeeData(){
+                const search_url = `/api-get-tvi-employeeDetails-employeeLogin/`;
+                    const responce =  await fetch(search_url)
+                    const data =  await responce.json();
+                    console.log(data)
+
+                    function filterData(searchValue) {
+                        return data.filter(item => {
+                            const lastName = item.lastName.toLowerCase();
+                            const firstName = item.firstName.toLowerCase();
+                            const position = item.position.toLowerCase();
+                            return lastName.includes(searchValue) || firstName.includes(searchValue) || position.includes(searchValue);
+                        });
+                    }
+
+                    function displayData(filteredData) {
+                        const tbody = document.querySelector("#table_body_employee");
+                        tbody.innerHTML = "";
+                        filteredData.forEach(item => {
+                            const tr = document.createElement("tr");
+                            const employee_id = document.createElement("td");
+                            employee_id.textContent = item.employee_id;
+                            const lastName = document.createElement("td");
+                            lastName.textContent = item.lastName;
+                            const firstName = document.createElement("td");
+                            firstName.textContent = item.firstName;
+                            const position = document.createElement("td");
+                            position.textContent = item.position;
+                            const department = document.createElement("td");
+                            department.textContent = item.department;
+                            const off_on_details = document.createElement("td");
+                            off_on_details.textContent = item.off_on_details;
+                            const employment_status = document.createElement("td");
+                            employment_status.textContent = item.employment_status;
+
+
+                            tr.appendChild(employee_id);
+                            tr.appendChild(lastName);
+                            tr.appendChild(firstName);
+                            tr.appendChild(position);
+                            tr.appendChild(department);
+                            tr.appendChild(off_on_details);
+                            tr.appendChild(employment_status);
+                            tbody.appendChild(tr);
+                        });
+                    }
+
+                    const searchInput = document.querySelector("#searchInput");
+                    searchInput.addEventListener("input", event => {
+                        const searchValue = event.target.value.trim().toLowerCase();
+                        const filteredData = filterData(searchValue);
+                        displayData(filteredData);
+                    });
+
+
+
+
+            }
+           
+            employeeData()
+        </script>
                 
 <!-- ===========================================for Java Scripts Function=========================================== -->
 

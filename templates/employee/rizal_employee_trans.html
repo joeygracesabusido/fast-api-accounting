@@ -2026,6 +2026,8 @@
                         if (dataSEARCH.length > 0) {
                             window.alert("Your data has already EXIST please check Tonnage List");
                             
+                            }else if(data.amount ===''){
+                                windows.alert("Check Your Field you need to press TAB from rate and wait for 3 seconds")
                             } else{
                                 const response = await fetch(`/api-insert-rizalTonnage-employeeLogin/`, {
                                 method: "POST",

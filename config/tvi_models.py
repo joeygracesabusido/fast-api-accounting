@@ -81,14 +81,13 @@ class tvidieseltransaction(SQLModel, table=True):
     date_updated: datetime = Field(default=None)
     date_credited: datetime
 
-    
-
-    
 
 
 def create_db_and_tables2():
     
     SQLModel.metadata.create_all(engine)
+
+
 
 
 def insertEquipment_tvi(equipmentID,purchase_date,equipmentDesc,
@@ -118,7 +117,7 @@ def getEquipmentTVI():
 
         data = results.all()
 
-        print(data)
+        
         return data
 
 

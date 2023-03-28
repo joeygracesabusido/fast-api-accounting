@@ -112,11 +112,55 @@ class hauling_tonnage(SQLModel, table=True):
     date_updated: datetime =  Field(default=None)
     date_credited: datetime
 
+class employee_details(SQLModel, table=True):
+    """This is for employe Table"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    employee_id: str = Field(index=True)
+    lastName: str = Field(default=None)
+    firstName: str = Field(default=None)
+    middleName: str = Field(default=None)
+    address_employee: str = Field(default=None)
+    contactNumber: str = Field(default=None)
+    contact_person: str = Field(default=None)
+    emer_cont_person: str = Field(default=None)
+    position: str = Field(default=None)
+    date_hired: date
+    department: str = Field(default=None)
+    end_contract: date
+    tin: str = Field(default=None)
+    sssNumber: str = Field(default=None)
+    phicNumber: str = Field(default=None)
+    hdmfNumber: str = Field(default=None)
+    employment_status: str = Field(default=None)
+    update_contract: str = Field(default=None)
+    salary_rate: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    taxCode: str = Field(default=None)
+    Salary_Detail: str = Field(default=None)
+    off_on_details: str = Field(default=None)
+    user: str = Field(default=None)
+    update_date: datetime
 
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
+#================================================Employee Details=================================
+def getAllEmployee_TVI():
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session: 
+        project1 = 'Bayug'
+        project2 = 'Zamboanga'
+        filter_condition = ((employee_details.department.like ('%'+project1 +'%')) |
+                             (employee_details.department.like ('%'+project2 +'%')))
+        statement = select(employee_details).where(filter_condition) \
+        .order_by(employee_details.lastName.asc())
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
 
 # =================================================Cost Frame ================================================
 def insertCost(transDate,equipment_id,salaries,fuel,oil_lubes,

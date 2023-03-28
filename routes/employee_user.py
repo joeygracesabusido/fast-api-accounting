@@ -685,7 +685,31 @@ async def getDieselSum(datefrom,dateto,username: str = Depends(EmployeevalidateL
     return dieselData
 
 
+#=============================================Employee Details=========================================
+from config.models import getAllEmployee_TVI
+@employee_user.get("/api-get-tvi-employeeDetails-employeeLogin/")
+async def getDieselSum(username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = getAllEmployee_TVI()
 
+    employeeData = [
+        
+            {
+                "employee_id": x.employee_id,
+                "lastName": x.lastName,
+                "firstName": x.firstName,
+                "position": x.position,
+                "department": x.department,
+                "off_on_details": x.off_on_details,
+                "employment_status": x.employment_status
+
+               
+            }
+            for x in results
+        ]
+    
+   
+    return employeeData
 
 
 
