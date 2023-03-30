@@ -242,10 +242,27 @@ def get_equipment(username: str = Depends(EmployeevalidateLogin)):
 
 
 #=================================================Employee Rizal Transaction ======================================
-
+from config.models import getEquipmentRizal
 @employee_user.get("/employee-rizal-equipment-rental/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
-    return templates.TemplateResponse("employee/rizal_employee_trans.html", {"request":request}) 
+    """This function is to display List of Equipment to Front end for Selecting Equipment"""
+    result = getEquipmentRizal()
+    
+    
+    equipmentData = [
+        
+            {
+                "id": i.id,
+                "equipment_id": i.equipment_id,
+               
+               
+            }
+           for i in result
+        ]
+    
+    
+    return templates.TemplateResponse("employee/rizal_employee_trans.html", 
+                                        {"request":request,"equipmentData":equipmentData}) 
 
 
 from config.models import (insertEquipmentRental,getallRental,
@@ -280,7 +297,7 @@ async def get_equipmentRate(equipment_id = Optional[str],username: str = Depends
             }
            for i in result
         ]
-    print(equipmentData)
+    
     return equipmentData
 
 @employee_user.get("/api-get-rental-rizal-employee_login/")
@@ -510,6 +527,7 @@ async def get_dieselChecker(tripTicket:Optional[str],
     
 
     return DieselData
+#===================================================Equipment Rizal Frame================================
 
 
 

@@ -678,15 +678,26 @@
             
                     <label >
                         Equipment ID
-                        </label>
+                    </label>
                         <input 
-                            type="text" 
+                            type="text" hidden
                             name="equipmentID_Tons"
                             id="equipmentID_Tons"
                             
                             class="form-control"
                             
                         >
+
+                    <select name="equipmentID_TonsSelect" id="equipmentID_TonsSelect"class="form-control"
+                    >
+
+                    {% for result in equipmentData %}
+                        <option value="{{ result.equipment_id }}">{{ result.equipment_id }}</option>
+                    {% endfor %} 
+
+                
+
+                </select>
             
                     <label >
                         Trip Ticket
