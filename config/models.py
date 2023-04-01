@@ -485,6 +485,23 @@ def getallDiesel(datefrom,dateto,equipment_id):
 
         data = results.all()
         return data
+
+def dieselSumRizal(datefrom,dateto,equipment_id):
+    """This function is for selecting SUM for Diesel Record"""
+    with Session(engine) as session:
+        # statement = select(func.sum(cost.salaries)).scalar()
+        statement = select(diesel_consumption.equipment_id,
+                    func.sum(diesel_consumption.use_liter).label('use_liter'),
+                    func.sum(diesel_consumption.amount).label('amount')) \
+                    .where(diesel_consumption.transaction_date >= datefrom ,
+                         diesel_consumption.transaction_date <= dateto
+                    ).filter(diesel_consumption.equipment_id.like ('%'+ equipment_id +'%')) \
+                    .group_by(diesel_consumption.equipment_id) \
+                        .order_by(diesel_consumption.equipment_id)
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
     
 #=================================================Tonnage Frame================================================
 def insertTonnageRizal(transDate,equipment_id,tripTicket,

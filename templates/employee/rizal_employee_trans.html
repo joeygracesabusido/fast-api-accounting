@@ -36,7 +36,14 @@
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dieselList">
                 Diesel List
-            </button><br><br>
+            </button>
+            
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sumDieselList">
+                Diesel Report List
+            </button>
+            
+            <br><br>
 
 
             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#insertTonnage">
@@ -646,6 +653,130 @@
             </div>
             </div>
         </div>
+
+
+        <!-- Modal for Sum Diesel List -->
+
+        <div class="modal fade" id="sumDieselList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Diesel Sum List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <label for="dateFrom"
+                        >From</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateFromDiesel_sum"
+                            id="dateFromDiesel_sum"
+                           
+                            >
+
+                    
+                        <label for="dateTo"
+                        >To</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateToDiesel_sum"
+                            id="dateToDiesel_sum"
+                           
+                            >
+                        <label for="Equipment"
+                            >Equipment</label>
+                            <input 
+                            type="text"
+                            name="equipmentSearchDieselTrans_sum"
+                            id="equipmentSearchDieselTrans_sum"
+                            
+                            >
+                        
+                        <button type="submit" onclick="displayDieselDataSum()" class="btn btn-primary">Search</button>
+
+                        <!-- <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                            Export Excel
+                            <i class="fas fa-database"></i>
+                        </button> -->
+                    </div>
+
+                    <div  class="container mt-3">
+                        <table id="myTableDiesel" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                            
+                                    
+                                    <td>Equipment ID</td>
+                                    <td>Liters</td>
+                                    <td>Total Amount</td>
+                                    <td hidden>Total Amount2</td>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="table_body_diesel_sum">
+                               
+                                    
+                                    <tr>
+                                        
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td hidden></td>
+                                      
+                                    </tr>
+                                   
+                                
+                            </tbody>
+            
+                           
+            
+                        </table>
+            
+                        
+                            
+                            
+                    </div>
+        
+                  
+           </div>
+        
+
+  
+                </div>
+                <div class="modal-footer">
+                
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                <label for="Equipment" >Total Hours</label>
+                <input
+                    type="text"
+                    name="fter_totaLiter"
+                    id="fter_totaLiter"
+                    style="text-align: right;"
+                    >
+                </input> 
+    
+               
+    
+                <label for="Equipment" >Total Amount</label>
+                <input
+                    type="text"
+                    name="fter_totalAmountlDiesel"
+                    id="fter_totalAmountlDiesel"
+                    style="text-align: right;"
+                    >
+                </input> 
+                  
+            </div>
+            </div>
+            </div>
+        </div>
+
 
 
 
@@ -1460,7 +1591,7 @@
 
                 $( function() {
                     
-                    $( "#equipmentID_Tons" ).autocomplete({
+                    $( "#equipmentID_Tons2" ).autocomplete({
                     source: "/api-search-autocomplete-equipment-rizal/"
                     });
                 } );
@@ -1917,6 +2048,81 @@
 
             
         </script>
+
+
+
+        <!-- This  function is for displaying Sum of Diesel Data  -->
+        <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function displayDieselDataSum(){
+                var datefrom = document.getElementById("dateFromDiesel_sum").value
+                var dateto = document.getElementById("dateToDiesel_sum").value
+                var equipmentID = document.getElementById("equipmentSearchDieselTrans_sum").value
+            
+
+                const search_url = `/api-get-rizal-sumDiesel-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+
+                if (data.length === 0) {
+                        window.alert('No Data available');
+                    };
+                
+                
+                if (responce.status === 200){
+                    let tableData="";
+                    data.map((values)=>{
+                        tableData+= ` <tr>
+                                    
+                                    
+                                    <td>${values.equipment_id}</td>
+                                    <td>${values.use_liter}</td>
+                                    <td>${values.amount}</td>
+                                    <td hidden>${values.amount2}</td>
+                                
+                                
+                                </tr>`;
+                    });
+                    document.getElementById("table_body_diesel_sum").innerHTML=tableData;
+                    summaryDieselTotal()
+
+                }else if (responce.status === 401){
+                    window.alert("Unauthorized Credentials Please Log in")
+                }
+            
+            }
+
+        </script>
+
+
+        <!-- this is for total footer -->
+        <script>
+       
+           
+            function summaryDieselTotal() {
+                var $table = $("#table_body_diesel_sum");
+                var sumLiters = 0;
+                var sumTotalAmount = 0;
+
+                $table.find("tr").each(function(i, row) {
+                    
+                    sumLiters += parseFloat($(row).find("td:eq(1)").text());
+                    sumTotalAmount += parseFloat($(row).find("td:eq(3)").text());
+                    
+                });
+                
+                var sumTotalLitersComa = sumLiters.toLocaleString("en-US");
+                var sumTotalAmount2Coma = sumTotalAmount.toLocaleString("en-US");
+
+                $("#fter_totaLiter").val(sumTotalLitersComa);
+                $("#fter_totalAmountlDiesel").val(sumTotalAmount2Coma);
+                }
+        </script>
+
 
 
 <!-- ===================================This function is for Tonnage Employee Login============================ -->

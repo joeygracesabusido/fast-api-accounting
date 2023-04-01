@@ -267,7 +267,7 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 
 from config.models import (insertEquipmentRental,getallRental,
                             insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking,
-                            select_rizalEquipment,rentalSumRizal)
+                            select_rizalEquipment,rentalSumRizal,dieselSumRizal)
 from models.model import RizalRental,RizalDiesel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
@@ -364,6 +364,7 @@ async def getRentalSumRizal(datefrom,dateto,equipment_id:Optional[str],username:
     return rentalData
 
 
+
 #==============================================Diesel Rizal Transaction=======================================
 
 @employee_user.post("/api-insert-rizalDiesel-employeeLogin/")
@@ -425,6 +426,28 @@ async def get_dieselChecker(transaction_date,equipment_id:str=[Optional],withdra
                 "equipment_id": i.equipment_id,
                 "withdrawal_slip": i.withdrawal_slip,
             
+            }
+            for i in results
+        ]
+    
+
+    return DieselData
+
+
+@employee_user.get("/api-get-rizal-sumDiesel-employeeLogin/")
+async def get_dieselSumRizal(datefrom,dateto,equipment_id:str=[Optional],
+                            username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = dieselSumRizal(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    DieselData = [
+        
+            {
+               
+               "equipment_id": i.equipment_id,
+                "use_liter": i.use_liter,
+                "amount": "{:,.2f}".format(i.amount),
+                "amount2": "{:.2f}".format(i.amount)
             }
             for i in results
         ]
