@@ -234,6 +234,7 @@
                                     for(let i = 0; i < debitList.length; i++) {
                                         let debitValue = parseFloat(debitList[i].value);
                                         debitsum += debitValue;
+                                        debitsum2 = parseFloat(debitsum).toFixed(2)
                                     }
                                     console.log(debitsum);
 
@@ -243,10 +244,11 @@
                                     for(let i = 0; i < creditList.length; i++) {
                                         let creditValue = parseFloat(creditList[i].value);
                                         creditsum += creditValue;
+                                        creditsum2 = parseFloat(creditsum).toFixed(2)
                                     }
                                     console.log(creditsum);
 
-                                    total = parseFloat(debitsum) - parseFloat(creditsum)
+                                    total = parseFloat(debitsum2) - parseFloat(creditsum2)
 
                                     if (total === 0){
                                         document.getElementById("submiBTN").disabled = false;
