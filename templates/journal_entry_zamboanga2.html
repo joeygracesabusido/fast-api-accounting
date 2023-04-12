@@ -180,7 +180,7 @@
                                             id="amount${x}"
                                             class="amount"
                                             step="0.01"
-                                            onchange=myFunction()
+                                            onchange=myFunction2()
                                             style="width: 150px;"
                                             
                                         >
@@ -194,7 +194,7 @@
                                             id="credit_amount${x}"
                                             class="credit_amount"
                                             step="0.01"
-                                            onchange=myFunction()
+                                            onchange=myFunction2()
                                             style="width: 150px;"
                                             
                                         >
@@ -216,7 +216,7 @@
                                 $(wrapper).on('click', '#remove_button', function(e){
                                     e.preventDefault();
                                     $(this).closest('tr').remove(); //Remove field html 
-                                    myFunction();
+                                    myFunction2();
                                     x--; //Decrement field counter
                                 });
                             });
@@ -224,30 +224,74 @@
                             </script>
             
                             <script type="text/javascript">
-                                function myFunction() {
+                                // function myFunction() {
+
+                                //     document.querySelector("#submiBTN").disabled = true;
+                                //     var total = 0.0;
+                                //     // let debitList = document.querySelector('input.amount');
+                                //     let debitList = document.getElementsByClassName('amount');
+                                //     let debitsum = 0;
+                                    
+                                //     for(let i = 0; i < debitList.length; i++) {
+                                //         let debitValue = parseFloat(debitList[i].value);
+                                //         debitsum += debitValue;
+                                //         debitsum2 = parseFloat(debitsum).toFixed(2)
+                                //     }
+                                //     console.log(debitsum);
+
+
+                                //     let creditList = document.getElementsByClassName('credit_amount');
+                                //     let creditsum = 0;
+                                //     for(let i = 0; i < creditList.length; i++) {
+                                //         let creditValue = parseFloat(creditList[i].value);
+                                //         creditsum += creditValue;
+                                //         creditsum2 = parseFloat(creditsum).toFixed(2)
+                                //     }
+                                //     console.log(creditsum);
+
+                                //     total = parseFloat(debitsum2) - parseFloat(creditsum2)
+
+                                //     if (total === 0){
+                                //         document.getElementById("submiBTN").disabled = false;
+                                //     }else{
+                                //         document.getElementById("submiBTN").disabled = true;
+                                //     }
+                                
+                                // }
+                            // myFunction()
+                            </script>
+
+
+                            <script type="text/javascript">
+                                function myFunction2() {
 
                                     document.querySelector("#submiBTN").disabled = true;
                                     var total = 0.0;
                                     // let debitList = document.querySelector('input.amount');
                                     let debitList = document.getElementsByClassName('amount');
                                     let debitsum = 0;
-                                    for(let i = 0; i < debitList.length; i++) {
-                                        let debitValue = parseFloat(debitList[i].value);
+                                   
+                                    
+                                    for (let i of debitList){
+                                        // console.log(i.value)
+                                        let debitValue = parseFloat(i.value);
+                                        
                                         debitsum += debitValue;
                                         debitsum2 = parseFloat(debitsum).toFixed(2)
                                     }
-                                    console.log(debitsum);
+                                    
 
 
                                     let creditList = document.getElementsByClassName('credit_amount');
                                     let creditsum = 0;
-                                    for(let i = 0; i < creditList.length; i++) {
-                                        let creditValue = parseFloat(creditList[i].value);
+                                    
+
+                                    for (let i of creditList){
+                                        let creditValue = parseFloat(i.value);
                                         creditsum += creditValue;
                                         creditsum2 = parseFloat(creditsum).toFixed(2)
                                     }
-                                    console.log(creditsum);
-
+                                   
                                     total = parseFloat(debitsum2) - parseFloat(creditsum2)
 
                                     if (total === 0){
