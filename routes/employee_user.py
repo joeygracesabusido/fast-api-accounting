@@ -242,7 +242,7 @@ def get_equipment(username: str = Depends(EmployeevalidateLogin)):
 
 
 #=================================================Employee Rizal Transaction ======================================
-from config.models import getEquipmentRizal
+from config.models import getEquipmentRizal, getallRentalCheck
 @employee_user.get("/employee-rizal-equipment-rental/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
     """This function is to display List of Equipment to Front end for Selecting Equipment"""
@@ -363,6 +363,28 @@ async def getRentalSumRizal(datefrom,dateto,equipment_id:Optional[str],username:
 
     return rentalData
 
+
+@employee_user.get("/api-get-rentalCheck-employeLogin/")
+async def get_rentalSearch(dateSearch,equipment_id,
+                            eur_form,total_rental_hour,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to query equipment Rental Rate """
+    result = getallRentalCheck(dateSearch=dateSearch,equipment_id=equipment_id,
+                                    eur_form=eur_form,total_rental_hour=total_rental_hour)
+    
+    
+    rentalData = [
+        
+            {
+                "transaction_date": i.transaction_date,
+                "equipment_id": i.equipment_id,
+                "eur_form": i.eur_form,
+                "total_rental_hour": i.total_rental_hour
+               
+            }
+           for i in result
+        ]
+    
+    return rentalData
 
 
 #==============================================Diesel Rizal Transaction=======================================

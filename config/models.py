@@ -381,6 +381,18 @@ def insertEquipmentRental(transaction_date,equipment_id,
 
     session.close()
 
+def getallRentalCheck(dateSearch,equipment_id,eur_form,total_rental_hour):
+    """This function is for checking if data has already been save in Rental Transaction Rizal"""
+    with Session(engine) as session:
+        statement = select(equipment_rental).where(equipment_rental.transaction_date == dateSearch,
+        equipment_rental.equipment_id == equipment_id,equipment_rental.eur_form == eur_form,
+        equipment_rental.total_rental_hour == total_rental_hour)
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
 def getallRental(datefrom,dateto,equipment_id):
     """This function is for queyring all Data fro Rental Transaction Rizal"""
     with Session(engine) as session:
