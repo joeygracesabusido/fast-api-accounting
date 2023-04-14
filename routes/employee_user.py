@@ -384,6 +384,7 @@ async def get_rentalSearch(dateSearch,equipment_id,
            for i in result
         ]
     
+    
     return rentalData
 
 

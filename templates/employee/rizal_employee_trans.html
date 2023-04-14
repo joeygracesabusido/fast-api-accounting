@@ -1655,7 +1655,7 @@
                 // Use the fetch API to send the POST request
 
                             
-                const search_url_SEARCH = `/api-get-rentalCheck-employeLogin/?transaction_date=${data.transaction_date}&equipment_id=${data.equipment_id}&eur_form=${data.eur_form}&total_rental_hour=${data.total_rental_hour}`;
+                const search_url_SEARCH = `/api-get-rentalCheck-employeLogin/?dateSearch=${data.transaction_date}&equipment_id=${data.equipment_id}&eur_form=${data.eur_form}&total_rental_hour=${data.total_rental_hour}`;
 
 
                 const responceSEARCH = await fetch(search_url_SEARCH)
@@ -1663,7 +1663,7 @@
                 console.log(dataSEARCH)
 
                 if (dataSEARCH.length > 0) {
-                    window.alert("Your data has already EXIST please check Diesel List");
+                    window.alert("Your data has already EXIST please check Rental List");
                     
                     }
 
