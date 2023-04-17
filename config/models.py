@@ -162,6 +162,10 @@ def getAllEmployee_TVI():
         
         return data
 
+
+
+
+
 # =================================================Cost Frame ================================================
 def insertCost(transDate,equipment_id,salaries,fuel,oil_lubes,
                  mechanicalSupplies, repairMaintenance, meals,transpo,tires, amortization,others, totalAmount,

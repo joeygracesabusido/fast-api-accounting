@@ -531,7 +531,8 @@ async def get_employee_payroll(department,username: str = Depends(validateLogin)
                 "position": x[3],
                 "department": x[4],
                 "off_on_details": x[5],
-                "employment_status": x[6]
+                "employment_status": x[6],
+                "date_hired": x[7]
 
             }
             for x in employeelList

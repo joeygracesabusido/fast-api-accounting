@@ -662,7 +662,7 @@ class Database(object):
         Database.DATABASE._open_connection()
         try:
             
-            query = ('SELECT employee_id, lastName, firstName,position,department,off_on_details,employment_status\
+            query = ('SELECT employee_id, lastName, firstName,position,department,off_on_details,employment_status,date_hired\
                 FROM employee_details\
                 WHERE department LIKE "%'+department+'%" ORDER BY lastName\
                  ')
