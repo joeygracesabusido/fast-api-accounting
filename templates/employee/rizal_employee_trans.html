@@ -998,11 +998,17 @@
                     <i class="fas fa-database"></i>
                 </button>
 
+
+                <button type="button" onclick="makePDF()" class="btn btn-warning">
+                    Print Table
+                    <i class="fas fa-database"></i>
+                </button>
+
                 
 
         </div>
         <div  class="container mt-3">
-            <table id="myTable" class="table table-bordered"  style="text-align: center;">
+            <table id="myTableMakePDF" class="table table-bordered"  style="text-align: center;">
                 <thead class="table-dark">
                 
                         
@@ -2433,7 +2439,27 @@
                     }
             </script>
 
+            <script>
+                // $(document).ready(function() {
+                // $('#printBtn').click(function() {
+                //     $('#table_bodyTonnageReport').print();
+                // });
+                // });
 
+            </script>
+
+            <script>
+                function makePDF(){
+                    var printMe = document.getElementById('myTableMakePDF');
+                    var wme = window.open("","","width:700,height:900");
+                    wme.document.write(printMe.outerHTML);
+                    wme.document.close();
+                    wme.focus();
+                    wme.print();
+                    wme.close();
+                }
+
+            </script>
 
 
 <!-- ====================================Cost Transaction =============================================== -->

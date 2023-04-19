@@ -624,25 +624,125 @@
                         <label for="Total Gross"
                         >Total Gross</label>
                             <input
-                                type="number"
-                                step="0.01"
+                                type="text"
+                                
                                 name="totalGross"
                                 id="totalGross"
                                 style="text-align: right;
-                                    "
+                                     background-color: darkorange;"
                                 class="form-control"
                                 
                                 >
                             </input>
+
+                            <input
+                            type="number" hidden
+                            step="0.01"
+                            name="totalGross2"
+                            id="totalGross2"
+                            style="text-align: right;
+                               "
+                            class="form-control"
+                            
+                            >
+                        </input>
                     </div>
 
                 </div>
 
                 <div class="d-flex justify-content-center">
                     <h1>
-                        This is for Mandatory Computatin
+                        This is for Mandatory Computation
                     </h1>
                 </div> 
+
+
+                <div  class="d-flex justify-content-center">
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="SSS"
+                        >SSS</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="sss"
+                                id="sss"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="PHIC"
+                        >PHIC</label>
+                     
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="phic"
+                                id="phic"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>            
+                    
+                    
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="SSS"
+                        >HDMF</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="hdmf"
+                                id="hdmf"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        <label for="SSS Provident"
+                        >SSS Provident</label>
+                     
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="sssProv"
+                                id="sssProv"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                >
+                            </input>
+
+
+                            
+
+                    </div>  
+                    
+                    <div class="form-group mx-sm-2 mb-1">
+                        <label for="TotalGov1"
+                        >Total Gov'T Mandatory</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="totalGov"
+                                id="totalGov"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                      </div>
+                    
+                    
+                </div>
+
 
 
                 
@@ -959,12 +1059,12 @@
                     salaryRate =  document.getElementById('salary_rate').value / 26;
                     spl_cal = parseFloat(salaryRate) * parseFloat(spl) * 1.30
                     document.getElementById('spl_cal').value=spl_cal.toFixed(2);
-                    calculateProduct()
+                    calculatetotalGross()
                 }else{
                     salaryRate =  document.getElementById('salary_rate').value ;
                     spl_cal = parseFloat(salaryRate) * parseFloat(spl) * 1.30
                     document.getElementById('spl_cal').value=spl_cal.toFixed(2);
-                    calculateProduct()
+                    calculatetotalGross()
                 }
 
             }
@@ -987,12 +1087,12 @@
                     salaryRate =  document.getElementById('salary_rate').value / 26;
                     spl_ot_cal = parseFloat(salaryRate) / 8 * 1.69 * parseFloat(spl_ot)
                     document.getElementById('spl_ot_cal').value=spl_ot_cal.toFixed(2);
-                    calculateProduct()
+                    calculatetotalGross()
                 }else{
                     salaryRate =  document.getElementById('salary_rate').value ;
                     spl_ot_cal = parseFloat(salaryRate)/ 8 * 1.69 * parseFloat(spl_ot) 
                     document.getElementById('spl_ot_cal').value=spl_ot_cal.toFixed(2);
-                    calculateProduct()
+                    calculatetotalGross()
                 }
 
             }
@@ -1119,6 +1219,7 @@
                 product = totalProvi  * proviRate;
                 product = product.toFixed(2)
                 $('#provirate_cal').val(product);
+                calculatetotalGross()
                 }
 
 
@@ -1133,12 +1234,14 @@
                     });
 
                     function calculateProviOT() {
-
+                    let product
                     var totalProvi = $('#proviOT_total').val();
                     var proviRate = $('#provi_rate').val();
                     
-                    var product = totalProvi  * ((proviRate) / 8 * 1.25);
-                    $('#proviOT_total_cal').val(product).toFixed(2);
+                    product = totalProvi  * ((proviRate) / 8 * 1.25);
+                    product = product.toFixed(2);
+                    $('#proviOT_total_cal').val(product);
+                    calculatetotalGross()
                     }
 
 
@@ -1153,12 +1256,14 @@
                     });
 
                     function calculateProviSun() {
-
+                    let product
                     var totalProvi = $('#provisun_total').val();
                     var proviRate = $('#provi_rate').val();
                     
-                    var product = totalProvi  * (proviRate * 1.30);
-                    $('#provisun_total_cal').val(product).toFixed(2);
+                    product = totalProvi  * (proviRate * 1.30);
+                    product = product.toFixed(2)
+                    $('#provisun_total_cal').val(product);
+                    calculatetotalGross()
                     }
 
 
@@ -1174,12 +1279,14 @@
                     });
 
                     function calculateProviSunOT() {
-
+                    let product
                     var totalProvi = $('#provisunOT_total').val();
                     var proviRate = $('#provi_rate').val();
                     
-                    var product = totalProvi  * ((proviRate)/8 * 1.69);
-                    $('#provisunOT_total_cal').val(product).toFixed(2);
+                    product = totalProvi  * ((proviRate)/8 * 1.69);
+                    product = product.toFixed(2)
+                    $('#provisunOT_total_cal').val(product);
+                    calculatetotalGross()
                     }
 
 
@@ -1194,12 +1301,14 @@
                     });
 
                     function calculateNightDiff() {
-
+                    let product
                     var nightDiff = $('#nightDiff').val();
                     var salaryRate = $('#salary_rate').val();
                     
-                    var product = nightDiff  * ((salaryRate)/8 * 0.10);
-                    $('#nightDiff_cal').val(product).toFixed(2);
+                    product = nightDiff  * ((salaryRate)/8 * 0.10);
+                    product = product.toFixed(2)
+                    $('#nightDiff_cal').val(product);
+                    calculatetotalGross()
                     }
 
 
@@ -1211,7 +1320,9 @@
                     $('#regday_cal, #regday_ot_cal, \
                     #sunday_cal,#sunday_ot_cal,#spl_cal, \
                     #spl_ot_cal,#lgl2_cal,#lgl2_ot_cal, \
-                    #shopRate_cal').on('input', function() {
+                    #shopRate_cal,#provirate_cal,#proviOT_total_cal, \
+                    #provisun_total_cal,#provisunOT_total_cal,\
+                    #nightDiff_cal,#adjustment').on('input', function() {
                         calculatetotalGross();
                     });
                     });
@@ -1227,6 +1338,12 @@
                     let lgl2_cal;
                     let lgl2_ot_cal;
                     let shopRate_cal;
+                    let provirate_cal;
+                    let proviOT_total_cal;
+                    let provisun_total_cal;
+                    let provisunOT_total_cal;
+                    let nightDiff_cal;
+                    let adjustment;
 
 
                     regdayCal = $('#regday_cal').val();
@@ -1238,20 +1355,27 @@
                     lgl2_cal = $('#lgl2_cal').val();
                     lgl2_ot_cal = $('#lgl2_ot_cal').val();
                     shopRate_cal = $('#shopRate_cal').val();
-
-                    if (regdayCal == ''){
-                        regdayCal == 0
-                    }
+                    provirate_cal = $('#provirate_cal').val();
+                    proviOT_total_cal = $('#proviOT_total_cal').val();
+                    provisun_total_cal = $('#provisun_total_cal').val();
+                    provisunOT_total_cal = $('#provisunOT_total_cal').val();
+                    nightDiff_cal = $('#nightDiff_cal').val();
+                    adjustment = $('#adjustment').val();
                     
                     let product;
+                    let product2
                     product = (parseFloat(regdayCal) + parseFloat(regdayOTCal)
                                      + parseFloat(sunday_cal) + parseFloat(sunday_ot_cal)
                                      + parseFloat(spl_cal) + parseFloat(spl_ot_cal)
                                      + parseFloat(lgl2_cal) + parseFloat(lgl2_ot_cal)
-                                     + parseFloat(shopRate_cal));
+                                     + parseFloat(shopRate_cal) + parseFloat(provirate_cal) + parseFloat(proviOT_total_cal)
+                                     + parseFloat(provisun_total_cal) + parseFloat(provisunOT_total_cal)
+                                     + parseFloat(nightDiff_cal) + parseFloat(adjustment));
 
-                    product = product.toFixed(2);
-                    $('#totalGross').val(product);
+                    product2 = product.toFixed(2);
+                    const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    $('#totalGross').val(stringNumber);
+                    $('#totalGross2').val(product2);
                     }
 
 
