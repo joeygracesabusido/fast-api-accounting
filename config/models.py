@@ -141,6 +141,15 @@ class employee_details(SQLModel, table=True):
     update_date: datetime
 
 
+class sss_table(SQLModel, table=True):
+    """SSS Table"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    amountFrom: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    amountTo: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    empShare : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    mandtoryProvi: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+
+
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
@@ -572,5 +581,19 @@ def tonnageSumRizal(datefrom,dateto,equipment_id):
 
         data = results.all()
         return data
+
+
+#=========================================This is for SSS Table ======================================
+def getSSSTable():
+    """This is for querying SSS Table"""
+    with Session(engine) as session:
+        statement = select(sss_table) \
+                        .order_by(sss_table.id)
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
+
 
 # create_db_and_tables()

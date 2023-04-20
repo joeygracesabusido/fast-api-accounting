@@ -656,6 +656,11 @@
                     </h1>
                 </div> 
 
+                <div class="d-flex justify-content-center">
+                    <label><input type="checkbox" id="myCheckbox"> With Gov't Mandatory</label>
+                    
+                </div>
+
 
                 <div  class="d-flex justify-content-center">
                     <div class="form-group mx-sm-2 mb-1">
@@ -1316,68 +1321,9 @@
 
 <!-- ====================================This is for computation of Total Gross==================================== -->
                 <script>
-                    $(document).ready(function() {
-                    $('#regday_cal, #regday_ot_cal, \
-                    #sunday_cal,#sunday_ot_cal,#spl_cal, \
-                    #spl_ot_cal,#lgl2_cal,#lgl2_ot_cal, \
-                    #shopRate_cal,#provirate_cal,#proviOT_total_cal, \
-                    #provisun_total_cal,#provisunOT_total_cal,\
-                    #nightDiff_cal,#adjustment').on('input', function() {
-                        calculatetotalGross();
-                    });
-                    });
+                   
 
-                    function calculatetotalGross() {
-                    
-                    let regdayCal;
-                    let regdayOTCal;
-                    let sunday_cal;
-                    let sunday_ot_cal;
-                    let spl_cal;
-                    let spl_ot_cal;
-                    let lgl2_cal;
-                    let lgl2_ot_cal;
-                    let shopRate_cal;
-                    let provirate_cal;
-                    let proviOT_total_cal;
-                    let provisun_total_cal;
-                    let provisunOT_total_cal;
-                    let nightDiff_cal;
-                    let adjustment;
-
-
-                    regdayCal = $('#regday_cal').val();
-                    regdayOTCal = $('#regday_ot_cal').val();
-                    sunday_cal = $('#sunday_cal').val();
-                    sunday_ot_cal = $('#sunday_ot_cal').val();
-                    spl_cal = $('#spl_cal').val();
-                    spl_ot_cal = $('#spl_ot_cal').val();
-                    lgl2_cal = $('#lgl2_cal').val();
-                    lgl2_ot_cal = $('#lgl2_ot_cal').val();
-                    shopRate_cal = $('#shopRate_cal').val();
-                    provirate_cal = $('#provirate_cal').val();
-                    proviOT_total_cal = $('#proviOT_total_cal').val();
-                    provisun_total_cal = $('#provisun_total_cal').val();
-                    provisunOT_total_cal = $('#provisunOT_total_cal').val();
-                    nightDiff_cal = $('#nightDiff_cal').val();
-                    adjustment = $('#adjustment').val();
-                    
-                    let product;
-                    let product2
-                    product = (parseFloat(regdayCal) + parseFloat(regdayOTCal)
-                                     + parseFloat(sunday_cal) + parseFloat(sunday_ot_cal)
-                                     + parseFloat(spl_cal) + parseFloat(spl_ot_cal)
-                                     + parseFloat(lgl2_cal) + parseFloat(lgl2_ot_cal)
-                                     + parseFloat(shopRate_cal) + parseFloat(provirate_cal) + parseFloat(proviOT_total_cal)
-                                     + parseFloat(provisun_total_cal) + parseFloat(provisunOT_total_cal)
-                                     + parseFloat(nightDiff_cal) + parseFloat(adjustment));
-
-                    product2 = product.toFixed(2);
-                    const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                    $('#totalGross').val(stringNumber);
-                    $('#totalGross2').val(product2);
-                    }
-
+                   
 
                 </script>
 
@@ -1391,7 +1337,7 @@
                 }
         </script>
 
-
+        <script src="/static/main.js"></script>
 
 
 {% endblock %}

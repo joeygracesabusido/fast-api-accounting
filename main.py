@@ -9,6 +9,7 @@ from routes.employee_user import employee_user
 from routes.tvi import tviProject
 
 from mysql.connector import connect
+from fastapi.staticfiles import StaticFiles
 
 # from config.database import database
 
@@ -17,6 +18,7 @@ app = FastAPI()
 # origins = [
 #     "*",
 # ]
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,

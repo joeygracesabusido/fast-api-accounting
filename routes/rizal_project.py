@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from config.db import mydb
 from models.model import EmployeeReg, RizalTonnagehaul
-
+from fastapi import staticfiles
 
 from bson import ObjectId
 from typing import Optional
@@ -83,6 +83,25 @@ def get_payrollComputation(request: Request,  username: str = Depends(validateLo
     return templates.TemplateResponse("payroll_computation.html",{
                                                 "request": request
                                                         })
+from config.models import getSSSTable
+@rizal_project.get('/sss-computation/')
+def get_payrollComputation(username: str = Depends(validateLogin)):
+    """This function is for displaying """
+    result = getSSSTable()
+
+
+    rentalData = [
+        
+            {
+                "amountFrom": i.amountFrom,
+                "amountTo": i.amountTo,
+                "empShare": i.empShare,
+                "mandtoryProvi": i.mandtoryProvi
+               
+            }
+           for i in result
+        ]
+    return rentalData
 
 #======================================================Diesel Frame===========================================
 @rizal_project.get("/diesel-consumption-list/", response_class=HTMLResponse)
