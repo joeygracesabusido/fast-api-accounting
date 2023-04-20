@@ -62,6 +62,15 @@
                                         class="form-control"
                                         >
                                     </input>
+
+                                <label for="Department" >Department</label>
+                                    <input
+                                        type="text"
+                                        name="department"
+                                        id="department"
+                                        class="form-control"
+                                        >
+                                    </input>
                         </div>
 
                         <div class="form-group mx-sm-3 mb-3">
@@ -748,6 +757,28 @@
                     
                 </div>
 
+                <div class="d-flex justify-content-center">
+                    <h1>
+                        For Deminimis Computation
+                    </h1>
+                </div> 
+
+                <div class="form-group mx-sm-2 mb-1">
+                    <label for="TotalGov1"
+                    ></label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="totalGov"
+                            id="totalGov"
+                            style="text-align: right;
+                                "
+                            class="form-control"
+                            
+                            >
+                        </input>
+                  </div>
+
 
 
                 
@@ -769,69 +800,69 @@
 </body>
     <!-- This function is for automatic display of Employee Information using Employee ID as query Parameter -->
         <script>
-             $(document).ready(function() {
-                $("#employee_id").on("keyup", async function(event) {
-                    // check if Enter key was pressed
-                    if (event.keyCode === 13 || event.keyCode === 9) {
-                    // trigger button click event
-                        var employee_id = $("#employee_id").val()
+            $(document).ready(function() {
+                    $("#employee_id").on("keyup", async function(event) {
+                        // check if Enter key was pressed
+                        if (event.keyCode === 13 || event.keyCode === 9) {
+                        // trigger button click event
+                            var employee_id = $("#employee_id").val()
 
-                        const search_url = `/api-search-employee_by_empID/?term=${employee_id}`;
+                            const search_url = `/api-search-employee_by_empID/?term=${employee_id}`;
 
 
-                        const responce =  await fetch(search_url)
-                        const data =  await responce.json();
-                        console.log(data)
-                        
-
-                        if (data.length === 0){
-                            window.alert(`No ID store for ${employee_id}`)
-                        } else if (responce.status == 401){
-                            window.alert("Unauthorized Please Login")
-
-                        }else{
-                           
-                            var name = data[0].firstName
-                            var lname = data[0].lastName
-                            var position = data[0].position
-                            var salary_rate = data[0].salary_rate
-                            var taxCode = data[0].taxCode
-                            var off_on_details = data[0].off_on_details
-                            var salary_details = data[0].Salary_Detail
-
-                            $('#fname').val(name)
-                            $('#lname').val(lname)
-                            $('#position').val(position)
-                            $('#salary_rate').val(salary_rate)
-                            $('#tax_class').val(taxCode)
-                            $('#emp_class').val(off_on_details)
-                            $('#salary_details').val(salary_details)
-
+                            const responce =  await fetch(search_url)
+                            const data =  await responce.json();
+                            console.log(data)
                             
 
-                            if (employee_id <= 2021) {
-                                    provi_rate = 570
-                                    $('#provi_rate').val(provi_rate)
-                                    
-                                }else if(employee_id >= 2022 && employee_id <=2999){
-                                    provi_rate = 429
-                                    $('#provi_rate').val(provi_rate)
-                                }else if (employee_id >= 5000 && employee_id <=7000){
-                                    provi_rate = 351
-                                    $('#provi_rate').val(provi_rate)
-                                } else {
-                                    provi_rate = 429
-                                    $('#provi_rate').val(provi_rate)
-                                }
-                            
+                            if (data.length === 0){
+                                window.alert(`No ID store for ${employee_id}`)
+                            } else if (responce.status == 401){
+                                window.alert("Unauthorized Please Login")
 
+                            }else{
+                            
+                                var name = data[0].firstName
+                                var lname = data[0].lastName
+                                var position = data[0].position
+                                var salary_rate = data[0].salary_rate
+                                var taxCode = data[0].taxCode
+                                var off_on_details = data[0].off_on_details
+                                var salary_details = data[0].Salary_Detail
+                                var department = data[0].department
+
+                                $('#fname').val(name)
+                                $('#lname').val(lname)
+                                $('#position').val(position)
+                                $('#salary_rate').val(salary_rate)
+                                $('#tax_class').val(taxCode)
+                                $('#emp_class').val(off_on_details)
+                                $('#salary_details').val(salary_details)
+                                $('#department').val(department)
+
+                                
+
+                                if (employee_id <= 2021) {
+                                        provi_rate = 570
+                                        $('#provi_rate').val(provi_rate)
+                                        
+                                    }else if(employee_id >= 2022 && employee_id <=2999){
+                                        provi_rate = 429
+                                        $('#provi_rate').val(provi_rate)
+                                    }else if (employee_id >= 5000 && employee_id <=7000){
+                                        provi_rate = 351
+                                        $('#provi_rate').val(provi_rate)
+                                    } else {
+                                        provi_rate = 429
+                                        $('#provi_rate').val(provi_rate)
+                                    }
+                                
+
+                            }
+                    
                         }
-                   
-                    }
-                });
-            });       
-
-
+                    });
+                });       
         </script>
 
         <script type="text/javascript">
@@ -864,6 +895,7 @@
                     var taxCode = data[0].taxCode
                     var off_on_details = data[0].off_on_details
                     var salary_details = data[0].Salary_Detail
+                    var department = data[0].department
 
                     document.getElementById('fname').value = name
                     document.getElementById('lname').value = lname
@@ -872,6 +904,8 @@
                     document.getElementById('tax_class').value = taxCode
                     document.getElementById('emp_class').value = off_on_details
                     document.getElementById('salary_details').value = salary_details
+                    document.getElementById('department').value = department
+                   
 
                     if (employee_id <= 2021) {
                         provi_rate = 570
