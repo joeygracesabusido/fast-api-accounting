@@ -246,6 +246,15 @@ def delete_rental_transaction(id: int, username: str = Depends(validateLogin)):
         TviDB.delete_rental_trans(id=id)
     except HTTPException as ex:
         return {'message': ex.detail}
+    
+from config.tvi_models import deleteRental
+@tviProject.delete('/api-deletetiv-rental-employeeLogin/{id}')
+async def delete_rental_transaction(id: int, username: str = Depends(validateLogin)):
+    """This function is to delete a rental transaction"""
+    try:
+        deleteRental(id=id)
+    except HTTPException as ex:
+        return {'message': ex.detail}
 
 
 @tviProject.get('/api-update-tiv-rental-withID/{id}',response_class=HTMLResponse)

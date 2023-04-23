@@ -276,6 +276,18 @@ def getRentalTVI_all_employeeLogin(datefrom,dateto,equipmentId,project_site):
         
         return data
 
+def deleteRental(id):
+    """This function is to delete record for Rental Transaction"""
+    with Session(engine) as session:
+        statement = select(rentaltransaction).where(rentaltransaction.id == id)
+        results = session.exec(statement)
+        result = results.one()
+       
+
+        session.delete(result)
+        session.commit()
+
+
 def rentalSumTVI(datefrom,dateto,equipmentId):
     """This function is for selecting SUM for Rental Record"""
     with Session(engine) as session:

@@ -631,7 +631,7 @@ async def get_cost(datefrom,dateto,equipment_id,username: str = Depends(Employee
 #======================================TVI Employee Transaction Frame=======================================
 from config.tvi_models import (insertRental_tvi,insertRental_tvi_employeeLogin,
                                 getRentalTVI_all_employeeLogin,rentalSumTVI,
-                                insertDiesel_tvi)
+                                insertDiesel_tvi,deleteRental)
 
 from models.model import TVIRentalTransactionEmployeeLogin,TVIDiesel
 @employee_user.get("/employee-transaction-tvi/", response_class=HTMLResponse)
@@ -715,6 +715,8 @@ async def getRentalSum(datefrom,dateto,equipmentId:Optional[str],username: str =
         rentalData.append(data)
 
     return rentalData
+
+
 
 
 #=================================================TVI Diesel Transaction Frame===================================

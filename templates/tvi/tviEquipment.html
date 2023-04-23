@@ -32,6 +32,11 @@
             left: 50%; /* Move the element right by 50% of its own width */
             transform: translate(-50%, -50%); /* Offset the element by its own width and height */
     }
+
+
+    .fas.fa-trash-alt {
+        color: red;
+    }
 </style>
 
 
@@ -675,7 +680,7 @@
                                     <td>Tax Rate</td>
                                     <td>VAT output</td>
                                     <td>Net of Vat</td>
-                                    <td>Operator/Driver</td>
+                                    <td>Driver</td>
                                     <td>Action</td>
                                 </tr>
                             </thead>
@@ -1430,7 +1435,15 @@
                                     <a href="/api-get-update-tvi-rentalTransaction-sqlModel/${values.id}"
                                     <button type="button" class="btn btn-primary">
                                     <i class="fas fa-database"></i> Edit</button></a> 
+
+                                    <button type="button"  id="remove_button" onclick="delete_rental(${values.id})" 
+                                            <i class="btn btn-danger">
+                                            </i>Del</button>
+
+                                           
                                 </td>
+
+                               
 
                                
                                
@@ -1635,7 +1648,7 @@
 
             </script>
 
-            
+<script src="/static/tvi.js"></script>
    
       
 </body>

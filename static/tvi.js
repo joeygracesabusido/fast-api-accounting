@@ -71,3 +71,20 @@ if (data.taxRate=='' || data.transDate == ''){
                     }
 
 };
+
+// this function is for deleting TVI Rental transactions
+
+
+function delete_rental(id){
+    if (confirm("Are you sure you want to delete this record?")){
+        fetch("/api-deletetiv-rental-employeeLogin/"+ id, {
+            method:'DELETE',
+                })
+        window.alert("Your Data has been Deleted");
+    }
+
+    
+  
+}
+            
+       
