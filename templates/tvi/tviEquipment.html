@@ -34,9 +34,11 @@
     }
 
 
-    .fas.fa-trash-alt {
-        color: red;
+        .fas.fa-trash-alt {
+    color: red;
     }
+
+        
 </style>
 
 
@@ -1434,12 +1436,16 @@
                                 <td>
                                     <a href="/api-get-update-tvi-rentalTransaction-sqlModel/${values.id}"
                                     <button type="button" class="btn btn-primary">
-                                    <i class="fas fa-database"></i> Edit</button></a> 
+                                    <i class="fas fa-plus-square"></i>Edit</button></a> 
 
-                                    <button type="button"  id="remove_button" onclick="delete_rental(${values.id})" 
-                                            <i class="btn btn-danger">
-                                            </i>Del</button>
+                                    
 
+                                    <button id="delete-btn"  type="button" class="fas fa-trash-alt"
+                                    <i class="fas fa-plus-square"></i>
+
+                                    </button> 
+                                        
+                                    
                                            
                                 </td>
 

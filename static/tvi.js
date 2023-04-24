@@ -80,7 +80,19 @@ function delete_rental(id){
         fetch("/api-deletetiv-rental-employeeLogin/"+ id, {
             method:'DELETE',
                 })
-        window.alert("Your Data has been Deleted");
+                .then(response => {
+                    if (response.ok) {
+                    alert('Your data has been deleted');
+                   
+                    } else {
+                    throw new Error('Failed to delete data');
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        
+       
     }
 
     
