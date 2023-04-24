@@ -8,6 +8,14 @@
     .TransactionDate{
         color: beige;
     }
+
+    .form-group.mx-sm-2.mb-3 {
+            width: 15%;
+            padding: 5px 10px;
+            display: flex;
+            flex-wrap: wrap;
+           
+}
     
 </style>
 
@@ -763,21 +771,105 @@
                     </h1>
                 </div> 
 
-                <div class="form-group mx-sm-2 mb-1">
-                    <label for="TotalGov1"
-                    ></label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="totalGov"
-                            id="totalGov"
-                            style="text-align: right;
-                                "
-                            class="form-control"
+                <div class="d-flex justify-content-center">
+                    <label><input type="checkbox" id="myCheckbox2"> Deminimis</label>
+                    
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <div class="form-group mx-sm-2 mb-3">
+                        <label for="Uniform"
+                        >Uniform</label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="uniform"
+                                    id="uniform"
+                                    style="text-align: right;
+                                        "
+                                    class="form-control"
+                                    
+                                    >
+                                </input>
+    
+                        <label for="rice"
+                        >RICE</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="rice"
+                                id="rice"
+                                style="text-align: right;
+                                    "
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        </div>
+                        <div class="form-group mx-sm-2 mb-3">
+    
+                            <label for="Laundry"
+                            >Laundry</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        name="laundry"
+                                        id="laundry"
+                                        style="text-align: right;
+                                            "
+                                        class="form-control"
+                                        
+                                        >
+                                    </input>
+        
+                            <label for="Medical1"
+                            >Medical1</label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            name="medical1"
+                                            id="medical1"
+                                            style="text-align: right;
+                                                "
+                                            class="form-control"
+                                            
+                                            >
+                                        </input>
+                        </div>
+                        <div class="form-group mx-sm-2 mb-3">
+                            <label for="Medical2"
+                            >Medical2</label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            name="medical2"
+                                            id="medical2"
+                                            style="text-align: right;
+                                                "
+                                            class="form-control"
+                                            
+                                            >
+                                        </input>
                             
-                            >
-                        </input>
-                  </div>
+                            <label for="Total Deminimis"
+                            >Total Deminimis</label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            name="totalDeminimis"
+                                            id="totalDeminimis"
+                                            style="text-align: right;
+                                                "
+                                            class="form-control"
+                                            
+                                            >
+                                        </input>
+    
+                       
+                      </div>
+
+                </div>
+                
 
 
 
@@ -1370,6 +1462,52 @@
                 window.print();
                 }
         </script>
+
+        <script>
+            $(document).ready(function() {
+            $('#myCheckbox2').change(function() {
+            if($(this).prop('checked')) {
+            
+                // deminimis_computation()
+                deminimis_computation1()
+            
+
+            }
+            });
+        });
+        </script>
+
+        <script type="text/javascript">
+
+            const deminimis_computation1 = async () => {
+                let on_off_status;
+                let totalGross2;
+                let basic_taxable;
+                let MWE = 3883.34/2;
+                let basicMWE;
+                let uniform;
+
+
+                on_off_status = document.getElementById('emp_class').value
+                totalGross2 = document.getElementById('totalGross2').value
+                basicMWE = (document.getElementById('provi_rate').value) * 13
+                basic_taxable = totalGross2 - basicMWE 
+                basic_taxable = basic_taxable.toFixed(2)
+                console.log(basic_taxable)
+                if (on_off_status == 'off'){
+                    uniform = 0
+                    uniform =uniform.toFixed(2)
+                    document.getElementById('uniform').value = uniform;
+                }else if(basic_taxable > 0 && on_off_status == 'on' && basic_taxable >= MWE){
+                    uniform = basic_taxable * 0.13
+                    document.getElementById('uniform').value = uniform;
+                }
+            }
+
+
+        </script>
+
+       
 
         <script src="/static/main.js"></script>
 

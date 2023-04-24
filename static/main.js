@@ -1,5 +1,16 @@
 // ============================This is for function of Displaying Query for Employee================
+$(document).ready(function() {
+  $('#myCheckbox2').change(function() {
+  if($(this).prop('checked')) {
+  
+      // deminimis_computation()
+      // deminimis_computation1()
+      console.log('I am Legend')
+  
 
+  }
+  });
+});
 
 
 
@@ -73,13 +84,16 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#myCheckbox').change(function() {
       if($(this).prop('checked')) {
+
+     
         let sss;
         let phic;
         let hdmf;
         let sssProv;
-
+        
         display_sss_data()
         calculateTotalGov()
+        deminimis_computation()
  
       } else {
         let sss;
@@ -103,6 +117,9 @@ $(document).ready(function() {
       }
     });
   });
+
+
+ 
   
 // This is for compuation of SSS
 const display_sss_data = async () => {
@@ -141,7 +158,7 @@ const display_sss_data = async () => {
 
     if (salary_rate <= 10000){
         phic = 400 /2
-        phic = basicPHIC.toFixed(2)
+        phic = phic.toFixed(2)
         document.getElementById('phic').value = phic
         calculateTotalGov()
 
@@ -152,7 +169,7 @@ const display_sss_data = async () => {
         calculateTotalGov()
     }else if(salary_rate >= 80000){
         phic = 3200
-        phic = basicPHIC.toFixed(2)
+        phic = phic.toFixed(2)
         document.getElementById('phic').value = phic
         calculateTotalGov()
 
@@ -188,8 +205,8 @@ const calculateTotalGov = () => {
   const phic = parseFloat(phicInput.value);
   const hdmf = parseFloat(hdmfInput.value);
   const sssProv = parseFloat(sssProvInput.value);
-  let totalGov = sss + phic + hdmf +  sssProv;
-  totalGov = totalGov.toFixed(2);
+  let totalGov = parseFloat(sss) + parseFloat(phic) + parseFloat(hdmf) +  parseFloat(sssProv);
+//   totalGov = totalGov.toFixed(2);
 
   totalGovOutput.value = totalGov;
 }
@@ -198,6 +215,10 @@ sssInput.addEventListener('input', calculateTotalGov);
 phicInput.addEventListener('input', calculateTotalGov);
 hdmfInput.addEventListener('input', calculateTotalGov);
 sssProvInput.addEventListener('input', calculateTotalGov);
+
+
+//This is for computation of Deminimis
+
 
 
 
