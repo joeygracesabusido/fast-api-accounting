@@ -72,7 +72,8 @@ if (data.taxRate=='' || data.transDate == ''){
 
 };
 
-// this function is for deleting TVI Rental transactions
+
+
 
 
 function delete_rental(id){
@@ -82,7 +83,7 @@ function delete_rental(id){
                 })
                 .then(response => {
                     if (response.ok) {
-                    alert('Your data has been deleted');
+                    windows.alert('Your data has been deleted');
                    
                     } else {
                     throw new Error('Failed to delete data');
