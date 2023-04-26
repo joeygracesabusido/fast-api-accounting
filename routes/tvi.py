@@ -564,6 +564,7 @@ async def getTviTrans(id: int,request:Request,username: str = Depends(validateLo
             {
                 "id": x.id,
                 "transDate": x.transDate ,
+                "demr": x.demr,
                 "equipmentId": x.equipmentId,
                 "totalHours": x.totalHours,
                 "rentalRate": x.rentalRate,
@@ -588,7 +589,7 @@ async def updateTVIRental(id: int,items:TVIRentalTransaction,username: str = Dep
 
     """This function is for updating Rizal Equipment"""
     today = datetime.now()
-    updateTVIrental(transDate=items.transDate,equipmentId=items.equipmentId,
+    updateTVIrental(transDate=items.transDate,demr=items.demr, equipmentId=items.equipmentId,
                         totalHours=items.totalHours,rentalRate=items.rentalRate,
                         totalAmount=items.totalAmount,taxRate=items.taxRate,
                         vat_output=items.vat_output,net_of_vat=items.net_of_vat,project_site=items.project_site,

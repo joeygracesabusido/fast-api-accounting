@@ -3,9 +3,9 @@ $(document).ready(function() {
   $('#myCheckbox2').change(function() {
   if($(this).prop('checked')) {
   
-      // deminimis_computation()
-      // deminimis_computation1()
-      console.log('I am Legend')
+      deminimis_computation()
+     
+      
   
 
   }
@@ -93,7 +93,7 @@ $(document).ready(function() {
         
         display_sss_data()
         calculateTotalGov()
-        deminimis_computation()
+        
  
       } else {
         let sss;
@@ -218,6 +218,73 @@ sssProvInput.addEventListener('input', calculateTotalGov);
 
 
 //This is for computation of Deminimis
+
+
+const deminimis_computation = async () => {
+  let on_off_status;
+  let totalGross2;
+  let basic_taxable;
+  let MWE = 3883.34/2;
+  let basicMWE;
+  let uniform;
+  let rice;
+  let laundry;
+  let medical1;
+  let medical2
+
+  on_off_status = document.getElementById('emp_class').value
+  totalGross2 = document.getElementById('totalGross2').value
+  basicMWE = (document.getElementById('provi_rate').value) * 13
+  basic_taxable = totalGross2 - basicMWE 
+  basic_taxable = basic_taxable.toFixed(2)
+  console.log(basic_taxable)
+  if (on_off_status == 'off'){
+      uniform = 0
+      uniform =uniform.toFixed(2)
+      document.getElementById('uniform').value = uniform;
+
+      rice = 0
+      rice = rice.toFixed(2)
+      document.getElementById('rice').value = rice;
+
+      laundry = 0
+      laundry = laundry.toFixed(2)
+      document.getElementById('laundry').value = laundry;
+
+      medical1 = 0
+      medical1 = medical1.toFixed(2)
+      document.getElementById('medical1').value = medical1;
+
+
+      medical2 = 0
+      medical2 = medical2.toFixed(2)
+      document.getElementById('medical2').value = medical2;
+
+
+  }else if(basic_taxable > 0 && on_off_status == 'on' && basic_taxable >= MWE){
+      uniform = basic_taxable * 0.13
+      uniform =uniform.toFixed(2)
+      document.getElementById('uniform').value = uniform;
+
+      rice = basic_taxable * 0.52
+      rice = rice.toFixed(2)
+      document.getElementById('rice').value = rice;
+
+      laundry = basic_taxable * 0.08
+      laundry = laundry.toFixed(2)
+      document.getElementById('laundry').value = laundry;
+
+      medical1 = basic_taxable * 0.21
+      medical1 = medical1.toFixed(2)
+      document.getElementById('medical1').value = medical1;
+
+
+      medical2 = basic_taxable * 0.06
+      medical2 = medical2.toFixed(2)
+      document.getElementById('medical2').value = medical2;
+  }
+  }
+
 
 
 

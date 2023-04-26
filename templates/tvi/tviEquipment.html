@@ -1403,6 +1403,16 @@
 
         <script type="text/javascript">
             // const rental_url =search_url ;
+
+            // This is for trash button
+
+            // <button id="delete-btn" onclick="delete_rental(${values.id})" type="button" class="fas fa-trash-alt"
+            //                         <i class="fas fa-plus-square"></i>
+
+            //                         </button> 
+
+
+
             async function displayRentalData(){
                 var datefrom = document.getElementById('dateFromRentTrans').value;
                 var dateto = document.getElementById('dateToRentTrans').value;
@@ -1440,8 +1450,8 @@
 
                                     
 
-                                    <button id="delete-btn" onclick="delete_rental(${values.id})" type="button" class="fas fa-trash-alt"
-                                    <i class="fas fa-plus-square"></i>
+                                    <button id="delete-btn" type="button" class="btn btn-danger" onclick="delete_rental(${values.id})" 
+                                    <i class="fas fa-plus-square">X</i>
 
                                     </button> 
                                         

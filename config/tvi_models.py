@@ -345,7 +345,7 @@ def insertRental_tvi_employeeLogin(transDate, demr,equipmentId, time_in,time_out
 
     session.close()
 
-def updateTVIrental(id,transDate,equipmentId,totalHours,
+def updateTVIrental(id,transDate,demr,equipmentId,totalHours,
                        rentalRate,totalAmount,taxRate,vat_output,net_of_vat,project_site,
                        driverOperator,user,date_updated):
     """This function is for updating Rizal Equipment"""
@@ -358,6 +358,7 @@ def updateTVIrental(id,transDate,equipmentId,totalHours,
 
            
         result.transDate = transDate
+        result.demr = demr
         result.equipmentId = equipmentId
         result.totalHours = totalHours
         result.rentalRate = rentalRate

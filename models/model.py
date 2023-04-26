@@ -214,6 +214,7 @@ class tviRentalTrans(BaseModel):
 
 class TVIRentalTransaction(BaseModel):
     transDate: date
+    demr: str
     equipmentId: str
     totalHours: float
     rentalRate: float

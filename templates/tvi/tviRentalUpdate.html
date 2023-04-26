@@ -45,6 +45,17 @@
                         class="form-control"
                         >
 
+                        <label class="red-text" for="DEMR"style="color:yellow;"
+                        >DEMR</label>
+                        
+                        <input 
+                        type="text"
+                        name="demr"
+                        id="demr"
+                        value="{{list.demr}}"
+                        class="form-control"
+                        >
+
                 <label class="red-text" for="EquipmentID"style="color:yellow;"
                         >Equipment ID</label>
                         
@@ -262,7 +273,8 @@
                 var data = {};
                 var id = document.getElementById("transID").value;
                 data["transDate"] = document.getElementById("transactionDateRentTrans").value;
-                data["equipmentId"] = document.getElementById("equipmentId").value;
+                data["equipmentId"] = document.getElementById("demr").value;
+                data["demr"] = document.getElementById("equipmentId").value;
                 data["totalHours"] = document.getElementById("totalHoursRentalTrans").value;
                 data["rentalRate"] = document.getElementById("rentalRateTransaction").value;
                 data["totalAmount"] = document.getElementById("grossAmountTransaction").value;
