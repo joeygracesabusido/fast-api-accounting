@@ -109,7 +109,7 @@ async def login(response: Response, request:Request):
             token = jwt.encode(access_token, JWT_SECRET,algorithm=ALGORITHM)
             
             msg.append('Login Succesful')
-            response = templates.TemplateResponse("login.html", {"request":request,"msg":msg})
+            response = templates.TemplateResponse("login_api.html", {"request":request,"msg":msg})
             response.set_cookie(key="access_token", value=f'Bearer {token}',httponly=True)
             return response
             
@@ -118,10 +118,10 @@ async def login(response: Response, request:Request):
         else :
             msg.append('Incorrect username or password')
             # raise HTTPException(status_code=400, detail="Incorrect username or password")
-            return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
+            return templates.TemplateResponse("login_api.html", {"request":request,"msg":msg})
     except:
         errors.append('Something wrong')
-        return templates.TemplateResponse("login.html", {"request":request,"msg":msg})
+        return templates.TemplateResponse("login_api.html", {"request":request,"msg":msg})
 
 #======================================Login for Front End or API Login=============================
 @employee_user.get("/employee-login/", response_class=HTMLResponse)
@@ -267,7 +267,7 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 
 from config.models import (insertEquipmentRental,getallRental,
                             insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking,
-                            select_rizalEquipment,rentalSumRizal,dieselSumRizal)
+                            select_rizalEquipment,rentalSumRizal,dieselSumRizal,getChartRental)
 from models.model import RizalRental,RizalDiesel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
@@ -386,6 +386,28 @@ async def get_rentalSearch(dateSearch,equipment_id,
     
     
     return rentalData
+
+@employee_user.get("/api-get-rentalChart-employeLogin/")
+async def get_rentalSearch(datefrom,dateto,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to query equipment Rental Rate """
+    result = getChartRental(datefrom=datefrom,dateto=dateto)
+    
+    
+    rentalData = [
+        
+            {
+                "transaction_date": i.transaction_date,
+                "totalHours": i.totalHours,
+               
+               
+            }
+           for i in result
+        ]
+    
+    
+    return rentalData
+
+
 
 
 #==============================================Diesel Rizal Transaction=======================================

@@ -416,6 +416,20 @@ def getallRental(datefrom,dateto,equipment_id):
 
         data = results.all()
         return data
+
+def getChartRental(datefrom,dateto):
+    """This function is  querying for Line chart for Rental Transactions"""
+    with Session(engine) as session:
+        statement = select(equipment_rental.transaction_date,
+                            equipment_rental.transaction_date.between(datefrom,dateto), 
+                        func.sum(equipment_rental.total_rental_hour).label('totalHours'),
+                        ).group_by(equipment_rental.transaction_date).order_by(equipment_rental.transaction_date)
+                        
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+
     
 def getallRental_id(id):
     """This function is for queyring all Data fro Rental Transaction Rizal"""

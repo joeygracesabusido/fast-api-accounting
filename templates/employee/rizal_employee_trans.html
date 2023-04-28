@@ -26,6 +26,11 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalReportList">
                 Rental Report List
             </button>
+
+    
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#RentalChart">
+                Rental Chart
+            </button>
             
             
             <br><br>
@@ -68,6 +73,8 @@
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#costList">
                 Cost List
             </button>
+
+           
 
             
             
@@ -1509,6 +1516,65 @@
             </div>
         </div>
 
+
+<!-- ==============================================Chart JS============================================== -->
+<!-- Modal Rental -->
+<div class="modal fade" id="RentalChart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Rental Chart</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
+        
+        <div class="modal-body">
+
+            <label for="TransactionDate" >Date From</label>
+            <input
+                type="date"
+                name="datefromChartRental"
+                id="datefromChartRental"
+                
+                >
+            </input>
+
+        
+
+            <label for="TransactionDate" >Date to</label>
+            <input
+                type="date"
+                name="datetoChartRental"
+                id="datetoChartRental"
+               
+                >
+            </input>
+
+            
+
+            <button type="submit" id="buttonSave" onclick="RentalChart()"class="btn btn-primary">Search</button>
+            <div  class="container mt-3">
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
+            
+        
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" id="buttonSave" onclick="insertRental()"class="btn btn-primary">Save</button>
+        <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+        <!-- <button type="submit"  onclick="html_table_excel_rental('xlsx')" class="btn btn-secondary">
+                Export Excel
+                <i class="fas fa-database"></i>
+            </button> -->
+        </div>
+    </div>
+    </div>
+</div>
+
+
                 
 <!-- ===========================================for Java Scripts Function=========================================== -->
 
@@ -1516,6 +1582,70 @@
                 function printPageRentalList() {
                     window.print();
                     }
+            </script>
+
+            <script type="text/javascript">
+
+                async function RentalChart() {
+                    datefrom = document.getElementById('datefromChartRental').value;
+                dateto = document.getElementById('datetoChartRental').value;
+
+
+                const search_url = `/api-get-rentalChart-employeLogin/?datefrom=${datefrom}&dateto=${dateto}`;
+
+                const response = await fetch(search_url);
+                const data = await response.json();
+
+                var labels = data.map(function(item) {
+                    return item.transaction_date;
+                    });
+
+                var values = data.map(function(item) {
+                    return item.totalHours;
+                    });
+
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                        label: 'Daily Data',
+                        data: values,
+                        borderColor: 'rgb(255, 99, 132)',
+                        fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                        display: true,
+                        text: 'Daily Data Graph'
+                        },
+                        scales: {
+                        xAxes: [{
+                            type: 'time',
+                            distribution: 'linear',
+                            time: {
+                            unit: 'day',
+                            displayFormats: {
+                                day: 'MMM D'
+                            }
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                            beginAtZero: true
+                            }
+                        }]
+                        }
+                    }
+                    });
+
+                    
+                }
+                
+
             </script>
          
 

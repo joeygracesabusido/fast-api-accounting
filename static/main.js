@@ -2,12 +2,12 @@
 $(document).ready(function() {
   $('#myCheckbox2').change(function() {
   if($(this).prop('checked')) {
-  
-      deminimis_computation()
      
-      
-  
-
+      deminimis_computation()
+      totalDeminimis()
+  }else{
+    withoutDeminimis()
+    totalDeminimis()
   }
   });
 });
@@ -123,75 +123,145 @@ $(document).ready(function() {
   
 // This is for compuation of SSS
 const display_sss_data = async () => {
-    let grossSalary;
-    let sssAmount;
-    let salary_details;
-    let salary_rate;
-    let phic;
-    let hdmf;
-    let sssProv;
-    
+  let grossSalary;
+  let sssAmount;
+  let salary_details;
+  let salary_rate;
+  let phic;
+  let hdmf;
+  let sssProv;
 
-    salary_details = document.getElementById('salary_details').value;
-    salary_rate = document.getElementById('salary_rate').value
+  salary_details = $('#salary_details').val();
+  salary_rate = $('#salary_rate').val();
 
-    if (salary_details == 'Monthly'){
-        salary_rate = salary_rate
-    }else{
-        salary_rate = salary_rate * 26
-    }
-    
-    const search_url = `/sss-computation/`;
+  if (salary_details == 'Monthly') {
+    salary_rate = salary_rate;
+  } else {
+    salary_rate = salary_rate * 26;
+  }
 
-    const responce = await fetch(search_url)
-    const data = await responce.json();
+  const search_url = `/sss-computation/`;
 
-    for (let i of data){
-        if (i.amountTo >= salary_rate && i.amountFrom <= salary_rate){
-            sssAmount = i.empShare
-            sssAmount = sssAmount.toFixed(2)
-            document.getElementById('sss').value = sssAmount
-            calculateTotalGov()
+  const response = await fetch(search_url);
+  const data = await response.json();
+
+  if (response.status === 401) {
+    window.alert("Unauthorized credential. Please login");
+    } else {
+      for (let i of data) {
+        if (i.amountTo >= salary_rate && i.amountFrom <= salary_rate) {
+          sssAmount = i.empShare;
+          sssAmount = sssAmount.toFixed(2);
+          $('#sss').val(sssAmount);
+          calculateTotalGov();
         }
-
+      }
     }
 
-    if (salary_rate <= 10000){
-        phic = 400 /2
-        phic = phic.toFixed(2)
-        document.getElementById('phic').value = phic
-        calculateTotalGov()
+  
 
-    }else if(salary_rate > 10000){
-        phic = salary_rate * 0.04 / 2
-        phic = phic.toFixed(2)
-        document.getElementById('phic').value = phic
-        calculateTotalGov()
-    }else if(salary_rate >= 80000){
-        phic = 3200
-        phic = phic.toFixed(2)
-        document.getElementById('phic').value = phic
-        calculateTotalGov()
+  if (salary_rate <= 10000) {
+    phic = 400 / 2;
+    phic = phic.toFixed(2);
+    $('#phic').val(phic);
+    calculateTotalGov();
+  } else if (salary_rate > 10000 && salary_rate < 80000) {
+    phic = salary_rate * 0.04 / 2;
+    phic = phic.toFixed(2);
+    $('#phic').val(phic);
+    calculateTotalGov();
+  } else if (salary_rate >= 80000) {
+    phic = 3200;
+    phic = phic.toFixed(2);
+    $('#phic').val(phic);
+    calculateTotalGov();
+  }
 
-    }
-    hdmf = 100
-    document.getElementById('hdmf').value = hdmf
-    calculateTotalGov()
+  hdmf = 100;
+  $('#hdmf').val(hdmf);
+  calculateTotalGov();
+
+  sssProv = $('#sssProv').val();
+
+  if (sssProv == '') {
+    sssProv = 0.00;
+    $('#sssProv').val(sssProv);
+    calculateTotalGov();
+  }
+}
 
 
-    sssProv = document.getElementById('sssProv').value;
 
-    if (sssProv == ''){
-        sssProv = 0.00
-        document.getElementById('sssProv').value = sssProv;
-        calculateTotalGov()
+// const display_sss_data = async () => {
+//     let grossSalary;
+//     let sssAmount;
+//     let salary_details;
+//     let salary_rate;
+//     let phic;
+//     let hdmf;
+//     let sssProv;
+    
+
+//     salary_details = document.getElementById('salary_details').value;
+//     salary_rate = document.getElementById('salary_rate').value
+
+//     if (salary_details == 'Monthly'){
+//         salary_rate = salary_rate
+//     }else{
+//         salary_rate = salary_rate * 26
+//     }
+    
+//     const search_url = `/sss-computation/`;
+
+//     const responce = await fetch(search_url)
+//     const data = await responce.json();
+
+//     for (let i of data){
+//         if (i.amountTo >= salary_rate && i.amountFrom <= salary_rate){
+//             sssAmount = i.empShare
+//             sssAmount = sssAmount.toFixed(2)
+//             document.getElementById('sss').value = sssAmount
+//             calculateTotalGov()
+//         }
+
+//     }
+
+//     if (salary_rate <= 10000){
+//         phic = 400 /2
+//         phic = phic.toFixed(2)
+//         document.getElementById('phic').value = phic
+//         calculateTotalGov()
+
+//     }else if(salary_rate > 10000){
+//         phic = salary_rate * 0.04 / 2
+//         phic = phic.toFixed(2)
+//         document.getElementById('phic').value = phic
+//         calculateTotalGov()
+//     }else if(salary_rate >= 80000){
+//         phic = 3200
+//         phic = phic.toFixed(2)
+//         document.getElementById('phic').value = phic
+//         calculateTotalGov()
+
+//     }
+//     hdmf = 100
+//     document.getElementById('hdmf').value = hdmf
+//     calculateTotalGov()
 
 
-    }
+//     sssProv = document.getElementById('sssProv').value;
+
+//     if (sssProv == ''){
+//         sssProv = 0.00
+//         document.getElementById('sssProv').value = sssProv;
+//         calculateTotalGov()
+
+
+//     }
     
     // console.log(data.length)
       
-};
+// };
 
 // This is for compuation of Total Mandatory
 const sssInput = document.getElementById('sss');
@@ -221,6 +291,8 @@ sssProvInput.addEventListener('input', calculateTotalGov);
 
 
 const deminimis_computation = async () => {
+
+  
   let on_off_status;
   let totalGross2;
   let basic_taxable;
@@ -230,7 +302,7 @@ const deminimis_computation = async () => {
   let rice;
   let laundry;
   let medical1;
-  let medical2
+  let medical2;
 
   on_off_status = document.getElementById('emp_class').value
   totalGross2 = document.getElementById('totalGross2').value
@@ -259,31 +331,107 @@ const deminimis_computation = async () => {
       medical2 = 0
       medical2 = medical2.toFixed(2)
       document.getElementById('medical2').value = medical2;
-
+      // totalDeminimis()
 
   }else if(basic_taxable > 0 && on_off_status == 'on' && basic_taxable >= MWE){
-      uniform = basic_taxable * 0.13
+      uniform = MWE * 0.13
       uniform =uniform.toFixed(2)
       document.getElementById('uniform').value = uniform;
 
-      rice = basic_taxable * 0.52
+      rice = MWE * 0.52
       rice = rice.toFixed(2)
       document.getElementById('rice').value = rice;
 
-      laundry = basic_taxable * 0.08
+      laundry = MWE * 0.08
       laundry = laundry.toFixed(2)
       document.getElementById('laundry').value = laundry;
 
-      medical1 = basic_taxable * 0.21
+      medical1 = MWE * 0.21
       medical1 = medical1.toFixed(2)
       document.getElementById('medical1').value = medical1;
 
 
-      medical2 = basic_taxable * 0.06
+      medical2 = MWE * 0.06
       medical2 = medical2.toFixed(2)
       document.getElementById('medical2').value = medical2;
+      // totalDeminimis()
+  }else if(basic_taxable > 0 && on_off_status == 'on' && basic_taxable <= MWE){
+    uniform = basic_taxable * 0.13
+    uniform =uniform.toFixed(2)
+    document.getElementById('uniform').value = uniform;
+
+    rice = basic_taxable * 0.52
+    rice = rice.toFixed(2)
+    document.getElementById('rice').value = rice;
+
+    laundry = basic_taxable * 0.08
+    laundry = laundry.toFixed(2)
+    document.getElementById('laundry').value = laundry;
+
+    medical1 = basic_taxable * 0.21
+    medical1 = medical1.toFixed(2)
+    document.getElementById('medical1').value = medical1;
+
+
+    medical2 = basic_taxable * 0.06
+    medical2 = medical2.toFixed(2)
+    document.getElementById('medical2').value = medical2;
+    // totalDeminimis()
+}
   }
+
+  const withoutDeminimis = async () =>{
+    let rice;
+    let laundry;
+    let medical1;
+    let medical2;
+   
+    uniform = 0
+    uniform =uniform.toFixed(2)
+    document.getElementById('uniform').value = uniform;
+
+    rice = 0
+    rice = rice.toFixed(2)
+    document.getElementById('rice').value = rice;
+
+    laundry = 0
+    laundry = laundry.toFixed(2)
+    document.getElementById('laundry').value = laundry;
+
+    medical1 = 0
+    medical1 = medical1.toFixed(2)
+    document.getElementById('medical1').value = medical1;
+
+
+    medical2 = 0
+    medical2 = medical2.toFixed(2)
+    document.getElementById('medical2').value = medical2;
+    // totalDeminimis()
   }
+
+const totalDeminimis = async () => {
+  let rice;
+  let laundry;
+  let medical1;
+  let medical2;
+  let totalDems;
+
+  rice = $('#rice').val()
+  laundry = $('#laundry').val()
+  medical1 = $('#medical1').val()
+  medical2 = $('#medical2').val()
+
+
+  totalDems = parseFloat(rice) + parseFloat(laundry) + parseFloat(medical1) + parseFloat(medical2)
+  totalDems = totalDems.toFixed(2);
+  console.log(totalDems)
+  $('#totalDeminimis').val(totalDems);
+
+const taxComp = async () => {
+
+}
+
+}
 
 
 
