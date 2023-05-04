@@ -5,9 +5,11 @@ $(document).ready(function() {
      
       deminimis_computation()
       totalDeminimis()
+      otherForms()
   }else{
     withoutDeminimis()
     totalDeminimis()
+    otherForms()
   }
   });
 });
@@ -411,27 +413,105 @@ const deminimis_computation = async () => {
 
 const totalDeminimis = async () => {
   let rice;
+  let uniform;
   let laundry;
   let medical1;
   let medical2;
   let totalDems;
 
   rice = $('#rice').val()
+  uniform = $('#uniform').val()
   laundry = $('#laundry').val()
   medical1 = $('#medical1').val()
   medical2 = $('#medical2').val()
 
 
-  totalDems = parseFloat(rice) + parseFloat(laundry) + parseFloat(medical1) + parseFloat(medical2)
+  totalDems =  parseFloat(uniform) +  parseFloat(rice) + parseFloat(laundry) + parseFloat(medical1) + parseFloat(medical2)
   totalDems = totalDems.toFixed(2);
   console.log(totalDems)
   $('#totalDeminimis').val(totalDems);
+}
+
+const otherForms = async () => {
+  let allowance = document.querySelector('#allowance').value;
+  let totalDeminimis = document.querySelector('#totalDeminimis').value;
+  let salary_details = document.querySelector('#salary_details').value;
+  let salary_rate = document.querySelector('#salary_rate').value;
+  let provi_rate = document.querySelector('#provi_rate').value;
+  let emp_class = document.querySelector('#emp_class').value;
+  // let mweMonthly = parseFloat(provi_rate) * 13
+  let salRate_allowance;
+  let CalotherForms;
+  let otherForms
+  
+
+  totalGross2 = document.getElementById('totalGross2').value
+  basicMWE = (document.getElementById('provi_rate').value) * 13
+  basic_taxable = totalGross2 - basicMWE 
+  basic_taxable = basic_taxable.toFixed(2)
+ 
+
+  let afterDem = 0.00
+
+  if (basic_taxable == 0){
+    afterDem = 0.00
+    
+
+  }else{
+    afterDem = basic_taxable - totalDeminimis
+    
+  }
+
+  // This is for Determining if salary is monthly or to get the Total salary for 15 Days
+  if (salary_details == 'Monthly'){
+    salary_rate = salary_rate / 2
+    salRate_allowance = parseFloat(salary_rate) + parseFloat(allowance)
+   
+  }else{
+    salary_rate = salary_rate * 13
+    salRate_allowance = parseFloat(salary_rate) + parseFloat(allowance)
+    // console.log('This is salAllowance',salRate_allowance)
+  }
+
+
+  if (salRate_allowance <= 15000 && emp_class =='on'){
+    CalotherForms = ((90000 - (salary_rate * 2)) / 24)
+    CalotherForms = CalotherForms.toFixed(2)
+    if(afterDem <= CalotherForms ){
+      otherForms = afterDem
+      document.getElementById('otherForms').value = otherForms;
+      // console.log('This is otherForm',otherForms)
+    }else{
+      otherForms = CalotherForms
+      document.getElementById('otherForms').value = otherForms ;
+      // console.log('This is otherForm',otherForms)
+    }
+  }else if  (salRate_allowance <= 15000 && emp_class =='off'){
+    otherForms = 0.00
+    document.getElementById('otherForms').value = otherForms ;
+  }else{
+    CalotherForms = (90000 -30000) / 24
+    CalotherForms = CalotherForms.toFixed(2)
+    if(afterDem <= CalotherForms ){
+      otherForms = afterDem
+      document.getElementById('otherForms').value = otherForms;
+      // console.log('This is otherForm',otherForms)
+    }else{
+      otherForms = CalotherForms
+      document.getElementById('otherForms').value = otherForms ;
+      // console.log('This is otherForm',otherForms)
+    }
+
+  }
+
+}
+
 
 const taxComp = async () => {
 
 }
 
-}
+
 
 
 
