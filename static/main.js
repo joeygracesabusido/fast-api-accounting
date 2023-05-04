@@ -442,7 +442,7 @@ const otherForms = async () => {
   // let mweMonthly = parseFloat(provi_rate) * 13
   let salRate_allowance;
   let CalotherForms;
-  let otherForms
+  let otherForms;
   
 
   totalGross2 = document.getElementById('totalGross2').value
@@ -479,18 +479,21 @@ const otherForms = async () => {
     CalotherForms = CalotherForms.toFixed(2)
     if(afterDem <= CalotherForms ){
       otherForms = afterDem
+      otherForms = otherForms.toFixed(2)
       document.getElementById('otherForms').value = otherForms;
       // console.log('This is otherForm',otherForms)
     }else{
       otherForms = CalotherForms
+      
       document.getElementById('otherForms').value = otherForms ;
       // console.log('This is otherForm',otherForms)
     }
   }else if  (salRate_allowance <= 15000 && emp_class =='off'){
     otherForms = 0.00
+    otherForms = otherForms.toFixed(2)
     document.getElementById('otherForms').value = otherForms ;
   }else{
-    CalotherForms = (90000 -30000) / 24
+    CalotherForms = (90000-30000) / 24
     CalotherForms = CalotherForms.toFixed(2)
     if(afterDem <= CalotherForms ){
       otherForms = afterDem
@@ -498,6 +501,7 @@ const otherForms = async () => {
       // console.log('This is otherForm',otherForms)
     }else{
       otherForms = CalotherForms
+      
       document.getElementById('otherForms').value = otherForms ;
       // console.log('This is otherForm',otherForms)
     }
