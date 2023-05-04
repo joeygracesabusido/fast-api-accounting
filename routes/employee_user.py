@@ -267,7 +267,8 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 
 from config.models import (insertEquipmentRental,getallRental,
                             insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking,
-                            select_rizalEquipment,rentalSumRizal,dieselSumRizal,getChartRental)
+                            select_rizalEquipment,rentalSumRizal,dieselSumRizal,getChartRental
+                            ,getMonthlyRental)
 from models.model import RizalRental,RizalDiesel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
@@ -398,6 +399,27 @@ async def get_rentalSearch(datefrom,dateto,username: str = Depends(Employeevalid
             {
                 "transaction_date": i.transaction_date,
                 "totalHours": i.totalHours,
+               
+               
+            }
+           for i in result
+        ]
+    
+    
+    return rentalData
+
+
+@employee_user.get("/api-get-rentalChartMonthly-employeLogin/")
+async def get_rentalSearch(username: str = Depends(EmployeevalidateLogin)):
+    """This function is to query equipment Rental Rate """
+    result = getMonthlyRental()
+    
+    
+    rentalData = [
+        
+            {
+                "month_year": i.month_year,
+                "total_hours": i.total_hours,
                
                
             }
