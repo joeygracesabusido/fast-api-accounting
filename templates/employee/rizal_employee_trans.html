@@ -371,6 +371,12 @@
                     Print 
                     <i class="fas fa-database"></i>
                 </button>
+                
+
+                <button type="submit"  onclick="printRental()" class="btn btn-warning">
+                    Print Test
+                    <i class="fas fa-database"></i>
+                </button>
 
         </div>
         <div  class="container mt-3">
@@ -1944,6 +1950,49 @@
 
         </script>
 
+            
+
+
+        <script type="text/javascript">
+            async function printRental(){
+                var datefrom = document.getElementById("datefrom").value
+                var dateto = document.getElementById("dateto").value
+                var equipmentID = document.getElementById("equipment_id_searchRental").value
+
+                const search_url = `/api-get-rental-rizal-employee_login/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+
+                const response = await fetch(search_url)
+                const data = await response.json();
+                console.log(data)
+
+                const dataArray = [];
+
+                for (let i of data){
+                    dataArray.push(i);
+
+                    // Create a new jsPDF instance
+                    var doc = new jsPDF();
+                    // / Define the table headers
+                    var headers = [["ID", "TransDate", "Equipment ID",
+                                    "EUR","Total Hours","Rental Rate",
+                                        "Rental Amount","TotalAmount"]];
+                    var data1 = dataArray
+
+                    // Create a table using the headers and data
+                    doc.autoTable({
+                    head: headers,
+                    body: data1
+                    });
+
+                    // Save the PDF document
+                    doc.save("report.pdf");
+
+                }
+
+                console.log(dataArray);
+            }  
+
+        </script>
 
         <!-- This function is for exporting Excel of Rental transaction -->
             <script>
