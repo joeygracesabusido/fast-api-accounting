@@ -5,11 +5,11 @@ $(document).ready(function() {
      
       deminimis_computation()
       totalDeminimis()
-      otherForms()
+      calculateOtherForms()
   }else{
     withoutDeminimis()
     totalDeminimis()
-    otherForms()
+    calculateOtherForms()
   }
   });
 });
@@ -432,7 +432,7 @@ const totalDeminimis = async () => {
   $('#totalDeminimis').val(totalDems);
 }
 
-const otherForms = async () => {
+const calculateOtherForms = async () => {
   let allowance = document.querySelector('#allowance').value;
   let totalDeminimis = document.querySelector('#totalDeminimis').value;
   let salary_details = document.querySelector('#salary_details').value;
@@ -442,7 +442,7 @@ const otherForms = async () => {
   // let mweMonthly = parseFloat(provi_rate) * 13
   let salRate_allowance;
   let CalotherForms;
-  let otherForms;
+  
   
 
   totalGross2 = document.getElementById('totalGross2').value
@@ -451,19 +451,18 @@ const otherForms = async () => {
   basic_taxable = basic_taxable.toFixed(2)
  
 
-  let afterDem = 0.00
+  let afterDem = 0.00;
+  let otherForms = 0.00;
 
-  if (basic_taxable == 0){
-    afterDem = 0.00
-    
+  if (basic_taxable !== '0.00'){
+    afterDem = (basic_taxable - totalDeminimis);
 
-  }else{
-    afterDem = basic_taxable - totalDeminimis
-    
   }
 
+  
+
   // This is for Determining if salary is monthly or to get the Total salary for 15 Days
-  if (salary_details == 'Monthly'){
+  if (salary_details === 'Monthly'){
     salary_rate = salary_rate / 2
     salRate_allowance = parseFloat(salary_rate) + parseFloat(allowance)
    
@@ -480,35 +479,84 @@ const otherForms = async () => {
     if(afterDem <= CalotherForms ){
       otherForms = afterDem
       otherForms = otherForms.toFixed(2)
-      document.getElementById('otherForms').value = otherForms;
+      // document.getElementById('otherForms').value = otherForms;
       // console.log('This is otherForm',otherForms)
     }else{
       otherForms = CalotherForms
       
-      document.getElementById('otherForms').value = otherForms ;
+      // document.getElementById('otherForms').value = otherForms ;
       // console.log('This is otherForm',otherForms)
     }
   }else if  (salRate_allowance <= 15000 && emp_class =='off'){
-    otherForms = 0.00
-    otherForms = otherForms.toFixed(2)
-    document.getElementById('otherForms').value = otherForms ;
+    // Do nothing, otherForms is already set to 0.00
   }else{
     CalotherForms = (90000-30000) / 24
     CalotherForms = CalotherForms.toFixed(2)
     if(afterDem <= CalotherForms ){
       otherForms = afterDem
-      document.getElementById('otherForms').value = otherForms;
+      // document.getElementById('otherForms').value = otherForms;
       // console.log('This is otherForm',otherForms)
     }else{
       otherForms = CalotherForms
       
-      document.getElementById('otherForms').value = otherForms ;
+      // document.getElementById('otherForms').value = otherForms ;
       // console.log('This is otherForm',otherForms)
     }
 
   }
+  document.getElementById('otherForms').value = otherForms ;
 
-}
+};
+
+// const calculateOtherForms = async () => {
+//   const allowance = parseFloat(document.querySelector('#allowance').value);
+//   const totalDeminimis = parseFloat(document.querySelector('#totalDeminimis').value);
+//   const salaryDetails = document.querySelector('#salary_details').value;
+//   const salaryRate = parseFloat(document.querySelector('#salary_rate').value);
+//   const proviRate = parseFloat(document.querySelector('#provi_rate').value);
+//   const empClass = document.querySelector('#emp_class').value;
+
+//   const totalGross2 = parseFloat(document.getElementById('totalGross2').value);
+//   const basicMWE = proviRate * 13;
+//   const basicTaxable = (totalGross2 - basicMWE).toFixed(2);
+
+//   let afterDem = 0.00;
+
+//   if (basicTaxable !== '0.00') {
+//     afterDem = (basicTaxable - totalDeminimis);
+//   }
+
+//   let salRateAllowance;
+
+//   // Determine if salary is monthly or to get the Total salary for 15 Days
+//   let adjustedSalaryRate;
+
+//   if (salaryDetails === 'Monthly') {
+//     adjustedSalaryRate = salaryRate / 2;
+//     salRateAllowance = adjustedSalaryRate + allowance;
+//   } else {
+//     adjustedSalaryRate = salaryRate * 13;
+//     salRateAllowance = adjustedSalaryRate + allowance;
+//   }
+
+//   let otherForms = 0.00;
+//   const salAllowanceLimit = 15000;
+
+//   if (salRateAllowance <= salAllowanceLimit && empClass === 'on') {
+//     const calOtherForms = ((90000 - (salaryRate * 2)) / 24).toFixed(2);
+//     otherForms = (afterDem <= calOtherForms) ? afterDem : calOtherForms;
+//     // otherForms = otherForms.toFixed(2);
+//   } else if (salRateAllowance <= salAllowanceLimit && empClass === 'off') {
+//     // Do nothing, otherForms is already set to 0.00
+//   } else {
+//     const calOtherForms = ((90000 - 30000) / 24).toFixed(2);
+//     otherForms = (afterDem <= calOtherForms) ? afterDem : calOtherForms;
+//     // otherForms = otherForms.toFixed(2);
+//   }
+
+//   document.getElementById('otherForms').value = otherForms;
+// };
+
 
 
 const taxComp = async () => {
