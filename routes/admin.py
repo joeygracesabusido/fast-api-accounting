@@ -877,7 +877,6 @@ def delete_employee(id,token: str = Depends(oauth_scheme)):
 
 
 
-
 #=============================================Surigao Database =====================================
 from routes.client import login
 # from routes.rizal_project import validateLogin

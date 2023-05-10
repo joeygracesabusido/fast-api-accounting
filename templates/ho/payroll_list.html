@@ -1,0 +1,298 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<style>
+    table {
+         
+        border-collapse: collapse; /* remove table border */
+        width: 100%; /* set table width to 100% */
+    }
+
+    td {
+        padding: 8px; /* add padding to table cells */
+        text-align: left; /* set text alignment to left */
+        border-bottom: 1px solid #ddd; /* add bottom border to cells */
+        
+    }
+    tbody {
+        text-align: right;
+        font-size: 11px;/* set font size for table */
+    }
+    
+</style>
+
+<body>
+    <div class="container mt-3">
+        <label for="dateFrom"
+        >Date From</label>
+            <input 
+            type="date"
+            name="datefrom"
+            id="datefrom"
+           
+            >
+
+        <label for="dateto"
+            >Date To</label>
+                <input 
+                type="date"
+                name="dateto"
+                id="dateto"
+               
+                >
+
+        <label for="dateFrom"
+        >Department</label>
+            <input 
+            type="text"
+            name="department"
+            id="department"
+           
+            >
+
+        <label for="on_off"
+        >On/Off</label>
+            <input 
+            type="text"
+            name="on_off_details"
+            id="on_off_details"
+            
+            >
+
+            <button type="submit"  onclick="display_data()" class="btn btn-primary">
+                Search
+                <i class="fas fa-database"></i>
+            </button>
+
+            <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                Export
+                <i class="fas fa-database"></i>
+            </button>
+
+            
+    </div>
+
+    <div  class="container mt-3">
+        <table id="myTable" class="table table-bordered"  style="text-align: center;">
+            <thead class="table-dark">
+                <tr>
+                    
+                    <td>EmpID</td>
+                    <td>Name</td>
+                    <td>Position</td>
+                    <td>Rate</td>
+                    <td>Gross</td>
+                    <td>Department</td>
+                    <td>Total Dem</td>
+                    <td>OtherForms</td>
+                    <td>Tax Amount</td>
+                    <td>Total Man</td>
+                    <td>MWE</td>
+                    <td>SSS</td>
+                    <td>PHIC</td>
+                    <td>HDMF</td>
+                    <td>Date</td>
+                    
+                </tr>
+            </thead>
+            <tbody id="table_body">
+               
+                
+                    <tr>
+                        
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
+                       
+                        
+                    </tr>
+                 
+                
+            </tbody>
+
+           
+
+        </table>
+
+        
+            
+            
+    </div>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
+
+    <script type="text/javascript">
+
+        // const rental_url =search_url ;
+        async function display_data(){
+            var datefrom = document.getElementById("datefrom").value
+            var dateto = document.getElementById("dateto").value
+            var department = document.getElementById("department").value
+            var on_off_details = document.getElementById("on_off_details").value
+
+            const search_url = `/api-payroll-transaction-AdminLogin/?datefrom=${datefrom}&dateto=${dateto}&department=${department}&on_off_details=${on_off_details}`;
+
+
+            const responce = await fetch(search_url)
+            const data = await responce.json();
+            console.log(data)
+
+            if (data.length === 0) {
+                    window.alert('No Data available');
+                };
+            
+            
+            if (responce.status === 200){
+                let tableData="";
+                data.map((values)=>{
+                    tableData+= ` <tr>
+                                
+                                <td>${values.employee_id}</td>
+                                <td>${values.name}</td>
+                                <td>${values.position_name}</td>
+                                <td>${values.salary_rate}</td>
+                                <td>${values.grosspay_save}</td>
+                                <td>${values.department}</td>
+                                <td>${values.totalDem_save}</td>
+                                <td>${values.otherforms_save}</td>
+                                <td>${values.taxable_amount}</td>
+                                <td>${values.total_mandatory}</td>
+                                <td>${values.taxable_mwe_detail}</td>
+                                <td>${values.sss_save}</td>
+                                <td>${values.phic_save}</td>
+                                <td>${values.hmdf_save}</td>
+                                <td>${values.cut_off_date}</td>
+                                
+  
+                            
+                            </tr>`;
+                });
+                document.getElementById("table_body").innerHTML=tableData;
+
+            }else if (responce.status === 401){
+                window.alert("Unauthorized Credentials Please Log in")
+            }
+        
+        }
+
+    </script>
+
+    <script>
+        function html_table_excel(type){
+            var data = document.getElementById('table_body');
+            var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+            XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+            XLSX.writeFile(file, 'payrollList.' + type);
+
+        }
+
+        
+    </script>
+
+
+
+
+    <script type="text/javascript">
+
+                
+
+    //     // $(document).ready(function () {
+    //     //     $('#myTable').DataTable();
+    //     // });
+    //     $(document).ready(function () {
+
+
+    //         $("#myTable").DataTable({
+               
+
+    //             drawCallback: function () {
+    //             var api = this.api();
+    //             var sum = 0;
+    //             var formated = 0;
+    //             //to show first th
+    //             $(api.column(0).footer()).html('Total');
+
+    //             for(var i=7; i<=8;i++)
+    //             {
+    //                 sum = api.column(i).data().sum();
+
+    //                 //to format this sum
+    //                 formated = parseFloat(sum).toLocaleString(undefined, {minimumFractionDigits:2});
+    //                 $(api.column(i).footer()).html(''+formated);
+    //             }
+                
+    //         },
+
+    //                         // Refilter the table
+           
+    //             // configuration
+    //             paging: true,
+    //             pageLength: 10,
+    //             lengthChange: true,
+    //             autowidth: true,
+    //             searching: true,
+    //             bInfo: true,
+    //             bsort: true,
+                
+
+    //             dom: 'LBfrtip',
+    //             buttons: [
+    //                 { // COPY
+    //                     extend : 'copy',
+    //                     text: 'Copy',
+    //                     className: 'btn btn-secondary',
+    //                     titleArttr: 'Copy',
+    //                     exportOptions: {
+    //                         columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+    //                     },
+    //                 },
+    //                 { // EXCEL
+    //                     extend : 'excel',
+    //                     text: 'Export Excel',
+    //                     className: 'btn btn-success',
+    //                     titleArttr: 'Excel',
+    //                     exportOptions: {
+    //                         columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+    //                     },
+    //                 },
+    //                 { // Print
+    //                     extend : 'print',
+    //                     text: 'Print',
+    //                     className: 'btn btn-danger',
+    //                     titleArttr: 'Print',
+    //                     exportOptions: {
+    //                         columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+    //                     },
+    //                 },
+
+                
+    //             ]
+
+    //         })
+       
+
+    // });
+        
+    </script>
+    
+
+    
+</body>
+
+{% endblock %}

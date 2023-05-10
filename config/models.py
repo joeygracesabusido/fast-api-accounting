@@ -687,6 +687,27 @@ def getSSSTable():
         data = results.all()
         return data
 
+#============================================This is for Payroll Transaction============================
+def getPayrollTransactions(datefrom,dateto,department,on_off_details):
+    """This function is for querying for payroll Computation Transaction"""
+    with Session(engine) as session:
+        statement = select(payroll_computation.id,payroll_computation.employee_id,
+                        payroll_computation.first_name,payroll_computation.last_name, payroll_computation.position_name,
+                        payroll_computation.salary_rate,payroll_computation.grosspay_save,
+                        payroll_computation.department,payroll_computation.totalDem_save,
+                        payroll_computation.otherforms_save,payroll_computation.taxable_amount,
+                        payroll_computation.total_mandatory,payroll_computation.taxable_mwe_detail,
+                        payroll_computation.sss_save,payroll_computation.phic_save,
+                        payroll_computation.hmdf_save,payroll_computation.cut_off_date,
+                        ) \
+                        .where(payroll_computation.cut_off_date.between(datefrom,dateto)
+                        ,payroll_computation.department.like ('%'+ department +'%'),
+                        payroll_computation.on_off_details.like ('%'+ on_off_details +'%') )
+
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
 
 
 # create_db_and_tables()

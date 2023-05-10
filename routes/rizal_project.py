@@ -103,6 +103,90 @@ def get_payrollComputation(username: str = Depends(validateLogin)):
         ]
     return rentalData
 
+
+#============================================Payroll Transaction ==================================
+
+@rizal_project.get("/payroll-transaction-adminlogin/", response_class=HTMLResponse)
+def get_payrollTransaction(request: Request, username: str = Depends(validateLogin)):
+    """This function is for querying cash advances"""
+    # data = getPayrollTransactions(datefrom=datefrom,dateto=dateto,department=department)
+    
+   
+    # payrollData = [
+        
+    #         {
+               
+    #             "id": i['id'],
+    #             "employee_id": i['employee_id'],
+    #             "position_name": i['position_name'],
+    #             "name":i['firstname'] + ',' + i['firstname'],
+    #             "salary_rate": i['salary_rate'],
+    #             "grosspay_save": i['grosspay_save'],
+    #             "department": i['department'],
+    #             "totalDem_save": i['totalDem_save'],
+    #             "otherforms_save": i['otherforms_save'],
+    #             "taxable_amount": i['taxable_amount'],
+    #             "total_mandatory": i['total_mandatory'],
+    #             "taxable_mwe_detail": i['taxable_mwe_detail'],
+    #             "sss_save": i['sss_save'],
+    #             "phic_save": i['phic_save'],
+    #             "hmdf_save": i['hmdf_save'],
+    #             "cut_off_date": i['cut_off_date'],
+                
+    #             # "equipmentID": i['equipment_id']
+            
+    #         }
+    #       for i in data
+    #     ]
+    
+
+   
+
+    return templates.TemplateResponse("ho/payroll_list.html",{
+                                        "request":request
+                                                         })
+
+from config.models import getPayrollTransactions
+@rizal_project.get("/api-payroll-transaction-AdminLogin/")
+async def get_employee_payroll(datefrom,dateto,on_off_details:Optional[str], department:Optional[str],username: str = Depends(validateLogin)):
+    """This function is for queryong for Payroll transactions"""
+
+    data = getPayrollTransactions(datefrom=datefrom,dateto=dateto,department=department,on_off_details=on_off_details)
+    
+   
+    costData = [
+        
+            {
+               
+                "id": i['id'],
+                "employee_id": i['employee_id'],
+                "position_name": i['position_name'],
+                "name":i['last_name'] + ',' + i['first_name'],
+                "salary_rate": i['salary_rate'],
+                "grosspay_save": i['grosspay_save'],
+                "department": i['department'],
+                "totalDem_save": i['totalDem_save'],
+                "otherforms_save": i['otherforms_save'],
+                "taxable_amount": i['taxable_amount'],
+                "total_mandatory": i['total_mandatory'],
+                "taxable_mwe_detail": i['taxable_mwe_detail'],
+                "sss_save": i['sss_save'],
+                "phic_save": i['phic_save'],
+                "hmdf_save": i['hmdf_save'],
+                "cut_off_date": i['cut_off_date'],
+                
+                # "equipmentID": i['equipment_id']
+            
+            }
+          for i in data
+        ]
+    
+
+    return costData
+
+                                                         
+
+
 #======================================================Diesel Frame===========================================
 @rizal_project.get("/diesel-consumption-list/", response_class=HTMLResponse)
 async def get_diesel_params(request: Request,username: str = Depends(validateLogin)):
