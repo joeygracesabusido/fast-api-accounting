@@ -3,6 +3,7 @@ from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, 
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from config.db import mydb
+# from config.db import worker
 from models.model import EmployeeReg, RizalTonnagehaul
 from fastapi import staticfiles
 
