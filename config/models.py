@@ -216,7 +216,13 @@ class payroll_computation(SQLModel, table=True):
     userlog: str = Field(default=None,max_length=50)
     time_update: datetime
 
-
+class tax_table(SQLModel, table=True):
+    """This is for Taxable"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    amountFrom : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    amountTo : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    amountbase : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    percentageAmount : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
 
 
 def create_db_and_tables():
@@ -703,6 +709,18 @@ def getPayrollTransactions(datefrom,dateto,department,on_off_details):
                         .where(payroll_computation.cut_off_date.between(datefrom,dateto)
                         ,payroll_computation.department.like ('%'+ department +'%'),
                         payroll_computation.on_off_details.like ('%'+ on_off_details +'%') )
+
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
+#==========================================This is for Payroll===============================================
+def taxAmount():
+    """This is for Quarying for Tax table"""
+    with Session(engine) as session:
+        statement = select(tax_table.id,tax_table.amountFrom,
+                        tax_table.amountTo,tax_table.amountbase, tax_table.percentageAmount,
+                        ).order_by(tax_table.id)
 
         results = session.exec(statement) 
 

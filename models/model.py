@@ -235,7 +235,17 @@ class TVIDiesel(BaseModel):
     price: float
     totalAmount: float
     
-   
+#===========================================Rizal Equipment=======================================
+class EquipmentDetails(BaseModel):
+    """This is for  Equipment """
+    equipment_id: str
+    purchase_date: date
+    description: str
+    purchase_amount: float
+    rental_rate: float
+    plate_number: str
+    status: str
+    owner: str  
     
 #=========================================Employee Frame==========================================
 class EmployeeReg(BaseModel):

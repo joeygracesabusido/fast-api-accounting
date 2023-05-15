@@ -12,6 +12,8 @@ from typing import Optional
 
 from datetime import timedelta, datetime
 
+from models.model import EquipmentDetails
+
 
 from jose import jwt
 
@@ -1117,7 +1119,7 @@ async def test(username: str = Depends(validateLogin)):
 
 
 @rizal_project.post("/api-insert-rizal-equipment/")
-async def insertEquipment(items:equipment_details,username: str = Depends(validateLogin)):
+async def insertEquipment(items:EquipmentDetails,username: str = Depends(validateLogin)):
     """This function is to update employee Details"""
     insertEquipment(equipment_id=items.equipment_id,purchase_date=items.purchase_date,
                         description=items.description,purchase_amount=items.purchase_amount,
