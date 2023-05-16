@@ -1829,7 +1829,19 @@
                             if (response.status === 200) {
                             window.alert("Your data has been saved");
                             console.log(data);
-                            window.location.assign("/employee-rizal-equipment-rental/");
+                            
+                            let equipment_id = document.getElementById("equipment_id").value;
+                            let total_rental_hour = document.getElementById("total_rental_hour").value;
+                            let rental_rate = document.getElementById("rental_rate").value;
+                            let rental_amount = document.getElementById("rental_amount").value;
+                            let eur_form = document.getElementById("eur_form").value;
+
+                            total_rental_hour.value = "" ;
+                            rental_rate.value = "";
+                            rental_amount.value = "";
+
+
+                            // window.location.assign("/employee-rizal-equipment-rental/");
                             
                             } else if (response.status === 401) {
                             window.alert("Unauthorized credential. Please login");
