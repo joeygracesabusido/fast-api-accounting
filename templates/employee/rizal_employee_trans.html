@@ -439,7 +439,7 @@
             <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Rental List</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Rental List LD GLOBAL LEGACY INC</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -475,6 +475,11 @@
 
                 <button type="submit"  onclick="display_RentalSum()" class="btn btn-success">
                     Search Data
+                    <i class="fas fa-database"></i>
+                </button>
+
+                <button type="button" id="printTotalRental"  class="btn btn-warning">
+                    Print PDF
                     <i class="fas fa-database"></i>
                 </button>
 
@@ -2049,7 +2054,7 @@
                                         <td>${values.equipmentId}</td>
                                         <td>${values.totalHours}</td>
                                         <td>${values.rentalRate}</td>
-                                        <td>${values.totalAmount}</td>
+                                        <td style="text-align: right;">${values.totalAmount}</td>
                                         <td hidden>${values.totalAmount2}</td>
                                     
                                     
@@ -2089,6 +2094,14 @@
                     $("#fter_totalHour").val(sumTotalHoursComa);
                     $("#fter_totalAmountl").val(sumTotalAmount2Coma);
                     }
+            </script>
+
+            <script type="text/javascript">
+                document.getElementById('printTotalRental').addEventListener('click', printTotalRental);
+
+                function printTotalRental() {
+                window.print();
+                }
             </script>
 
 

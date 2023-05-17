@@ -147,7 +147,8 @@
                 function calculateProduct() {
                 var input1 = $('#totalliters').val();
                 var input2 = $('#priceDiesel').val();
-                var product = input1 * input2;
+                let product = parseFloat(input1) * parseFloat(input2);
+                product = product.toFixed(2)
                 $('#totalAmountDiesel').val(product);
                 }
 
