@@ -1950,12 +1950,15 @@
                     // Define an async function to insert equipment
                     async function insertDiesel() {
                     // Get the values of the input fields
+
+                    let priceValue = document.getElementById("priceDiesel").value
+                    priceValue = parseFloat(priceValue).toFixed(2)
                     const data = {
                         transDate: document.getElementById("transDateDiesel").value,
                         equipmentId: document.getElementById("equipmentIdDiesel").value,
                         withdrawalSlip: document.getElementById("withdrawalSlipDiesel").value,
                         totalliters: document.getElementById("totalliters").value,
-                        price: document.getElementById("priceDiesel").value,
+                        price: priceValue,
                         totalAmount: document.getElementById("totalAmountDiesel").value,
                         
                         

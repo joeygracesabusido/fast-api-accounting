@@ -164,11 +164,14 @@
                 function update_dieselData() {
                 var data = {};
                 var id = document.getElementById("transID").value;
+                let priceValue = document.getElementById("priceDiesel").value
+                priceValue = parseFloat(priceValue).toFixed(2)
+
                 data["transDate"] = document.getElementById("transDateDiesel").value;
                 data["equipmentId"] = document.getElementById("equipmentIdDiesel").value;
                 data["withdrawalSlip"] = document.getElementById("withdrawalSlipDiesel").value;
                 data["totalliters"] = document.getElementById("totalliters").value;
-                data["price"] = document.getElementById("priceDiesel").value;
+                data["price"] = priceValue;
                 data["totalAmount"] = document.getElementById("totalAmountDiesel").value;
                
                 
