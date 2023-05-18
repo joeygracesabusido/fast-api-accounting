@@ -1175,4 +1175,30 @@ async def updateRzEquipment(id,items:equipment_details,username: str = Depends(v
 
 #==============================================Rizal Employee Credential ============================================
 
-  
+
+#Testing ra ni
+from config.models import testJoinTable
+@rizal_project.get("/api-get-rizal-income-test/")
+async def test(datefrom,dateto,username: str = Depends(validateLogin)):
+    """This function is for testing"""
+
+    data = testJoinTable(datefrom=datefrom,dateto=dateto)
+    
+
+    costData = [
+        
+            {
+                "equipment_id": i.equipment_id,
+                "RentalAmount": i.RentalAmount,
+                "TonAmount": i.TonAmount,
+                "DieselAmount": i.DieselAmount,
+                "Expenses": i.Expenses,
+                "Income": (float(i.RentalAmount) + float(i.TonAmount)) - (float(i.DieselAmount) + float(i.Expenses))
+                
+            
+            }
+          for i in data
+        ]
+
+
+    return costData

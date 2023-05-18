@@ -728,4 +728,71 @@ def taxAmount():
         return data
 
 
+def testJoinTable(datefrom,dateto):
+    """This function is for Testing Joining Table using sqlmodel"""
+    with Session(engine) as session:
+        subquery_tc = (
+            select(
+                cost.equipment_id,
+                func.sum(cost.totalAmount).label("totalCost")
+            )
+            .where((cost.transDate >= datefrom) & (cost.transDate <= dateto))
+            .group_by(cost.equipment_id)
+            .subquery()
+        )
+
+        subquery_ht = (
+            select(
+                hauling_tonnage.equipment_id,
+                func.sum(hauling_tonnage.amount).label("totalTonAmount")
+            )
+            .where((hauling_tonnage.transDate >= datefrom) & (hauling_tonnage.transDate <= dateto))
+            .group_by(hauling_tonnage.equipment_id)
+            .subquery()
+        )
+
+        subquery_er = (
+            select(
+                equipment_rental.equipment_id,
+                func.sum(equipment_rental.rental_amount).label("totalRentalAmount")
+            )
+            .where((equipment_rental.transaction_date >= datefrom) & (equipment_rental.transaction_date <= dateto))
+            .group_by(equipment_rental.equipment_id)
+            .subquery()
+        )
+
+        subquery_dc = (
+            select(
+                diesel_consumption.equipment_id,
+                func.sum(diesel_consumption.amount).label("totalDCamount")
+            )
+            .where((diesel_consumption.transaction_date >= datefrom) & (diesel_consumption.transaction_date <= dateto))
+            .group_by(diesel_consumption.equipment_id)
+            .subquery()
+        )
+
+        statement = (
+            select(
+                equipment_details.equipment_id,
+                func.coalesce(subquery_ht.c.totalTonAmount, 0).label("TonAmount"),
+                func.coalesce(subquery_er.c.totalRentalAmount, 0).label("RentalAmount"),
+                func.coalesce(subquery_dc.c.totalDCamount, 0).label("DieselAmount"),
+                func.coalesce(subquery_tc.c.totalCost, 0).label("Expenses")
+            )
+            .select_from(equipment_details)
+            .outerjoin(subquery_tc, equipment_details.equipment_id == subquery_tc.c.equipment_id)
+            .outerjoin(subquery_ht, equipment_details.equipment_id == subquery_ht.c.equipment_id)
+            .outerjoin(subquery_er, equipment_details.equipment_id == subquery_er.c.equipment_id)
+            .outerjoin(subquery_dc, equipment_details.equipment_id == subquery_dc.c.equipment_id)
+            .order_by(equipment_details.equipment_id)
+        )
+
+        results = session.exec(statement)
+        data = results.all()
+        return data
+
+
+
+
+
 # create_db_and_tables()
