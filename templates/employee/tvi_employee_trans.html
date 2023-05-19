@@ -45,6 +45,9 @@
             <br><br>
 
 
+           
+
+
             <!-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#insertTonnage">
                 Insert Tons
             </button>
@@ -60,6 +63,16 @@
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#costList">
                 Cost List
             </button><br><br>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#dieselList">
+                Add Routes
+            </button>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#AddTons">
+                Add Tonnage
+            </button>
+
+            <br><br>
 
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#employeeList">
                 Employee List
@@ -1424,6 +1437,194 @@
                 </div>
                 <div class="modal-footer">
                 
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+<!-- =======================================This is for  Tonnage Computation of HTML & CSS======================= -->
+        <!-- Modal Insert Cost Transactions -->
+        <div class="modal fade" id="AddTons" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Cost Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <label >
+                        Date
+                    </label>
+                    <input 
+                        type="date" 
+                        name="transDate_tons"
+                        id="transDate_tons"
+                        
+                        class="form-control"
+                        
+                        >
+            
+                    <label >
+                        Equipment ID
+                        </label>
+                        <input 
+                            type="text" 
+                            name="equipment_id_tons"
+                            id="equipment_id_tons"
+                            
+                            class="form-control"
+                            
+                        >
+            
+                    <label >
+                        Equipment ID
+                        </label>
+                        <input 
+                            type="text" 
+                            name="equipmentID_tons"
+                            id="equipmentID_tons"
+                            class="form-control"
+                           
+                        >
+            
+                    <label >
+                        Trip Ticket
+                        </label>
+                        <input 
+                            type="text" 
+                            name="tripTicket_tons"
+                            id="tripTicket_tons"
+                            class="form-control"
+                            
+                        >
+            
+            
+                    <label >
+                        Routes
+                        </label>
+                        <input 
+                            type="text" 
+                            name="tripTicket_tons"
+                            id="tripTicket_tons"
+                            class="form-control"
+                        >
+            
+                    <label >
+                        Mechanical Supplies
+                        </label>
+                        <input 
+                            type="number" 
+                            name="mechanicalSupplies"
+                            id="mechanicalSupplies"
+                            step="0.0"
+                            class="form-control"
+                            onkeyup="getTotalamount();"
+                        >
+            
+                    <label >
+                        Repair Maintenance
+                        </label>
+                        <input 
+                            type="number" 
+                            name="repairMaintenance"
+                            id="repairMaintenance"
+                            step="0.0"
+                            class="form-control"
+                            onkeyup="getTotalamount();"
+                        >
+            
+                    <label >
+                        Meals
+                        </label>
+                        <input 
+                            type="number" 
+                            name="meals"
+                            id="meals"
+                            step="0.0"
+                            class="form-control"
+                            onkeyup="getTotalamount();"
+                        >
+            
+                    <label >
+                        Transpo
+                        </label>
+                        <input 
+                            type="number" 
+                            name="transpo"
+                            id="transpo"
+                            step="0.0"
+                            class="form-control"
+                            onkeyup="getTotalamount();"
+                        >
+                    
+                    <label >
+                        Tires
+                        </label>
+                        <input 
+                            type="number" 
+                            name="tires"
+                            id="tires"
+                            step="0.0"
+                            class="form-control"
+                            onkeyup="getTotalamount();"
+                        >
+            
+                    <label >
+                        Amortization
+                        </label>
+                        <input 
+                            type="number" 
+                            name="amortization"
+                            id="amortization"
+                            step="0.0"
+                            class="form-control"
+                            onkeyup="getTotalamount();"
+                        >
+            
+                    <label >
+                        Others
+                        </label>
+                        <input 
+                            type="number" 
+                            name="others"
+                            id="others"
+                            step="0.0"
+                            class="form-control"
+                            onkeyup="getTotalamount();"
+                        >
+            
+                    <label >
+                        Total Amount
+                        </label>
+                        <input 
+                            type="number" hidden
+                            name="costAmount"
+                            id="costAmount"
+                            step="0.1"
+                            class="form-control"
+                            
+                        >
+
+                        <input 
+                            type="text" 
+                            name="totalAmount_cost2"
+                            id="totalAmount_cost2"
+                           
+                            class="form-control"
+                            
+                        >
+            
+                    
+                    
+            
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="insertCosting()" class="btn btn-primary">Save</button>
                 <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                 </div>
             </div>

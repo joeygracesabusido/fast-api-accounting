@@ -80,6 +80,33 @@ class tvidieseltransaction(SQLModel, table=True):
     user: str = Field(default=None)
     date_updated: datetime = Field(default=None)
     date_credited: datetime
+    
+
+
+
+class tvi_tonnage(SQLModel, table=True):
+    """This is for tonnage table in TVI"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    equipmentId: str = Field(index=True)
+    tripTicket: str = Field(default=None)
+    routes: str = Field(default=None)
+    distance: condecimal(max_digits=3, decimal_places=2) = Field(default=0)
+    hauling_rate: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    totalAmount: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    project_site: str = Field(default=None)
+    driverOperator: str = Field(default=None)
+    user: str = Field(default=None)
+    date_updated: datetime = Field(default=None)
+    date_credited: datetime
+
+class  tviRoutes(SQLModel, table=True):
+    """This is for TVI Routes"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    routes: str = Field(default=None)
+    distance: condecimal(max_digits=3, decimal_places=2) = Field(default=0)
+
+
 
 
 
