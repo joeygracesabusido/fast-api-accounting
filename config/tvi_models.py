@@ -91,14 +91,15 @@ class tvi_tonnage(SQLModel, table=True):
     equipmentId: str = Field(index=True)
     tripTicket: str = Field(default=None)
     routes: str = Field(default=None)
-    trips: condecimal(max_digits=3, decimal_places=2) = Field(default=0)
-    distance: condecimal(max_digits=3, decimal_places=2) = Field(default=0)
-    hauling_rate: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    trips: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    volume_tons: condecimal(max_digits=9, decimal_places=2)
+    distance: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    hauling_rate: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     project_site: str = Field(default=None)
     driverOperator: str = Field(default=None)
     user: str = Field(default=None)
-    date_updated: datetime = Field(default=None)
-    date_credited: datetime
+    date_updated:  Optional[datetime] = Field(default=None)
+    date_credited: datetime = Field(default_factory=datetime.utcnow)
 
 class  tviRoutes(SQLModel, table=True):
     """This is for TVI Routes"""
@@ -113,7 +114,7 @@ class  tviRoutes(SQLModel, table=True):
 def create_db_and_tables2():
     
     SQLModel.metadata.create_all(engine)
-
+    # migrate(engine, SQLModel.metadata)
 
 #============================================This is for Function ======================================
 def insertRoutes(routes,distance):
@@ -138,7 +139,50 @@ def getRoutes(routes):
        
         return data
 
+def routesAutocomplete(term):
+    """This function is for autocomplete """
 
+    with Session(engine) as session:
+        statement = select(tviRoutes).filter(tviRoutes.routes.like ('%'+ term +'%'))
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+       
+        return data
+#=======================================this is for Inserting Tonage============================================
+def insertTons(transDate,equipmentId,tripTicket,
+                 routes,trips,volume_tons,
+                  distance, hauling_rate,
+                   project_site, driverOperator,user):
+    """This function is for Inserting Data into tvi_tonnage Table"""
+    insertData = tvi_tonnage(transDate=transDate,equipmentId=equipmentId,tripTicket=tripTicket,
+                    routes=routes,trips=trips,volume_tons=volume_tons,distance=distance,
+                    hauling_rate=hauling_rate,project_site=project_site,driverOperator=driverOperator,
+                    user=user)
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
+def getTon(tripTicket):
+    """This function is for querying """
+
+    with Session(engine) as session:
+        statement = select(tvi_tonnage).filter(tvi_tonnage.tripTicket.like ('%'+ tripTicket +'%'))
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        
+        return data
+
+
+#=====================================This is for Equipment Model=============================================
 
 def insertEquipment_tvi(equipmentID,purchase_date,equipmentDesc,
                         purchase_amount,rentalRate,plate_number,status, project_site ,remarks,owner):
@@ -539,7 +583,6 @@ def updateTVIDiesel(id,transDate,equipmentId,withdrawalSlip,
 # select_tivEquipment_with_id(1)
 # getEquipmentTVI2()
 # getRentalTVI()
-
 
 
 # create_db_and_tables2()

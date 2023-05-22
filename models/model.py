@@ -345,5 +345,16 @@ class TVIRoutes(BaseModel):
     routes: str
     distance: float
     
-
+class TVITons(BaseModel):
+    transDate: date
+    equipmentId: str
+    tripTicket: str
+    routes: str
+    trips: float 
+    volume_tons: float
+    distance: float 
+    hauling_rate: float
+    project_site: str
+    driverOperator: str
+    
     

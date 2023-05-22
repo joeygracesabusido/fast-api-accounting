@@ -1278,6 +1278,20 @@
                                 class="form-control"
                                 
                             >
+
+                        <label >
+                            Volume
+                            </label>
+                            <input 
+                            type="number" 
+                            name="volTons"
+                            id="volTons"
+                            step="0.0"
+                            class="form-control"
+                            
+                        >
+
+                            
                 
                         <label >
                             Distance
@@ -1299,6 +1313,7 @@
                                 name="rate_tons"
                                 id="rate_tons"
                                 step="0.0"
+                                value="44.40"
                                 class="form-control"
                                
                             >
@@ -1307,10 +1322,10 @@
                                 Total Amount
                                 </label>
                                 <input 
-                                    type="number" 
+                                    type="text" 
                                     name="totalAmount_tons"
-                                    id="ratetotalAmount_tons_tons"
-                                    step="0.0"
+                                    id="totalAmount_tons"
+                                   
                                     class="form-control"
                                    
                                 >
@@ -1342,7 +1357,7 @@
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" onclick="insertDiesel()" class="btn btn-primary">Save</button>
+                <button type="button" id="BtnSave_Tons" name="BtnSave_Tons"  class="btn btn-primary">Save</button>
                 <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                 </div>
             </div>
@@ -1395,8 +1410,8 @@
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" onclick="addtviroutes()" class="btn btn-primary">Save</button>
-                <!-- <button type="button" id="insertRoutes" class="btn btn-primary">Save</button> -->
+                <!-- <button type="submit" onclick="addtviroutes()" class="btn btn-primary">Save</button> -->
+                <button type="button" id="insertRoutes" class="btn btn-primary">Save</button>
                 <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                 </div>
             </div>
@@ -1405,7 +1420,16 @@
        
 
 <!-- =======================================Java Script Function for Automatic Display============================ -->
-       
+       <script type="text/javascript">
+
+            // function updateInputValue() {
+            //     var volume_tons = document.getElementById("volume_tons");
+            //     var volume_tons2 = document.getElementById("volume_tons2");
+
+            //     volume_tons2.value = volume_tons.value;
+            // }
+   
+       </script>
         
         
         

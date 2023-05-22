@@ -823,15 +823,16 @@ async def getDieselSum(username: str = Depends(EmployeevalidateLogin)):
     return employeeData
 
 #==============================================TVI Tons Transaction===================================
-from config.tvi_models import getRoutes,insertRoutes
-from models.model import TVIRoutes
+from config.tvi_models import (getRoutes,insertRoutes,
+                                routesAutocomplete,insertTons,getTon)
+from models.model import TVIRoutes,TVITons
 @employee_user.get("/api-get-tvi-check-routes-employeeLogin/")
 async def getroutesTVI(routes,username: str = Depends(EmployeevalidateLogin)):
     """This function is for checking if routes has been already exist"""
 
     results = getRoutes(routes=routes)
 
-    employeeData = [
+    routesData = [
         
             {
                 "id": x.id,
@@ -843,7 +844,7 @@ async def getroutesTVI(routes,username: str = Depends(EmployeevalidateLogin)):
         ]
     
    
-    return employeeData
+    return routesData
 
 
 @employee_user.post("/api-insert-tvi-routes-employeeLogin/")
@@ -853,4 +854,47 @@ async def insertRoutesEmployeeLogin(items:TVIRoutes,username: str = Depends(Empl
     insertRoutes(routes=items.routes,distance=items.distance)
 
 
+@employee_user.get("/api-search-autocomplete-tvi-routes/")
+def autocomplete_tvi_routes(term: Optional[str]):
+    # this is to autocomplete Routes
+    items = routesAutocomplete(term=term)
 
+    
+    suggestions = []
+    for item in items:
+        suggestions.append(item.routes)
+ 
+    return suggestions
+
+
+@employee_user.get("/api-get-tvi-check-tons-employeeLogin/")
+async def getroutesTVI(tripTicket,username: str = Depends(EmployeevalidateLogin)):
+    """This function is for checking if routes has been already exist"""
+
+    results = getTon(tripTicket=tripTicket)
+
+    tonData = [
+        
+            {
+                "id": x.id,
+                "routes": x.routes,   
+            }
+            for x in results
+        ]
+    
+   
+    return tonData
+
+
+@employee_user.post("/api-insert-tvi-tons-employeeLogin/")
+async def insertTonsEmployeeLogin(items:TVITons,username: str = Depends(EmployeevalidateLogin)):
+
+    """This function is to insert """
+    
+    insertTons(transDate=items.transDate,equipmentId=items.equipmentId,tripTicket=items.tripTicket,
+                routes=items.routes,trips=items.trips,volume_tons=items.volume_tons,
+                distance=items.distance,hauling_rate=items.hauling_rate,
+                project_site=items.project_site,driverOperator=items.driverOperator,
+                user=username)
+
+    
