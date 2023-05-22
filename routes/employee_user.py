@@ -822,5 +822,35 @@ async def getDieselSum(username: str = Depends(EmployeevalidateLogin)):
    
     return employeeData
 
+#==============================================TVI Tons Transaction===================================
+from config.tvi_models import getRoutes,insertRoutes
+from models.model import TVIRoutes
+@employee_user.get("/api-get-tvi-check-routes-employeeLogin/")
+async def getroutesTVI(routes,username: str = Depends(EmployeevalidateLogin)):
+    """This function is for checking if routes has been already exist"""
+
+    results = getRoutes(routes=routes)
+
+    employeeData = [
+        
+            {
+                "id": x.id,
+                "routes": x.routes,
+                "distance": x.distance,
+                
+            }
+            for x in results
+        ]
+    
+   
+    return employeeData
+
+
+@employee_user.post("/api-insert-tvi-routes-employeeLogin/")
+async def insertRoutesEmployeeLogin(items:TVIRoutes,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to insert """
+    
+    insertRoutes(routes=items.routes,distance=items.distance)
+
 
 

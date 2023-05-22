@@ -4,6 +4,18 @@
 
 
 {% block content %}
+<style>
+    /* #addRoutes.modal{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+} */
+</style>
 <body>
     <div class="container">
         <h2>
@@ -64,7 +76,7 @@
                 Cost List
             </button><br><br>
 
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#dieselList">
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addRoutes">
                 Add Routes
             </button>
 
@@ -800,254 +812,6 @@
         </div>
 
 
-
-
-
-
-
-
-        <!-- Modal Insert Tonnage Transactions -->
-        <div class="modal fade" id="insertTonnage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Tonnage Transaction</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-
-                
-                <div class="modal-body">
-                    <label >
-                        Date
-                    </label>
-                    <input 
-                        type="date" 
-                        name="transDate_Tons"
-                        id="transDate_Tons"
-                        
-                        class="form-control"
-                        
-                        >
-            
-                    <label >
-                        Equipment ID
-                        </label>
-                        <input 
-                            type="text" 
-                            name="equipmentID_Tons"
-                            id="equipmentID_Tons"
-                            
-                            class="form-control"
-                            
-                        >
-            
-                    <label >
-                        Trip Ticket
-                        </label>
-                        <input 
-                            type="text" 
-                            name="tripTicket_Tons"
-                            id="tripTicket_Tons"
-                            
-                            class="form-control"
-                            
-                        >
-            
-                    <label >
-                        Total Trip
-                        </label>
-                        <input 
-                            type="number" 
-                            name="totalTrip_Tons"
-                            id="totalTrip_Tons"
-                            step="0.0"
-                            class="form-control"
-                            
-                        >
-            
-            
-                    <label >
-                        Total Tonnage
-                        </label>
-                        <input 
-                            type="number" 
-                            name="totalTons_Tons"
-                            id="totalTons_Tons"
-                            step="0.0"
-                            class="form-control"
-                            
-                        >
-            
-                    <label >
-                        Rate
-                        </label>
-                        <input 
-                            type="number" 
-                            name="rate_Tons"
-                            id="rate_Tons"
-                            step="0.0"
-                            class="form-control"
-                            
-                        >
-            
-                        <label >
-                        Amount
-                        </label>
-                        <input 
-                            type="number" hidden
-                            name="amount_Tons"
-                            id="amount_Tons"
-                            step="0.0"
-                            class="form-control"
-                            
-                        >
-
-                        <input 
-                            type="text" 
-                            name="amount_Tons2"
-                            id="amount_Tons2"
-                            
-                            class="form-control"
-                            
-                        >
-            
-                    <label >
-                        Driver/Operator
-                        </label>
-                        <input 
-                            type="text" 
-                            name="driver_operator_Tons"
-                            id="driver_operator_Tons"
-                            
-                            class="form-control"
-                            
-                        >
-                    
-                    
-            
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" onclick="inserttonnageHauling()" class="btn btn-primary">Save</button>
-                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
-                </div>
-            </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="tonnageList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog  modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tonnage Transaction List</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-
-                
-                <div class="modal-body">
-                    <div class="container mt-3">
-                        <label for="dateFrom"
-                        >From</label>
-                        
-                       
-                        
-                            <input 
-                            type="date"
-                            name="dateFrom_Tons"
-                            id="dateFrom_Tons"
-                           
-                            >
-                
-                        <label for="dateTo"
-                        >Date To</label>
-                        
-                            <input 
-                            type="date"
-                            name="dateTo_Tons"
-                            id="dateTo_Tons"
-                            
-                            >
-                
-                        <label for="dateTo"
-                        >Equipment ID</label>
-                        
-                            <input 
-                            type="text"
-                            name="equipmentIDSearch_Tons"
-                            id="equipmentIDSearch_Tons"
-                            
-                            >
-                        
-                        <button type="submit" onclick="displayTonnageData()" class="btn btn-primary">Search</button>
-
-                        <button type="submit"  onclick="html_table_excel_tonnage('xlsx')" class="btn btn-secondary">
-                            Export Excel
-                            <i class="fas fa-database"></i>
-                        </button>
-                    </div>
-
-                    <div  class="container mt-3">
-                        <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
-                            <thead class="table-dark">
-                                <tr>
-                                    <td>Date</td>
-                                    <td>Equipment ID</td>
-                                    <td>Total Trip</td>
-                                    <td>Total Tonnage</td>
-                                    <td>Rate</td>
-                                    <td>Amount</td>
-                                    <td>Cum Total</td>
-                                    <td>Driver Operator</td>
-                                    <td>Action</td>
-                                </tr>
-                            </thead>
-                            <tbody id="table_body_tonnage">
-                               
-                                    
-                                    <tr>
-                                        
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                   
-                                
-                            </tbody>
-            
-                           
-            
-                        </table>
-            
-                        
-                            
-                            
-                    </div>
-        
-                  
-           </div>
-        
-
-  
-                </div>
-                <div class="modal-footer">
-                
-                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
-                </div>
-            </div>
-            </div>
-        </div>
-
-
         <!-- Modal Insert Cost Transactions -->
         <div class="modal fade" id="insertcost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -1448,7 +1212,7 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Cost Transaction</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Tonnage</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1456,6 +1220,7 @@
 
                 
                 <div class="modal-body">
+
                     <label >
                         Date
                     </label>
@@ -1467,171 +1232,183 @@
                         class="form-control"
                         
                         >
-            
-                    <label >
-                        Equipment ID
-                        </label>
-                        <input 
-                            type="text" 
-                            name="equipment_id_tons"
-                            id="equipment_id_tons"
+                        
                             
-                            class="form-control"
-                            
-                        >
-            
-                    <label >
-                        Equipment ID
-                        </label>
-                        <input 
-                            type="text" 
-                            name="equipmentID_tons"
-                            id="equipmentID_tons"
-                            class="form-control"
-                           
-                        >
-            
-                    <label >
-                        Trip Ticket
-                        </label>
-                        <input 
-                            type="text" 
-                            name="tripTicket_tons"
-                            id="tripTicket_tons"
-                            class="form-control"
-                            
-                        >
-            
-            
-                    <label >
-                        Routes
-                        </label>
-                        <input 
-                            type="text" 
-                            name="tripTicket_tons"
-                            id="tripTicket_tons"
-                            class="form-control"
-                        >
-            
-                    <label >
-                        Mechanical Supplies
-                        </label>
-                        <input 
-                            type="number" 
-                            name="mechanicalSupplies"
-                            id="mechanicalSupplies"
-                            step="0.0"
-                            class="form-control"
-                            onkeyup="getTotalamount();"
-                        >
-            
-                    <label >
-                        Repair Maintenance
-                        </label>
-                        <input 
-                            type="number" 
-                            name="repairMaintenance"
-                            id="repairMaintenance"
-                            step="0.0"
-                            class="form-control"
-                            onkeyup="getTotalamount();"
-                        >
-            
-                    <label >
-                        Meals
-                        </label>
-                        <input 
-                            type="number" 
-                            name="meals"
-                            id="meals"
-                            step="0.0"
-                            class="form-control"
-                            onkeyup="getTotalamount();"
-                        >
-            
-                    <label >
-                        Transpo
-                        </label>
-                        <input 
-                            type="number" 
-                            name="transpo"
-                            id="transpo"
-                            step="0.0"
-                            class="form-control"
-                            onkeyup="getTotalamount();"
-                        >
-                    
-                    <label >
-                        Tires
-                        </label>
-                        <input 
-                            type="number" 
-                            name="tires"
-                            id="tires"
-                            step="0.0"
-                            class="form-control"
-                            onkeyup="getTotalamount();"
-                        >
-            
-                    <label >
-                        Amortization
-                        </label>
-                        <input 
-                            type="number" 
-                            name="amortization"
-                            id="amortization"
-                            step="0.0"
-                            class="form-control"
-                            onkeyup="getTotalamount();"
-                        >
-            
-                    <label >
-                        Others
-                        </label>
-                        <input 
-                            type="number" 
-                            name="others"
-                            id="others"
-                            step="0.0"
-                            class="form-control"
-                            onkeyup="getTotalamount();"
-                        >
-            
-                    <label >
-                        Total Amount
-                        </label>
-                        <input 
-                            type="number" hidden
-                            name="costAmount"
-                            id="costAmount"
-                            step="0.1"
-                            class="form-control"
-                            
-                        >
-
-                        <input 
-                            type="text" 
-                            name="totalAmount_cost2"
-                            id="totalAmount_cost2"
-                           
-                            class="form-control"
-                            
-                        >
-            
-                    
-                    
-            
+                        <label >
+                            Equipment ID
+                            </label>
+                            <input 
+                                type="text" 
+                                name="equipmentID_tons"
+                                id="equipmentID_tons"
+                                class="form-control"
+                               
+                            >
+                
+                        <label >
+                            Trip Ticket
+                            </label>
+                            <input 
+                                type="text" 
+                                name="tripTicket_tons"
+                                id="tripTicket_tons"
+                                class="form-control"
+                                
+                            >
+                
+                
+                        <label >
+                            Routes
+                            </label>
+                            <input 
+                                type="text" 
+                                name="routes_tons"
+                                id="routes_tons"
+                                class="form-control"
+                            >
+                
+                        <label >
+                            Trips
+                            </label>
+                            <input 
+                                type="number" 
+                                name="trips"
+                                id="trips"
+                                step="0.0"
+                                class="form-control"
+                                
+                            >
+                
+                        <label >
+                            Distance
+                            </label>
+                            <input 
+                                type="number" 
+                                name="distance_tons"
+                                id="distance_tons"
+                                step="0.0"
+                                class="form-control"
+                                
+                            >
+                
+                        <label >
+                            Hauling Rate
+                            </label>
+                            <input 
+                                type="number" 
+                                name="rate_tons"
+                                id="rate_tons"
+                                step="0.0"
+                                class="form-control"
+                               
+                            >
+    
+                            <label >
+                                Total Amount
+                                </label>
+                                <input 
+                                    type="number" 
+                                    name="totalAmount_tons"
+                                    id="ratetotalAmount_tons_tons"
+                                    step="0.0"
+                                    class="form-control"
+                                   
+                                >
+                
+                        <label >
+                            Project
+                            </label>
+                            <select name="project_tons" id="project_tons"class="form-control">
+                                <option value="">--SELECT--</option>
+                                <option value="TVI">TVI</option>
+                                <option value="THEO">THEO</option>
+                                
+                        
+                            </select> 
+                        
+                        <label >
+                            Driver Operator
+                            </label>
+                            <input 
+                                type="text" 
+                                name="driverOperatorTons"
+                                id="driverOperatorTons"
+                                
+                                class="form-control"
+                                
+                            >
+        
+                
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" onclick="insertCosting()" class="btn btn-primary">Save</button>
+                <button type="submit" onclick="insertDiesel()" class="btn btn-primary">Save</button>
                 <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
                 </div>
             </div>
             </div>
         </div>
+       
+
+<!-- =======================================This is for Adding Routes of HTML & CSS======================= -->
+        
+        <div class="modal" id="addRoutes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Routes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+
+                
+                        <label >
+                            Routes
+                            </label>
+                            <input 
+                                type="text" 
+                                name="routes_routes"
+                                id="routes_routes"
+                                class="form-control"
+                            >
+                
+                       
+                        <label >
+                            Distance
+                            </label>
+                            <input 
+                                type="number" 
+                                name="distance_routes"
+                                id="distance_routes"
+                                step="0.0"
+                                class="form-control"
+                                
+                            >
+                
+                        
+        
+                
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="addtviroutes()" class="btn btn-primary">Save</button>
+                <!-- <button type="button" id="insertRoutes" class="btn btn-primary">Save</button> -->
+                <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                </div>
+            </div>
+            </div>
+        </div>
+       
 
 <!-- =======================================Java Script Function for Automatic Display============================ -->
+       
+        
+        
+        
         <script type="text/javascript">
             async function employeeData(){
                 const search_url = `/api-get-tvi-employeeDetails-employeeLogin/`;
@@ -1879,6 +1656,9 @@
                 //                  }
                 
                 // }
+
+
+                
             </script>
 
 

@@ -100,4 +100,56 @@ function delete_rental(id){
   
 }
             
-       
+// var btnInsertRoutes = document.querySelector('#insertRoutes')
+
+// btnInsertRoutes.addEventListener("click", function() {
+//     InsertRoutes()
+// });
+
+
+// Define the addtviroutes function
+async function addtviroutes() {
+    // Get the values of the input fields
+    const data = {
+        routes_routes: document.getElementById("routes_routes").value,
+        distance_routes: document.getElementById("distance_routes").value,
+    };
+    console.log(data);
+
+    // Use the fetch API to send the POST request
+    const search_url_SEARCH = `/api-get-tvi-check-routes-employeeLogin/?routes=${data.routes_routes}`;
+    const responseSEARCH = await fetch(search_url_SEARCH);
+    const dataSEARCH = await responseSEARCH.json();
+    console.log(dataSEARCH);
+
+    if (dataSEARCH.length > 0) {
+        window.alert("Your routes already exist");
+    } else if (data.routes_routes === '' || data.distance_routes === '') {
+        window.alert("Please fill up Blank fields/field");
+    } else {
+        try {
+            const response = await fetch(`/api-insert-tvi-routes-employeeLogin/`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            // Check if the response was successful
+            if (response.status === 200) {
+                window.alert("Your data has been saved");
+                console.log(data);
+                // window.location.assign("/employee-rizal-equipment-rental/");
+            } else if (response.status === 401) {
+                window.alert("Unauthorized credential. Please login");
+            }
+        } catch (error) {
+            // Catch any errors and log them to the console
+            window.alert(error);
+            console.log(error);
+        }
+    }
+}
+
+// Attach the event listener to the button
+var btnInsertRoutes = document.querySelector('#insertRoutes');
+btnInsertRoutes.addEventListener("click", addtviroutes);

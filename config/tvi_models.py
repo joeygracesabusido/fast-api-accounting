@@ -91,9 +91,9 @@ class tvi_tonnage(SQLModel, table=True):
     equipmentId: str = Field(index=True)
     tripTicket: str = Field(default=None)
     routes: str = Field(default=None)
+    trips: condecimal(max_digits=3, decimal_places=2) = Field(default=0)
     distance: condecimal(max_digits=3, decimal_places=2) = Field(default=0)
     hauling_rate: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
-    totalAmount: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
     project_site: str = Field(default=None)
     driverOperator: str = Field(default=None)
     user: str = Field(default=None)
@@ -114,6 +114,29 @@ def create_db_and_tables2():
     
     SQLModel.metadata.create_all(engine)
 
+
+#============================================This is for Function ======================================
+def insertRoutes(routes,distance):
+    """This is for inserting Routes in TVI database"""
+    insertData = tviRoutes(routes=routes,distance=distance)
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
+def getRoutes(routes):
+    """This is to query for Routes in TVI """
+    with Session(engine) as session:
+        statement = select(tviRoutes).filter(tviRoutes.routes.like ('%'+ routes +'%'))
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+       
+        return data
 
 
 

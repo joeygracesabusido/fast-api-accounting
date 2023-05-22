@@ -339,6 +339,11 @@ class TVIRentalTransactionEmployeeLogin(BaseModel):
     net_of_vat: float
     project_site: str
     driverOperator: str
+
+
+class TVIRoutes(BaseModel):
+    routes: str
+    distance: float
     
 
     
