@@ -180,6 +180,21 @@ def getTon(tripTicket):
         data = results.all()
         
         return data
+    
+
+def getTons(datefrom,dateto,equipmentId,project_site):
+    """This function is for querying all Rental Equipment in TVI"""
+    with Session(engine) as session:
+        statement = select(tvi_tonnage).where(tvi_tonnage.transDate.between(datefrom,dateto)) \
+                        .filter(tvi_tonnage.equipmentId.like ('%'+ equipmentId +'%'),tvi_tonnage.project_site.like ('%'+ project_site +'%')) \
+                         .order_by(tvi_tonnage.transDate.asc())
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
 
 
 #=====================================This is for Equipment Model=============================================

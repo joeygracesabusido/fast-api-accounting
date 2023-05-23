@@ -1,0 +1,160 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+
+    #div1 {
+                width: 40%; /* Set the width of the div element */
+                margin: auto; /* Center the div */
+                border-width: 1px;
+                border-style: solid;
+                border-color: lightgray;
+                background-color: gray;
+                
+        }
+    
+    
+    
+</style>
+
+<body>
+    <div class="container mt-3" id="div1">
+        <h2 style="color:yellow;">UPDATE TVI TONS TRANSACTION</h2>
+
+        <label >
+            Date
+        </label>
+        <input 
+            type="date" 
+            name="transDate_tons"
+            id="transDate_tons"
+            
+            class="form-control"
+            
+            >
+            
+                
+            <label >
+                Equipment ID
+                </label>
+                <input 
+                    type="text" 
+                    name="equipmentID_tons"
+                    id="equipmentID_tons"
+                    class="form-control"
+                   
+                >
+    
+            <label >
+                Trip Ticket
+                </label>
+                <input 
+                    type="text" 
+                    name="tripTicket_tons"
+                    id="tripTicket_tons"
+                    class="form-control"
+                    
+                >
+    
+    
+            <label >
+                Routes
+                </label>
+                <input 
+                    type="text" 
+                    name="routes_tons"
+                    id="routes_tons"
+                    class="form-control"
+                >
+    
+            <label >
+                Trips
+                </label>
+                <input 
+                    type="number" 
+                    name="trips"
+                    id="trips"
+                    step="0.0"
+                    class="form-control"
+                    
+                >
+
+            <label >
+                Volume
+                </label>
+                <input 
+                type="number" 
+                name="volTons"
+                id="volTons"
+                step="0.0"
+                class="form-control"
+                
+            >
+
+                
+    
+            <label >
+                Distance
+                </label>
+                <input 
+                    type="number" 
+                    name="distance_tons"
+                    id="distance_tons"
+                    step="0.0"
+                    class="form-control"
+                    
+                >
+    
+            <label >
+                Hauling Rate
+                </label>
+                <input 
+                    type="number" 
+                    name="rate_tons"
+                    id="rate_tons"
+                    step="0.0"
+                    value="44.40"
+                    class="form-control"
+                   
+                >
+
+                <label >
+                    Total Amount
+                    </label>
+                    <input 
+                        type="text" 
+                        name="totalAmount_tons"
+                        id="totalAmount_tons"
+                       
+                        class="form-control"
+                       
+                    >
+    
+            <label >
+                Project
+                </label>
+                <select name="project_tons" id="project_tons"class="form-control">
+                    <option value="">--SELECT--</option>
+                    <option value="TVI">TVI</option>
+                    <option value="THEO">THEO</option>
+                    
+            
+                </select> 
+            
+            <label >
+                Driver Operator
+                </label>
+                <input 
+                    type="text" 
+                    name="driverOperatorTons"
+                    id="driverOperatorTons"
+                    
+                    class="form-control"
+                    
+                >
+
+
+    </div>
+</body>
+
+{% endblock %}

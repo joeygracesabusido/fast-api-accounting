@@ -266,8 +266,6 @@ $(document).ready(function() {
 
     function calculateTonageAmount() {
 
-    
-    
     var distance_tons = parseFloat($('#distance_tons').val());
     var rate_tons = parseFloat($('#rate_tons').val());
     var volume_routes = parseFloat($('#volTons').val());
@@ -276,9 +274,9 @@ $(document).ready(function() {
     var product = volume_routes * distance_tons * rate_tons;
 
     // product = parseFloat(product).toFixed(2)
-    // var product2 = product.toLocaleString("en-US");
+    var product2 = product.toLocaleString("en-US");
 
-    $('#totalAmount_tons').val(product);
+    $('#totalAmount_tons').val(product2);
    
     }
 
@@ -303,3 +301,61 @@ $(document).ready(function() {
 //     document.getElementById("totalAmount_tons").value = product2;
 // }
 
+// const rental_url =search_url ;
+
+// =========================This function is for Displaying Data of Tons Transaction ============================
+async function displayTonsData(){
+    var datefrom = document.getElementById("datefrom_tons").value
+    var dateto = document.getElementById("dateto_tons").value
+    var equipmentID = document.getElementById("equipmentIDSearch_tons").value
+    var project_site = document.getElementById("prjectSiteSearch_tons").value
+
+    const search_url = `/api-get-tvi-tons-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipmentId=${equipmentID}&project_site=${project_site}`;
+
+
+    const responce = await fetch(search_url)
+    const data = await responce.json();
+    console.log(data)
+
+    if (data.length === 0) {
+            window.alert('No Data available');
+        };
+    
+    
+    if (responce.status === 200){
+        let tableData="";
+        data.map((values)=>{
+            tableData+= ` <tr>
+                        <td>${values.id}</td>
+                        <td>${values.transDate}</td>
+                        <td>${values.equipmentId}</td>
+                        <td>${values.tripTicket}</td>
+                        <td>${values.routes}</td>
+                        <td>${values.trips}</td>
+                        <td>${values.volume_tons}</td>
+                        <td>${values.distance}</td>
+                        <td>${values.hauling_rate}</td>
+                        <td>${values.billingAmount2}</td>
+                        <td hidden>${values.billingAmount}</td>
+                        <td>
+                        <a href="/api-get-update-tvi-tonsTransaction-sqlModel/${values.id}"
+                            <button type="button" class="btn btn-primary">
+                        <i class="fas fa-plus-square"></i>Edit</button></a> 
+                       
+                        </td>
+                    
+                    </tr>`;
+        });
+        document.getElementById("table_body_tons").innerHTML=tableData;
+
+    }else if (responce.status === 401){
+        window.alert("Unauthorized Credentials Please Log in")
+    }
+
+};
+
+//<a href="/api-get-update-tvi-rentalTransaction-sqlModel/${values.id}"
+
+// Attach the event listener to the button
+var BtnSearch_Tons = document.querySelector('#BtnSearch_Tons');
+BtnSearch_Tons.addEventListener("click", displayTonsData);

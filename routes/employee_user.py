@@ -824,7 +824,7 @@ async def getDieselSum(username: str = Depends(EmployeevalidateLogin)):
 
 #==============================================TVI Tons Transaction===================================
 from config.tvi_models import (getRoutes,insertRoutes,
-                                routesAutocomplete,insertTons,getTon)
+                                routesAutocomplete,insertTons,getTon,getTons)
 from models.model import TVIRoutes,TVITons
 @employee_user.get("/api-get-tvi-check-routes-employeeLogin/")
 async def getroutesTVI(routes,username: str = Depends(EmployeevalidateLogin)):
@@ -896,5 +896,66 @@ async def insertTonsEmployeeLogin(items:TVITons,username: str = Depends(Employee
                 distance=items.distance,hauling_rate=items.hauling_rate,
                 project_site=items.project_site,driverOperator=items.driverOperator,
                 user=username)
+    
+
+@employee_user.get("/api-get-tvi-tons-employeeLogin/")
+async def get_cost(datefrom,dateto,equipmentId:Optional[str],
+                    project_site:Optional[str],username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = getTons(datefrom=datefrom,dateto=dateto,
+                        project_site=project_site,equipmentId=equipmentId)
+
+    rentalData = [
+        
+            {
+                "id": x.id,
+                "transDate": x.transDate,
+                "equipmentId": x.equipmentId,
+                "tripTicket": x.tripTicket,
+                "routes": x.routes,
+                "trips": x.trips,
+                "volume_tons": x.volume_tons,
+                "distance": x.distance,
+                "hauling_rate": x.hauling_rate,
+                "billingAmount":(float(x.volume_tons) * float(x.distance) * float(x.hauling_rate)),
+                "billingAmount2": "{:,.2f}".format(float(x.volume_tons) * float(x.distance) * float(x.hauling_rate)),
+                
+            
+            }
+            for x in results
+        ]
+    
+
+    return rentalData
+
+@employee_user.get("/api-get-update-tvi-tonsTransaction-sqlModel/{id}", response_class=HTMLResponse)
+async def getTviTrans(id: int,request:Request,username: str = Depends(EmployeevalidateLogin)):
+    """This function is for querying from Rental Transactions for update purposes"""
+
+    # rentalList = getRentalTVI_id_update(id=id)
+
+    # Data = [
+    #         {
+    #             "id": x.id,
+    #             "transDate": x.transDate ,
+    #             "demr": x.demr,
+    #             "equipmentId": x.equipmentId,
+    #             "totalHours": x.totalHours,
+    #             "rentalRate": x.rentalRate,
+    #             "totalAmount": x.totalAmount,
+    #             "taxRate": x.taxRate,
+    #             "vat_output": x.vat_output,
+    #             "net_of_vat": x.net_of_vat,
+    #             "driverOperator": x.driverOperator,
+    #             "project_site": x.project_site,
+    #             "user": x.user,
+    #             "date_updated": x.date_updated,
+    #             "date_credited": x.date_credited,
+    #         }
+    #         for x in rentalList
+    #     ]
+    
+    
+    return templates.TemplateResponse("tvi/updatetonsTVI.html",{'request':request})
 
     

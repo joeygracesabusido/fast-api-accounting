@@ -84,6 +84,10 @@
                 Add Tonnage
             </button>
 
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#tonnageList">
+                Tonnage List
+            </button>
+
             <br><br>
 
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#employeeList">
@@ -1363,7 +1367,130 @@
             </div>
             </div>
         </div>
-       
+
+
+<!-- ==========================================This is for Tonnage List====================================== -->
+            <div class="modal fade" id="tonnageList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tonnage List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="container mt-3">
+                            
+                            <label for="DateFRomTons"
+                            >Date From</label>
+                            
+                                <input 
+                                type="date"
+                                name="datefrom_tons"
+                                id="datefrom_tons"
+                                
+                                >
+
+                            <label for="DateToTons"
+                            >Date To</label>
+                            
+                                <input 
+                                type="date"
+                                name="dateto_tons"
+                                id="dateto_tons"
+                                
+                                >
+
+                            <label for="EquipmentID Tons"
+                            >Equipment ID</label>
+                            
+                                <input 
+                                type="text"
+                                name="equipmentIDSearch_tons"
+                                id="equipmentIDSearch_tons"
+                                
+                                >
+
+                            <label for="Project Site"
+                            >Project Site</label>
+                            
+                                <input 
+                                type="text"
+                                name="prjectSiteSearch_tons"
+                                id="prjectSiteSearch_tons"
+                                
+                                >
+                            
+                            <button type="button" id="BtnSearch_Tons" name="BtnSearch_Tons"  class="btn btn-secondary">Search</button>
+                        
+                        </div>
+
+                        <div  class="container mt-3">
+                            <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <td>ID</td>
+                                        <td>Date</td>
+                                        <td>Equipment ID</td>
+                                        <td>Trip Ticket</td>
+                                        <td>Routes</td>
+                                        <td>Trips</td>
+                                        <td>Volume</td>
+                                        <td>Distance</td>
+                                        <td>Rate/Tons</td>
+                                        <td>Amount</td>
+                                        <td hidden>Amount</td>
+                                        <td>Action</td>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_tons">
+                                
+                                        
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td hidden></td>
+                                            <td></td>
+                                        </tr>
+                                    
+                                    
+                                </tbody>
+                
+                            
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+
+                    
+            </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                    
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    </div>
+                </div>
+                </div>
+            </div>
+                
 
 <!-- =======================================This is for Adding Routes of HTML & CSS======================= -->
         
