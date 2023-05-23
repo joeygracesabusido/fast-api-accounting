@@ -824,7 +824,8 @@ async def getDieselSum(username: str = Depends(EmployeevalidateLogin)):
 
 #==============================================TVI Tons Transaction===================================
 from config.tvi_models import (getRoutes,insertRoutes,
-                                routesAutocomplete,insertTons,getTon,getTons)
+                                routesAutocomplete,insertTons,getTon,getTons,
+                                getTon_id)
 from models.model import TVIRoutes,TVITons
 @employee_user.get("/api-get-tvi-check-routes-employeeLogin/")
 async def getroutesTVI(routes,username: str = Depends(EmployeevalidateLogin)):
@@ -932,30 +933,31 @@ async def get_cost(datefrom,dateto,equipmentId:Optional[str],
 async def getTviTrans(id: int,request:Request,username: str = Depends(EmployeevalidateLogin)):
     """This function is for querying from Rental Transactions for update purposes"""
 
-    # rentalList = getRentalTVI_id_update(id=id)
+    x = getTon_id(id=id)
 
-    # Data = [
-    #         {
-    #             "id": x.id,
-    #             "transDate": x.transDate ,
-    #             "demr": x.demr,
-    #             "equipmentId": x.equipmentId,
-    #             "totalHours": x.totalHours,
-    #             "rentalRate": x.rentalRate,
-    #             "totalAmount": x.totalAmount,
-    #             "taxRate": x.taxRate,
-    #             "vat_output": x.vat_output,
-    #             "net_of_vat": x.net_of_vat,
-    #             "driverOperator": x.driverOperator,
-    #             "project_site": x.project_site,
-    #             "user": x.user,
-    #             "date_updated": x.date_updated,
-    #             "date_credited": x.date_credited,
-    #         }
-    #         for x in rentalList
-    #     ]
+    tonsData = [
+        
+            {
+                "id": x.id,
+                "transDate": x.transDate,
+                "equipmentId": x.equipmentId,
+                "tripTicket": x.tripTicket,
+                "routes": x.routes,
+                "trips": x.trips,
+                "volume_tons": x.volume_tons,
+                "distance": x.distance,
+                "hauling_rate": x.hauling_rate,
+                "billingAmount":(float(x.volume_tons) * float(x.distance) * float(x.hauling_rate)),
+                "billingAmount2": "{:,.2f}".format(float(x.volume_tons) * float(x.distance) * float(x.hauling_rate)),
+                "driverOperator": x.driverOperator
+            
+            }
+            
+        ]
     
+
+   
     
-    return templates.TemplateResponse("tvi/updatetonsTVI.html",{'request':request})
+    return templates.TemplateResponse("tvi/updatetonsTVI.html",{'request':request,'tonsData':tonsData})
 
     

@@ -180,6 +180,18 @@ def getTon(tripTicket):
         data = results.all()
         
         return data
+
+def getTon_id(id):
+    """This function is for querying """
+
+    with Session(engine) as session:
+        statement = select(tvi_tonnage).filter(tvi_tonnage.id == id)
+                    
+        results = session.exec(statement) 
+
+        data = results.one()
+        
+        return data
     
 
 def getTons(datefrom,dateto,equipmentId,project_site):

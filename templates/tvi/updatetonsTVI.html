@@ -20,6 +20,15 @@
 <body>
     <div class="container mt-3" id="div1">
         <h2 style="color:yellow;">UPDATE TVI TONS TRANSACTION</h2>
+        {% for list in tonsData %}
+        <input 
+            type="text" 
+            name="transID_tons"
+            id="transID_tons"
+            value="{{list.id}}"
+            class="form-control"
+            
+            >
 
         <label >
             Date
@@ -28,7 +37,7 @@
             type="date" 
             name="transDate_tons"
             id="transDate_tons"
-            
+            value="{{list.transDate}}"
             class="form-control"
             
             >
@@ -41,6 +50,7 @@
                     type="text" 
                     name="equipmentID_tons"
                     id="equipmentID_tons"
+                    value="{{list.equipmentId}}"
                     class="form-control"
                    
                 >
@@ -52,6 +62,7 @@
                     type="text" 
                     name="tripTicket_tons"
                     id="tripTicket_tons"
+                    value="{{list.tripTicket}}"
                     class="form-control"
                     
                 >
@@ -64,6 +75,7 @@
                     type="text" 
                     name="routes_tons"
                     id="routes_tons"
+                    value="{{list.routes}}"
                     class="form-control"
                 >
     
@@ -75,6 +87,7 @@
                     name="trips"
                     id="trips"
                     step="0.0"
+                    value="{{list.trips}}"
                     class="form-control"
                     
                 >
@@ -87,6 +100,7 @@
                 name="volTons"
                 id="volTons"
                 step="0.0"
+                value="{{list.volume_tons}}"
                 class="form-control"
                 
             >
@@ -101,6 +115,7 @@
                     name="distance_tons"
                     id="distance_tons"
                     step="0.0"
+                    value="{{list.distance}}"
                     class="form-control"
                     
                 >
@@ -114,6 +129,7 @@
                     id="rate_tons"
                     step="0.0"
                     value="44.40"
+                    value="{{list.hauling_rate}}"
                     class="form-control"
                    
                 >
@@ -125,7 +141,7 @@
                         type="text" 
                         name="totalAmount_tons"
                         id="totalAmount_tons"
-                       
+                        value="{{list.billingAmount2}}"
                         class="form-control"
                        
                     >
@@ -148,12 +164,17 @@
                     type="text" 
                     name="driverOperatorTons"
                     id="driverOperatorTons"
-                    
+                    value="{{list.driverOperator}}"
                     class="form-control"
                     
                 >
 
+            {% endfor %}
 
+            <button type="submit"   class="btn btn-success">
+                Update
+                <i class="fas fa-database"></i>
+            </button>
     </div>
 </body>
 

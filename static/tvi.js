@@ -347,7 +347,9 @@ async function displayTonsData(){
                     </tr>`;
         });
         document.getElementById("table_body_tons").innerHTML=tableData;
-
+        // var test = 1000
+        // document.getElementById("fter_totalBillinglTons").value = test;
+        summaryTonnageTotal()
     }else if (responce.status === 401){
         window.alert("Unauthorized Credentials Please Log in")
     }
@@ -359,3 +361,22 @@ async function displayTonsData(){
 // Attach the event listener to the button
 var BtnSearch_Tons = document.querySelector('#BtnSearch_Tons');
 BtnSearch_Tons.addEventListener("click", displayTonsData);
+
+// This is for total of Trips and Amount using ES
+const summaryTonnageTotal = () => {
+    const table = document.querySelector("#table_body_tons");
+    let sumTons = 0;
+    let sumTotalAmount = 0;
+  
+    table.querySelectorAll("tr").forEach(row => {
+      sumTons += parseFloat(row.querySelectorAll("td")[5].textContent);
+      sumTotalAmount += parseFloat(row.querySelectorAll("td")[10].textContent);
+    });
+  
+    const sumTotalHoursComma = sumTons.toLocaleString("en-US");
+    const sumTotalAmountComma = sumTotalAmount.toLocaleString("en-US");
+  
+    document.querySelector("#fter_totalTrip").value = sumTotalHoursComma;
+    document.querySelector("#fter_totalBillinglTons").value = sumTotalAmountComma;
+  };
+
