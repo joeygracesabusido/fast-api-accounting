@@ -825,7 +825,7 @@ async def getDieselSum(username: str = Depends(EmployeevalidateLogin)):
 #==============================================TVI Tons Transaction===================================
 from config.tvi_models import (getRoutes,insertRoutes,
                                 routesAutocomplete,insertTons,getTon,getTons,
-                                getTon_id)
+                                getTon_id,updateTons)
 from models.model import TVIRoutes,TVITons
 @employee_user.get("/api-get-tvi-check-routes-employeeLogin/")
 async def getroutesTVI(routes,username: str = Depends(EmployeevalidateLogin)):
@@ -955,9 +955,19 @@ async def getTviTrans(id: int,request:Request,username: str = Depends(Employeeva
             
         ]
     
-
-   
-    
     return templates.TemplateResponse("tvi/updatetonsTVI.html",{'request':request,'tonsData':tonsData})
+
+
+@employee_user.put("/api-update-tvi-tons-sqlModel/{id}")
+async def insertRentalTvi(id: int, items:TVITons,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update tons Details"""
+    today = datetime.now()
+    updateTons(transDate=items.transDate,equipmentId=items.equipmentId,tripTicket=items.tripTicket,
+                    routes=items.routes,trips=items.trips,volume_tons=items.volume_tons,
+                    distance=items.distance,hauling_rate=items.hauling_rate,project_site=items.project_site,
+                    driverOperator=items.driverOperator,user=username,date_updated=today,id=id)
+
+
+    return  {'Messeges':'Data has been Save'}  
 
     

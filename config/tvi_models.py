@@ -192,6 +192,39 @@ def getTon_id(id):
         data = results.one()
         
         return data
+
+def updateTons(id,transDate,equipmentId,tripTicket,routes,
+                    trips,volume_tons,distance,hauling_rate,project_site,
+                    driverOperator,user,date_updated):
+    """This function is for updating Rizal Equipment"""
+
+    with Session(engine) as session:
+        statement = select(tvi_tonnage).where(tvi_tonnage.id == id)
+        results = session.exec(statement)
+
+        result = results.one()
+
+           
+        result.transDate = transDate
+        result.equipmentId = equipmentId
+        result.tripTicket = tripTicket
+        result.routes = routes
+        result.trips = trips
+        result.volume_tons = volume_tons
+        result.distance = distance
+        result.hauling_rate = hauling_rate
+        result.project_site = project_site
+        result.driverOperator = driverOperator
+        result.user = user
+        result.date_updated = date_updated
+
+        
+
+    
+        session.add(result)
+        session.commit()
+        session.refresh(result)
+
     
 
 def getTons(datefrom,dateto,equipmentId,project_site):

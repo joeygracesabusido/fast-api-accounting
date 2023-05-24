@@ -22,7 +22,7 @@
         <h2 style="color:yellow;">UPDATE TVI TONS TRANSACTION</h2>
         {% for list in tonsData %}
         <input 
-            type="text" 
+            type="text" hidden
             name="transID_tons"
             id="transID_tons"
             value="{{list.id}}"
@@ -171,11 +171,120 @@
 
             {% endfor %}
 
-            <button type="submit"   class="btn btn-success">
+            <button type="button" id="BtnUpdate_tons"   class="btn btn-success">
                 Update
                 <i class="fas fa-database"></i>
             </button>
     </div>
+
+    <script>
+            $( function() { 
+                $("#equipmentID_tons").autocomplete({
+                source: "/api-search-autocomplete-tvi-equipment2/"
+                });
+
+            } );
+
+
+            $( function() { 
+                $("#routes_tons").autocomplete({
+                source: "/api-search-autocomplete-tvi-routes/"
+                });
+
+            } );
+
+
+    </script>
+
+    <script>
+                // this is for computation of 
+        $(document).ready(function() {
+            $('#distance_tons, #volTons, #rate_tons').on('input', function() {
+                calculateTonageAmount();
+            });
+            });
+
+            function calculateTonageAmount() {
+
+            var distance_tons = parseFloat($('#distance_tons').val());
+            var rate_tons = parseFloat($('#rate_tons').val());
+            var volume_routes = parseFloat($('#volTons').val());
+            
+            
+            var product = volume_routes * distance_tons * rate_tons;
+
+            // product = parseFloat(product).toFixed(2)
+            var product2 = product.toLocaleString("en-US");
+
+            $('#totalAmount_tons').val(product2);
+        
+            }
+    </script>
+
+    <script type="text/javascript">
+        
+        // this function is to Update Tons Transaction
+
+        function update_Tons() {
+            var data = {};
+            var id = document.getElementById("transID_tons").value;
+            
+
+            data["transDate"] = document.getElementById("transDate_tons").value;
+            data["equipmentId"] = document.getElementById("equipmentID_tons").value;
+            data["tripTicket"] = document.getElementById("tripTicket_tons").value;
+            data["routes"] = document.getElementById("routes_tons").value;
+            data["trips"] = document.getElementById("trips").value;
+            data["volume_tons"] = document.getElementById("volTons").value;
+            data["distance"] = document.getElementById("distance_tons").value;
+            data["hauling_rate"] = document.getElementById("rate_tons").value;
+            data["project_site"] = document.getElementById("project_tons").value;
+            data["driverOperator"] = document.getElementById("driverOperatorTons").value;
+        
+
+            console.log(data);
+
+            if (id === '') {
+                    window.alert("Trans ID field is requires");
+            } else {
+                    // Use async/await to simplify the fetch call
+                    (async () => {
+                    try {
+                            // Use template literals to build the URL
+                            if (confirm('Are you sure you want to update this tons transaction?')){
+                                    const response = await fetch("/api-update-tvi-tons-sqlModel/"+ id, {
+                                    method: "PUT",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(data)
+                                    });
+
+                                    // Use response.ok to check if the response was successful
+                                    if (response.ok) {
+                                    window.alert("Your Data has been Updated");
+                                    window.location.assign("/employee-transaction-tvi/");
+                                    // console.log(await response.json());
+                                    } else if (response.status === 401) {
+                                    window.alert("Unauthorized credential Please Login");
+                                    }
+
+                            } else {
+                                    throw new Error('Failed to update data');
+                                    }
+                        
+                    } catch (error) {
+                            // Catch errors
+                            window.alert(error);
+                            console.log(error);
+                    }
+                    })();
+            }
+            };
+
+        // Attach the event listener to the button for Update Tons
+        var BtnUpdate_Tons = document.querySelector('#BtnUpdate_tons');
+        BtnUpdate_Tons.addEventListener("click", update_Tons);
+
+    </script>
 </body>
 
 {% endblock %}

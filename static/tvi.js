@@ -379,4 +379,3 @@ const summaryTonnageTotal = () => {
     document.querySelector("#fter_totalTrip").value = sumTotalHoursComma;
     document.querySelector("#fter_totalBillinglTons").value = sumTotalAmountComma;
   };
-
