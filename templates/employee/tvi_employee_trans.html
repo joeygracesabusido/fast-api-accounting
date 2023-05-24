@@ -90,6 +90,14 @@
 
             <br><br>
 
+            
+
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#incentivesList">
+                Incentive List
+            </button>
+
+            <br><br>
+
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#employeeList">
                 Employee List
             </button>
@@ -1425,7 +1433,9 @@
                                 >
                             
                             <button type="button" id="BtnSearch_Tons" name="BtnSearch_Tons"  class="btn btn-secondary">Search</button>
-                        
+                            <button type="submit" onclick="html_table_excel_tonnage2('xlsx')"   class="btn btn-success">Excel</button>
+                            <!-- <button type="button" id="excelExportTons"    class="btn btn-success">Excel</button> -->
+
                         </div>
 
                         <div  class="container mt-3">
@@ -1512,6 +1522,144 @@
                 </div>
             </div>
                 
+
+
+<!-- ==========================================This is for Tonnage List====================================== -->
+            <div class="modal fade" id="incentivesList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Incentive List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <div class="container mt-3">
+                            
+                            <label for="DateFRomTons"
+                            >Date From</label>
+                            
+                                <input 
+                                type="date"
+                                name="datefrom_incentive"
+                                id="datefrom_incentive"
+                                
+                                >
+
+                            <label for="DateToTons"
+                            >Date To</label>
+                            
+                                <input 
+                                type="date"
+                                name="dateto_inct"
+                                id="dateto_inct"
+                                
+                                >
+
+                            <label for="EquipmentID Tons"
+                            >Equipment ID</label>
+                            
+                                <input 
+                                type="text"
+                                name="equipmentIDSearch_inct"
+                                id="equipmentIDSearch_inct"
+                                
+                                >
+
+
+                                
+            
+                            
+                            <button type="button" id="BtnSearch_incentives" name="BtnSearch_incentives"  class="btn btn-secondary">Search</button>
+                        
+                            <input 
+                                type="text"
+                                name="autoSearch_incentive"
+                                id="autoSearch_incentive"
+                                placeholder="Driver/Equipment ID"
+                                >
+
+                        </div>
+
+                        <div  class="container mt-3">
+                            <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                    <tr>
+                                        
+                                        <td>Equipment ID</td>
+                                        <td>Routes</td>
+                                        <td>Trips</td>
+                                        <td>Distance</td>
+                                        <td>Driver</td>
+                                        <td>Incentives</td>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_incentive"  style="text-align: right;">
+                                
+                                        
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                           
+                                        </tr>
+                                    
+                                    
+                                </tbody>
+                
+                            
+                
+                            </table>
+                
+                            
+                                
+                                
+                        </div>
+
+                    
+            </div>
+
+
+
+            </div>
+                    <div class="modal-footer">
+                        <label for="Equipment" >Total Trip</label>
+                            <input
+                                type="Text"
+                                name="flter_totalTrip_inct"
+                                id="flter_totalTrip_inct"
+                                style="text-align: right;"
+                                >
+                            </input> 
+
+                        
+
+                            <label for="Equipment" >Total Amount</label>
+                            <input
+                                type="text"
+                                name="flter_totalIncentives"
+                                id="flter_totalIncentives"
+                                style="text-align: right;"
+                                >
+                            </input> 
+
+                    
+                    <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+                    
+                </div>
+                </div>
+                </div>
+            </div>
+                
+
 
 <!-- =======================================This is for Adding Routes of HTML & CSS======================= -->
         
@@ -1646,6 +1794,17 @@
                 
 <!-- ===========================================for Java Scripts Function=========================================== -->
 
+            <script type="text/javascript">
+                const html_table_excel_tonnage2 = (type) => {
+                    var data = document.getElementById('table_body_tons');
+                    var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+                    XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+                    XLSX.writeFile(file, 'tonnagelist.' + type);
+                    };
+
+                // var excelExportTons = document.querySelector('#excelExportTons');
+                // excelExportTons.addEventListener("click", html_table_excel_tonnage2('xlsx'));
+            </script>
             <script>
                 function printPageRentalList() {
                     window.print();

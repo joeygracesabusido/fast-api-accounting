@@ -379,3 +379,90 @@ const summaryTonnageTotal = () => {
     document.querySelector("#fter_totalTrip").value = sumTotalHoursComma;
     document.querySelector("#fter_totalBillinglTons").value = sumTotalAmountComma;
   };
+
+
+
+//===================================This function is for Displaying Data Incentive===========================
+ const  incentivesData = async () =>{
+    var datefrom = document.getElementById("datefrom_incentive").value;
+    var datetoTo = document.getElementById("dateto_inct").value;
+    var equipmentId = document.getElementById("equipmentIDSearch_inct").value;
+    
+    const search_url = `/api-get-tvi-tons-incentives/?datefrom=${datefrom}&dateto=${datetoTo}&equipmentId=${equipmentId}`;
+        const responce =  await fetch(search_url)
+        const data =  await responce.json();
+        console.log(data)
+
+        function filterData(searchValue) {
+            return data.filter(item => {
+                const equipmentId = item.equipmentId.toLowerCase();
+                const routes = item.routes.toLowerCase();
+                const driverOperator = item.driverOperator.toLowerCase();
+                return equipmentId.includes(searchValue) || routes.includes(searchValue) || driverOperator.includes(searchValue);
+            });
+        }
+
+        function displayData(filteredData) {
+            const tbody = document.querySelector("#table_body_incentive");
+            tbody.innerHTML = "";
+            filteredData.forEach(item => {
+                const tr = document.createElement("tr");
+                const equipmentId = document.createElement("td");
+                equipmentId.textContent = item.equipmentId;
+                const routes = document.createElement("td");
+                routes.textContent = item.routes;
+                const trips = document.createElement("td");
+                trips.textContent = item.trips;
+                const distance = document.createElement("td");
+                distance.textContent = item.distance;
+                const driverOperator = document.createElement("td");
+                driverOperator.textContent = item.driverOperator;
+                const incentives = document.createElement("td");
+                incentives.textContent = item.incentives;
+                
+
+
+                tr.appendChild(equipmentId);
+                tr.appendChild(routes);
+                tr.appendChild(trips);
+                tr.appendChild(distance);
+                tr.appendChild(driverOperator);
+                tr.appendChild(incentives);
+                tbody.appendChild(tr);
+            });
+            summaryincetiveTotal()
+        }
+
+        const searchInput = document.querySelector("#autoSearch_incentive");
+        searchInput.addEventListener("input", event => {
+            const searchValue = event.target.value.trim().toLowerCase();
+            const filteredData = filterData(searchValue);
+            displayData(filteredData);
+        });
+
+};
+
+// Attach the event listener to the button for Incentives List
+var BtnSearch_incentives = document.querySelector('#BtnSearch_incentives');
+BtnSearch_incentives.addEventListener("click", incentivesData);
+
+
+// This is for total of Trips and Amount for incentive  using ES6
+const summaryincetiveTotal = () => {
+    const table = document.querySelector("#table_body_incentive");
+    let sumTons = 0;
+    let sumTotalAmount = 0;
+  
+    table.querySelectorAll("tr").forEach(row => {
+      sumTons += parseFloat(row.querySelectorAll("td")[2].textContent);
+      sumTotalAmount += parseFloat(row.querySelectorAll("td")[5].textContent);
+    });
+  
+    const sumTotalHoursComma = sumTons.toLocaleString("en-US");
+    const sumTotalAmountComma = sumTotalAmount.toLocaleString("en-US");
+  
+    document.querySelector("#flter_totalTrip_inct").value = sumTotalHoursComma;
+    document.querySelector("#flter_totalIncentives").value = sumTotalAmountComma;
+  };
+
+//this is for exporting data of TVI tonnage report

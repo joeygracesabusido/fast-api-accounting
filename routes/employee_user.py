@@ -825,7 +825,7 @@ async def getDieselSum(username: str = Depends(EmployeevalidateLogin)):
 #==============================================TVI Tons Transaction===================================
 from config.tvi_models import (getRoutes,insertRoutes,
                                 routesAutocomplete,insertTons,getTon,getTons,
-                                getTon_id,updateTons)
+                                getTon_id,updateTons,getIncentives)
 from models.model import TVIRoutes,TVITons
 @employee_user.get("/api-get-tvi-check-routes-employeeLogin/")
 async def getroutesTVI(routes,username: str = Depends(EmployeevalidateLogin)):
@@ -969,5 +969,28 @@ async def insertRentalTvi(id: int, items:TVITons,username: str = Depends(Employe
 
 
     return  {'Messeges':'Data has been Save'}  
+
+
+@employee_user.get("/api-get-tvi-tons-incentives/")
+async def get_cost(datefrom,dateto,equipmentId: Optional[str],username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = getIncentives(datefrom=datefrom,dateto=dateto,equipmentId=equipmentId)
+
+    tonsData = [
+        
+            {
+                
+                "equipmentId": x.equipmentId,
+                "routes": x.routes,
+                "trips": x.trips,
+                "distance": x.distance,
+                "driverOperator": x.driverOperator,
+                "incentives": "{:.2f}".format(float(x.trips) * float(x.distance) * 25)
+            }
+            for x in results
+        ]
+    
+    
+    return tonsData
 
     

@@ -197,6 +197,38 @@
     </script>
 
     <script>
+            $(document).ready(function() {
+                $("#routes_tons").on("keyup", async function(event) {
+                    // check if Enter key was pressed
+                    if (event.keyCode === 13) { // this is to click enter and display distance
+                    // trigger button click event
+                        var routes = document.getElementById("routes_tons").value
+
+                        const search_url = `/api-get-tvi-check-routes-employeeLogin/?routes=${routes}`;
+
+
+                        const responce =  await fetch(search_url)
+                        const data =  await responce.json();
+                        console.log(data)
+                        
+                        if (data.length === 0){
+                            window.alert(`No ID store for ${routes}`)
+                        }else{
+                            let distance = data[0].distance
+                            distance = parseFloat(distance).toFixed(2)
+                            document.getElementById("distance_tons").value = distance
+                            
+                            
+
+                        }
+                
+                    }
+                });
+            });       
+
+    </script>
+
+    <script>
                 // this is for computation of 
         $(document).ready(function() {
             $('#distance_tons, #volTons, #rate_tons').on('input', function() {

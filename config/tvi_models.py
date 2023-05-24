@@ -225,6 +225,22 @@ def updateTons(id,transDate,equipmentId,tripTicket,routes,
         session.commit()
         session.refresh(result)
 
+def getIncentives(datefrom,dateto,equipmentId):
+    """This function is for querying Incentive """
+    with Session(engine) as session:
+        statement = select(tvi_tonnage.equipmentId,
+                func.sum(tvi_tonnage.trips).label('trips'),
+                tvi_tonnage.routes,tvi_tonnage.distance,tvi_tonnage.driverOperator
+                ).where(tvi_tonnage.transDate.between(datefrom,dateto)
+                ).filter(tvi_tonnage.equipmentId.like ('%'+ equipmentId +'%')) \
+                .group_by(tvi_tonnage.equipmentId,tvi_tonnage.routes,tvi_tonnage.distance,tvi_tonnage.driverOperator)
+
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
     
 
 def getTons(datefrom,dateto,equipmentId,project_site):
