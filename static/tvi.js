@@ -381,6 +381,186 @@ const summaryTonnageTotal = () => {
   };
 
 
+//This function is for printing PDF of Tonnage
+const tonsData = {
+   
+
+    company: 'LD GLOBAL LEGACY INC.',
+    address: '0090 OAKLAND ST. GLORIA VISTA SUBD. SAN RAFAEL, RODRIGUEZ (MONTALBAN), RIZAL',
+    tin: 'TIN: 007-241-244',
+
+    
+    
+    // customer: {
+    //   name: 'John Doe',
+    //   address: '123 Main St, City',
+    //   email: 'johndoe@example.com'
+    // },
+    // items: [
+    //   { description: 'Product A', quantity: 2, price: 10 },
+    //   { description: 'Product B', quantity: 1, price: 20 },
+    //   { description: 'Product C', quantity: 3, price: 15 }
+    // ]
+  };
+  
+ async function generateInvoicePDF(tonsData) {
+    var datefrom = document.getElementById("datefrom_tons").value
+    var dateto = document.getElementById("dateto_tons").value
+    var equipmentID = document.getElementById("equipmentIDSearch_tons").value
+    var project_site = document.getElementById("prjectSiteSearch_tons").value
+
+    const search_url = `/api-get-tvi-tons-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipmentId=${equipmentID}&project_site=${project_site}`;
+
+
+    const responce = await fetch(search_url)
+    const items = await responce.json();
+    
+
+    const sumTotalTrips = items.reduce((total, item) => total + item.trips, 0);
+    
+    const { company, address, tin,} = tonsData;
+  
+    // Create a document definition using pdfmake syntax
+  
+    const pageSize = {
+      width: 8.5 * 72,  // Convert inches to points (1 inch = 72 points)
+      height: 13 * 72
+    };
+    const docDefinition = {
+      pageOrientation: 'portrait',
+      pageSize: pageSize,
+      content: [
+        { text: `${company}`, style: 'header' },
+        { text: `${address}`, style: 'header2' },
+        { text: `${tin}`, style: 'header2' },
+        ' ',
+        { text: `Period: ${datefrom} to ${dateto}`,style: 'subheader' },
+        
+        ' ',
+        { text: 'Billing Items:', style: 'subheader' },
+        {
+          table: {
+            headerRows: 1,
+            body: [
+              ['#','Date', 'Equipment', 'TripTicket', 'Routes','Trips','Volume','Distance','Rate','Amount'],
+              ...items.map((item, index) => [
+                index + 1,
+                item.transDate,
+                item.equipmentId,
+                item.tripTicket,
+                item.routes,
+                item.trips,
+                item.volume_tons,
+                item.distance,
+                item.hauling_rate,
+                item.billingAmount2,
+              ])
+            ]
+          },
+          layout: 'lightHorizontalLines',
+          style: 'bodyText'
+        },
+        ' ',
+        ' ',
+
+        [
+            { text: 'Prepared by:', style: 'preparedBY' },
+            {
+                text: `Sum of Total Trips: ${sumTotalTrips}`,
+                style: 'summaryStyle'
+            }
+        ],
+        ' ',
+        { text: 'JEROME SABUSIDO', style: 'preparedBY' },
+
+        
+
+      ],
+      styles: {
+        bodyText: {
+            fontSize: 9
+          },
+        header: {
+          fontSize: 15,
+          bold: true,
+          alignment: 'center',
+          margin: [25, 0, 0, 10]
+        },
+        header2: {
+            fontSize: 10,
+            bold: false,
+            alignment: 'center',
+            margin: [25, 0, 0, 10]
+          },
+        subheader: {
+          fontSize: 14,
+          bold: true,
+          margin: [0, 10, 0, 5]
+        },
+
+        preparedBY:{
+        fontSize: 14,
+          bold: true,
+          margin: [5, 0, 0, 0],
+          alignment: 'left',
+        },
+
+        pERSON:{
+        fontSize: 13,
+            bold: false,
+            margin: [25, 0, 0, 0],
+            alignment: 'left',
+        },
+        summaryStyle: {
+            fontSize: 12,
+            bold: true,
+            alignment: 'right',
+            width: '50%'
+           
+          }
+
+      },
+    //   footer: function (currentPage, pageCount) {
+    //     return {
+    //       columns: [
+    //         [
+    //       {
+    //           text: 'Prepared by:',
+    //           alignment: 'left',
+              
+    //         },
+  
+    //         {
+    //           text: 'John Doe',
+    //           alignment: 'left',
+    //           margin: [25, 0, 0, 0]
+    //         },
+    //       ],
+    //         {
+    //           text: 'Checked by: Jane Smith',
+    //           alignment: 'right',
+    //           width: '50%'
+    //         }
+    //       ],
+    //       margin: [40, 10],
+    //       fontSize: 10
+    //     };
+    //   }
+    };
+  
+    
+  
+    // Generate the PDF
+    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+    pdfDocGenerator.download('invoice.pdf');
+  }
+
+var BtnPdf_Tons = document.querySelector('#BtnPdf_Tons');
+BtnPdf_Tons.addEventListener("click", function() {
+  generateInvoicePDF(tonsData);
+});
+
+
 
 //===================================This function is for Displaying Data Incentive===========================
  const  incentivesData = async () =>{
