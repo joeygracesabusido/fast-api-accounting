@@ -144,7 +144,7 @@ async def insert_journal_entry(request: Request,username: str = Depends(validate
 @zamboanga_client.get('/api-tvi-report-printing-jv/')
 def searchJV_printing(ref: Optional[str],username: str = Depends(validateLogin)):
     """This is for qurying JV entries for Zamboanga """
-    myresult  = mydb.journal_entry_zambo.find({"ref": {"$regex": ref, "$options": "i"}})
+    myresult  = mydb.journal_entry_zambo.find({ "ref": { '$eq': ref } })
     journalData = [
             {
                 

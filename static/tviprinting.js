@@ -85,7 +85,7 @@ const generateInvoicePDF = async(tonsData) => {
             columns: [
                 
                 {
-                    text: `${sumDedit}`,
+                    text: `Total      :${sumDedit}`,
                     style: 'summaryStyle'
                 },
                 {
@@ -186,7 +186,7 @@ const generateInvoicePDF = async(tonsData) => {
         summaryStyle: {
             fontSize: 10,
             bold: false,
-            margin: [391, 10, 20, 5],
+            margin: [370, 10, 20, 5],
           
           },
 
