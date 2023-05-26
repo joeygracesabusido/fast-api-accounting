@@ -18,7 +18,7 @@ const JVData = {
   };
 
 
-const generateInvoicePDF = async(tonsData) => {
+const generateInvoicePDF = async(JVData) => {
     const ref = document.querySelector("#referenceNum").value
     
 
@@ -64,7 +64,7 @@ const generateInvoicePDF = async(tonsData) => {
             headerRows: 1,
             body: [
               ['Date', 'Particular', 'Reference', 'Acct Num','Discription','Debit','Credit'],
-              ...items.map((item, index) => [
+              ...items.map((item) => [
                 
                 item.date_entry,
                 item.descriptions,
