@@ -403,7 +403,7 @@ const tonsData = {
     // ]
   };
   
- async function generateInvoicePDF(tonsData) {
+const generateInvoicePDF = async(tonsData) => {
     var datefrom = document.getElementById("datefrom_tons").value
     var dateto = document.getElementById("dateto_tons").value
     var equipmentID = document.getElementById("equipmentIDSearch_tons").value
@@ -417,6 +417,9 @@ const tonsData = {
     
 
     const sumTotalTrips = items.reduce((total, item) => total + item.trips, 0);
+    let sumTotalAmount = items.reduce((total, item) => total + item.billingAmount, 0);
+    sumTotalAmount = sumTotalAmount.toLocaleString("en-US");
+
     
     const { company, address, tin,} = tonsData;
   
@@ -461,17 +464,33 @@ const tonsData = {
           style: 'bodyText'
         },
         ' ',
-        ' ',
-
-        [
+        
+        {
+            columns: [
+                {
+                    text: `Total Trips: ${sumTotalTrips}`,
+                    style: 'summaryStyle'
+                },
+                {
+                    text: `Total Amount: ${sumTotalAmount}`,
+                    style: 'totalAmount'
+                }
+            ],
+            columnGap: 5, // Spacing between the two columns
+            // margin: [0, 10, 0, 5], // Margins for the entire element
+        },
+        {
+        columns:[
             { text: 'Prepared by:', style: 'preparedBY' },
-            {
-                text: `Sum of Total Trips: ${sumTotalTrips}`,
-                style: 'summaryStyle'
-            }
+            { text: 'Checked by:', style: 'checkedBY' },
         ],
+        columnGap: 5,
+        },
+
         ' ',
-        { text: 'JEROME SABUSIDO', style: 'preparedBY' },
+        ' ',
+        { text: 'KATLEEN MAE ALBA', style: 'preparedBY' },
+        { text: 'Accounting Asst', style: 'preparedBY' },
 
         
 
@@ -479,7 +498,7 @@ const tonsData = {
       styles: {
         bodyText: {
             fontSize: 9
-          },
+          }, 
         header: {
           fontSize: 15,
           bold: true,
@@ -499,11 +518,15 @@ const tonsData = {
         },
 
         preparedBY:{
-        fontSize: 14,
-          bold: true,
-          margin: [5, 0, 0, 0],
+        fontSize: 10,
           alignment: 'left',
         },
+
+        checkedBY:{
+            fontSize: 10,
+              alignment: 'right',
+              width: '50%'
+            },
 
         pERSON:{
         fontSize: 13,
@@ -512,11 +535,17 @@ const tonsData = {
             alignment: 'left',
         },
         summaryStyle: {
-            fontSize: 12,
-            bold: true,
-            alignment: 'right',
-            width: '50%'
-           
+            fontSize: 10,
+            bold: false,
+            margin: [150, 10, 20, 5],
+          
+          },
+
+        totalAmount: {
+            fontSize: 10,
+            bold: false,
+            margin: [110, 10, 20, 1],
+          
           }
 
       },
@@ -552,7 +581,7 @@ const tonsData = {
   
     // Generate the PDF
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-    pdfDocGenerator.download('invoice.pdf');
+    pdfDocGenerator.download('tonlist.pdf');
   }
 
 var BtnPdf_Tons = document.querySelector('#BtnPdf_Tons');
@@ -645,4 +674,7 @@ const summaryincetiveTotal = () => {
     document.querySelector("#flter_totalIncentives").value = sumTotalAmountComma;
   };
 
-//this is for exporting data of TVI tonnage report
+//=================================This is for Printing TVI Voucher=================================
+
+
+

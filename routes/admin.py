@@ -1416,7 +1416,30 @@ def delete_diesel(id,token: str = Depends(oauth_scheme)):
    
 
 
+# testing 
 
+@admin.get('/api-tvi-report-printing-jv-test/')
+def searchJV_printing(ref: Optional[str],token: str = Depends(oauth_scheme)):
+    """This is for qurying JV entries for Zamboanga """
+    myresult  = mydb.journal_entry_zambo.find({"ref": {"$regex": ref, "$options": "i"}})
+    journalData = [
+            {
+                
+                "date_entry": item["date_entry"],
+                "journal": item["journal"],
+                "ref": item["ref"],
+                "descriptions": item["descriptions"],
+                "acoount_number": item["acoount_number"],
+                "account_disc": item["account_disc"],
+                "debit_amount": item["debit_amount"],
+                "credit_amount": item["credit_amount"],
+                
+
+            }
+            for item in myresult
+        ]
+
+    return journalData
 
 
     

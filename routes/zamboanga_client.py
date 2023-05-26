@@ -132,6 +132,40 @@ async def insert_journal_entry(request: Request,username: str = Depends(validate
     return templates.TemplateResponse("journal_entry_zamboanga.html", 
                                         {"request":request,"all_chart_of_account":all_chart_of_account})
 
+# HTML for Printing Report in TVI Zamoboanga
+@zamboanga_client.get("/api-htmlframe-tvi-report-printing/", response_class=HTMLResponse)
+async def insert_journal_entry(request: Request,username: str = Depends(validateLogin)):
+    """This function is for openting navbar of accounting"""
+    
+    return templates.TemplateResponse("tvi/printingTVI.html", 
+                                        {"request":request})
+
+#=========================================Journal Entry Zamoboanga ========================================
+@zamboanga_client.get('/api-tvi-report-printing-jv/')
+def searchJV_printing(ref: Optional[str],username: str = Depends(validateLogin)):
+    """This is for qurying JV entries for Zamboanga """
+    myresult  = mydb.journal_entry_zambo.find({"ref": {"$regex": ref, "$options": "i"}})
+    journalData = [
+            {
+                
+                "date_entry": item["date_entry"],
+                "journal": item["journal"],
+                "ref": item["ref"],
+                "descriptions": item["descriptions"],
+                "acoount_number": item["acoount_number"],
+                "account_disc": item["account_disc"],
+                "debit_amount": item["debit_amount"],
+                "debit_amount2": "{:,.2f}".format(item["debit_amount"]),
+                "credit_amount": item["credit_amount"],
+                "credit_amount2": "{:,.2f}".format(item["credit_amount"]),
+                "user": username
+
+            }
+            for item in myresult
+        ]
+
+    return journalData
+
 @zamboanga_client.post("/insert-journal-entry-zambo/", response_class=HTMLResponse)
 async def insert_journal_entry(request: Request):
     """This function is to post Journal Entry"""

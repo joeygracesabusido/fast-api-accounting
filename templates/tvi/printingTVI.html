@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<body>
+    <div class="container">
+        <div class="container mt-3">
+            <a href="#" id="print_jv_modal"
+            data-toggle="modal" data-target="#test"
+            >Print Journal Voucher</a>
+            
+        </div>
+
+
+
+
+         <!-- Modal for printing Voucher -->
+
+         <div class="modal fade" id="test" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Printing Journal Voucher</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+
+                
+                <div class="modal-body">
+                    <div class="container mt-3">
+                        <label for="Reference"
+                        >Reference Number :</label>
+                        
+                            <input 
+                            type="text"
+                            name="referenceNum"
+                            id="referenceNum"
+                            
+                            >
+
+                            <button type="button" id="Btn_print_JV" name="Btn_print_JV"  class="btn btn-primary">Search</button>
+                       
+                    </div>
+        
+
+  
+                </div>
+                
+            </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <script src="/static/tviprinting.js"></script>
+</body>
+
+
+
+
+{% endblock %}

@@ -192,6 +192,9 @@ def employee_sign_up(items:EmployeeUser):
         print("Error", f"Error due to :{str(ex)}")
     return {"message":"User has been save"} 
 
+
+
+
 #=========================================Equipment transactions====================================
 from config.zamboanga import ZamboangaDB
 ZamboangaDB.initialize()
