@@ -173,7 +173,7 @@ def getTon(tripTicket):
     """This function is for querying """
 
     with Session(engine) as session:
-        statement = select(tvi_tonnage).filter(tvi_tonnage.tripTicket.like ('%'+ tripTicket +'%'))
+        statement = select(tvi_tonnage).filter(tvi_tonnage.tripTicket == tripTicket )
                     
         results = session.exec(statement) 
 
