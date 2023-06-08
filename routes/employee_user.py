@@ -825,6 +825,10 @@ async def getDieselSum(username: str = Depends(EmployeevalidateLogin)):
    
     return employeeData
 
+@employee_user.get("/tvi-payroll-transaction/", response_class=HTMLResponse)
+async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
+    return templates.TemplateResponse("employee/tvi_payroll.html", {"request":request}) 
+
 #==============================================TVI Tons Transaction===================================
 from config.tvi_models import (getRoutes,insertRoutes,
                                 routesAutocomplete,insertTons,getTon,getTons,

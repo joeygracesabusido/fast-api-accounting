@@ -1,0 +1,1450 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: white;
+        };
+    .TransactionDate{
+        color: beige;
+    }
+
+    .form-group.mx-sm-2.mb-3 {
+            width: 15%;
+            padding: 5px 10px;
+            display: flex;
+            flex-wrap: wrap;
+           
+    }
+
+    .form-group.mx-sm-2.mb-4 {
+            width: 15%;
+            padding: 5px 10px;
+            display: flex;
+            flex-wrap: wrap;
+           
+    }
+
+    #progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: lightgray;
+      margin-bottom: 20px;
+    }
+
+    #progress-bar .progress {
+      height: 100%;
+      background-color: green;
+      width: 0;
+    }
+
+    .form-group {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      grid-gap: 10px;
+      align-items: center;
+    }
+
+    .container3 {
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    }
+
+    .container1 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    }
+    
+    .container1 label {
+        flex-basis: 100px;
+        text-align: right;
+        margin-right: 10px;
+    }
+    
+    .container1 input {
+        flex-grow: 1;
+        width: 100%;
+    }
+
+
+    .container2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .container2 label {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+  }
+
+  .container2 .left-input {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    font-size: 17px;
+    line-height: 1.5;
+    color: #555555;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(35, 7, 161, 0.075);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    
+  }
+
+  .container2 .right-input {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    font-size: 17px;
+    line-height: 1.5;
+    color: #555555;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(35, 7, 161, 0.075);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .container2 .right-label {
+    text-align: left;
+    margin-right: 10px;
+    margin-left:  250px;
+  }
+
+ 
+    
+</style>
+
+<body>
+    <div class="container">
+        <div id="progress-bar">
+            <div class="progress"></div>
+          </div>
+
+            <div id="page1">
+           
+            
+                    <div class="container1">
+                        <label for="TransactionDate"  >Date</label>
+                        <input
+                            type="date"
+                            name="datefrom"
+                            id="datefrom"
+                            class="form-control"
+                            >
+                        </input>
+                    </div>
+                    <div class="container1">
+                        <label for="Employee ID" >Employee ID</label>
+                        <input
+                            type="text"
+                            name="employee_id"
+                            id="employee_id"
+                            class="form-control"
+                        >
+                        </input>
+                    </div>
+
+                    <div class="container1">
+                        <label for="FirstName"  >First Name</label>
+                            <input
+                                type="text"
+                                name="fname"
+                                id="fname"
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>
+
+                    <div class="container1">
+                        <label for="LastName" >Last Name</label>
+                        <input
+                            type="text"
+                            name="lname"
+                            id="lname"
+                            class="form-control"
+                            >
+                        </input>
+                        
+                    </div>
+
+                    <div class="container1">
+                        <label for="Department" >Department</label>
+                                <input
+                                    type="text"
+                                    name="department"
+                                    id="department"
+                                    class="form-control"
+                                    >
+                                </input>
+                        
+                    </div>
+
+                    <div class="container1">
+                        <label for="Position" >Position</label>
+
+                        <input
+                            type="text"
+                            name="position"
+                            id="position"
+                            class="form-control"
+                            >
+                        </input>
+                    </div>
+
+                    <div class="container1">
+                        <label for="Salary Rate" >Salary Rate</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="salary_rate"
+                                id="salary_rate"
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        
+                    </div>
+
+                    <div class="container1">
+                        <label for="Provincial Rate" >Provincial Rate</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="provi_rate"
+                                id="provi_rate"
+                                class="form-control"
+                                
+                                >
+                            </input>
+                        
+                    </div>
+
+                    <div class="container1">
+                        <label for="Tax Classification" >Tax Classification</label>
+                        <input
+                            type="text"
+                            name="tax_class"
+                            id="tax_class"
+                            class="form-control"
+                            >
+                        </input>
+                        
+                    </div>
+
+                    <div class="container1">
+                        <label for="EmployeClass" >Employee Class</label>
+                            <input
+                                type="text"
+                                name="emp_class"
+                                id="emp_class"
+                            
+                                class="form-control"
+                                >
+                            </input>
+
+                    </div>
+
+                    <div class="container1">
+                        <label for="EmployeClass" >Salary Details</label>
+                        <input
+                            type="text"
+                            name="salary_details"
+                            id="salary_details"
+                            class="form-control"
+                            
+                            >
+                        </input>
+                        
+                   
+    
+<!--                        
+                            <button type="submit"  onclick="display_emp_data()" class="btn btn-success">
+                                Search Data
+                                <i class="fas fa-database"></i>
+                            </button>
+                        -->
+                    
+                
+                
+                
+        </div>
+        <button  class="btn btn-success" onclick="nextPage()">Next</button>
+           
+                
+    </div>
+                
+               
+                
+           
+            
+              
+                
+
+                   
+
+                    
+
+<!--============================== This is start for computation fields============================== -->
+                <div id="page2" style="display: none;">
+                <div class="d-flex justify-content-center">
+                    <h1>
+                        This is for computation 
+                    </h1>
+                </div> 
+
+                <div class="container3">
+                    <div class="container2">
+                        <label for="REGDAY"
+                        >Regular day</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="regday"
+                                id="regday"
+                                style="text-align: right;"
+                                class="left-input"
+                                
+                                >
+                            </input>
+                        
+                    
+                        <label for="regdaycal" class="right-label"
+                        >Regday Cal</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="regday_cal"
+                                id="regday_cal"
+                                style="text-align: right;"
+                                class="right-input"
+                                >
+                            </input>
+    
+                    </div>
+                        <div class="container2">
+                            <label for="REGOT"
+                            >Regular OT</label>
+        
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="regday_ot"
+                                    id="regday_ot"
+                                    style="text-align: right;"
+                                    class="left-input"
+                                    
+                                    >
+                                </input>
+                        
+                    
+                        <label for="REGOT"class="right-label"
+                            >RegDay OT Calculation</label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="regday_ot_cal"
+                                    id="regday_ot_cal"
+                                    style="text-align: right;"
+                                    class="right-input"
+                                    >
+                                </input>
+    
+                        
+                        </div>
+                    
+                       
+                        
+                    
+    
+                    <div class="container2">
+    
+                        <label for="SUNDAY"
+                                >SUNDAY </label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        name="sunday"
+                                        id="sunday"
+                                        style="text-align: right;
+                                            "
+                                        class="left-input"
+                                        >
+                                    </input>
+                            
+                        <label for="SUNDAY" class="right-label"
+                                >SUNDAY Calculation </label>
+    
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="sunday_cal"
+                                    id="sunday_cal"
+                                    style="text-align: right;
+                                        "
+                                   class="right-input"
+                                    >
+                                </input>
+                    </div>
+    
+                    <div class="container2">
+                        <label for="SundayOT"
+                               
+                        >Sunday OT</label>
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="sunday_ot"
+                                id="sunday_ot"
+                                style="text-align: right;"
+                                class="left-input"
+                                
+                                >
+                            </input>
+                        <label for="SundayOT" class="right-label"
+                        
+                        >Sunday OT Calculation</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="sunday_ot_cal"
+                                id="sunday_ot_cal"
+                                style="text-align: right;
+                                    "
+                                class="right-input"
+                                >
+                            </input>
+        
+    
+                    </div>
+                                
+    
+            
+                    <div class="container2">
+                        <label for="SPL"
+                            >SPL </label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="spl"
+                                    id="spl"
+                                    style="text-align: right;
+                                        "
+                                    class="left-input"
+                                    
+                                    >
+                                </input>
+                            <label for="SPL" class="right-label"
+                            >SPL Calculation </label>
+                         
+        
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="spl_cal"
+                                    id="spl_cal"
+                                    style="text-align: right;
+                                        "
+                                    class="right-input"
+                                    >
+                                </input>
+    
+                    </div>
+                    
+                    <div class="container2">
+                        <label for="SPLOT"
+                               
+                            >SPL OT</label>
+        
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="spl_ot"
+                                    id="spl_ot"
+                                    style="text-align: right;
+                                            "
+                                   class="left-input"
+                                    >
+                                </input>
+    
+                            <label for="SPLOT" class="right-label"
+                               
+                            >SPL OT Calculation</label>
+        
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="spl_ot_cal"
+                                    id="spl_ot_cal"
+                                    style="text-align: right;
+                                            "
+                                   class="right-input"
+                                    >
+                                </input>
+    
+                    </div>
+    
+                    <div class="container2">
+                        <label for="LGL2"
+                               
+                        >LGL2</label>
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="lgl2"
+                                id="lgl2"
+                                style="text-align: right;"
+                                class="left-input"
+                                >
+                            </input>
+    
+                        <label for="LGL2cAL" class="right-label"
+                           
+                        >LGL2 CAL</label>
+    
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="lgl2_cal"
+                                id="lgl2_cal"
+                                style="text-align: right;"
+                                class="right-input"
+                                >
+                            </input>
+    
+                    </div>
+    
+                    <div class="container2">
+                        <label for="LGL2OT"
+                               
+                            >LGL2 OT</label>
+        
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="lgl2_ot"
+                                    id="lgl2_ot"
+                                    style="text-align: right;"
+                                    class="left-input"
+                                    >
+                                </input>
+    
+                            <label for="LGL2cAL" class="right-label"
+                               
+                            >LGL2 OT Calculation</label>
+        
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="lgl2_ot_cal"
+                                    id="lgl2_ot_cal"
+                                    style="text-align: right;"
+                                    class="right-input"
+                                    >
+                                </input>
+                        
+                    </div>
+                    
+                            
+    
+                    
+                    <div class="container2">
+                            <label for="Night Diff"
+                            >Night Diff</label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="nightDiff"
+                                    id="nightDiff"
+                                    style="text-align: right;
+                                        "
+                                    class="left-input"
+                                    
+                                    >
+                                </input>
+                            <label for="Night" class="right-label"
+                            >Night Diff Cal</label>
+                         
+        
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    name="nightDiff_cal"
+                                    id="nightDiff_cal"
+                                    style="text-align: right;
+                                        "
+                                    class="right-input"
+                                    >
+                                </input>
+    
+                    </div>   
+                    
+                    <div class="container2">
+                        <label for="Adjustment"
+                        >Adjustment</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="adjustment"
+                                id="adjustment"
+                                style="text-align: right;
+                                    "
+                                class="left-input"
+                                
+                                >
+                            </input>
+    
+                            <label for="Total Gross" class="right-label"
+                            >Total Gross</label>
+                                <input
+                                    type="text"
+                                    
+                                    name="totalGross"
+                                    id="totalGross"
+                                    style="text-align: right;
+                                         background-color: darkorange;"
+                                    class="right-input"
+                                    
+                                    >
+                                </input>
+    
+                                <input
+                                type="number" hidden
+                                step="0.01"
+                                name="totalGross2"
+                                id="totalGross2"
+                                style="text-align: right;
+                                   "
+                                class="right-input"
+                                
+                                >
+                            </input>
+                        
+    
+                    </div> 
+    
+                        
+                      
+                    <button class="btn btn-success" onclick="previousPage()">Back</button>
+    
+    
+                   
+    
+
+                </div>
+
+                
+
+                </div>
+
+                
+                    
+
+        
+
+    </div>       
+                
+
+                    
+                    
+                
+    
+    
+</body>
+    <!-- This function is for automatic display of Employee Information using Employee ID as query Parameter -->
+
+    <script>
+            var currentPage = 1;
+    var totalPages = 2;
+
+    function updateProgressBar() {
+      var progressBar1 = document.getElementById('progress-bar1');
+      var progressBar2 = document.getElementById('progress-bar2');
+      var progress1 = progressBar1.querySelector('.progress');
+      var progress2 = progressBar2.querySelector('.progress');
+      
+      if (currentPage === 1) {
+        progress1.style.width = '100%';
+        progressBar1.style.backgroundColor = 'green';
+        progress2.style.width = '0';
+        progressBar2.style.backgroundColor = 'lightgray';
+      } else if (currentPage === 2) {
+        progress1.style.width = '100%';
+        progressBar1.style.backgroundColor = 'green';
+
+        var inputs = document.querySelectorAll('#page2 input');
+        var isFilled = true;
+        inputs.forEach(function (input) {
+          if (input.value === '') {
+            isFilled = false;
+            return;
+          }
+        });
+
+        if (isFilled) {
+          progress2.style.width = '100%';
+          progressBar2.style.backgroundColor = 'green';
+        } else {
+          progress2.style.width = '0';
+          progressBar2.style.backgroundColor = 'lightgray';
+        }
+      }
+    }
+
+    function nextPage() {
+      if (currentPage === 1) {
+        var inputs = document.querySelectorAll('#page1 input');
+        var isFilled = true;
+        inputs.forEach(function (input) {
+          if (input.value === '') {
+            isFilled = false;
+            return;
+          }
+        });
+
+        if (isFilled) {
+          currentPage++;
+          var currentPageElem = document.getElementById('page' + currentPage);
+          currentPageElem.style.display = 'block';
+
+          var previousPageElem = document.getElementById('page' + (currentPage - 1));
+          previousPageElem.style.display = 'none';
+
+          updateProgressBar();
+        } else {
+          alert('Please fill in all the fields before proceeding.');
+        }
+      } else if (currentPage === 2) {
+        var inputs = document.querySelectorAll('#page2 input');
+        var isFilled = true;
+        inputs.forEach(function (input) {
+          if (input.value === '') {
+            isFilled = false;
+            return;
+          }
+        });
+
+        if (isFilled) {
+          alert('All fields are filled. Proceed to the next step.');
+        } else {
+          alert('Please fill in all the fields before proceeding.');
+        }
+      }
+    }
+
+    function previousPage() {
+      currentPage--;
+      var currentPageElem = document.getElementById('page' + currentPage);
+      currentPageElem.style.display = 'block';
+
+      var nextPageElem = document.getElementById('page' + (currentPage + 1));
+      nextPageElem.style.display = 'none';
+
+      updateProgressBar();
+    }
+
+      </script>
+
+
+
+        <script>
+            $(document).ready(function() {
+                    $("#employee_id").on("keyup", async function(event) {
+                        // check if Enter key was pressed
+                        if (event.keyCode === 13 || event.keyCode === 9) {
+                        // trigger button click event
+                            var employee_id = $("#employee_id").val()
+
+                            const search_url = `/api-search-employee_by_empID/?term=${employee_id}`;
+
+
+                            const responce =  await fetch(search_url)
+                            const data =  await responce.json();
+                            console.log(data)
+                            
+
+                            if (data.length === 0){
+                                window.alert(`No ID store for ${employee_id}`)
+                            } else if (responce.status == 401){
+                                window.alert("Unauthorized Please Login")
+
+                            }else{
+                            
+                                var name = data[0].firstName
+                                var lname = data[0].lastName
+                                var position = data[0].position
+                                var salary_rate = data[0].salary_rate
+                                var taxCode = data[0].taxCode
+                                var off_on_details = data[0].off_on_details
+                                var salary_details = data[0].Salary_Detail
+                                var department = data[0].department
+
+                                $('#fname').val(name)
+                                $('#lname').val(lname)
+                                $('#position').val(position)
+                                $('#salary_rate').val(salary_rate)
+                                $('#tax_class').val(taxCode)
+                                $('#emp_class').val(off_on_details)
+                                $('#salary_details').val(salary_details)
+                                $('#department').val(department)
+
+                                
+
+                                if (employee_id <= 2021) {
+                                        provi_rate = 570
+                                        $('#provi_rate').val(provi_rate)
+                                        
+                                    }else if(employee_id >= 2022 && employee_id <=2999){
+                                        provi_rate = 429
+                                        $('#provi_rate').val(provi_rate)
+                                    }else if (employee_id >= 5000 && employee_id <=7000){
+                                        provi_rate = 351
+                                        $('#provi_rate').val(provi_rate)
+                                    } else {
+                                        provi_rate = 429
+                                        $('#provi_rate').val(provi_rate)
+                                    }
+                                
+
+                            }
+                    
+                        }
+                    });
+                });       
+        </script>
+
+        <script type="text/javascript">
+
+            // const rental_url =search_url ;
+            async function display_emp_data(){
+                var employee_id = document.getElementById("employee_id").value
+
+                const search_url = `/api-search-employee_by_empID/?term=${employee_id}`;
+
+
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                console.log(data.length)
+
+                if (responce.status != 200){
+                    window.alert("Unauthorized Please Login")
+
+                };
+
+                if (data.length === 0){
+                    window.alert(`No ID store for ${employee_id}`)
+                }
+                else{
+                    var name = data[0].firstName
+                    var lname = data[0].lastName
+                    var position = data[0].position
+                    var salary_rate = data[0].salary_rate
+                    var taxCode = data[0].taxCode
+                    var off_on_details = data[0].off_on_details
+                    var salary_details = data[0].Salary_Detail
+                    var department = data[0].department
+
+                    document.getElementById('fname').value = name
+                    document.getElementById('lname').value = lname
+                    document.getElementById('position').value = position
+                    document.getElementById('salary_rate').value = salary_rate
+                    document.getElementById('tax_class').value = taxCode
+                    document.getElementById('emp_class').value = off_on_details
+                    document.getElementById('salary_details').value = salary_details
+                    document.getElementById('department').value = department
+                   
+
+                    if (employee_id <= 2021) {
+                        provi_rate = 570
+                        document.getElementById('provi_rate').value = provi_rate
+                    }else if(employee_id >= 2022 && employee_id <=2999){
+                        provi_rate = 429
+                        document.getElementById('provi_rate').value = provi_rate
+                    }else if (employee_id >= 5000 && employee_id <=7000){
+                        provi_rate = 351
+                        document.getElementById('provi_rate').value = provi_rate
+                    } else {
+                        provi_rate = 429
+                        document.getElementById('provi_rate').value = provi_rate
+                    }
+
+                } 
+                
+                
+                
+                
+            }
+
+            
+            
+
+        </script>
+
+        
+
+        </script>
+
+        <script type="text/javascript">
+           
+             // Get the elements we need
+                const regdayInput = document.getElementById('regday');
+                const salaryDetails = document.getElementById('salary_details');
+                const salaryRateInput = document.getElementById('salary_rate');
+                const regdayCalInput = document.getElementById('regday_cal');
+
+                // Add an event listener to the regday input to calculate the regular day calculation
+                // when the value of the input changes
+                regdayInput.addEventListener('input', function(e) {
+                    // Get the values from the inputs
+                    const regday = Number(e.target.value);
+                    const salaryDetailsValue = salaryDetails.value;
+                    const salaryRate = Number(salaryRateInput.value);
+
+                    // Calculate the salary rate and regular day calculation
+                    const regularDayCalculation = calculateRegularDay(
+                    salaryDetailsValue,
+                    salaryRate,
+                    regday
+                    );
+
+                    // Update the regular day calculation input with the result
+                    regdayCalInput.value = regularDayCalculation.toFixed(2);
+                    calculatetotalGross()
+                });
+
+                // Function to calculate the regular day calculation
+                function calculateRegularDay(salaryDetails, salaryRate, regularDay) {
+                    // If the salary is monthly, divide the salary rate by 26 to get the daily rate
+                    if (salaryDetails === 'Monthly') {
+                    salaryRate = salaryRate / 26;
+                    }
+
+                    // Return the regular day calculation
+                    return salaryRate * regularDay;
+                    
+                }
+
+        </script>
+
+        <script type="text/javascript">
+            document.getElementById('regday_ot').addEventListener('input',
+            function(e){
+                let regday_ot = e.target.value;
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var regday_otCal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    regday_otCal = parseFloat(salaryRate) / 8 * 1.25 * parseFloat(regday_ot)
+                    document.getElementById('regday_ot_cal').value=regday_otCal.toFixed(2);
+                    calculatetotalGross()
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    regday_otCal = parseFloat(salaryRate) / 8 * 1.25 * parseFloat(regday_ot)
+                    document.getElementById('regday_ot_cal').value=regday_otCal.toFixed(2);
+                    calculatetotalGross()
+
+                }
+   
+            }
+            );
+
+        </script>
+
+        <script type="text/javascript">
+            document.getElementById('sunday').addEventListener('input',
+            function(e){
+                let sundayReg = e.target.value;
+                var salDetails = document.getElementById('salary_details').value;
+                
+                var salaryRate;
+                
+                var sundayReg_cal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    sundayReg_cal = parseFloat(salaryRate) * parseFloat(sundayReg) * 1.30
+                    document.getElementById('sunday_cal').value=sundayReg_cal.toFixed(2);
+                    calculatetotalGross()
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value;
+                    sundayReg_cal = parseFloat(salaryRate) * parseFloat(sundayReg) * 1.30
+                    document.getElementById('sunday_cal').value=sundayReg_cal.toFixed(2);
+                    calculatetotalGross()
+                }
+                
+                
+                
+            }
+            );
+
+        </script>
+<!-- =================================This is for Sunday OT Calculation============================ -->
+        <script type="text/javascript">
+            document.getElementById('sunday_ot').addEventListener('input',
+            function(e){
+                let sunday_ot = e.target.value;
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var sunday_otCal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    sunday_otCal = parseFloat(salaryRate) / 8 * 1.69 * parseFloat(sunday_ot)
+                    document.getElementById('sunday_ot_cal').value=sunday_otCal.toFixed(2);
+                    calculatetotalGross()
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    sunday_otCal = parseFloat(salaryRate) / 8 * 1.69 * parseFloat(sunday_ot)
+                    document.getElementById('sunday_ot_cal').value=sunday_otCal.toFixed(2);
+                    calculatetotalGross()
+                }
+
+            }
+            );
+
+        </script>
+
+<!-- =================================This is for SPL Calculation============================ -->
+        <script type="text/javascript">
+            document.getElementById('spl').addEventListener('input',
+            function(e){
+                let spl = e.target.value;
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var spl_cal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    spl_cal = parseFloat(salaryRate) * parseFloat(spl) * 1.30
+                    document.getElementById('spl_cal').value=spl_cal.toFixed(2);
+                    calculatetotalGross()
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    spl_cal = parseFloat(salaryRate) * parseFloat(spl) * 1.30
+                    document.getElementById('spl_cal').value=spl_cal.toFixed(2);
+                    calculatetotalGross()
+                }
+
+            }
+            );
+
+        </script>
+
+
+<!-- =================================This is for SPL OT  Calculation============================ -->
+        <script type="text/javascript">
+            document.getElementById('spl_ot').addEventListener('input',
+            function(e){
+                let spl_ot = e.target.value;
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var spl_ot_cal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    spl_ot_cal = parseFloat(salaryRate) / 8 * 1.69 * parseFloat(spl_ot)
+                    document.getElementById('spl_ot_cal').value=spl_ot_cal.toFixed(2);
+                    calculatetotalGross()
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    spl_ot_cal = parseFloat(salaryRate)/ 8 * 1.69 * parseFloat(spl_ot) 
+                    document.getElementById('spl_ot_cal').value=spl_ot_cal.toFixed(2);
+                    calculatetotalGross()
+                }
+
+            }
+            );
+
+        </script>
+
+<!-- =================================This is for LGL2 Calculation============================ -->
+        <script type="text/javascript">
+            document.getElementById('lgl2').addEventListener('input',
+            function(e){
+                let spl = e.target.value;
+
+                var salDetails = document.getElementById('salary_details').value;
+                var salaryRate;
+                var lgl2_cal;
+
+                if (salDetails == 'Monthly'){
+                    salaryRate =  document.getElementById('salary_rate').value / 26;
+                    lgl2_cal = parseFloat(salaryRate) * parseFloat(spl) * 2
+                    document.getElementById('lgl2_cal').value=lgl2_cal.toFixed(2);
+                    calculatetotalGross()
+                }else{
+                    salaryRate =  document.getElementById('salary_rate').value ;
+                    lgl2_cal = parseFloat(salaryRate) * parseFloat(spl) * 2
+                    document.getElementById('lgl2_cal').value=lgl2_cal.toFixed(2);
+                    calculatetotalGross()
+
+                }
+
+            }
+            );
+
+        </script>
+
+<!-- =================================This is for LGL2 OT  Calculation============================ -->
+        <script type="text/javascript">
+           
+             // Get the elements we need
+                const lgl2OvertimeInput = document.getElementById('lgl2_ot');
+                const salaryDetails2 = document.getElementById('salary_details');
+                const salaryRateInput2= document.getElementById('salary_rate');
+                const lgl2OvertimeCalculationInput = document.getElementById('lgl2_ot_cal');
+
+                // Add an event listener to the lgl2 overtime input to calculate the overtime calculation
+                // when the value of the input changes
+                lgl2OvertimeInput.addEventListener('input', function(e) {
+                    // Get the values from the inputs
+                    const lgl2Overtime = Number(e.target.value);
+                    const salaryDetailsValue = salaryDetails2.value;
+                    const salaryRate = Number(salaryRateInput2.value);
+
+                    // Calculate the overtime calculation
+                    const lgl2OvertimeCalculation = calculateOvertime(
+                    salaryDetailsValue,
+                    salaryRate,
+                    lgl2Overtime
+                    );
+
+                    // Update the overtime calculation input with the result
+                    lgl2OvertimeCalculationInput.value = lgl2OvertimeCalculation.toFixed(2);
+                    calculatetotalGross()
+                });
+
+                // Function to calculate the overtime calculation
+                function calculateOvertime(salaryDetails2, salaryRate, lgl2Overtime) {
+                    // If the salary is monthly, divide the salary rate by 26 to get the daily rate
+                    if (salaryDetails2 === 'Monthly') {
+                    salaryRate = salaryRate / 26;
+                    }
+
+                    // Return the overtime calculation
+                    return salaryRate / 8 * 2 * 1.30 * lgl2Overtime;
+                }
+
+        </script>
+
+
+<!-- ====================================This is for computation of ShopRate==================================== -->
+        <script>
+             $(document).ready(function() {
+                $('#shoprate, #salary_rate').on('input', function() {
+                    calculateProductShopRate();
+                });
+                });
+
+                function calculateProductShopRate() {
+                let product;
+                let salaryDetails = $('#salary_details').val();
+                
+                var salaryRate = $('#salary_rate').val();
+                var shoprate = $('#shoprate').val();
+
+                if (salaryDetails  === 'Monthly'){
+                    salaryRate = salaryRate / 26;
+                    product = salaryRate / 2 * shoprate;
+                    product = product.toFixed(2)
+                    $('#shopRate_cal').val(product);
+                    calculatetotalGross()
+
+                }
+                product = salaryRate / 2 * shoprate;
+                product = product.toFixed(2)
+                    $('#shopRate_cal').val(product);
+                    calculatetotalGross()
+                }
+
+
+        </script>
+
+<!-- ====================================This is for computation of ProviRate Calcuation==================================== -->
+            <script>
+                $(document).ready(function() {
+                $('#provirateNo, #provi_rate').on('input', function() {
+                    calculateProvi();
+                });
+                });
+
+                function calculateProvi() {
+                let product
+                var totalProvi = $('#provirateNo').val();
+                var proviRate = $('#provi_rate').val();
+                
+                product = totalProvi  * proviRate;
+                product = product.toFixed(2)
+                $('#provirate_cal').val(product);
+                calculatetotalGross()
+                }
+
+
+            </script>
+
+<!-- ====================================This is for computation of ProviRate Calcuation==================================== -->
+                <script>
+                    $(document).ready(function() {
+                    $('#proviOT_total, #provi_rate').on('input', function() {
+                        calculateProviOT();
+                    });
+                    });
+
+                    function calculateProviOT() {
+                    let product
+                    var totalProvi = $('#proviOT_total').val();
+                    var proviRate = $('#provi_rate').val();
+                    
+                    product = totalProvi  * ((proviRate) / 8 * 1.25);
+                    product = product.toFixed(2);
+                    $('#proviOT_total_cal').val(product);
+                    calculatetotalGross()
+                    }
+
+
+                </script>
+
+<!-- ====================================This is for computation of ProviRate Calcuation==================================== -->
+                <script>
+                    $(document).ready(function() {
+                    $('#provisun_total, #provi_rate').on('input', function() {
+                        calculateProviSun();
+                    });
+                    });
+
+                    function calculateProviSun() {
+                    let product
+                    var totalProvi = $('#provisun_total').val();
+                    var proviRate = $('#provi_rate').val();
+                    
+                    product = totalProvi  * (proviRate * 1.30);
+                    product = product.toFixed(2)
+                    $('#provisun_total_cal').val(product);
+                    calculatetotalGross()
+                    }
+
+
+                </script>
+
+
+<!-- ====================================This is for computation of Provi Sun OT Cal==================================== -->
+                <script>
+                    $(document).ready(function() {
+                    $('#provisunOT_total, #provi_rate').on('input', function() {
+                        calculateProviSunOT();
+                    });
+                    });
+
+                    function calculateProviSunOT() {
+                    let product
+                    var totalProvi = $('#provisunOT_total').val();
+                    var proviRate = $('#provi_rate').val();
+                    
+                    product = totalProvi  * ((proviRate)/8 * 1.69);
+                    product = product.toFixed(2)
+                    $('#provisunOT_total_cal').val(product);
+                    calculatetotalGross()
+                    }
+
+
+                </script>
+
+<!-- ====================================This is for computation of Provi Sun OT Cal==================================== -->
+                <script>
+                    $(document).ready(function() {
+                    $('#nightDiff, #salary_rate').on('input', function() {
+                        calculateNightDiff();
+                    });
+                    });
+
+                    function calculateNightDiff() {
+                    let product
+                    var nightDiff = $('#nightDiff').val();
+                    var salaryRate = $('#salary_rate').val();
+                    
+                    product = nightDiff  * ((salaryRate)/8 * 0.10);
+                    product = product.toFixed(2)
+                    $('#nightDiff_cal').val(product);
+                    calculatetotalGross()
+                    }
+
+
+                </script>
+
+<!-- ====================================This is for computation of Total Gross==================================== -->
+                <script>
+                    $(document).ready(function() {
+                        $('#regday_cal, #regday_ot_cal, \
+                        #sunday_cal,#sunday_ot_cal,#spl_cal, \
+                        #spl_ot_cal,#lgl2_cal,#lgl2_ot_cal, \
+                        #shopRate_cal,#provirate_cal,#proviOT_total_cal, \
+                        #provisun_total_cal,#provisunOT_total_cal,\
+                        #nightDiff_cal,#adjustment').on('input', function() {
+                            calculatetotalGross();
+                        });
+                        });
+
+                        function calculatetotalGross() {
+                        
+                        let regdayCal;
+                        let regdayOTCal;
+                        let sunday_cal;
+                        let sunday_ot_cal;
+                        let spl_cal;
+                        let spl_ot_cal;
+                        let lgl2_cal;
+                        let lgl2_ot_cal;
+                        let shopRate_cal;
+                        let provirate_cal;
+                        let proviOT_total_cal;
+                        let provisun_total_cal;
+                        let provisunOT_total_cal;
+                        let nightDiff_cal;
+                        let adjustment;
+
+
+                        regdayCal = $('#regday_cal').val();
+                        regdayOTCal = $('#regday_ot_cal').val();
+                        sunday_cal = $('#sunday_cal').val();
+                        sunday_ot_cal = $('#sunday_ot_cal').val();
+                        spl_cal = $('#spl_cal').val();
+                        spl_ot_cal = $('#spl_ot_cal').val();
+                        lgl2_cal = $('#lgl2_cal').val();
+                        lgl2_ot_cal = $('#lgl2_ot_cal').val();
+                        nightDiff_cal = $('#nightDiff_cal').val();
+                        adjustment = $('#adjustment').val();
+                        
+                        let product;
+                        let product2
+                        product = (parseFloat(regdayCal) + parseFloat(regdayOTCal)
+                                        + parseFloat(sunday_cal) + parseFloat(sunday_ot_cal)
+                                        + parseFloat(spl_cal) + parseFloat(spl_ot_cal)
+                                        + parseFloat(lgl2_cal) + parseFloat(lgl2_ot_cal)
+                                        + parseFloat(nightDiff_cal) + parseFloat(adjustment));
+
+                        product2 = product.toFixed(2);
+                        const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        $('#totalGross').val(stringNumber);
+                        $('#totalGross2').val(product2);
+                        }
+
+
+            
+                </script>
+
+
+
+<!-- ================================This is to Print Form to PDF==================================== -->
+
+        <script>
+            function printPage() {
+                window.print();
+                }
+        </script>
+
+        <script>
+            //     $(document).ready(function() {
+            //     $('#myCheckbox2').change(function() {
+            //     if($(this).prop('checked')) {
+                
+            //         // deminimis_computation()
+            //         deminimis_computation()
+                
+
+            //     }
+            //     });
+            // });
+        </script>
+
+        <script type="text/javascript">
+
+                // const deminimis_computation = async () => {
+                // let on_off_status;
+                // let totalGross2;
+                // let basic_taxable;
+                // let MWE = 3883.34/2;
+                // let basicMWE;
+                // let uniform;
+                // let rice;
+                // let laundry;
+                // let medical1;
+                // let medical2
+
+                // on_off_status = document.getElementById('emp_class').value
+                // totalGross2 = document.getElementById('totalGross2').value
+                // basicMWE = (document.getElementById('provi_rate').value) * 13
+                // basic_taxable = totalGross2 - basicMWE 
+                // basic_taxable = basic_taxable.toFixed(2)
+                // console.log(basic_taxable)
+                // if (on_off_status == 'off'){
+                //     uniform = 0
+                //     uniform =uniform.toFixed(2)
+                //     document.getElementById('uniform').value = uniform;
+
+                //     rice = 0
+                //     rice = rice.toFixed(2)
+                //     document.getElementById('rice').value = rice;
+
+                //     laundry = 0
+                //     laundry = laundry.toFixed(2)
+                //     document.getElementById('laundry').value = laundry;
+
+                //     medical1 = 0
+                //     medical1 = medical1.toFixed(2)
+                //     document.getElementById('medical1').value = medical1;
+
+
+                //     medical2 = 0
+                //     medical2 = medical2.toFixed(2)
+                //     document.getElementById('medical2').value = medical2;
+
+
+                // }else if(basic_taxable > 0 && on_off_status == 'on' && basic_taxable >= MWE){
+                //     uniform = basic_taxable * 0.13
+                //     uniform =uniform.toFixed(2)
+                //     document.getElementById('uniform').value = uniform;
+
+                //     rice = basic_taxable * 0.52
+                //     rice = rice.toFixed(2)
+                //     document.getElementById('rice').value = rice;
+
+                //     laundry = basic_taxable * 0.08
+                //     laundry = laundry.toFixed(2)
+                //     document.getElementById('laundry').value = laundry;
+
+                //     medical1 = basic_taxable * 0.21
+                //     medical1 = medical1.toFixed(2)
+                //     document.getElementById('medical1').value = medical1;
+
+
+                //     medical2 = basic_taxable * 0.06
+                //     medical2 = medical2.toFixed(2)
+                //     document.getElementById('medical2').value = medical2;
+                // }
+                // }
+
+
+        </script>
+
+       
+
+      
+
+{% endblock %}
