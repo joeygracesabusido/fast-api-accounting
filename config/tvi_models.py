@@ -107,7 +107,28 @@ class  tviRoutes(SQLModel, table=True):
     routes: str = Field(default=None)
     distance: condecimal(max_digits=3, decimal_places=2) = Field(default=0)
 
-
+class Adan_payroll_tvi(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    employee_id: str = Field(index=True)
+    first_name: str = Field(default=None)
+    last_name: str = Field(default=None)
+    salaryRate: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    addOnRate:  condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    salaryDetails: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    regDay: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    regDayOt: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    sunday: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    sundayOT: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    spl: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    splOT: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    lgl2: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    lgl2OT: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    nightDiff: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    adjustment: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    user: str = Field(default=None)
+    date_updated:  Optional[datetime] = Field(default=None)
+    date_credited: datetime = Field(default_factory=datetime.utcnow)
 
 
 
@@ -651,9 +672,49 @@ def updateTVIDiesel(id,transDate,equipmentId,withdrawalSlip,
         session.commit()
         session.refresh(result) 
 
+#===========================================This is for TVI Payroll =============================================
+def insertPayroll(transDate,employee_id,first_name,last_name,salaryRate,
+                    addOnRate,salaryDetails,regDay,regDayOt,sunday,sundayOT,
+                    spl,splOT,lgl2,lgl2OT,nightDiff,adjustment,user):
+    """This is for inserting Payroll Transaction"""
+    insertData = Adan_payroll_tvi(transDate=transDate,employee_id=employee_id,first_name=first_name,last_name=last_name,
+                                        salaryRate=salaryRate,addOnRate=addOnRate,salaryDetails=salaryDetails,
+                                        regDay=regDay,regDayOt=regDayOt,sunday=sunday,sundayOT=sundayOT,spl=spl,
+                                        splOT=splOT,lgl2=lgl2,lgl2OT=lgl2OT,nightDiff=nightDiff,adjustment=adjustment,user=user)
 
 
+    session = Session(engine)
 
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
+
+def getPayrollTvi(datefrom,dateto):
+    """This function is for querying Payroll in TVI adan"""
+    with Session(engine) as session:
+        statement = select(Adan_payroll_tvi).where(Adan_payroll_tvi.transDate.between(datefrom,dateto)) \
+                         .order_by(Adan_payroll_tvi.id.asc())
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
+def getPayrollTvi_id(id):
+    """This function is for querying all TVI payroll"""
+    with Session(engine) as session:
+        
+
+        statement = select(Adan_payroll_tvi).where(Adan_payroll_tvi.id == id)
+                    
+        results = session.exec(statement) 
+
+        data = results.one()
+       
+        return data
 
 # getRentalTVI_id('181')
 # select_tivEquipment_with_id(1)

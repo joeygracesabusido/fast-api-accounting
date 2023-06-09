@@ -4,6 +4,7 @@ from datetime import datetime, date
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+from typing import Optional
 
 # from config.database import Base
 
@@ -356,6 +357,27 @@ class TVITons(BaseModel):
     hauling_rate: float
     project_site: str
     driverOperator: str
+
+class TVIPayroll(BaseModel):
+    transDate: date
+    employee_id: str 
+    first_name: str 
+    last_name: str 
+    salaryRate: float
+    addOnRate:  float
+    salaryDetails: str
+    regDay: float
+    regDayOt: float
+    sunday: float
+    sundayOT: float
+    spl: float
+    splOT: float
+    lgl2: float
+    lgl2OT: float
+    nightDiff: float
+    adjustment: float
+    date_updated: Optional[datetime]
+    date_credited: Optional[datetime]
 
 
     

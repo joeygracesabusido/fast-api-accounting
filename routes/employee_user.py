@@ -1000,4 +1000,49 @@ async def get_cost(datefrom,dateto,equipmentId: Optional[str],username: str = De
     
     return tonsData
 
+#==================================================API TVI Payroll=======================================================
+from models.model import TVIPayroll
+from config.tvi_models import insertPayroll,getPayrollTvi
+@employee_user.post("/api-insert-tvi-payroll/")
+async def insertPayroll_TVI(items:TVIPayroll, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for inserting payroll TVI adan"""
+    insertPayroll(transDate=items.transDate,employee_id=items.employee_id,first_name=items.first_name,
+                    last_name=items.last_name,salaryRate=items.salaryRate,addOnRate=items.addOnRate,
+                        salaryDetails=items.salaryDetails,regDay=items.regDay,regDayOt=items.regDayOt,
+                        sunday=items.sunday,sundayOT=items.sundayOT,spl=items.spl,
+                        splOT=items.splOT,lgl2=items.lgl2,lgl2OT=items.lgl2OT,nightDiff=items.nightDiff,
+                        adjustment=items.adjustment,user=username)
+
+@employee_user.get("/api-get-tvi-payroll/")
+async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = getPayrollTvi(datefrom=datefrom,dateto=dateto)
+
+    payrollData = [
+        
+            {
+                
+                "transDate": x.transDate,
+                "employee_id": x.employee_id,
+                "first_name": x.first_name,
+                "last_name": x.last_name,
+                "salaryRate": x.salaryRate,
+                "addOnRate": "{:.2f}".format(float(x.salaryRate) + (float(x.salaryRate) * .1675213)),
+                "regDay": x.regDay,
+                "regDayCal": float(x.addOnRate) * float(x.regDay),
+                "regDayOt": x.regDayOt,
+                "regDayOtCal": "{:.2f}".format(float(x.salaryRate)/8 * 1.25 * float(x.regDayOt)),
+                "sunday": x.sunday,
+                "sundayCal": "{:.2f}".format(float(x.salaryRate) * (1.30) * float(x.sunday))
+
+                #"regDayCal": "{:.2f}".format((float(x.salaryRate) + (float(x.salaryRate) * .1675213)) * float(x.regDay))
+                # "regDayCal": "{:.2f}".format(float(x.salaryRate) + (float(x.salaryRate) * .1675213)) * float(x.regDay)
+                #"{:.2f}".format(float(x.addOnRate) * float(x.regDay))
+                # "incentives": "{:.2f}".format(float(x.trips) * float(x.distance) * 25)
+            }
+            for x in results
+        ]
+    
+    
+    return payrollData
     
