@@ -637,7 +637,5 @@ const BTN_saveTVI_Payroll = document.querySelector('#Btn_Save_payroll');
 BTN_saveTVI_Payroll.addEventListener("click", insertPayrollTVI);                  
                     
                     
-
                                                                              
-    
-
+// =========================This function is for Displaying Data of Tons Transaction ============================

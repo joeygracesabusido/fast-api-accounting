@@ -1033,8 +1033,21 @@ async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str 
                 "regDayOt": x.regDayOt,
                 "regDayOtCal": "{:.2f}".format(float(x.salaryRate)/8 * 1.25 * float(x.regDayOt)),
                 "sunday": x.sunday,
-                "sundayCal": "{:.2f}".format(float(x.salaryRate) * (1.30) * float(x.sunday))
-
+                "sundayCal": "{:.2f}".format(float(x.salaryRate) * (1.30) * float(x.sunday)),
+                "sundayOT": x.sundayOT,
+                "sundayOTCal": "{:.2f}".format(float(x.salaryRate) / 8 * (1.69) * float(x.sundayOT)),
+                "spl": x.spl,
+                "splCal": "{:.2f}".format(float(x.salaryRate) * (1.30) * float(x.spl)),
+                "splOT": x.splOT,
+                "splOTCal": "{:.2f}".format(float(x.salaryRate) / 8 * (1.69) * float(x.splOT)),
+                "lgl2": x.lgl2,
+                "lgl2Cal": "{:.2f}".format(float(x.salaryRate) * (2) * float(x.lgl2)),
+                "lgl2OT": x.lgl2OT,
+                "lgl2OTCal": "{:.2f}".format(float(x.salaryRate) / 8 * (2) * (1.30) * float(x.lgl2OT)),
+                "nightDiff": x.nightDiff,
+                "nightDiffCal": "{:.2f}".format(float(x.salaryRate)/8 * 0.10 * float(x.nightDiff)),
+                "adjustment": x.adjustment
+                
                 #"regDayCal": "{:.2f}".format((float(x.salaryRate) + (float(x.salaryRate) * .1675213)) * float(x.regDay))
                 # "regDayCal": "{:.2f}".format(float(x.salaryRate) + (float(x.salaryRate) * .1675213)) * float(x.regDay)
                 #"{:.2f}".format(float(x.addOnRate) * float(x.regDay))
