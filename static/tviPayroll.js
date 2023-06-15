@@ -135,6 +135,7 @@ $(document).ready(function() {
                 const regdayInput = document.getElementById('regday');
                 const salaryDetails = document.getElementById('salary_details');
                 const salaryRateInput = document.getElementById('salary_rate');
+                const salaryRateInputAdan = document.getElementById('salary_rate_Adan');
                 const regdayCalInput = document.getElementById('regday_cal');
 
                 // Add an event listener to the regday input to calculate the regular day calculation
@@ -143,7 +144,8 @@ $(document).ready(function() {
                     // Get the values from the inputs
                     const regday = Number(e.target.value);
                     const salaryDetailsValue = salaryDetails.value;
-                    // let salaryRate = Number(salaryRateInput.value) + (Number(salaryRateInput.value) * .1675213);
+                    //.1675213
+                    let salaryRate = Number(salaryRateInputAdan.value);
 
                     // Calculate the salary rate and regular day calculation
                     const regularDayCalculation = calculateRegularDay(
