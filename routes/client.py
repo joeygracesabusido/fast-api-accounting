@@ -23,6 +23,8 @@ from schemas.bstype import bsTypes
 from schemas.journalEntry import journalEntry,journalEntrys
 from schemas.journalEntry_incomeStatmement import journalEntry_incomeStatement,journalEntry_incomeStatements
 
+from starlette.responses import PlainTextResponse
+
 from jose import jwt
 
 JWT_SECRET = 'myjwtsecret'
@@ -100,6 +102,9 @@ def create_access_token(data: dict, expires_delta: timedelta):
     # response.set_cookie(key="access_token", value=f'Bearer {token}',httponly=True)
     # return response
 
+@client.get("/favicon.ico")
+async def disable_favicon():
+    return PlainTextResponse("Favicon not found", status_code=404)
 
 
 @client.post('/login')

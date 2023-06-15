@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import PlainTextResponse
 
 from routes.admin import admin
 from routes.client import client
@@ -19,6 +20,10 @@ app = FastAPI()
 #     "*",
 # ]
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/favicon.ico")
+async def disable_favicon():
+    return PlainTextResponse("Favicon not found", status_code=404)
 
 app.add_middleware(
     CORSMiddleware,
