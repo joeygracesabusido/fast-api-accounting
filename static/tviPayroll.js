@@ -143,7 +143,7 @@ $(document).ready(function() {
                     // Get the values from the inputs
                     const regday = Number(e.target.value);
                     const salaryDetailsValue = salaryDetails.value;
-                    let salaryRate = Number(salaryRateInput.value) + (Number(salaryRateInput.value) * .1675213);
+                    // let salaryRate = Number(salaryRateInput.value) + (Number(salaryRateInput.value) * .1675213);
 
                     // Calculate the salary rate and regular day calculation
                     const regularDayCalculation = calculateRegularDay(
