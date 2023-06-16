@@ -573,15 +573,16 @@ $(document).ready(function() {
 const insertPayrollTVI = async() => {
     // Get the values of the input fields
     const salaryRateInput = document.getElementById('salary_rate');
-    let salaryRate = Number(salaryRateInput.value) + (Number(salaryRateInput.value) * .1675213);
-    salaryRate = salaryRate.toFixed(2)
+    // let salaryRate = Number(salaryRateInput.value) + (Number(salaryRateInput.value) * .1675213);
+    // let salaryRate = document.getElementById('salary_rate_Adan')
+    // salaryRate = salaryRate.toFixed(2)
     const data = {
         transDate: document.getElementById("datefrom").value,
         employee_id: document.getElementById("employee_id").value,
         first_name: document.getElementById("fname").value,
         last_name: document.getElementById("lname").value,
         salaryRate: document.getElementById("salary_rate").value,
-        addOnRate: salaryRate,
+        addOnRate: document.getElementById("salary_rate_Adan").value,
         salaryDetails: document.getElementById("salary_details").value,
         regDay: document.getElementById("regday").value,
         regDayOt: document.getElementById("regday_ot").value,

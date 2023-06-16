@@ -674,6 +674,15 @@ const summaryincetiveTotal = () => {
     document.querySelector("#flter_totalIncentives").value = sumTotalAmountComma;
   };
 
+
+// =================================This is for List of Payroll Display ===================================
+
+
+
+
+
+
+
 //=================================This is for Printing TVI Voucher=================================
 
 
