@@ -46,10 +46,26 @@
     }
 
     .container3 {
+   
+    display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column; /* Added to stack items vertically */
     margin-bottom: 10px;
+    
     }
+
+    .container4 {
+   
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column; /* Added to stack items vertically */
+   margin-bottom: 10px;
+
+    
+   
+   }
 
     .container1 {
     display: flex;
@@ -73,6 +89,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    
   }
 
   .container2 label {
@@ -118,13 +135,79 @@
     margin-left:  250px;
   }
 
+  
+  #nextPage {
+    position: absolute;
+    top: auto;
+    left: 150px;
+  }
+
+  #nextPage2 {
+    position: absolute;
+    top: auto;
+    left: 250px;
+  }
+
+  #previousPage {
+    position: absolute;
+    top: auto;
+    right: 400px;
+   
+  }
+
+  #previousPage2 {
+    position: absolute;
+    top: auto;
+    left: 150px;
+   
+  }
+
+
+
+  
+
   #Btn_Save_payroll {
   position: absolute;
   top: auto;
-  right: 600px;
+  right: 450px;
   /* display: block;
   float: right; */
   
+}
+
+
+.container5 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.container5 label {
+  width: 100px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.container5 .left-input,
+.container5 .right-input {
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: #555555;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(35, 7, 161, 0.075);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.container5 .right-label {
+  text-align: left;
+  margin-right: 10px;
+  margin-left: 250px;
 }
 
  
@@ -135,7 +218,7 @@
     <div class="container">
         <div id="progress-bar">
             <div class="progress"></div>
-          </div>
+        </div>
 
             <div id="page1">
            
@@ -287,20 +370,13 @@
                             >
                         </input>
                         
-                   
-    
-<!--                        
-                            <button type="submit"  onclick="display_emp_data()" class="btn btn-success">
-                                Search Data
-                                <i class="fas fa-database"></i>
-                            </button>
-                        -->
-                    
+                    </div>
+                        
                 
+            <button type="button" id="nextPage" name="nextPage" class="btn btn-success" >Next</button>
                 
-                
-        </div>
-        <button type="button" id="nextPage" name="nextPage" class="btn btn-success" >Next</button>
+            </div>
+        
            
                 
     </div>
@@ -317,7 +393,7 @@
                     
 
 <!--============================== This is start for computation fields============================== -->
-                <div id="page2" style="display: none;">
+        <div id="page2" style="display: none;">
                 <div class="d-flex justify-content-center">
                     <h1>
                         This is for computation 
@@ -369,17 +445,17 @@
                                 </input>
                         
                     
-                        <label for="REGOT"class="right-label"
-                            >RegDay OT Calculation</label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    name="regday_ot_cal"
-                                    id="regday_ot_cal"
-                                    style="text-align: right;"
-                                    class="right-input"
-                                    >
-                                </input>
+                            <label for="REGOT"class="right-label"
+                                >RegDay OT Calculation</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        name="regday_ot_cal"
+                                        id="regday_ot_cal"
+                                        style="text-align: right;"
+                                        class="right-input"
+                                        >
+                                    </input>
     
                         
                         </div>
@@ -581,102 +657,285 @@
                             
     
                     
-                    <div class="container2">
-                            <label for="Night Diff"
-                            >Night Diff</label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    name="nightDiff"
-                                    id="nightDiff"
-                                    style="text-align: right;
-                                        "
-                                    class="left-input"
-                                    
-                                    >
-                                </input>
-                            <label for="Night" class="right-label"
-                            >Night Diff Cal</label>
-                         
-        
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    name="nightDiff_cal"
-                                    id="nightDiff_cal"
-                                    style="text-align: right;
-                                        "
-                                    class="right-input"
-                                    >
-                                </input>
-    
-                    </div>   
                     
-                    <div class="container2">
-                        <label for="Adjustment"
-                        >Adjustment</label>
+    
+                        
+                    
+                    
+                    
+    
+            
+
+                </div>
+
+                <div class="conatiner mt-3">
+                    <button type="button" id="nextPage2" name="nextPage" class="btn btn-success" >Next</button>
+                    <button type="button"  id="previousPage" class="btn btn-success" ">Back</button> 
+
+                </div>
+
+            
+
+        </div> 
+    
+    <!--============================This is for Page 3 =================================  -->
+        <div id="page3" style="display: none;" >
+            <div class="d-flex justify-content-center">
+                <h1>
+                    This is for computation  for Night Diff
+                </h1>
+                
+            </div> 
+
+
+            <div id="conatiner4">
+
+                <div class="container5">
+                    <label for="Night Diff"
+                    >Night Diff Regular</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff"
+                            id="nightDiff"
+                            style="text-align: right;
+                                "
+                            class="left-input"
+                            
+                            >
+                        </input>
+                    <label for="Night" class="right-label"
+                    >Night Diff Cal Regday</label>
+                 
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_cal"
+                            id="nightDiff_cal"
+                            style="text-align: right;
+                                "
+                            class="right-input"
+                            >
+                        </input>
+
+                </div>   
+
+                <div class="container5">
+                    <label for="Night Diff"
+                    >Night Diff Regular-OT</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_regday_ot"
+                            id="nightDiff_regday_ot"
+                            style="text-align: right;
+                                "
+                            class="left-input"
+                            
+                            >
+                        </input>
+                    <label for="Night" class="right-label"
+                    >Night Diff Cal Regday-OT</label>
+                 
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_regdayOT_cal"
+                            id="nightDiff_regdayOT_cal"
+                            style="text-align: right;
+                                "
+                            class="right-input"
+                            >
+                        </input>
+
+                </div>   
+
+<!-- =========================This is for Calculation of Sunday and SPL Night Diff================ -->
+                <div class="container5">
+                    <label for="Night Diff"
+                    >Night Diff Restday/SPl</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_spl"
+                            id="nightDiff_spl"
+                            style="text-align: right;
+                                "
+                            class="left-input"
+                            
+                            >
+                        </input>
+                    <label for="Night" class="right-label"
+                    >Night Diff Cal Restday/SPl</label>
+                 
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_spl_cal"
+                            id="nightDiff_spl_cal"
+                            style="text-align: right;
+                                "
+                            class="right-input"
+                            >
+                        </input>
+
+                </div>   
+
+<!-- =========================This is for Calculation of SPL Holiday OTNight Diff================ -->
+                <div class="container5">
+                    <label for="Night Diff"
+                    >Night Diff SPL/RestDat OT</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_spl_ot"
+                            id="nightDiff_spl_ot"
+                            style="text-align: right;
+                                "
+                            class="left-input"
+                            
+                            >
+                        </input>
+                    <label for="Night" class="right-label"
+                    >Night Diff Cal SPL/RestDat OT</label>
+
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_splOT_cal"
+                            id="nightDiff_splOT_cal"
+                            style="text-align: right;
+                                "
+                            class="right-input"
+                            >
+                        </input>
+
+                </div>   
+
+<!-- =========================This is for Calculation of Legal Holiday Night Diff================ -->
+                <div class="container5">
+                    <label for="Night Diff"
+                    >Night Diff Legal Hol</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_lgl2"
+                            id="nightDiff_lgl2"
+                            style="text-align: right;
+                                "
+                            class="left-input"
+                            
+                            >
+                        </input>
+                    <label for="Night" class="right-label"
+                    >Night Diff Cal Legal Hol</label>
+                
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_lgl2_cal"
+                            id="nightDiff_lgl2_cal"
+                            style="text-align: right;
+                                "
+                            class="right-input"
+                            >
+                        </input>
+
+                </div>   
+
+
+<!-- =========================This is for Calculation of  OT Legal  Holiday Night Diff================ -->
+                <div class="container5">
+                    <label for="Night Diff"
+                    >Night Diff Legal Hol OT</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_lgl2_ot"
+                            id="nightDiff_lgl2_ot"
+                            style="text-align: right;
+                                "
+                            class="left-input"
+                            
+                            >
+                        </input>
+                    <label for="Night" class="right-label"
+                    >Night Diff Cal Legal Hol</label>
+
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="nightDiff_lgl2OT_cal"
+                            id="nightDiff_lgl2OT_cal"
+                            style="text-align: right;
+                                "
+                            class="right-input"
+                            >
+                        </input>
+
+                </div>   
+            
+            
+                <div class="container5">
+                    <label for="Adjustment"
+                    >Adjustment</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="adjustment"
+                            id="adjustment"
+                            style="text-align: right;
+                                "
+                            class="left-input"
+                            
+                            >
+                        </input>
+
+                        <label for="Total Gross" class="right-label"
+                        >Total Gross</label>
                             <input
-                                type="number"
-                                step="0.01"
-                                name="adjustment"
-                                id="adjustment"
-                                style="text-align: right;
-                                    "
-                                class="left-input"
+                                type="text"
                                 
-                                >
-                            </input>
-    
-                            <label for="Total Gross" class="right-label"
-                            >Total Gross</label>
-                                <input
-                                    type="text"
-                                    
-                                    name="totalGross"
-                                    id="totalGross"
-                                    style="text-align: right;
-                                         background-color: darkorange;"
-                                    class="right-input"
-                                    
-                                    >
-                                </input>
-    
-                                <input
-                                type="number" hidden
-                                step="0.01"
-                                name="totalGross2"
-                                id="totalGross2"
+                                name="totalGross"
+                                id="totalGross"
                                 style="text-align: right;
-                                   "
+                                    background-color: darkorange;"
                                 class="right-input"
                                 
                                 >
                             </input>
+
+                            <input
+                            type="number" hidden
+                            step="0.01"
+                            name="totalGross2"
+                            id="totalGross2"
+                            style="text-align: right;
+                            "
+                            class="right-input"
+                            
+                            >
+                        </input>
+
                         
-    
-                    </div> 
-    
-                        
-                      
-                    <button type="button"  id="previousPage" class="btn btn-success" ">Back</button>
-                    
-                    <button type="button"  id="Btn_Save_payroll" class="btn btn-success" ">Save</button>
-    
-                   
-    
-
-                </div>
-
-                
-
-                </div>
-
-                
                     
 
-        
+                </div> 
+                <button type="button"  id="previousPage2" class="btn btn-success" ">Back</button>
 
-    </div>       
+                <button type="button"  id="Btn_Save_payroll" class="btn btn-success" ">Save</button>
+
+            </div>
+
+            
+
+        </div>
                 
 
                     

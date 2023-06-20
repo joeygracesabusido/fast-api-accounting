@@ -1,11 +1,75 @@
 //=======================================This is for Next Nad Back Function for Page=============================
 
 
+// let currentPage = 1;
+// const totalPages = 2;
+// const nextPage = () => {
+//   if (currentPage === 1) {
+//     const inputs = document.querySelectorAll('#page1 input');
+//     let isFilled = true;
+//     inputs.forEach((input) => {
+//       if (input.value === '') {
+//         isFilled = false;
+//         return;
+//       }
+//     });
+
+//     if (isFilled) {
+//       currentPage++;
+//       const currentPageElem = document.getElementById('page' + currentPage);
+//       currentPageElem.style.display = 'block';
+
+//       const previousPageElem = document.getElementById('page' + (currentPage - 1));
+//       previousPageElem.style.display = 'none';
+
+     
+//     } else {
+//       alert('Please fill in all the fields before proceeding.');
+//     }
+//   } else if (currentPage === 2) {
+//     const inputs = document.querySelectorAll('#page2 input');
+//     let isFilled = true;
+//     inputs.forEach((input) => {
+//       if (input.value === '') {
+//         isFilled = false;
+//         return;
+//       }
+//     });
+
+//     if (isFilled) {
+//       alert('All fields are filled. Proceed to the next step.');
+//     } else {
+//       alert('Please fill in all the fields before proceeding.');
+//     }
+//   }
+// };
+
+// const previousPage = () => {
+//   currentPage--;
+//   const currentPageElem = document.getElementById('page' + currentPage);
+//   currentPageElem.style.display = 'block';
+
+//   const nextPageElem = document.getElementById('page' + (currentPage + 1));
+//   nextPageElem.style.display = 'none';
+
+  
+// };
+
+// // Attach the event listener to the button for Next Page
+// const nextPageButton = document.querySelector('#nextPage');
+// nextPageButton.addEventListener("click", nextPage);
+
+
+// // Attach the event listener to the button for Next Page
+// const previousPageButton = document.querySelector('#previousPage');
+// previousPageButton.addEventListener("click", previousPage);
+
 let currentPage = 1;
-const totalPages = 2;
+const totalPages = 3;
+
 const nextPage = () => {
-  if (currentPage === 1) {
-    const inputs = document.querySelectorAll('#page1 input');
+  if (currentPage < totalPages) {
+    const inputs = document.querySelectorAll('#page' + currentPage + ' input');
     let isFilled = true;
     inputs.forEach((input) => {
       if (input.value === '') {
@@ -22,12 +86,14 @@ const nextPage = () => {
       const previousPageElem = document.getElementById('page' + (currentPage - 1));
       previousPageElem.style.display = 'none';
 
-     
+      if (currentPage === totalPages) {
+        nextPageButton.style.display = 'none';
+      }
     } else {
       alert('Please fill in all the fields before proceeding.');
     }
-  } else if (currentPage === 2) {
-    const inputs = document.querySelectorAll('#page2 input');
+  } else if (currentPage === totalPages) {
+    const inputs = document.querySelectorAll('#page' + currentPage + ' input');
     let isFilled = true;
     inputs.forEach((input) => {
       if (input.value === '') {
@@ -45,25 +111,33 @@ const nextPage = () => {
 };
 
 const previousPage = () => {
-  currentPage--;
-  const currentPageElem = document.getElementById('page' + currentPage);
-  currentPageElem.style.display = 'block';
+  if (currentPage > 1) {
+    currentPage--;
+    const currentPageElem = document.getElementById('page' + currentPage);
+    currentPageElem.style.display = 'block';
 
-  const nextPageElem = document.getElementById('page' + (currentPage + 1));
-  nextPageElem.style.display = 'none';
+    const nextPageElem = document.getElementById('page' + (currentPage + 1));
+    nextPageElem.style.display = 'none';
 
-  
+    nextPageButton.style.display = 'block';
+  }
 };
 
-// Attach the event listener to the button for Next Page
+// Attach the event listener to the button for Next Page on page 1
 const nextPageButton = document.querySelector('#nextPage');
-nextPageButton.addEventListener("click", nextPage);
+nextPageButton.addEventListener('click', nextPage);
 
+// Attach the event listener to the button for Next Page on page 2
+const nextPageButton2 = document.querySelector('#nextPage2');
+nextPageButton2.addEventListener('click', nextPage);
 
-// Attach the event listener to the button for Next Page
+// Attach the event listener to the button for Previous Page
 const previousPageButton = document.querySelector('#previousPage');
-previousPageButton.addEventListener("click", previousPage);
+previousPageButton.addEventListener('click', previousPage);
 
+// Attach the event listener to the button for Previous Page
+const previousPageButton2 = document.querySelector('#previousPage2');
+previousPageButton2.addEventListener('click', previousPage);
 
 // =================================================This is for selection of Employee  ID ==============================
 $(document).ready(function() {
@@ -489,10 +563,10 @@ $(document).ready(function() {
                     
                                     
                     
-// <!-- ====================================This is for computation of Provi Sun OT Cal==================================== -->
+// <!-- ====================================This is for computation of Regday  Night diff ==================================== -->
                                     
                                         $(document).ready(function() {
-                                        $('#nightDiff, #salary_rate').on('input', function() {
+                                        $('#nightDiff, #salary_rate_Adan').on('input', function() {
                                             calculateNightDiff();
                                         });
                                         });
@@ -500,14 +574,109 @@ $(document).ready(function() {
                                         function calculateNightDiff() {
                                         let product
                                         var nightDiff = $('#nightDiff').val();
-                                        var salaryRate = $('#salary_rate').val();
+                                        var salaryRate = $('#salary_rate_Adan').val();
                                         
                                         product = nightDiff  * ((salaryRate)/8 * 0.10);
                                         product = product.toFixed(2)
                                         $('#nightDiff_cal').val(product);
                                         calculatetotalGross()
                                         }
+
+// <!-- ====================================This is for computation of Regday OT  Night diff ==================================== -->
+                                    
+                                        $(document).ready(function() {
+                                        $('#nightDiff_regday_ot, #salary_rate').on('input', function() {
+                                            calculateNightDiff_ot();
+                                        });
+                                        });
                     
+                                        function calculateNightDiff_ot() {
+                                        let product
+                                        var nightDiff = $('#nightDiff_regday_ot').val();
+                                        var salaryRate = $('#salary_rate').val();
+                                        
+                                        product = nightDiff  * ((salaryRate)/8 * 1.25 * 0.10);
+                                        product = product.toFixed(2)
+                                        $('#nightDiff_regdayOT_cal').val(product);
+                                        calculatetotalGross()
+                                        }
+// <!-- ====================================This is for computation of SPL/RestDay  Night diff ==================================== -->
+                                    
+                                        $(document).ready(function() {
+                                        $('#nightDiff_spl, #salary_rate').on('input', function() {
+                                            calculateNightDiff_spl();
+                                        });
+                                        });
+                    
+                                        function calculateNightDiff_spl() {
+                                        let product
+                                        var nightDiff = $('#nightDiff_spl').val();
+                                        var salaryRate = $('#salary_rate').val();
+                                        
+                                        product = nightDiff  * ((salaryRate)/8 * 1.30 * 0.10);
+                                        product = product.toFixed(2)
+                                        $('#nightDiff_spl_cal').val(product);
+                                        calculatetotalGross()
+                                        }
+
+
+// <!-- ====================================This is for computation of SPL/RestDay OT  Night diff ==================================== -->
+                                    
+                                $(document).ready(function() {
+                                    $('#nightDiff_spl_ot, #salary_rate').on('input', function() {
+                                        calculateNightDiff_spl_ot();
+                                    });
+                                    });
+
+                                    function calculateNightDiff_spl_ot() {
+                                    let product
+                                    var nightDiff = $('#nightDiff_spl_ot').val();
+                                    var salaryRate = $('#salary_rate').val();
+                                    
+                                    product = nightDiff  * ((salaryRate)/8 * 1.69 * 0.10);
+                                    product = product.toFixed(2)
+                                    $('#nightDiff_splOT_cal').val(product);
+                                    calculatetotalGross()
+                                    }
+
+
+// <!-- ==============================This is for computation of Legal Holiday  Night diff ==================================== -->
+                                    
+                                $(document).ready(function() {
+                                    $('#nightDiff_lgl2, #salary_rate').on('input', function() {
+                                        calculateNightDiff_lgl2();
+                                    });
+                                    });
+
+                                    function calculateNightDiff_lgl2() {
+                                    let product
+                                    var nightDiff = $('#nightDiff_lgl2').val();
+                                    var salaryRate = $('#salary_rate').val();
+                                    
+                                    product = nightDiff  * ((salaryRate)/8 * 2 * 0.10);
+                                    product = product.toFixed(2)
+                                    $('#nightDiff_lgl2_cal').val(product);
+                                    calculatetotalGross()
+                                    }
+
+// <!-- ==============================This is for computation of Legal Holiday OT  Night diff ==================================== -->
+                                    
+                                $(document).ready(function() {
+                                    $('#nightDiff_lgl2_ot, #salary_rate').on('input', function() {
+                                        calculateNightDiff_lgl2_ot();
+                                    });
+                                    });
+
+                                    function calculateNightDiff_lgl2_ot() {
+                                    let product
+                                    var nightDiff = $('#nightDiff_lgl2_ot').val();
+                                    var salaryRate = $('#salary_rate').val();
+                                    
+                                    product = nightDiff  * ((salaryRate)/8 * 2 * 0.10);
+                                    product = product.toFixed(2)
+                                    $('#nightDiff_lgl2OT_cal').val(product);
+                                    calculatetotalGross()
+                                    }
                     
                                    
                     
@@ -517,9 +686,10 @@ $(document).ready(function() {
                                             $('#regday_cal, #regday_ot_cal, \
                                             #sunday_cal,#sunday_ot_cal,#spl_cal, \
                                             #spl_ot_cal,#lgl2_cal,#lgl2_ot_cal, \
-                                            #shopRate_cal,#provirate_cal,#proviOT_total_cal, \
-                                            #provisun_total_cal,#provisunOT_total_cal,\
-                                            #nightDiff_cal,#adjustment').on('input', function() {
+                                            #nightDiff_cal,#nightDiff_regdayOT_cal, \
+                                            #nightDiff_spl_cal,#nightDiff_splOT_cal,\
+                                            #nightDiff_lgl2_cal,#nightDiff_lgl2OT_cal,\
+                                            #adjustment').on('input', function() {
                                                 calculatetotalGross();
                                             });
                                             });
@@ -534,25 +704,30 @@ $(document).ready(function() {
                                             let spl_ot_cal;
                                             let lgl2_cal;
                                             let lgl2_ot_cal;
-                                            let shopRate_cal;
-                                            let provirate_cal;
-                                            let proviOT_total_cal;
-                                            let provisun_total_cal;
-                                            let provisunOT_total_cal;
                                             let nightDiff_cal;
+                                            let nightDiff_regdayOT_cal;
+                                            let nightDiff_spl_cal;
+                                            let nightDiff_splOT_cal;
+                                            let nightDiff_lgl2_cal;
+                                            let nightDiff_lgl2OT_cal;
                                             let adjustment;
                     
                     
-                                            regdayCal = $('#regday_cal').val();
-                                            regdayOTCal = $('#regday_ot_cal').val();
-                                            sunday_cal = $('#sunday_cal').val();
-                                            sunday_ot_cal = $('#sunday_ot_cal').val();
-                                            spl_cal = $('#spl_cal').val();
-                                            spl_ot_cal = $('#spl_ot_cal').val();
-                                            lgl2_cal = $('#lgl2_cal').val();
-                                            lgl2_ot_cal = $('#lgl2_ot_cal').val();
-                                            nightDiff_cal = $('#nightDiff_cal').val();
-                                            adjustment = $('#adjustment').val();
+                                            regdayCal = $('#regday_cal').val() || 0;
+                                            regdayOTCal = $('#regday_ot_cal').val() || 0;
+                                            sunday_cal = $('#sunday_cal').val() || 0;
+                                            sunday_ot_cal = $('#sunday_ot_cal').val() || 0;
+                                            spl_cal = $('#spl_cal').val() || 0;
+                                            spl_ot_cal = $('#spl_ot_cal').val() || 0;
+                                            lgl2_cal = $('#lgl2_cal').val() || 0;
+                                            lgl2_ot_cal = $('#lgl2_ot_cal').val() || 0;
+                                            nightDiff_cal = $('#nightDiff_cal').val() || 0;
+                                            nightDiff_regdayOT_cal = $('#nightDiff_regdayOT_cal').val() || 0;
+                                            nightDiff_spl_cal = $('#nightDiff_spl_cal').val() || 0;
+                                            nightDiff_splOT_cal = $('#nightDiff_splOT_cal').val() || 0;
+                                            nightDiff_lgl2_cal = $('#nightDiff_lgl2_cal').val() || 0;
+                                            nightDiff_lgl2OT_cal = $('#nightDiff_lgl2OT_cal').val() || 0;
+                                            adjustment = $('#adjustment').val() || 0;
                                             
                                             let product;
                                             let product2
@@ -560,7 +735,11 @@ $(document).ready(function() {
                                                             + parseFloat(sunday_cal) + parseFloat(sunday_ot_cal)
                                                             + parseFloat(spl_cal) + parseFloat(spl_ot_cal)
                                                             + parseFloat(lgl2_cal) + parseFloat(lgl2_ot_cal)
-                                                            + parseFloat(nightDiff_cal) + parseFloat(adjustment));
+                                                            + parseFloat(nightDiff_cal) + parseFloat(nightDiff_regdayOT_cal)
+                                                            + parseFloat(nightDiff_spl_cal) + parseFloat(nightDiff_splOT_cal)
+                                                            + parseFloat(nightDiff_lgl2_cal) + parseFloat(nightDiff_lgl2_cal)
+                                                            + parseFloat(nightDiff_lgl2OT_cal) + parseFloat(nightDiff_lgl2OT_cal)
+                                                            + parseFloat(adjustment));
                     
                                             product2 = product.toFixed(2);
                                             const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
@@ -568,7 +747,38 @@ $(document).ready(function() {
                                             $('#totalGross2').val(product2);
                                             }
                     
-                    
+                        // $(document).ready(function() {
+                        //     $('#regday_cal, #regday_ot_cal, #sunday_cal, #sunday_ot_cal, #spl_cal, #spl_ot_cal, #lgl2_cal, #lgl2_ot_cal, #nightDiff_cal, #nightDiff_regdayOT_cal, #nightDiff_spl_cal, #nightDiff_splOT_cal, #nightDiff_lgl2_cal, #nightDiff_lgl2OT_cal, #adjustment,#totalGross').on('input', function() {
+                        //         calculateTotalGross();
+                        //     });
+                        //     });
+                            
+                        //     function calculateTotalGross() {
+                        //         let regdayCal = parseFloat($('#regday_cal').val()) || 0;
+                        //         let regdayOTCal = parseFloat($('#regday_ot_cal').val()) || 0;
+                        //         let sundayCal = parseFloat($('#sunday_cal').val()) || 0;
+                        //         let sundayOTCal = parseFloat($('#sunday_ot_cal').val()) || 0;
+                        //         let splCal = parseFloat($('#spl_cal').val()) || 0;
+                        //         let splOTCal = parseFloat($('#spl_ot_cal').val()) || 0;
+                        //         let lgl2Cal = parseFloat($('#lgl2_cal').val()) || 0;
+                        //         let lgl2OTCal = parseFloat($('#lgl2_ot_cal').val()) || 0;
+                        //         let nightDiffCal = parseFloat($('#nightDiff_cal').val()) || 0;
+                        //         let nightDiffRegdayOTCal = parseFloat($('#nightDiff_regdayOT_cal').val()) || 0;
+                        //         let nightDiffSplCal = parseFloat($('#nightDiff_spl_cal').val()) || 0;
+                        //         let nightDiffSplOTCal = parseFloat($('#nightDiff_splOT_cal').val()) || 0;
+                        //         let nightDiffLgl2Cal = parseFloat($('#nightDiff_lgl2_cal').val()) || 0;
+                        //         let nightDiffLgl2OTCal = parseFloat($('#nightDiff_lgl2OT_cal').val()) || 0;
+                        //         let adjustment = parseFloat($('#adjustment').val()) || 0;
+                              
+                        //         let totalGross = regdayCal + regdayOTCal + sundayCal + sundayOTCal + splCal + splOTCal + lgl2Cal + lgl2OTCal + nightDiffCal + nightDiffRegdayOTCal + nightDiffSplCal + nightDiffSplOTCal + nightDiffLgl2Cal + nightDiffLgl2OTCal + adjustment;
+                                
+                        //         let totalGrossFormatted = totalGross.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                                
+                        //         $('#totalGross').val(totalGrossFormatted);
+                        //         $('#totalGross2').val(totalGross.toFixed(2));
+                        //       }
+                                          
+                                          
 //===========================================This function is for inserting Payroll TVI====================================
 const insertPayrollTVI = async() => {
     // Get the values of the input fields
@@ -576,24 +786,39 @@ const insertPayrollTVI = async() => {
     // let salaryRate = Number(salaryRateInput.value) + (Number(salaryRateInput.value) * .1675213);
     // let salaryRate = document.getElementById('salary_rate_Adan')
     // salaryRate = salaryRate.toFixed(2)
+    const nightDiff_cal = document.getElementById("nightDiff_cal").value || 0
+    const nightDiff_regdayOT_cal = document.getElementById("nightDiff_regdayOT_cal").value || 0
+    const nightDiff_spl_cal = document.getElementById("nightDiff_spl_cal").value || 0
+    const nightDiff_splOT_cal = document.getElementById("nightDiff_splOT_cal").value || 0
+
+    const nightDiff_lgl2_cal = document.getElementById("nightDiff_lgl2_cal").value || 0
+    const nightDiff_lgl2OT_cal = document.getElementById("nightDiff_lgl2OT_cal").value || 0
+
+    let totalNightdiff = ( parseFloat(nightDiff_cal) + parseFloat(nightDiff_regdayOT_cal) 
+                           + parseFloat(nightDiff_spl_cal) + parseFloat(nightDiff_splOT_cal) 
+                           + parseFloat(nightDiff_lgl2_cal) + parseFloat(nightDiff_lgl2OT_cal)
+                            )
+
+    totalNightdiff = totalNightdiff.toFixed(2)
+
     const data = {
         transDate: document.getElementById("datefrom").value,
         employee_id: document.getElementById("employee_id").value,
         first_name: document.getElementById("fname").value,
         last_name: document.getElementById("lname").value,
-        salaryRate: document.getElementById("salary_rate").value,
-        addOnRate: document.getElementById("salary_rate_Adan").value,
-        salaryDetails: document.getElementById("salary_details").value,
-        regDay: document.getElementById("regday").value,
-        regDayOt: document.getElementById("regday_ot").value,
-        sunday: document.getElementById("sunday").value,
-        sundayOT: document.getElementById("sunday_ot").value,
-        spl: document.getElementById("spl").value,
-        splOT: document.getElementById("spl_ot").value,
-        lgl2: document.getElementById("lgl2").value,
-        lgl2OT: document.getElementById("lgl2_ot").value,
-        nightDiff: document.getElementById("nightDiff").value,
-        adjustment: document.getElementById("adjustment").value,
+        salaryRate: document.getElementById("salary_rate").value || 0,
+        addOnRate: document.getElementById("salary_rate_Adan").value || 0,
+        salaryDetails: document.getElementById("salary_details").value || 0,
+        regDay: document.getElementById("regday").value || 0,
+        regDayOt: document.getElementById("regday_ot").value || 0,
+        sunday: document.getElementById("sunday").value || 0,
+        sundayOT: document.getElementById("sunday_ot").value || 0,
+        spl: document.getElementById("spl").value || 0,
+        splOT: document.getElementById("spl_ot").value || 0,
+        lgl2: document.getElementById("lgl2").value || 0,
+        lgl2OT: document.getElementById("lgl2_ot").value || 0,
+        nightDiff: totalNightdiff,
+        adjustment: document.getElementById("adjustment").value || 0,
 
 
     };
@@ -604,6 +829,15 @@ const insertPayrollTVI = async() => {
     inputs.forEach((input) => {
       if (input.value === '') {
         isFilled = false;
+        return;
+      }
+    });
+
+    const inputs1 = document.querySelectorAll('#page3 input');
+    let isFilled1 = true;
+    inputs1.forEach((input) => {
+      if (input.value === '') {
+        isFilled1 = false;
         return;
       }
     });

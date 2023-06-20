@@ -1045,8 +1045,11 @@ async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str 
                 "lgl2OT": x.lgl2OT,
                 "lgl2OTCal": "{:.2f}".format(float(x.salaryRate) / 8 * (2) * (1.30) * float(x.lgl2OT)),
                 "nightDiff": x.nightDiff,
-                "nightDiffCal": "{:.2f}".format(float(x.salaryRate)/8 * 0.10 * float(x.nightDiff)),
+                "nightDiffCal": "{:.2f}".format(float(x.nightDiff)),
                 "adjustment": x.adjustment
+
+
+                # "nightDiffCal": "{:.2f}".format(float(x.salaryRate)/8 * 0.10 * float(x.nightDiff)),
                 
                 #"regDayCal": "{:.2f}".format((float(x.salaryRate) + (float(x.salaryRate) * .1675213)) * float(x.regDay))
                 # "regDayCal": "{:.2f}".format(float(x.salaryRate) + (float(x.salaryRate) * .1675213)) * float(x.regDay)
