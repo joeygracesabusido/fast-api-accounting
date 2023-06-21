@@ -567,7 +567,7 @@ async def getAllTonnageRizal(datefrom,dateto,equipment_id:Optional[str],username
                 "totalTrip": "{:,.2f}".format(i.totalTrip),
                 "totalTonnage": "{:,.2f}".format(i.totalTonnage),
                 "rate": "{:,.2f}".format(i.rate),
-                "amount": "{:,.2f}".format(i.amount),
+                "amount": "{:.2f}".format(i.amount),
                 "totalAmount": "{:,.2f}".format(totalAmount),
                 "driverOperator": i.driverOperator,
                 "user": i.user,
