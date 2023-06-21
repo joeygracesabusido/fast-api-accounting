@@ -1153,6 +1153,10 @@
                             Export Excel
                             <i class="fas fa-database"></i>
                         </button>
+                        <button type="submit" onclick="displayTonnageData_print()" class="btn btn-warning">
+                            PDF
+                            <i class="fas fa-database"></i>
+                        </button>
                     </div>
 
                     <div  class="container mt-3 table-responsive">
@@ -2517,8 +2521,197 @@
 
             <!-- This function is to Display List from Tonnage Transaction -->
 
+            <script>
 
-            <script type="text/javascript">
+                    async function displayTonnageData() {
+                    var dateFrom = document.getElementById("dateFrom_Tons").value;
+                    var dateTo = document.getElementById("dateTo_Tons").value;
+                    var equipmentIDSearch = document.getElementById("equipmentIDSearch_Tons").value;
+
+                    const searchUrl = `/api-get-tonnage-rizal-employeeLogin/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
+
+                    try {
+                        const response = await fetch(searchUrl);
+                        const data = await response.json();
+
+                        if (response.status === 200) {
+                        let tableData = "";
+                        const equipmentData = {};
+
+                        data.forEach((values) => {
+                            const equipmentID = values.equipment_id;
+
+                            if (!equipmentData[equipmentID]) {
+                            equipmentData[equipmentID] = {
+                                totalTrip: 0,
+                                totalTonnage: 0,
+                                amount: 0,
+                                records: [],
+                            };
+                            }
+
+                            equipmentData[equipmentID].totalTrip += parseFloat(values.totalTrip);
+                            equipmentData[equipmentID].totalTonnage += parseFloat(values.totalTonnage);
+                            equipmentData[equipmentID].amount += parseFloat(values.amount);
+                            equipmentData[equipmentID].records.push(values);
+                        });
+
+                        for (const equipmentID in equipmentData) {
+                            const equipment = equipmentData[equipmentID];
+
+                            let recordsHTML = "";
+                            equipment.records.forEach((values) => {
+                            recordsHTML += `<tr>
+                                                <td>${values.id}</td>
+                                                <td>${values.transDate}</td>
+                                                <td>${values.equipment_id}</td>
+                                                <td>${values.tripTicket}</td>
+                                                <td>${values.totalTrip}</td>
+                                                <td>${values.totalTonnage}</td>
+                                                <td>${values.rate}</td>
+                                                <td>${values.amount}</td>
+                                                <td>${values.totalAmount}</td>
+                                                <td>${values.driverOperator}</td>
+                                                <td>${values.user}</td>
+                                                <td></td>
+                                            </tr>`;
+                            });
+
+                            const formattedTotalTrip = equipment.totalTrip.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                            });
+
+                            const formattedTotalTons = equipment.totalTonnage.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                            });
+
+
+                            const formattedTotalAmount = equipment.amount.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                            });
+
+                            tableData += `<tr>
+                                            <td colspan="4">Total for Equipment ${equipmentID}</td>
+                                            <td>${formattedTotalTrip}</td>
+                                            <td>${formattedTotalTons}</td>
+                                            <td></td>
+                                            <td>${formattedTotalAmount}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>`;
+                            tableData += recordsHTML;
+                        }
+
+                        document.getElementById("table_body_tonnage").innerHTML = tableData;
+                        } else if (response.status === 401) {
+                        window.alert("Unauthorized credential. Please login");
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        window.alert("An error occurred while fetching data.");
+                    }
+                    }
+
+
+                // async function displayTonnageData() {
+                //     var dateFrom = document.getElementById("dateFrom_Tons").value;
+                //     var dateTo = document.getElementById("dateTo_Tons").value;
+                //     var equipmentIDSearch = document.getElementById("equipmentIDSearch_Tons").value;
+
+                //     const searchUrl = `/api-get-tonnage-rizal-employeeLogin/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
+
+                //     try {
+                //         const response = await fetch(searchUrl);
+                //         const data = await response.json();
+
+                //         if (response.status === 200) {
+                //         let tableData = "";
+                //         const totalData = {};
+
+                //         data.forEach((values) => {
+                //             const equipmentID = values.equipment_id;
+
+                //             if (!totalData[equipmentID]) {
+                //             totalData[equipmentID] = {
+                //                 totalTrip: 0,
+                //                 totalTonnage: 0,
+                //                 totalAmount: 0,
+                //             };
+                //             }
+
+                //             totalData[equipmentID].totalTrip += parseFloat(values.totalTrip);
+                //             totalData[equipmentID].totalTonnage += parseFloat(values.totalTonnage);
+                //             totalData[equipmentID].totalAmount += parseFloat(values.totalAmount);
+
+                //             tableData += `<tr>
+                //                             <td>${values.id}</td>
+                //                             <td>${values.transDate}</td>
+                //                             <td>${values.equipment_id}</td>
+                //                             <td>${values.tripTicket}</td>
+                //                             <td>${values.totalTrip}</td>
+                //                             <td>${values.totalTonnage}</td>
+                //                             <td>${values.rate}</td>
+                //                             <td>${values.amount}</td>
+                //                             <td>${values.totalAmount}</td>
+                //                             <td>${values.driverOperator}</td>
+                //                             <td>${values.user}</td>
+                //                             <td></td>
+                //                         </tr>`;
+                //         });
+
+                //         // Add the total rows for each equipment
+                //         for (const equipmentID in totalData) {
+                //             const total = totalData[equipmentID];
+
+                //             const formattedTotalTrip = total.totalTrip.toLocaleString(undefined, {
+                //                     minimumFractionDigits: 2,
+                //                     maximumFractionDigits: 2,
+                //                     });
+
+                //             const formattedTotalTons = total.totalTonnage.toLocaleString(undefined, {
+                //             minimumFractionDigits: 2,
+                //             maximumFractionDigits: 2,
+                //             });
+
+                //             const formattedTotalAmount = total.totalAmount.toLocaleString(undefined, {
+                //             minimumFractionDigits: 2,
+                //             maximumFractionDigits: 2,
+                //             });
+
+                //             tableData += `<tr>
+                //                             <td colspan="4">Total for Equipment ${equipmentID}</td>
+                //                             <td>${formattedTotalTrip}</td>
+                //                             <td>${formattedTotalTons}</td>
+                //                             <td></td>
+                //                             <td></td>
+                //                             <td>${formattedTotalAmount}</td>
+                //                             <td></td>
+                //                             <td></td>
+                //                             <td></td>
+                //                         </tr>`;
+                //         }
+
+                //         document.getElementById("table_body_tonnage").innerHTML = tableData;
+                //         } else if (response.status === 401) {
+                //         window.alert("Unauthorized credential. Please login");
+                //         }
+                //     } catch (error) {
+                //         console.error(error);
+                //         window.alert("An error occurred while fetching data.");
+                //     }
+                //     }
+
+            </script>
+            
+              
+
+
+            <!-- <script type="text/javascript">
                 // const rental_url =search_url ;
                 async function displayTonnageData(){
                     var dateFrom = document.getElementById('dateFrom_Tons').value;
@@ -2562,7 +2755,7 @@
                 }
                 
             
-            </script>
+            </script> -->
 
             <script>
                 function html_table_excel_tonnage(type){
@@ -2577,52 +2770,97 @@
             </script>
 
 
+            <script>
+                async function displayTonnageData_print() {
+                    var dateFrom = document.getElementById('dateFrom_Tons').value;
+                    var dateTo = document.getElementById('dateTo_Tons').value;
+                    var equipmentIDSearch = document.getElementById('equipmentIDSearch_Tons').value;
 
-            
-             <!-- This  function is for displaying Sum of Tonnage Data  -->
-             <script type="text/javascript">
+                    const search_url = `/api-get-tonnage-rizal-employeeLogin/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
 
-                // const rental_url =search_url ;
-                async function display_TonnageSum(){
-                    var datefrom = document.getElementById("datefromTonnage2").value
-                    var dateto = document.getElementById("dateToTonnage2").value
-                    var equipmentID = document.getElementById("equipment_id_searchTonnage2").value
-                
+                    const response = await fetch(search_url);
+                    const data = await response.json();
 
-                    const search_url = `/api-get-rizal-sumTonnage-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
-
-
-                    const responce = await fetch(search_url)
-                    const data = await responce.json();
-                    console.log(data)
-
-                    if (data.length === 0) {
-                            window.alert('No Data available');
-                        };
-                    
-                    
-                    if (responce.status === 200){
-                        let tableData="";
-                        data.map((values)=>{
-                            tableData+= ` <tr>
-                                        
-                                        <td>${values.equipment_id}</td>
-                                        <td>${values.totalTons}</td>
-                                        <td>${values.rate}</td>
-                                        <td>${values.totalAmount}</td>
-                                        <td hidden>${values.totalAmount2}</td>
-                                    
-                                    
-                                    </tr>`;
+                    if (response.status === 200) {
+                        let tableData = "";
+                        data.map((values) => {
+                        tableData += `<tr>
+                            <td>${values.id}</td>
+                            <td>${values.transDate}</td>
+                            <td>${values.equipment_id}</td>
+                            <td>${values.tripTicket}</td>
+                            <td>${values.totalTrip}</td>
+                            <td>${values.totalTonnage}</td>
+                            <td>${values.rate}</td>
+                            <td>${values.amount}</td>
+                            <td>${values.totalAmount}</td>
+                        </tr>`;
                         });
-                        document.getElementById("table_bodyTonnageReport").innerHTML=tableData;
-                        summaryTonnageTotal()
+                        document.getElementById("table_body_tonnage").innerHTML = tableData;
 
-                    }else if (responce.status === 401){
-                        window.alert("Unauthorized Credentials Please Log in")
+                        // Generate PDF
+                        const docDefinition = {
+                        content: [
+                            { text: 'Tonnage Report', style: 'header' },
+                            { text: `Date From: ${dateFrom} - Date To: ${dateTo}`, style: 'subheader' },
+                            { text: `Equipment ID: ${equipmentIDSearch}`, style: 'subheader' },
+                            { text: '\n' },
+                            {
+                            table: {
+                                headerRows: 1,
+                                body: [
+                                ['ID', 'Transaction Date', 'Equipment ID', 'Withdrawal Slip', 'Use Liter', 'Total Liters', 'Price', 'Amount', 'Total Amount'],
+                                ...data.map((values) => [
+                                    values.id,
+                                    values.transDate,
+                                    values.equipment_id,
+                                    values.tripTicket,
+                                    values.totalTrip,
+                                    values.totalTonnage,
+                                    values.rate,
+                                    values.amount,
+                                    values.totalAmount
+                                ])
+                                ]
+                            }
+                            },
+                            { text: '\n' },
+                            { text: `Total Trip for Equipment ${equipmentIDSearch}: ${calculateTotal(data, 'totalTrip').toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, style: 'total' },
+                            { text: `Total Tonnage for Equipment ${equipmentIDSearch}: ${calculateTotal(data, 'totalTonnage')}`, style: 'total' },
+                            { text: `Total Amount for Equipment ${equipmentIDSearch}: ${calculateTotal(data, 'totalAmount')}`, style: 'total' }
+                        ],
+                        styles: {
+                            header: {
+                            fontSize: 18,
+                            bold: true,
+                            alignment: 'center',
+                            margin: [0, 0, 0, 10]
+                            },
+                            subheader: {
+                            fontSize: 14,
+                            bold: true,
+                            alignment: 'center',
+                            margin: [0, 0, 0, 5]
+                            },
+                            total: {
+                            fontSize: 12,
+                            bold: true,
+                            alignment: 'right',
+                            margin: [0, 10, 0, 0]
+                            }
+                        }
+                        };
+
+                        const pdfContent = pdfMake.createPdf(docDefinition);
+                        pdfContent.open();
+                    } else if (response.status === 401) {
+                        window.alert("Unauthorized credential. Please login");
                     }
-                
-                }
+                    }
+
+                    function calculateTotal(data, field) {
+                    return data.reduce((total, values) => total + parseFloat(values[field]), 0);
+                    }
 
             </script>
 
