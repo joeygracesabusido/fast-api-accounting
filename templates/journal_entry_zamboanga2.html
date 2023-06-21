@@ -1,6 +1,11 @@
 {% extends 'index.html' %}
 
 {% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+
 <body>
     <form method="POST">
         
@@ -70,6 +75,8 @@
                             </textarea><br>
                         
                     </div>
+
+                   
 
                 
                     <div class="container mt-3">
@@ -160,14 +167,18 @@
                                     </td>
 
                                     <td>
-                                        <select name="accountTitle${x}" id="accountTitle${x}"class="filter-selectbox"
-                                            >
-                                            <option value= --------->------SELECT-------</option>
-                                            {% for result in all_chart_of_account %}
-                                                <option value="{{ result.accountTitle }}">{{ result.accountTitle }}</option>
-                                            {% endfor %} 
+                                       
 
-                                        </select>
+                                        <input
+                                            type="text"
+                                            name="accountTitle${x}"
+                                            id="accountTitle${x}"
+                                            
+                                            onchange=myFunction2()
+                                            style="width: 450px;"
+                                            
+                                        >
+                                        </input
                                         
                                     </td>
             
@@ -175,7 +186,7 @@
             
                                     <td>
                                         <input
-                                            type="text"
+                                            type="number"
                                             name="amount${x}"
                                             id="amount${x}"
                                             class="amount"
@@ -189,7 +200,7 @@
 
                                     <td>
                                         <input
-                                            type="text"
+                                            type="number"
                                             name="credit_amount${x}"
                                             id="credit_amount${x}"
                                             class="credit_amount"
@@ -202,6 +213,10 @@
                                     </td>
 
                                    
+
+
+
+                                   
             
                                     <td>
                                         <button type="button"  id="remove_button" class="btn btn-danger"><i class="fas fa-database">
@@ -211,6 +226,13 @@
                                     $(wrapper).append(fieldHTML); //Add field html
                                     
                                 });
+
+                              
+
+                                    
+
+
+                                    
                                 
                                 //Once remove button is clicked
                                 $(wrapper).on('click', '#remove_button', function(e){
@@ -219,47 +241,19 @@
                                     myFunction2();
                                     x--; //Decrement field counter
                                 });
+
+                                $(document).on('focus', `[id^="accountTitle"]`, function() {
+                                    $(this).autocomplete({
+                                    source: "/autocomplete/"
+                                    });
+                                   
+                                });
+                                
                             });
             
                             </script>
             
-                            <script type="text/javascript">
-                                // function myFunction() {
-
-                                //     document.querySelector("#submiBTN").disabled = true;
-                                //     var total = 0.0;
-                                //     // let debitList = document.querySelector('input.amount');
-                                //     let debitList = document.getElementsByClassName('amount');
-                                //     let debitsum = 0;
-                                    
-                                //     for(let i = 0; i < debitList.length; i++) {
-                                //         let debitValue = parseFloat(debitList[i].value);
-                                //         debitsum += debitValue;
-                                //         debitsum2 = parseFloat(debitsum).toFixed(2)
-                                //     }
-                                //     console.log(debitsum);
-
-
-                                //     let creditList = document.getElementsByClassName('credit_amount');
-                                //     let creditsum = 0;
-                                //     for(let i = 0; i < creditList.length; i++) {
-                                //         let creditValue = parseFloat(creditList[i].value);
-                                //         creditsum += creditValue;
-                                //         creditsum2 = parseFloat(creditsum).toFixed(2)
-                                //     }
-                                //     console.log(creditsum);
-
-                                //     total = parseFloat(debitsum2) - parseFloat(creditsum2)
-
-                                //     if (total === 0){
-                                //         document.getElementById("submiBTN").disabled = false;
-                                //     }else{
-                                //         document.getElementById("submiBTN").disabled = true;
-                                //     }
-                                
-                                // }
-                            // myFunction()
-                            </script>
+                            
 
 
                             <script type="text/javascript">
@@ -316,9 +310,14 @@
 
                             </script>
 
+
+                            
+
                            
 
                     </div>
+
+                    
                     
                     
 </body>

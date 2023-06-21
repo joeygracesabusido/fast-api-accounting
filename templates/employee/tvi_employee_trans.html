@@ -4,6 +4,11 @@
 
 
 {% block content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
 <style>
     /* #addRoutes.modal{
         display: flex;
@@ -151,14 +156,13 @@
                             >
                         </input>  
 
-                        <label for="Equipment" >Equipment</label>
+                        <label for="Equipment" >Equipment</label><br>
                         <input
                             type="text"
                             name="equipment_id"
                             id="equipment_id"
-                           
                             class="form-control"
-                            >
+                            ><br>
                         </input>  
 
                         <label for="Equipment" >Time IN</label>
@@ -1083,7 +1087,7 @@
                         </button>
                     </div>
 
-                    <div  class="container mt-3">
+                    <div  class="container mt-3 table-responsive">
                         <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                             <thead class="table-dark">
                                 <tr>
@@ -1177,7 +1181,7 @@
                        
                     </div>
 
-                    <div  class="container mt-3">
+                    <div  class="container mt-3 table-responsive">
                         <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                             <thead class="table-dark">
                                 <tr>
@@ -1451,7 +1455,7 @@
                             <button type="button" id="BtnPdf_Tons" name="BtnPdf_Tons"  class="btn btn-warning">PDF</button>
                         </div>
 
-                        <div  class="container mt-3">
+                        <div  class="container mt-3 table-responsive">
                             <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                                 <thead class="table-dark">
                                     <tr>
@@ -1597,7 +1601,7 @@
 
                         </div>
 
-                        <div  class="container mt-3">
+                        <div  class="container mt-3 table-responsive">
                             <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                                 <thead class="table-dark">
                                     <tr>
@@ -1752,7 +1756,7 @@
                             type="date"
                             name="datefrom_payroll"
                             id="datefrom_payroll"
-                            
+                            class="form-control"
                             >
 
                         <label for="DateToTons"
@@ -1762,7 +1766,7 @@
                             type="date"
                             name="dateto_payroll"
                             id="dateto_payroll"
-                            
+                            class="form-control"
                             >
 
                        
@@ -1771,7 +1775,7 @@
                         
                     </div>
 
-                    <div  class="container mt-3">
+                    <div  class="container mt-3 table-responsive">
                         <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                             <thead class="table-dark">
                                 <tr>
@@ -1954,13 +1958,16 @@
         
             <!-- this is for auto complete input  -->
 
+            
+
             <script>
-                $( function() { 
-                            $("#equipment_id").autocomplete({
+                $(document).ready(function(){
+                    $("#equipment_id").autocomplete({
                             source: "/api-search-autocomplete-tvi-equipment2/"
                             });
         
                         } );
+               
         
             </script>
 
@@ -2008,13 +2015,14 @@
 
             <script>
 
-                $( function() {
-                    
-                    $( "#equipmentIdDiesel" ).autocomplete({
-                    source: "/api-search-autocomplete-equipment-rizal/",
+                $(document).ready(function(){
+                    $("#equipmentIdDiesel").autocomplete({
+                            source: "/api-search-autocomplete-tvi-equipment2/"
+                            });
+        
+                        } );
 
-                    });
-                } );
+               
 
 
             </script>
@@ -2022,24 +2030,27 @@
 
             <script>
 
-                $( function() {
-                    
-                    $( "#equipmentID_Tons" ).autocomplete({
-                    source: "/api-search-autocomplete-equipment-rizal/"
-                    });
-                } );
+                $(document).ready(function(){
+                    $("#equipmentID_Tons").autocomplete({
+                            source: "/api-search-autocomplete-tvi-equipment2/"
+                            });
+        
+                        } );
 
+               
 
             </script>
 
             <script>
 
-                $( function() {
-                    
-                    $( "#equipment_id_cost" ).autocomplete({
-                    source: "/api-search-autocomplete-equipment-rizal/"
-                    });
-                } );
+                $(document).ready(function(){
+                        $("#equipment_id_cost").autocomplete({
+                                source: "/api-search-autocomplete-tvi-equipment2/"
+                                });
+            
+                            } );
+
+               
 
 
             </script>
@@ -2329,12 +2340,16 @@
 
             <!-- This is for auto complete of Equipment ID -->
             <script>
-                $( function() { 
-                            $("#equipmentIdDiesel").autocomplete({
+
+            $(document).ready(function(){
+                    $("#equipmentIdDiesel").autocomplete({
                             source: "/api-search-autocomplete-tvi-equipment2/"
                             });
-
+        
                         } );
+
+
+               
 
             </script>
 
@@ -2904,7 +2919,9 @@
             };
             
         </script>
-        
+
+
+    
 
     <script src="/static/tvi.js"></script>
         
