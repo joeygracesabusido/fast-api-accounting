@@ -250,23 +250,23 @@ from config.models import getEquipmentRizal, getallRentalCheck
 @employee_user.get("/employee-rizal-equipment-rental/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)):
     """This function is to display List of Equipment to Front end for Selecting Equipment"""
-    result = getEquipmentRizal()
+    # result = getEquipmentRizal()
     
     
-    equipmentData = [
+    # equipmentData = [
         
-            {
-                "id": i.id,
-                "equipment_id": i.equipment_id,
+    #         {
+    #             "id": i.id,
+    #             "equipment_id": i.equipment_id,
                
                
-            }
-           for i in result
-        ]
+    #         }
+    #        for i in result
+    #     ]
     
     
     return templates.TemplateResponse("employee/rizal_employee_trans.html", 
-                                        {"request":request,"equipmentData":equipmentData}) 
+                                        {"request":request}) 
 
 
 from config.models import (insertEquipmentRental,getallRental,
@@ -326,9 +326,9 @@ async def getAllRentalRizal(datefrom,dateto,equipment_id,username: str = Depends
                 "transaction_date": i.transaction_date,
                 "eur_form": i.eur_form,
                 "equipment_id": i.equipment_id,
-                "total_rental_hour": "{:,.2f}".format(i.total_rental_hour),
-                "rental_rate": "{:,.2f}".format(i.rental_rate),
-                "rental_amount": "{:,.2f}".format(i.rental_amount),
+                "total_rental_hour": "{:.2f}".format(i.total_rental_hour),
+                "rental_rate": "{:.2f}".format(i.rental_rate),
+                "rental_amount": "{:.2f}".format(i.rental_amount),
                 "username": i.username,
                 "totalAmount": "{:,.2f}".format(totalAmount),
                 "date_update": i.date_update,

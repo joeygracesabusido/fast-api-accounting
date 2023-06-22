@@ -8,6 +8,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <body>
     <div class="container">
         <h2>
@@ -371,13 +373,13 @@
                 </button>
 
 
-                <button type="submit"  onclick="printPageRentalList()" class="btn btn-warning">
+                <!-- <button type="submit"  onclick="printPageRentalList()" class="btn btn-warning">
                     Print 
                     <i class="fas fa-database"></i>
-                </button>
+                </button> -->
                 
 
-                <button type="submit"  onclick="printRental()" class="btn btn-warning">
+                <button type="button"  id="printRentalPDF"  class="btn btn-warning">
                     Print Test
                     <i class="fas fa-database"></i>
                 </button>
@@ -1979,7 +1981,7 @@
 
 
         <script type="text/javascript">
-            async function printRental(){
+            async function printRental2(){
                 var datefrom = document.getElementById("datefrom").value
                 var dateto = document.getElementById("dateto").value
                 var equipmentID = document.getElementById("equipment_id_searchRental").value
@@ -2522,100 +2524,140 @@
             <!-- This function is to Display List from Tonnage Transaction -->
 
             <script type="text/javascript">
-
-                    async function displayTonnageData() {
-                    var dateFrom = document.getElementById("dateFrom_Tons").value;
-                    var dateTo = document.getElementById("dateTo_Tons").value;
-                    var equipmentIDSearch = document.getElementById("equipmentIDSearch_Tons").value;
-
-                    const searchUrl = `/api-get-tonnage-rizal-employeeLogin/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
-
-                    try {
-                        const response = await fetch(searchUrl);
-                        const data = await response.json();
-
-                        if (response.status === 200) {
-                        let tableData = "";
-                        const equipmentData = {};
-
-                        data.forEach((values) => {
-                            const equipmentID = values.equipment_id;
-
-                            if (!equipmentData[equipmentID]) {
-                            equipmentData[equipmentID] = {
-                                totalTrip: 0,
-                                totalTonnage: 0,
-                                amount: 0,
-                                records: [],
-                            };
-                            }
-
-                            equipmentData[equipmentID].totalTrip += parseFloat(values.totalTrip);
-                            equipmentData[equipmentID].totalTonnage += parseFloat(values.totalTonnage);
-                            equipmentData[equipmentID].amount += parseFloat(values.amount);
-                            equipmentData[equipmentID].records.push(values);
-                        });
-
-                        for (const equipmentID in equipmentData) {
-                            const equipment = equipmentData[equipmentID];
-
-                            let recordsHTML = "";
-                            equipment.records.forEach((values) => {
-                            recordsHTML += `<tr>
-                                                <td>${values.id}</td>
-                                                <td>${values.transDate}</td>
-                                                <td>${values.equipment_id}</td>
-                                                <td>${values.tripTicket}</td>
-                                                <td>${values.totalTrip}</td>
-                                                <td>${values.totalTonnage}</td>
-                                                <td>${values.rate}</td>
-                                                <td>${values.amount}</td>
-                                                <td>${values.totalAmount}</td>
-                                                <td>${values.driverOperator}</td>
-                                                <td>${values.user}</td>
-                                                <td></td>
-                                            </tr>`;
-                            });
-
-                            const formattedTotalTrip = equipment.totalTrip.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                            });
-
-                            const formattedTotalTons = equipment.totalTonnage.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                            });
-
-
-                            const formattedTotalAmount = equipment.amount.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                            });
-
-                            tableData += `<tr>
-                                            <td colspan="4">Total for Equipment ${equipmentID}</td>
-                                            <td>${formattedTotalTrip}</td>
-                                            <td>${formattedTotalTons}</td>
-                                            <td></td>
-                                            <td>${formattedTotalAmount}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>`;
-                            tableData += recordsHTML;
-                        }
-
-                        document.getElementById("table_body_tonnage").innerHTML = tableData;
-                        } else if (response.status === 401) {
+                     async function displayTonnageData(){
+                    var dateFrom = document.getElementById('dateFrom_Tons').value;
+                    var dateTo = document.getElementById('dateTo_Tons').value;
+                    var equipmentIDSearch = document.getElementById('equipmentIDSearch_Tons').value;
+                
+                const search_url = `/api-get-tonnage-rizal-employeeLogin/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
+    
+                
+                const responce = await fetch(search_url)
+                const data = await responce.json();
+                console.log(data)
+                
+                if (responce.status === 200) {
+                    let tableData2="";
+                    data.map((values)=>{
+                        tableData2+= ` <tr>
+                                    <td>${values.id}</td>
+                                    <td>${values.transDate}</td>
+                                    <td>${values.equipment_id}</td>
+                                    <td>${values.tripTicket}</td>
+                                    <td>${values.totalTrip}</td>
+                                    <td>${values.totalTonnage}</td>
+                                    <td>${values.rate}</td>
+                                    <td>${values.amount}</td>
+                                    <td>${values.totalAmount}</td>
+                                    <td>${values.driverOperator}</td>
+                                    <td>${values.user}</td>
+                                    <td>
+                                        
+                                    </td>
+                            
+                                
+                                </tr>`;
+                    });
+                        document.getElementById("table_body_tonnage").innerHTML=tableData2;
+                    }else if (responce.status === 401){
                         window.alert("Unauthorized credential. Please login");
-                        }
-                    } catch (error) {
-                        console.error(error);
-                        window.alert("An error occurred while fetching data.");
                     }
-                    }
+                
+                }
+
+                    // async function displayTonnageData() {
+                    // var dateFrom = document.getElementById("dateFrom_Tons").value;
+                    // var dateTo = document.getElementById("dateTo_Tons").value;
+                    // var equipmentIDSearch = document.getElementById("equipmentIDSearch_Tons").value;
+
+                    // const searchUrl = `/api-get-tonnage-rizal-employeeLogin/?datefrom=${dateFrom}&dateto=${dateTo}&equipment_id=${equipmentIDSearch}`;
+
+                    // try {
+                    //     const response = await fetch(searchUrl);
+                    //     const data = await response.json();
+
+                    //     if (response.status === 200) {
+                    //     let tableData = "";
+                    //     const equipmentData = {};
+
+                    //     data.forEach((values) => {
+                    //         const equipmentID = values.equipment_id;
+
+                    //         if (!equipmentData[equipmentID]) {
+                    //         equipmentData[equipmentID] = {
+                    //             totalTrip: 0,
+                    //             totalTonnage: 0,
+                    //             amount: 0,
+                    //             records: [],
+                    //         };
+                    //         }
+
+                    //         equipmentData[equipmentID].totalTrip += parseFloat(values.totalTrip);
+                    //         equipmentData[equipmentID].totalTonnage += parseFloat(values.totalTonnage);
+                    //         equipmentData[equipmentID].amount += parseFloat(values.amount);
+                    //         equipmentData[equipmentID].records.push(values);
+                    //     });
+
+                    //     for (const equipmentID in equipmentData) {
+                    //         const equipment = equipmentData[equipmentID];
+
+                    //         let recordsHTML = "";
+                    //         equipment.records.forEach((values) => {
+                    //         recordsHTML += `<tr>
+                    //                             <td>${values.id}</td>
+                    //                             <td>${values.transDate}</td>
+                    //                             <td>${values.equipment_id}</td>
+                    //                             <td>${values.tripTicket}</td>
+                    //                             <td>${values.totalTrip}</td>
+                    //                             <td>${values.totalTonnage}</td>
+                    //                             <td>${values.rate}</td>
+                    //                             <td>${values.amount}</td>
+                    //                             <td>${values.totalAmount}</td>
+                    //                             <td>${values.driverOperator}</td>
+                    //                             <td>${values.user}</td>
+                    //                             <td></td>
+                    //                         </tr>`;
+                    //         });
+
+                    //         const formattedTotalTrip = equipment.totalTrip.toLocaleString(undefined, {
+                    //         minimumFractionDigits: 2,
+                    //         maximumFractionDigits: 2,
+                    //         });
+
+                    //         const formattedTotalTons = equipment.totalTonnage.toLocaleString(undefined, {
+                    //         minimumFractionDigits: 2,
+                    //         maximumFractionDigits: 2,
+                    //         });
+
+
+                    //         const formattedTotalAmount = equipment.amount.toLocaleString(undefined, {
+                    //         minimumFractionDigits: 2,
+                    //         maximumFractionDigits: 2,
+                    //         });
+
+                    //         tableData += `<tr>
+                    //                         <td colspan="4">Total for Equipment ${equipmentID}</td>
+                    //                         <td>${formattedTotalTrip}</td>
+                    //                         <td>${formattedTotalTons}</td>
+                    //                         <td></td>
+                    //                         <td>${formattedTotalAmount}</td>
+                    //                         <td></td>
+                    //                         <td></td>
+                    //                         <td></td>
+                    //                         <td></td>
+                    //                     </tr>`;
+                    //         tableData += recordsHTML;
+                    //     }
+
+                    //     document.getElementById("table_body_tonnage").innerHTML = tableData;
+                    //     } else if (response.status === 401) {
+                    //     window.alert("Unauthorized credential. Please login");
+                    //     }
+                    // } catch (error) {
+                    //     console.error(error);
+                    //     window.alert("An error occurred while fetching data.");
+                    // }
+                    // }
 
 
                
@@ -2747,6 +2789,7 @@
                                 ];
 
                                 entries.forEach((entry) => {
+                                    console.log(entries)
                                 body.push([
                                     { text: entry.id.toString(), style: 'entryText' },
                                     { text: entry.transDate, style: 'entryText' },
@@ -3015,7 +3058,89 @@
         </script>
 
 
+        <script>
+            async function printRenta3() {
+    var datefrom = document.getElementById("datefrom").value;
+    var dateto = document.getElementById("dateto").value;
+    var equipmentID = document.getElementById("equipment_id_searchRental").value;
+  
+    const search_url = `/api-get-rental-rizal-employee_login/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+  
+    const response = await fetch(search_url);
+    const data = await response.json();
+    console.log(data)
+  
+                // Create a new PDF document definition
+                const docDefinition = {
+                content: [],
+                
+                styles: {
+                    header: {
+                    fontSize: 18,
+                    bold: true,
+                    margin: [0, 0, 0, 10],
+                    },
+                    tableHeader: {
+                    bold: true,
+                    },
+                },
+                };
 
+                // Group the data by equipment ID
+                const groupedData = data.reduce((acc, obj) => {
+                const key = obj.equipment_id;
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                acc[key].push(obj);
+                return acc;
+                }, {});
+
+                // Generate a table for each equipment ID
+                for (const equipmentId in groupedData) {
+                if (groupedData.hasOwnProperty(equipmentId)) {
+                    const equipmentData = groupedData[equipmentId];
+
+                    // Add equipment ID section
+                    docDefinition.content.push({ text: `Equipment ID: ${equipmentId}`, style: 'header' });
+
+                    // Add table with data for the equipment ID
+                    const table = {
+                    style: 'table',
+                    headerRows: 1,
+                    widths: ['auto', 'auto', 'auto'],
+                    body: [
+                        ['Transaction Date', 'Total Rental Hour', 'Rental Amount'], // Table header
+                        ...equipmentData.map((item) => [
+                        item.transaction_date,
+                        item.total_rental_hour,
+                        item.rental_amount,
+                        ]),
+                    ],
+                    };
+
+                    // Calculate the total for total_rental_hour and rental_amount
+                    const totalRentalHour = equipmentData.reduce((total, item) => total + parseFloat(item.total_rental_hour), 0);
+                    const totalRentalAmount = equipmentData.reduce((total, item) => total + parseFloat(item.rental_amount), 0);
+
+                    // Add total row
+                    table.body.push(['Total', totalRentalHour.toFixed(2), totalRentalAmount.toFixed(2)]);
+
+                    docDefinition.content.push(table);
+                }
+                }
+
+                // Create the PDF document using pdfmake
+                const pdfDocGenerator = pdfMake.createPdf(docDefinition, null);
+
+                // Download the PDF document
+                pdfDocGenerator.download('report.pdf');
+  }
+        </script>
+       
+
+
+    <script src="/static/rizal.js"></script>
         
 
 </body>
