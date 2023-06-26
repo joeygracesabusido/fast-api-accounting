@@ -442,123 +442,123 @@ $(document).ready(function() {
                            
                     
                     
-// -- ====================================This is for computation of ShopRate==================================== -->
+// // -- ====================================This is for computation of ShopRate==================================== -->
                            
-                                 $(document).ready(function() {
-                                    $('#shoprate, #salary_rate').on('input', function() {
-                                        calculateProductShopRate();
-                                    });
-                                    });
+//                                  $(document).ready(function() {
+//                                     $('#shoprate, #salary_rate').on('input', function() {
+//                                         calculateProductShopRate();
+//                                     });
+//                                     });
                     
-                                    function calculateProductShopRate() {
-                                    let product;
-                                    let salaryDetails = $('#salary_details').val();
+//                                     function calculateProductShopRate() {
+//                                     let product;
+//                                     let salaryDetails = $('#salary_details').val();
                                     
-                                    var salaryRate = $('#salary_rate').val();
-                                    var shoprate = $('#shoprate').val();
+//                                     var salaryRate = $('#salary_rate').val();
+//                                     var shoprate = $('#shoprate').val();
                     
-                                    if (salaryDetails  === 'Monthly'){
-                                        salaryRate = salaryRate / 26;
-                                        product = salaryRate / 2 * shoprate;
-                                        product = product.toFixed(2)
-                                        $('#shopRate_cal').val(product);
-                                        calculatetotalGross()
+//                                     if (salaryDetails  === 'Monthly'){
+//                                         salaryRate = salaryRate / 26;
+//                                         product = salaryRate / 2 * shoprate;
+//                                         product = product.toFixed(2)
+//                                         $('#shopRate_cal').val(product);
+//                                         calculatetotalGross()
                     
-                                    }
-                                    product = salaryRate / 2 * shoprate;
-                                    product = product.toFixed(2)
-                                        $('#shopRate_cal').val(product);
-                                        calculatetotalGross()
-                                    }
+//                                     }
+//                                     product = salaryRate / 2 * shoprate;
+//                                     product = product.toFixed(2)
+//                                         $('#shopRate_cal').val(product);
+//                                         calculatetotalGross()
+//                                     }
                     
                     
                            
                     
-//  ====================================This is for computation of ProviRate Calcuation==================================== -->
+// //  ====================================This is for computation of ProviRate Calcuation==================================== -->
                                
-                                    $(document).ready(function() {
-                                    $('#provirateNo, #provi_rate').on('input', function() {
-                                        calculateProvi();
-                                    });
-                                    });
+//                                     $(document).ready(function() {
+//                                     $('#provirateNo, #provi_rate').on('input', function() {
+//                                         calculateProvi();
+//                                     });
+//                                     });
                     
-                                    function calculateProvi() {
-                                    let product
-                                    var totalProvi = $('#provirateNo').val();
-                                    var proviRate = $('#provi_rate').val();
+//                                     function calculateProvi() {
+//                                     let product
+//                                     var totalProvi = $('#provirateNo').val();
+//                                     var proviRate = $('#provi_rate').val();
                                     
-                                    product = totalProvi  * proviRate;
-                                    product = product.toFixed(2)
-                                    $('#provirate_cal').val(product);
-                                    calculatetotalGross()
-                                    }
+//                                     product = totalProvi  * proviRate;
+//                                     product = product.toFixed(2)
+//                                     $('#provirate_cal').val(product);
+//                                     calculatetotalGross()
+//                                     }
                     
                     
                                 
                     
-// ====================================This is for computation of ProviRate Calcuation==================================== -->
+// // ====================================This is for computation of ProviRate Calcuation==================================== -->
                                     
-                                        $(document).ready(function() {
-                                        $('#proviOT_total, #provi_rate').on('input', function() {
-                                            calculateProviOT();
-                                        });
-                                        });
+//                                         $(document).ready(function() {
+//                                         $('#proviOT_total, #provi_rate').on('input', function() {
+//                                             calculateProviOT();
+//                                         });
+//                                         });
                     
-                                        function calculateProviOT() {
-                                        let product
-                                        var totalProvi = $('#proviOT_total').val();
-                                        var proviRate = $('#provi_rate').val();
+//                                         function calculateProviOT() {
+//                                         let product
+//                                         var totalProvi = $('#proviOT_total').val();
+//                                         var proviRate = $('#provi_rate').val();
                                         
-                                        product = totalProvi  * ((proviRate) / 8 * 1.25);
-                                        product = product.toFixed(2);
-                                        $('#proviOT_total_cal').val(product);
-                                        calculatetotalGross()
-                                        }
+//                                         product = totalProvi  * ((proviRate) / 8 * 1.25);
+//                                         product = product.toFixed(2);
+//                                         $('#proviOT_total_cal').val(product);
+//                                         calculatetotalGross()
+//                                         }
                     
                     
                                     
                     
-// <!-- ====================================This is for computation of ProviRate Calcuation==================================== -->
+// // <!-- ====================================This is for computation of ProviRate Calcuation==================================== -->
                                     
-                                        $(document).ready(function() {
-                                        $('#provisun_total, #provi_rate').on('input', function() {
-                                            calculateProviSun();
-                                        });
-                                        });
+//                                         $(document).ready(function() {
+//                                         $('#provisun_total, #provi_rate').on('input', function() {
+//                                             calculateProviSun();
+//                                         });
+//                                         });
                     
-                                        function calculateProviSun() {
-                                        let product
-                                        var totalProvi = $('#provisun_total').val();
-                                        var proviRate = $('#provi_rate').val();
+//                                         function calculateProviSun() {
+//                                         let product
+//                                         var totalProvi = $('#provisun_total').val();
+//                                         var proviRate = $('#provi_rate').val();
                                         
-                                        product = totalProvi  * (proviRate * 1.30);
-                                        product = product.toFixed(2)
-                                        $('#provisun_total_cal').val(product);
-                                        calculatetotalGross()
-                                        }
+//                                         product = totalProvi  * (proviRate * 1.30);
+//                                         product = product.toFixed(2)
+//                                         $('#provisun_total_cal').val(product);
+//                                         calculatetotalGross()
+//                                         }
                     
                     
                                     
                     
                     
-// <!-- ====================================This is for computation of Provi Sun OT Cal==================================== -->
+// // <!-- ====================================This is for computation of Provi Sun OT Cal==================================== -->
                                     
-                                        $(document).ready(function() {
-                                        $('#provisunOT_total, #provi_rate').on('input', function() {
-                                            calculateProviSunOT();
-                                        });
-                                        });
+//                                         $(document).ready(function() {
+//                                         $('#provisunOT_total, #provi_rate').on('input', function() {
+//                                             calculateProviSunOT();
+//                                         });
+//                                         });
                     
-                                        function calculateProviSunOT() {
-                                        let product
-                                        var totalProvi = $('#provisunOT_total').val();
-                                        var proviRate = $('#provi_rate').val();
+//                                         function calculateProviSunOT() {
+//                                         let product
+//                                         var totalProvi = $('#provisunOT_total').val();
+//                                         var proviRate = $('#provi_rate').val();
                                         
-                                        product = totalProvi  * ((proviRate)/8 * 1.69);
-                                        product = product.toFixed(2)
-                                        $('#provisunOT_total_cal').val(product);
-                                        calculatetotalGross()
-                                        }
+//                                         product = totalProvi  * ((proviRate)/8 * 1.69);
+//                                         product = product.toFixed(2)
+//                                         $('#provisunOT_total_cal').val(product);
+//                                         calculatetotalGross()
+//                                         }
                     
                     
                                     
