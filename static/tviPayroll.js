@@ -672,7 +672,7 @@ $(document).ready(function() {
                                     var nightDiff = $('#nightDiff_lgl2_ot').val();
                                     var salaryRate = $('#salary_rate').val();
                                     
-                                    product = nightDiff  * ((salaryRate)/8 * 2 * 0.10);
+                                    product = nightDiff  * ((salaryRate)/8 * 2 *  1.25 * 0.10);
                                     product = product.toFixed(2)
                                     $('#nightDiff_lgl2OT_cal').val(product);
                                     calculatetotalGross()
@@ -737,8 +737,7 @@ $(document).ready(function() {
                                                             + parseFloat(lgl2_cal) + parseFloat(lgl2_ot_cal)
                                                             + parseFloat(nightDiff_cal) + parseFloat(nightDiff_regdayOT_cal)
                                                             + parseFloat(nightDiff_spl_cal) + parseFloat(nightDiff_splOT_cal)
-                                                            + parseFloat(nightDiff_lgl2_cal) + parseFloat(nightDiff_lgl2_cal)
-                                                            + parseFloat(nightDiff_lgl2OT_cal) + parseFloat(nightDiff_lgl2OT_cal)
+                                                            + parseFloat(nightDiff_lgl2_cal) + parseFloat(nightDiff_lgl2OT_cal)
                                                             + parseFloat(adjustment));
                     
                                             product2 = product.toFixed(2);

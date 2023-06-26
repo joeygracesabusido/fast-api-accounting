@@ -1,12 +1,12 @@
 //=================================This is for Printing TVI Voucher=================================
 var underlineButton = document.querySelector('#print_jv_modal');
 underlineButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  // Add your button functionality here
+event.preventDefault();
+// Add your button functionality here
 });
 
 const JVData = {
-   
+
 
     company: 'LD GLOBAL LEGACY INC.',
     address: '0090 OAKLAND ST. GLORIA VISTA SUBD. SAN RAFAEL, RODRIGUEZ (MONTALBAN), RIZAL',
@@ -14,8 +14,8 @@ const JVData = {
     
     
     
-   
-  };
+
+};
 
 
 const generateInvoicePDF = async(JVData) => {
@@ -36,66 +36,78 @@ const generateInvoicePDF = async(JVData) => {
 
     let user = items[0].user;
 
-
+    let totalDebit = 0;
+    let totalCredit = 0;
     
     const { company, address, tin,} = JVData;
-  
+
     // Create a document definition using pdfmake syntax
-  
+
     const pageSize = {
-      width: 8.5 * 72,  // Convert inches to points (1 inch = 72 points)
-      height: 13 * 72
+    width: 8.5 * 72,  // Convert inches to points (1 inch = 72 points)
+    height: 13 * 72
     };
     const docDefinition = {
-      pageOrientation: 'portrait',
-      pageSize: pageSize,
-      content: [
+    pageOrientation: 'portrait',
+    pageSize: pageSize,
+    content: [
         { text: `${company}`, style: 'header' },
         { text: `${address}`, style: 'header2' },
         { text: `${tin}`, style: 'header2' },
-        { text: `TVI ZAMBOANGA PRJECT`, style: 'header2' },
+        { text: `TVI ZAMBOANGA PROJECT`, style: 'header2' },
         ' ',
         
         
         ' ',
         { text: 'JOURNAL VOUCHER', style: 'header' },
         {
-          table: {
+        table: {
             headerRows: 1,
             body: [
-              ['Date', 'Particular', 'Reference', 'Acct Num','Discription','Debit','Credit'],
-              ...items.map((item) => [
-                
-                item.date_entry,
-                item.descriptions,
-                item.ref,
-                item.acoount_number,
-                item.account_disc,
-                item.debit_amount2,
-                item.credit_amount2,
-              ])
-            ]
-          },
-          layout: 'lightHorizontalLines',
-          style: 'bodyText'
+            ['Date', 'Particular', 'Reference', 'Acct Num','Discription','Debit','Credit'],
+            ...items.map((item) =>
+                {
+                    const debit = item.debit_amount || 0;;
+                    const credit = item.credit_amount || 0;;
+                    totalDebit += debit;
+                    totalCredit += credit;
+                    
+                    return [
+                        new Date(item.date_entry).toLocaleDateString('en-US'),
+                        item.descriptions,
+                        item.ref,
+                        item.acoount_number,
+                        item.account_disc,
+                        debit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+                        credit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+                    ];
+                }),
+                    ['Total', '', '', '', '', totalDebit.toLocaleString('en-US',
+                     { minimumFractionDigits: 2, maximumFractionDigits: 2}), 
+                     totalCredit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })],
+                ]
+
+        },
+        layout: 'lightHorizontalLines',
+        style: 'bodyText'
         },
         ' ',
         
-        {
-            columns: [
+        // {
+        //     columns: [
                 
-                {
-                    text: `Total      :${sumDedit}`,
-                    style: 'summaryStyle'
-                },
-                {
-                    text: `${sumCredit}`,
-                    style: 'totalAmount'
-                }
-            ],
-            columnGap: 5, // Spacing between the two columns
-            // margin: [0, 10, 0, 5], // Margins for the entire element
-        },
+        //         {
+        //             text: `Total  Debit   ${sumDedit}`,
+        //             style: 'summaryStyle'
+        //         },
+        //         {
+        //             text:  `Total Credit   ${sumCredit}`,
+        //             style: 'totalAmount'
+        //         }
+        //     ],
+        //     columnGap: 5, // Spacing between the two columns
+        //     // margin: [0, 10, 0, 5], // Margins for the entire element
+        // },
         ' ',
         {
         columns:[
@@ -129,30 +141,32 @@ const generateInvoicePDF = async(JVData) => {
             columnGap: 5,
         }
         
-       
+    
         
 
-      ],
-      styles: {
+    ],
+    styles: {
         bodyText: {
-            fontSize: 9
-          }, 
+            fontSize: 10,
+            fonts: 'Courier'
+            
+        }, 
         header: {
-          fontSize: 15,
-          bold: true,
-          alignment: 'center',
-          margin: [25, 0, 0, 10]
+        fontSize: 15,
+        bold: true,
+        alignment: 'center',
+        margin: [25, 0, 0, 10]
         },
         header2: {
             fontSize: 10,
             bold: false,
             alignment: 'center',
             margin: [25, 0, 0, 10]
-          },
+        },
         subheader: {
-          fontSize: 14,
-          bold: true,
-          margin: [0, 10, 0, 5]
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 5]
         },
 
         preparedBY:{
@@ -174,7 +188,7 @@ const generateInvoicePDF = async(JVData) => {
             bold: false,
             margin: [20, 10, 20, 1],
 
-       
+    
 
 
         checkedBYperson:{
@@ -186,29 +200,37 @@ const generateInvoicePDF = async(JVData) => {
         summaryStyle: {
             fontSize: 10,
             bold: false,
-            margin: [370, 10, 20, 5],
-          
-          },
-
+            alignment: 'right', // Align the element to the right
+            margin: [0, 10, 20, 0], // Adjust other margin values as needed
+        },
         totalAmount: {
             fontSize: 10,
             bold: false,
-            margin: [0, 10, 20, 1],
-          
-          }
+            alignment: 'left', // Align the element to the left
+            margin: [0, 10, 20, 0], // Adjust other margin values as needed
+        },
 
-      },
+        totalStyle: {
+            fontSize: 10,
+            alignment: 'right'
+            },
+        doubleUnderline: {
+            decoration: 'underline',
+            decorationStyle: 'double'
+            },
+
+    },
     
     };
-  
+
     
-  
+
     // Generate the PDF
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.download('jourvalVoucher.pdf');
-  }
+}
 
 var BtnPdf_Tons = document.querySelector('#Btn_print_JV');
 BtnPdf_Tons.addEventListener("click", function() {
-  generateInvoicePDF(JVData);
+generateInvoicePDF(JVData);
 });
