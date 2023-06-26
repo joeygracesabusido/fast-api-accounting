@@ -672,7 +672,7 @@ $(document).ready(function() {
                                     var nightDiff = $('#nightDiff_lgl2_ot').val();
                                     var salaryRate = $('#salary_rate').val();
                                     
-                                    product = nightDiff  * ((salaryRate)/8 * 2 *  1.25 * 0.10);
+                                    product = nightDiff  * parseFloat(salaryRate)/8 * (2) *  (1.25) * (0.10);
                                     product = product.toFixed(2)
                                     $('#nightDiff_lgl2OT_cal').val(product);
                                     calculatetotalGross()
