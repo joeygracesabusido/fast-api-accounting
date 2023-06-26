@@ -677,8 +677,8 @@ $(document).ready(function() {
                                     $('#nightDiff_lgl2OT_cal').val(product);
                                     calculatetotalGross()
                                     }
-                                    //This is for error 6.26.2023 5:37 PM"
-                                    //another try
+                                //     //This is for error 6.26.2023 5:37 PM"
+                                //     //another try
                                    
                     
 // <!-- ====================================This is for computation of Total Gross==================================== -->
