@@ -678,6 +678,7 @@ $(document).ready(function() {
                                     calculatetotalGross()
                                     }
                                     //This is for error 6.26.2023 5:37 PM"
+                                    //another try
                                    
                     
 // <!-- ====================================This is for computation of Total Gross==================================== -->
