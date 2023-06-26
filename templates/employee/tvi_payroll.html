@@ -946,6 +946,93 @@
             
 
         </div>
+
+        <script>
+             $(document).ready(function() {
+                $('#nightDiff_lgl2_ot, #salary_rate').on('input', function() {
+                    calculateNightDiff_lgl2_ot();
+                });
+                });
+
+                function calculateNightDiff_lgl2_ot() {
+                let product
+                var nightDiff = $('#nightDiff_lgl2_ot').val();
+                var salaryRate = $('#salary_rate').val();
+                
+                product = nightDiff  * parseFloat(salaryRate)/8 * (2) *  (1.25) * (0.10);
+                product = product.toFixed(2)
+                $('#nightDiff_lgl2OT_cal').val(product);
+                calculatetotalGross()
+                }
+            //     //This is for error 6.26.2023 5:37 PM"
+            //     //another try
+        </script>
+
+        <script>
+             $(document).ready(function() {
+                                            $('#regday_cal, #regday_ot_cal, \
+                                            #sunday_cal,#sunday_ot_cal,#spl_cal, \
+                                            #spl_ot_cal,#lgl2_cal,#lgl2_ot_cal, \
+                                            #nightDiff_cal,#nightDiff_regdayOT_cal, \
+                                            #nightDiff_spl_cal,#nightDiff_splOT_cal,\
+                                            #nightDiff_lgl2_cal,#nightDiff_lgl2OT_cal,\
+                                            #adjustment').on('input', function() {
+                                                calculatetotalGross();
+                                            });
+                                            });
+                    
+                                            function calculatetotalGross() {
+                                            
+                                            let regdayCal;
+                                            let regdayOTCal;
+                                            let sunday_cal;
+                                            let sunday_ot_cal;
+                                            let spl_cal;
+                                            let spl_ot_cal;
+                                            let lgl2_cal;
+                                            let lgl2_ot_cal;
+                                            let nightDiff_cal;
+                                            let nightDiff_regdayOT_cal;
+                                            let nightDiff_spl_cal;
+                                            let nightDiff_splOT_cal;
+                                            let nightDiff_lgl2_cal;
+                                            let nightDiff_lgl2OT_cal;
+                                            let adjustment;
+                    
+                    
+                                            regdayCal = $('#regday_cal').val() || 0;
+                                            regdayOTCal = $('#regday_ot_cal').val() || 0;
+                                            sunday_cal = $('#sunday_cal').val() || 0;
+                                            sunday_ot_cal = $('#sunday_ot_cal').val() || 0;
+                                            spl_cal = $('#spl_cal').val() || 0;
+                                            spl_ot_cal = $('#spl_ot_cal').val() || 0;
+                                            lgl2_cal = $('#lgl2_cal').val() || 0;
+                                            lgl2_ot_cal = $('#lgl2_ot_cal').val() || 0;
+                                            nightDiff_cal = $('#nightDiff_cal').val() || 0;
+                                            nightDiff_regdayOT_cal = $('#nightDiff_regdayOT_cal').val() || 0;
+                                            nightDiff_spl_cal = $('#nightDiff_spl_cal').val() || 0;
+                                            nightDiff_splOT_cal = $('#nightDiff_splOT_cal').val() || 0;
+                                            nightDiff_lgl2_cal = $('#nightDiff_lgl2_cal').val() || 0;
+                                            nightDiff_lgl2OT_cal = $('#nightDiff_lgl2OT_cal').val() || 0;
+                                            adjustment = $('#adjustment').val() || 0;
+                                            
+                                            let product;
+                                            let product2
+                                            product = (parseFloat(regdayCal) + parseFloat(regdayOTCal)
+                                                            + parseFloat(sunday_cal) + parseFloat(sunday_ot_cal)
+                                                            + parseFloat(spl_cal) + parseFloat(spl_ot_cal)
+                                                            + parseFloat(lgl2_cal) + parseFloat(lgl2_ot_cal)
+                                                            + parseFloat(nightDiff_cal) + parseFloat(nightDiff_regdayOT_cal)
+                                                            + parseFloat(nightDiff_spl_cal) + parseFloat(nightDiff_splOT_cal)
+                                                            + parseFloat(nightDiff_lgl2_cal) + parseFloat(nightDiff_lgl2OT_cal)
+                                                            + parseFloat(adjustment));
+                    
+                                            product2 = product.toFixed(2);
+                                            const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                                            $('#totalGross').val(stringNumber);
+                                            $('#totalGross2').val(product2);
+                                            }
+        </script>
                 
 
                     
