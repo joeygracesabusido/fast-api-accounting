@@ -681,6 +681,15 @@ def tonnageSumRizal(datefrom,dateto,equipment_id):
         data = results.all()
         return data
 
+def getTonnage_id(id):
+    """This function is for checking If data are already save"""
+    with Session(engine) as session:
+        statement = select(hauling_tonnage).where(hauling_tonnage.id == id)
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+        return data
 
 #=========================================This is for SSS Table ======================================
 def getSSSTable():

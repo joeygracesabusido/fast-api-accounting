@@ -627,7 +627,7 @@ async def get_dieselChecker(tripTicket:Optional[str],
 
 #===============================================Cost Frame Function =======================================
 
-from config.models import insertCost,select_cost
+from config.models import insertCost,select_cost, getTonnage_id
 from models.model import Cost
 @employee_user.post("/api-insert-rizal-cost-employeeLogin/")
 async def insertCostapi(items:Cost,username: str = Depends(EmployeevalidateLogin)):
@@ -673,6 +673,42 @@ async def get_cost(datefrom,dateto,equipment_id,username: str = Depends(Employee
     
 
     return costData
+
+
+
+@employee_user.get("/update-tonnage-haul-employeeLogin/{id}", response_class=HTMLResponse)
+async def get_updatetonnageHaul(request:Request,id, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for dispalying Diesel Transaction using ID"""
+    myresult = getTonnage_id(id=id)
+
+
+    tonnageData = [
+        
+            {
+
+                "id": x.id,
+                "transDate": x.transDate,
+                "equipment_id": x.equipment_id,
+                "tripTicket": x.tripTicket,
+                "totalTrip": x.totalTrip,
+                "totalTonnage": x.totalTonnage,
+                "rate": x.rate,
+                "amount": "{:,.2f}".format(x.amount),
+                "driverOperator": x.driverOperator
+            
+
+            }
+            for x in myresult
+        ]
+
+  
+   
+    
+    
+
+    return  templates.TemplateResponse("employee/uptonnage_rizal.html", 
+                                        {"request":request,"tonnageData":tonnageData,"user":username
+                                        })
 
 
 
