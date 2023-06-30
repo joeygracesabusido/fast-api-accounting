@@ -979,3 +979,27 @@ const displayTonnageData_print = async () => {
 
 const Btn_pdf_Tons = document.querySelector('#Btn_pdf_Tons');
 Btn_pdf_Tons.addEventListener("click", displayTonnageData_print); 
+
+
+// this is for  automatic end of contract function
+
+const dateInput = document.getElementById('dateHire');
+const endofContractInput = document.getElementById('endofContract');
+
+dateInput.addEventListener('input', () => {
+    const selectedDate = new Date(dateInput.value);
+    const maturityDays = 150; // Number of days for maturity
+
+    const maturityDate = new Date(selectedDate);
+    maturityDate.setDate(selectedDate.getDate() + maturityDays);
+
+    const year = maturityDate.getFullYear();
+    const month = String(maturityDate.getMonth() + 1).padStart(2, '0');
+    const day = String(maturityDate.getDate()).padStart(2, '0');
+
+    const formattedMaturityDate = `${year}-${month}-${day}`;
+    endofContractInput.value = formattedMaturityDate;
+
+    console.log(maturityDate);
+    // Perform additional actions with the maturityDate if needed
+});

@@ -721,8 +721,37 @@ async def updateTons_rizal(id,items:RizalTonnagehaul, username: str = Depends(Em
                     amount=items.amount,driverOperator=items.driverOperator,user=username,
                     date_updated=today,id=id)
 
-    return {'Message': 'Data has been Save'}
+    return {'Message': 'Data has been Updated'}
 
+
+
+# this is for inserting employee
+from models.model import EmployeeReg
+from config.models import insertEmployee
+@employee_user.post("/api-insert-employeeLogin")
+async def insertEmployee_empLogin(items:EmployeeReg, username: str = Depends(EmployeevalidateLogin)):
+    insertEmployee(lastName=items.lastName,
+                            firstName=items.firstName,
+                            middleName=items.middleName,
+                            gender=items.gender,
+                            address_employee=items.address_employee,
+                            contactNumber=items.contactNumber,
+                            contact_person=items.contact_person,
+                            emer_cont_person=items.emer_cont_person,
+                            position=items.position,
+                            date_hired=items.date_hired,
+                            department=items.department,
+                            end_contract=items.end_contract,
+                            tin=items.tin,
+                            sssNumber=items.sssNumber,
+                            phicNumber=items.phicNumber,
+                            hdmfNumber=items.hdmfNumber,
+                            employment_status=items.employment_status,
+                            salary_rate=items.salary_rate,
+                            taxCode=items.taxCode,
+                            off_on_details=items.off_on_details,
+                            Salary_Detail=items.Salary_Detail)
+    return {'Message': 'Data has been Save'}
 
 #======================================TVI Employee Transaction Frame=======================================
 from config.tvi_models import (insertRental_tvi,insertRental_tvi_employeeLogin,

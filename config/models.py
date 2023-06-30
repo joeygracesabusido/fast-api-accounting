@@ -773,6 +773,59 @@ def taxAmount():
 
         data = results.all()
         return data
+    
+def insertEmployee(lastName,
+                            firstName,
+                            middleName,
+                            gender,
+                            address_employee,
+                            contactNumber,
+                            contact_person,
+                            emer_cont_person,
+                            position,
+                            date_hired,
+                            department,
+                            end_contract,
+                            tin,
+                            sssNumber,
+                            phicNumber,
+                            hdmfNumber,
+                            employment_status,
+                            salary_rate,
+                            taxCode,
+                            off_on_details,
+                            Salary_Detail):
+    """This function is for inserting Employee"""
+    insertData = employee_details(lastName=lastName,
+                            firstName=firstName,
+                            middleName=middleName,
+                            gender=gender,
+                            address_employee=address_employee,
+                            contactNumber=contactNumber,
+                            contact_person=contact_person,
+                            emer_cont_person=emer_cont_person,
+                            position=position,
+                            date_hired=date_hired,
+                            department=department,
+                            end_contract=end_contract,
+                            tin=tin,
+                            sssNumber=sssNumber,
+                            phicNumber=phicNumber,
+                            hdmfNumber=hdmfNumber,
+                            employment_status=employment_status,
+                            salary_rate=salary_rate,
+                            taxCode=taxCode,
+                            off_on_details=off_on_details,
+                            Salary_Detail=Salary_Detail)
+    
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
 
 
 def testJoinTable(datefrom,dateto):

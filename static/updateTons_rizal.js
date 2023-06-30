@@ -1,12 +1,9 @@
-$( function() {
+$(document).ready( function() {
                     
     $( "#equipment_id" ).autocomplete({
     source: "/api-search-autocomplete-equipment-rizal/",
     minLength: 1
     });
-
-
-
 } );
 
 

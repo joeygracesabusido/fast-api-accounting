@@ -133,3 +133,6 @@ const printRentalPDF = async () => {
 
 const BTN_printRentalPDF = document.querySelector('#printRentalPDF');
 BTN_printRentalPDF.addEventListener("click", printRentalPDF);  
+
+
+

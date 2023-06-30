@@ -9,22 +9,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
 
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
@@ -126,7 +121,7 @@
             
 
 
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#insertEmployee">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#insertEmployee">
                 Add Employee
             </button>
 
@@ -141,7 +136,7 @@
             
 
 
-            <a href="/tvi-payroll-transaction/"
+            <a href="/tvi-payroll-transaction/">
                             <button type="button" class="btn btn-danger">
             <i class="fas fa-plus-square"></i>Payroll Computation</button></a> 
 
@@ -503,13 +498,12 @@
             <table id="myTable" class="table table-bordered"  style="text-align: center;">
                 <thead class="table-dark">
                 
-                        
+                    <tr>   
                         <td>Equipment ID</td>
                         <td>Total Hour</td>
                         <td>Rental Rate</td>
                         <td>Total Amount</td>
-                       
-                        
+                          
                     </tr>
                 </thead>
                 <tbody id="table_bodyRentalReport">
@@ -714,7 +708,7 @@
                     <div  class="container mt-3">
                         <table id="myTableDiesel" class="table table-bordered"  style="text-align: center;">
                             <thead class="table-dark">
-                            
+                                <tr>
                                     <td>ID</td>
                                     <td>Trans Date</td>
                                     <td>Equipment ID</td>
@@ -820,7 +814,7 @@
                     <div  class="container mt-3">
                         <table id="myTableDiesel" class="table table-bordered"  style="text-align: center;">
                             <thead class="table-dark">
-                            
+                                <tr>
                                     <td>Equipment ID</td>
                                     <td>Total Liters</td>
                                     <td>Total Amount</td>
@@ -1895,14 +1889,241 @@
 
 <!-- =========================================This is for Employee Insert==================================== -->
                         <div class="modal" id="insertEmployee" tabindex="-1">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                 <h5 class="modal-title">Add Employee</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                <p>Modal body text goes here.</p>
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="employeeID" >
+                                            <label for="floatingInputGrid">Employee ID</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="lastName">
+                                            <label for="floatingInputGrid">Last Name</label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="firstName" >
+                                            <label for="floatingInputGrid">First Name</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="middleName">
+                                            <label for="floatingInputGrid">Middle Name<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <select class="form-select" id="gender" aria-label="Floating label select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                               
+                                              </select>
+                                            <label for="floatingInputGrid">Gender</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="address">
+                                            <label for="floatingInputGrid">Address<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="contactNum">
+                                            <label for="floatingInputGrid">Contact Number</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="conPerson">
+                                            <label for="floatingInputGrid">Contact Person<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="emerCon">
+                                            <label for="floatingInputGrid">Emergency Contact Num</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="position">
+                                            <label for="floatingInputGrid">Position<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="date" class="form-control" id="dateHire">
+                                            <label for="floatingInputGrid">Date Hired</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <select class="form-select" id="department" aria-label="Floating label select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="Head Office">Head Office</option>
+                                                <option value="Admin-Site">Admin-Site</option>
+                                                <option value="Pampanga">Pampanga</option>
+                                                <option value="Rizal-R&F">Rizal-R&F</option>
+                                                <option value="Surigao">Surigao</option>
+                                                <option value="Zamboanga">Zamboanga</option>
+                                                <option value="Bayug">Bayug</option>
+                                               
+                                              </select>
+                                            <label for="floatingInputGrid">Position<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="date" class="form-control" id="endofContract">
+                                            <label for="floatingInputGrid">End of Contract</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="tin">
+                                            <label for="floatingInputGrid">TIN<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="sss">
+                                            <label for="floatingInputGrid">SSS no</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="phic">
+                                            <label for="floatingInputGrid">PHIC no.<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="text" class="form-control" id="hdmf">
+                                            <label for="floatingInputGrid">HDMF no</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <select class="form-select" id="empStatus" aria-label="Floating label select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="Employeed">Employeed</option>
+                                                <option value="Resigned">Resigned</option>
+                                                <option value="Terminated">Terminated</option>
+                                               
+                                              </select>
+                                            <label for="floatingInputGrid">PHIC<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <input type="number" class="form-control" id="salaryRate">
+                                            <label for="floatingInputGrid">Salary Rate</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <select class="form-select" id="taxcode" aria-label="Floating label select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="Taxable">Taxable</option>
+                                                <option value="MWE">MWE</option>
+                                               
+                                              </select>
+                                            <label for="floatingInputGrid">PHIC no.<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row g-2">
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <select class="form-select" id="on_offDetail" aria-label="Floating label select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="on">on</option>
+                                                <option value="off">off</option>
+                                               
+                                              </select>
+                                           
+                                            <label for="floatingInputGrid">ON-OFF</label>
+                                          </div>
+                                        </div>
+                                        <div class="col-md">
+                                          <div class="form-floating">
+                                            <select class="form-select" id="salaryDetails" aria-label="Floating label select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="Monthly">Monthly</option>
+                                                <option value="Daily">Daily</option>
+                                               
+                                              </select>
+                                            <label for="floatingInputGrid">Salary Details<label>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
@@ -1914,7 +2135,7 @@
        
 
 <!-- =======================================Java Script Function for Automatic Display============================ -->
-          
+        
         <script type="text/javascript">
             async function employeeData(){
                 const search_url = `/api-get-tvi-employeeDetails-employeeLogin/`;
@@ -2312,7 +2533,7 @@
             }
 
         </script>
-
+        
 
 
         <!-- This function is for exporting Excel of Rental transaction -->
@@ -2967,13 +3188,13 @@
         </script>
 
 
-       
+      
 
-
-   
+<script src="/static/tviemployee.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
     
 
-    <script src="/static/tvi.js"></script>
+   
         
 
 </body>
