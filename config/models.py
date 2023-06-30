@@ -691,6 +691,44 @@ def getTonnage_id(id):
         data = results.all()
         return data
 
+def updateTonnage(id,transDate,equipment_id,
+                        tripTicket,totalTrip,totalTonnage,rate,amount,driverOperator,user,
+                        date_updated):
+    """This function is for updating Rizal Equipment"""
+    try:
+        with Session(engine) as session:
+            session.begin()
+            statement = select(hauling_tonnage).where(hauling_tonnage.id == id)
+            results = session.exec(statement)
+            result = results.one()
+
+            result.transDate = transDate
+            result.equipment_id = equipment_id
+            result.tripTicket = tripTicket
+            result.totalTrip = totalTrip
+            result.totalTonnage = totalTonnage
+            result.rate = rate
+            result.amount = amount
+            result.driverOperator = driverOperator
+            result.user = user
+            result.date_updated = date_updated
+
+            # Commit the changes
+            session.add(result)
+            session.commit()
+            session.refresh(result)
+
+    except Exception as e:
+        # Something went wrong, rollback the transaction
+        session.rollback()
+        raise Exception("Failed to update access tags: {}".format(str(e)))
+
+    finally:
+        # Close the session
+        session.close()
+
+    
+
 #=========================================This is for SSS Table ======================================
 def getSSSTable():
     """This is for querying SSS Table"""

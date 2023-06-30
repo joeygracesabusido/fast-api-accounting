@@ -272,7 +272,7 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 from config.models import (insertEquipmentRental,getallRental,
                             insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking,
                             select_rizalEquipment,rentalSumRizal,dieselSumRizal,getChartRental
-                            ,getMonthlyRental)
+                            ,getMonthlyRental,updateTonnage)
 from models.model import RizalRental,RizalDiesel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
@@ -710,6 +710,18 @@ async def get_updatetonnageHaul(request:Request,id, username: str = Depends(Empl
                                         {"request":request,"tonnageData":tonnageData,"user":username
                                         })
 
+@employee_user.put("/api-update-tonnage-haul-employeeLogin/{id}")
+async def updateTons_rizal(id,items:RizalTonnagehaul, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for updating Tons in Rizal"""
+    today = datetime.now()
+
+    updateTonnage(transDate=items.transDate,equipment_id=items.equipment_id,
+                    tripTicket=items.tripTicket,totalTrip=items.totalTrip,
+                    totalTonnage=items.totalTonnage,rate=items.rate,
+                    amount=items.amount,driverOperator=items.driverOperator,user=username,
+                    date_updated=today,id=id)
+
+    return {'Message': 'Data has been Save'}
 
 
 #======================================TVI Employee Transaction Frame=======================================

@@ -130,11 +130,15 @@
           <div class="form-floating">
             
             <input type="text" hidden class="form-control" id="amount_Tons">
+
+            <input type="text"  class="form-control" id="driverOperator" value="{{list.driverOperator}}">
+            <label for="floatingInputGrid" style="font-size: 15px;">Driver/Operator</label>
           </div>
         </div>
       </div>
 
       {% endfor %} 
+      <button type="button" id="Btn_update_tons" name="Btn_update_tons"  class="btn btn-warning">Update</button>
     
     </div>
   </div>
