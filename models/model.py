@@ -274,6 +274,32 @@ class EmployeeReg(BaseModel):
     off_on_details: str
     Salary_Detail: str
 
+
+class EmployeeReg2(BaseModel):
+    """This is for employee regsitration"""
+    employee_id: str
+    lastName: str
+    firstName: str
+    middleName: str
+    gender: str
+    address_employee: str
+    contactNumber: str
+    contact_person: str
+    emer_cont_person: str
+    position: str
+    date_hired: date
+    department: str
+    end_contract: str
+    tin: str
+    sssNumber: str
+    phicNumber: str
+    hdmfNumber: str
+    employment_status: str
+    salary_rate: float
+    taxCode: str
+    off_on_details: str
+    Salary_Detail: str
+
 class RizalRental(BaseModel):
     """This is for employee transaction Inserting Rental"""
 

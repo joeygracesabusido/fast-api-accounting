@@ -774,7 +774,7 @@ def taxAmount():
         data = results.all()
         return data
     
-def insertEmployee(lastName,
+def insertEmployee(employee_id,lastName,
                             firstName,
                             middleName,
                             gender,
@@ -794,9 +794,9 @@ def insertEmployee(lastName,
                             salary_rate,
                             taxCode,
                             off_on_details,
-                            Salary_Detail):
+                            Salary_Detail,user):
     """This function is for inserting Employee"""
-    insertData = employee_details(lastName=lastName,
+    insertData = employee_details(employee_id=employee_id,lastName=lastName,
                             firstName=firstName,
                             middleName=middleName,
                             gender=gender,
@@ -816,7 +816,8 @@ def insertEmployee(lastName,
                             salary_rate=salary_rate,
                             taxCode=taxCode,
                             off_on_details=off_on_details,
-                            Salary_Detail=Salary_Detail)
+                            Salary_Detail=Salary_Detail,
+                            user=user)
     
 
     session = Session(engine)

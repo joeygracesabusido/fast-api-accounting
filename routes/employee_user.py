@@ -726,10 +726,10 @@ async def updateTons_rizal(id,items:RizalTonnagehaul, username: str = Depends(Em
 
 
 # this is for inserting employee
-from models.model import EmployeeReg
+from models.model import EmployeeReg2
 from config.models import insertEmployee
-@employee_user.post("/api-insert-employeeLogin")
-async def insertEmployee_empLogin(items:EmployeeReg, username: str = Depends(EmployeevalidateLogin)):
+@employee_user.post("/api-insert-employee-employeeLogin")
+async def insertEmployee_empLogin(items:EmployeeReg2, username: str = Depends(EmployeevalidateLogin)):
     insertEmployee(lastName=items.lastName,
                             firstName=items.firstName,
                             middleName=items.middleName,
@@ -750,7 +750,8 @@ async def insertEmployee_empLogin(items:EmployeeReg, username: str = Depends(Emp
                             salary_rate=items.salary_rate,
                             taxCode=items.taxCode,
                             off_on_details=items.off_on_details,
-                            Salary_Detail=items.Salary_Detail)
+                            Salary_Detail=items.Salary_Detail,
+                            employee_id=items.employee_id,user=username)
     return {'Message': 'Data has been Save'}
 
 #======================================TVI Employee Transaction Frame=======================================
