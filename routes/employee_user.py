@@ -434,6 +434,48 @@ async def get_rentalSearch(username: str = Depends(EmployeevalidateLogin)):
     return rentalData
 
 
+from config.models import updateRentalRizal,getallRental_id
+@employee_user.get("/update-rental-rizal-employeeLogin/{id}", response_class=HTMLResponse)
+async def get_costData_id(id,request: Request):
+
+    result = getallRental_id(id=id)
+    
+    
+    rentalData = [
+        
+            {
+                "id": i.id,
+                "transaction_date": i.transaction_date,
+                "eur_form": i.eur_form,
+                "equipment_id": i.equipment_id,
+                "total_rental_hour": i.total_rental_hour,
+                "rental_rate": i.rental_rate,
+                "rental_amount": i.rental_amount,
+                "username": i.username,
+                "date_update": i.date_update,
+            
+            }
+           for i in result
+        ]
+    
+   
+   
+    return templates.TemplateResponse("employee/updateRental_rizal.html",{"request":request,"rentalData":rentalData})
+
+from models.model import RizalRental
+@employee_user.put("/api-update-rental-rizal-employeeLogin/{id}")
+async def updateRizalRental(id,items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update Cost"""
+    today = datetime.now()
+
+    updateRentalRizal(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
+                            total_rental_hour=items.total_rental_hour, rental_rate=items.rental_rate,rental_amount=items.rental_amount,
+                             username=username,date_update=today,eur_form=items.eur_form, id=id)
+
+    return  {'Messeges':'Data has been Updated'}
+
+
+
 
 
 #==============================================Diesel Rizal Transaction=======================================

@@ -1,0 +1,294 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+     #div1 {
+            width: 40%; /* Set the width of the div element */
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: gray;
+           
+    }
+
+    #div3 {
+           
+            margin: auto; /* Center the div */
+            border-width: 1px;
+            border-style: solid;
+            border-color: lightgray;
+            background-color: lightskyblue;
+            text-align: center;
+           
+    }
+
+    .input-box {
+        flex: 1; /* Divide the available space evenly between the input fields */
+        margin: 0 5px; /* Add some margin between the input fields */
+        border-radius: 20px; /* round the corners of the input field */
+        border: 2px solid lightskyblue;
+        padding: 10px;
+        background-color: whitesmoke;
+    }
+</style>
+<body>
+    <div class="container mt-4" id="div1">
+        {% for list in rentalData %}
+        <input 
+            type="text" hidden
+            name="transID"
+            id="transID"
+            value="{{list.id}}"
+            class="form-control"
+            
+            >
+            <label style="color:yellow;">
+                Date
+            </label>
+            <input 
+                type="date" 
+                name="transDate"
+                id="transDate"
+                value="{{list.transaction_date}}"
+                class="form-control"
+                
+                >
+
+            <label style="color:yellow;">
+                EUR
+                </label>
+                <input 
+                    type="text"
+                    name="eur_form"
+                    id="eur_form"
+                    value="{{list.eur_form}}"
+                    class="form-control"
+                    
+                >
+
+            <label style="color:yellow;">
+                Equipment ID
+                </label>
+                <input 
+                    type="text"
+                    name="equipment_id"
+                    id="equipment_id"
+                    value="{{list.equipment_id}}"
+                    class="form-control"
+                    
+                >
+
+            <label style="color:yellow;">
+                Total Rental Hour
+                </label>
+                <input 
+                    type="number"
+                    name="total_rental_hour"
+                    id="total_rental_hour"
+                    step="0.01"
+                    value="{{list.total_rental_hour}}"
+                    class="form-control"
+                    
+                >
+
+
+            <label style="color:yellow;">
+                Rental Rate
+                </label>
+                <input 
+                    type="number"
+                    name="rental_rate"
+                    id="rental_rate"
+                    step="0.01"
+                    value="{{list.rental_rate}}"
+                    class="form-control"
+                    
+                >
+
+            <label style="color:yellow;">
+                Rate
+                </label>
+                <input 
+                    type="number" hidden
+                    name="rental_amount"
+                    id="rental_amount"
+                    value="{{list.rental_amount}}"
+                    class="form-control"
+                    
+                >
+
+            <label style="color:yellow;">
+                Amount
+                </label>
+                <input 
+                    type="text"
+                    name="rental_amount2"
+                    id="rental_amount2"
+                    value="{{list.amount}}"
+                    class="form-control"
+                    
+                >
+
+           
+
+
+        {% endfor %}  
+        
+        
+            <button type="submit" onclick="updateRentalEquipment()" class="btn btn-info">
+                <i class="fas fa-database"></i>Update</button>
+    
+       
+        
+       
+            
+
+    </div>
+
+            <script type="text/javascript">
+                function updateRentalEquipment() {
+                    var data = {};
+                    id = document.getElementById('transID').value;
+                    
+
+                    
+                    data["transaction_date"] = document.getElementById("transDate").value;
+                    data["eur_form"] = document.getElementById("eur_form").value;
+                    data["equipment_id"] = document.getElementById("equipment_id").value;
+                    data["total_rental_hour"] = document.getElementById("total_rental_hour").value;
+                    data["rental_rate"] = document.getElementById("rental_rate").value;
+                    data["rental_amount"] = document.getElementById("rental_amount").value;
+                    
+                   
+                    
+
+
+
+                    console.log(data);
+
+                    if (id === '') {
+                            window.alert("Employee ID field is requires");
+                    } else {
+                            // Use async/await to simplify the fetch call
+                            (async () => {
+                            try {
+                                    // Use template literals to build the URL
+                                    if (confirm('Are you sure you want to update this rental transaction?')){
+                                            const response = await fetch("/api-update-rental-rizal-employeeLogin/"+ id, {
+                                            method: "PUT",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify(data)
+                                            });
+
+                                            // Use response.ok to check if the response was successful
+                                            if (response.ok) {
+                                            window.alert("Your Data has been Updated");
+                                            window.location.assign("/index");
+                                            console.log(await response.json());
+                                            } else if (response.status === 401) {
+                                            window.alert("Unauthorized credential Please Login");
+                                            }
+
+                                    } else {
+                                            throw new Error('Failed to update data');
+                                            }
+                                    
+                            } catch (error) {
+                                    // Catch errors
+                                    window.alert(error);
+                                    console.log(error);
+                            }
+                            })();
+                    }
+                    }
+
+
+        </script>
+
+   
+
+        <!-- This function is for autocomplete of Eqipment -->
+        <script>
+
+            $( function() {
+                
+                $( "#equipmentID" ).autocomplete({
+                source: "/api-search-autocomplete-equipment-rizal/"
+                });
+            } );
+
+
+        </script>
+
+
+        <script>
+
+            $( function() {
+                
+                $( "#equipmentIDSearch" ).autocomplete({
+                source: "/api-search-autocomplete-equipment-rizal/"
+                });
+            } );
+
+
+        </script>
+
+        <!-- ====================================This is for computation of Total amount==================================== -->
+        <script>
+            $(document).ready(function() {
+               $('#total_rental_hour, #rental_rate').on('input', function() {
+                calculateProductRental();
+               });
+               });
+
+               function calculateProductRental() {
+
+               var rental_rate = parseFloat($('#rental_rate').val());
+               
+               var total_rental_hour = parseFloat($('#total_rental_hour').val());
+               
+               
+               var product = total_rental_hour * rental_rate;
+
+               var product2 = parseFloat(product).toFixed(2)
+               $('#rental_amount').val(product2);
+               }
+
+           
+
+        </script>
+
+<!-- ============================ This function is for computaion of rental Amount with Comma ================ -->
+            <script type="text/javascript">
+                                // Get input fields and result element
+                var input1 = document.getElementById("total_rental_hour");
+                var input2 = document.getElementById("rental_rate");
+                
+
+                // Add event listener to inputs
+                input1.addEventListener("input", calculateProduct);
+                input2.addEventListener("input", calculateProduct);
+
+                function calculateProduct() {
+                // Get input field values
+                var value1 = parseFloat(input1.value);
+                var value2 = parseFloat(input2.value);
+
+                // Calculate product
+                var product = value1 * value2;
+
+                let comma = product.toLocaleString("en-US");
+
+                document.getElementById("rental_amount2").value = comma;
+
+                }
+
+            </script>
+
+
+
+</body>
+
+
+{% endblock %}
