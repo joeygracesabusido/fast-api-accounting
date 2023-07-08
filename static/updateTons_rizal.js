@@ -18,14 +18,14 @@ $(document).ready(function() {
     var Backhoe = $('#Backhoe').val();
     var Bucket = $('#bucket_Tons').val();
     var bachoeValue = 0
-    if (Backhoe === 'BH 01' || Backhoe === 'BH 03' ){
+    if (Backhoe === 'BH 02' || Backhoe === 'BH 03' ){
         bachoeValue = 2.29
         totalTons = bachoeValue * Bucket
         totalTons2 = parseFloat(totalTons).toFixed(2)
         $('#totalTons_Tons').val(totalTons2);
         calculateProduct_amountTons2()
         calculateProduct_amountTons()
-    }else if(Backhoe === 'BH 02'){
+    }else if(Backhoe === 'BH 01'){
         bachoeValue = 1.42
         totalTons = bachoeValue * Bucket
         totalTons2 = parseFloat(totalTons).toFixed(2)
