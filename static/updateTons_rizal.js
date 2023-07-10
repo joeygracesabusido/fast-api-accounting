@@ -7,43 +7,43 @@ $(document).ready( function() {
 } );
 
 
-$(document).ready(function() {
-    $('#bucket_Tons, #totalTons_Tons').on('input', function() {
-        calculateTotalTons();
-    });
-    });
+// $(document).ready(function() {
+//     $('#bucket_Tons, #totalTons_Tons').on('input', function() {
+//         calculateTotalTons();
+//     });
+//     });
 
-    function calculateTotalTons() {
+//     function calculateTotalTons() {
 
-    var Backhoe = $('#Backhoe').val();
-    var Bucket = $('#bucket_Tons').val();
-    var bachoeValue = 0
-    if (Backhoe === 'BH 01' || Backhoe === 'BH 03' ){
-        bachoeValue = 2.29
-        totalTons = bachoeValue * Bucket
-        totalTons2 = parseFloat(totalTons).toFixed(2)
-        $('#totalTons_Tons').val(totalTons2);
-        calculateProduct_amountTons2()
-        calculateProduct_amountTons()
-    }else if(Backhoe === 'BH 02'){
-        bachoeValue = 1.42
-        totalTons = bachoeValue * Bucket
-        totalTons2 = parseFloat(totalTons).toFixed(2)
-        $('#totalTons_Tons').val(totalTons2);
-        calculateProduct_amountTons2()
-        calculateProduct_amountTons()
-    }
-    else if(Backhoe === 'TX 1202' || Backhoe === 'TX 1204'){
-        bachoeValue = 1.44
-        totalTons = bachoeValue * Bucket
-        totalTons2 = parseFloat(totalTons).toFixed(2)
-        $('#totalTons_Tons').val(totalTons2);
-        calculateProduct_amountTons2()
-        calculateProduct_amountTons()
-    }
+//     var Backhoe = $('#Backhoe').val();
+//     var Bucket = $('#bucket_Tons').val();
+//     var bachoeValue = 0
+//     if (Backhoe === 'BH 02' || Backhoe === 'BH 03' ){
+//         bachoeValue = 2.29
+//         totalTons = bachoeValue * Bucket
+//         totalTons2 = parseFloat(totalTons).toFixed(2)
+//         $('#totalTons_Tons').val(totalTons2);
+//         calculateProduct_amountTons2()
+//         calculateProduct_amountTons()
+//     }else if(Backhoe === 'BH 01'){
+//         bachoeValue = 1.42
+//         totalTons = bachoeValue * Bucket
+//         totalTons2 = parseFloat(totalTons).toFixed(2)
+//         $('#totalTons_Tons').val(totalTons2);
+//         calculateProduct_amountTons2()
+//         calculateProduct_amountTons()
+//     }
+//     else if(Backhoe === 'TX 1202' || Backhoe === 'TX 1204'){
+//         bachoeValue = 1.44
+//         totalTons = bachoeValue * Bucket
+//         totalTons2 = parseFloat(totalTons).toFixed(2)
+//         $('#totalTons_Tons').val(totalTons2);
+//         calculateProduct_amountTons2()
+//         calculateProduct_amountTons()
+//     }
 
    
-    }
+//     }
 
 
 $(document).ready(function() {
