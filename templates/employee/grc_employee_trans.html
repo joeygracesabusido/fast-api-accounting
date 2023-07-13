@@ -142,7 +142,7 @@
 
                     <div id="add-rental" style="display: none;">
                         <!-- Account List Content -->
-                        <h1>INSERT RENTAL</h1>
+                        <h1>INSERT RENTAL GRC</h1>
                             <div class="row g-2">
                                 <div class="col-md">
                                     <div class="form-floating">
@@ -152,9 +152,17 @@
                                 </div>
                                 <div class="col-md">
                                     <div class="form-floating">
-                                    <input type="text" class="form-control" id="equipment_id_insertRental">
-                                    <label for="floatingInputGrid" style="font-size: 15px;" >Equipment ID</label>
+                                        <input
+                                            type="text"
+                                            name="eur_form"
+                                            id="eur_form"
+                                        
+                                            class="form-control"
+                                            >
+                                        </input>  
+            
 
+                                        <label for="floatingInputGrid" style="font-size: 15px;">EUR</label>
                                     
                                     </div>
                                 </div>
@@ -162,18 +170,43 @@
 
                                 <br>
 
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="equipment_id_insertRental">
+                                        <label for="floatingInputGrid" style="font-size: 15px;" >Equipment ID</label>
+                                   
+                                    </div>
+                                </div>
+
+                                <br>
 
                                 <div class="row g-2">
+
                                     <div class="col-md">
                                         <div class="form-floating">
-                                        <input type="text" class="form-control" id="personal_info">
-                                        <label for="floatingInputGrid" style="font-size: 15px;">Personal Info</label>
+                                            <input
+                                                type="datetime-local"
+                                                name="start"
+                                                id="start"
+                                                class="form-control"
+                                                >
+                                            </input> 
+                                            <label for="floatingInputGrid" style="font-size: 15px;">Time IN</label>
+
+                                        
                                         </div>
                                     </div>
+                                    
                                     <div class="col-md">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="account_name">
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Account Name</label>
+                                            <input
+                                                type="datetime-local"
+                                                name="end"
+                                                id="end"
+                                                class="form-control"
+                                                >
+                                            </input>  
+                                            <label for="floatingInputGrid" style="font-size: 15px;">Time Out</label>
 
                                         
                                         </div>
