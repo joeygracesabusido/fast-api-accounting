@@ -400,6 +400,7 @@ class TVIPayroll(BaseModel):
     splOT: float
     lgl2: float
     lgl2OT: float
+    lgl1: float
     nightDiff: float
     adjustment: float
     date_updated: Optional[datetime]

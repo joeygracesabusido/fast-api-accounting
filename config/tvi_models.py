@@ -124,6 +124,7 @@ class Adan_payroll_tvi(SQLModel, table=True):
     splOT: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
     lgl2: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
     lgl2OT: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
+    lgl1: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
     nightDiff: condecimal(max_digits=5, decimal_places=2) = Field(default=0)
     adjustment: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     user: str = Field(default=None)
@@ -675,12 +676,12 @@ def updateTVIDiesel(id,transDate,equipmentId,withdrawalSlip,
 #===========================================This is for TVI Payroll =============================================
 def insertPayroll(transDate,employee_id,first_name,last_name,salaryRate,
                     addOnRate,salaryDetails,regDay,regDayOt,sunday,sundayOT,
-                    spl,splOT,lgl2,lgl2OT,nightDiff,adjustment,user):
+                    spl,splOT,lgl2,lgl2OT,nightDiff,adjustment,lgl1,user):
     """This is for inserting Payroll Transaction"""
     insertData = Adan_payroll_tvi(transDate=transDate,employee_id=employee_id,first_name=first_name,last_name=last_name,
                                         salaryRate=salaryRate,addOnRate=addOnRate,salaryDetails=salaryDetails,
                                         regDay=regDay,regDayOt=regDayOt,sunday=sunday,sundayOT=sundayOT,spl=spl,
-                                        splOT=splOT,lgl2=lgl2,lgl2OT=lgl2OT,nightDiff=nightDiff,adjustment=adjustment,user=user)
+                                        splOT=splOT,lgl2=lgl2,lgl2OT=lgl2OT,nightDiff=nightDiff,adjustment=adjustment,lgl1=lgl1, user=user)
 
 
     session = Session(engine)

@@ -548,7 +548,7 @@ async def get_dieselChecker(transaction_date,equipment_id:str=[Optional],withdra
 
 
 @employee_user.get("/api-get-rizal-sumDiesel-employeeLogin/")
-async def get_dieselSumRizal(datefrom,dateto,equipment_id:str=[Optional],
+async def get_dieselSumRizal(datefrom,dateto,equipment_id: Optional[str],
                             username: str = Depends(EmployeevalidateLogin)):
     """This function is to update employee Details"""
     results = dieselSumRizal(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
@@ -1131,7 +1131,7 @@ async def insertPayroll_TVI(items:TVIPayroll, username: str = Depends(Employeeva
                         salaryDetails=items.salaryDetails,regDay=items.regDay,regDayOt=items.regDayOt,
                         sunday=items.sunday,sundayOT=items.sundayOT,spl=items.spl,
                         splOT=items.splOT,lgl2=items.lgl2,lgl2OT=items.lgl2OT,nightDiff=items.nightDiff,
-                        adjustment=items.adjustment,user=username)
+                        adjustment=items.adjustment,lgl1=items.lgl1, user=username)
 
 @employee_user.get("/api-get-tvi-payroll/")
 async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str = Depends(EmployeevalidateLogin)):
@@ -1164,6 +1164,8 @@ async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str 
                 "lgl2Cal": "{:.2f}".format(float(x.salaryRate) * (2) * float(x.lgl2)),
                 "lgl2OT": x.lgl2OT,
                 "lgl2OTCal": "{:.2f}".format(float(x.salaryRate) / 8 * (2) * (1.30) * float(x.lgl2OT)),
+                "lgl1": x.lgl1,
+                "lgl1Cal": "{:.2f}".format(float(x.salaryRate) * float(x.lgl1)),
                 "nightDiff": x.nightDiff,
                 "nightDiffCal": "{:.2f}".format(float(x.nightDiff)),
                 "adjustment": x.adjustment

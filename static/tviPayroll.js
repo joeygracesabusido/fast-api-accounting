@@ -562,23 +562,23 @@ $(document).ready(function() {
         
 // <!-- ====================================This is for computation of Legal 1 ==================================== -->
                                     
-                                        $(document).ready(function() {
-                                            $('#lgl1, #salary_rate').on('input', function() {
-                                                calculateNightDiff();
-                                            });
-                                            });
+                            $(document).ready(function() {
+                                $('#lgl1, #salary_rate').on('input', function() {
+                                    calculatelgl1();
+                                });
+                                });
 
-                                            function calculateNightDiff() {
-                                            let product
-                                            var lgl1 = $('#lgl1').val();
-                                            var salaryRate = $('#salary_rate').val();
-                                            
-                                            product = lgl1  * salaryRate;
-                                            product = product.toFixed(2)
-                                            $('#lgl1_cal').val(product);
-                                            calculatetotalGross()
-                                            }
-                    
+                                function calculatelgl1() {
+                                let product
+                                var lgl1 = $('#lgl1').val();
+                                var salaryRate = $('#salary_rate').val();
+                                
+                                product = lgl1  * salaryRate;
+                                product = product.toFixed(2)
+                                $('#lgl1_cal').val(product);
+                                calculatetotalGross()
+                                }
+                                                
                                     
                     
 // <!-- ====================================This is for computation of Regday  Night diff ==================================== -->
@@ -708,7 +708,7 @@ $(document).ready(function() {
                                             #nightDiff_cal,#nightDiff_regdayOT_cal, \
                                             #nightDiff_spl_cal,#nightDiff_splOT_cal,\
                                             #nightDiff_lgl2_cal,#nightDiff_lgl2OT_cal,\
-                                            #adjustment').on('input', function() {
+                                            #adjustment,#lgl1_cal').on('input', function() {
                                                 calculatetotalGross();
                                             });
                                             });
@@ -839,7 +839,7 @@ const insertPayrollTVI = async() => {
         lgl2OT: document.getElementById("lgl2_ot").value || 0,
         nightDiff: totalNightdiff,
         adjustment: document.getElementById("adjustment").value || 0,
-
+        lgl1: document.getElementById("lgl1").value || 0,
 
     };
     console.log(data);

@@ -1812,6 +1812,7 @@
                                     <td>SPLOT</td>
                                     <td>LGL2</td>
                                     <td>LGL2OT</td>
+                                    <td>LGL1</td>
                                     <td>NighDiff</td>
                                     <td>Adjustment</td>
                                     <td>Total</td>
@@ -1823,6 +1824,7 @@
                             
                                     
                                     <tr>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -3121,7 +3123,7 @@
                                 parseFloat(values.sundayCal) + parseFloat(values.sundayOTCal) + 
                                 parseFloat(values.splCal) + parseFloat(values.splOTCal) + 
                                 parseFloat(values.lgl2Cal) + parseFloat(values.lgl2OTCal) + 
-                                parseFloat(values.nightDiffCal) +
+                                parseFloat(values.nightDiffCal) + parseFloat(values.lgl1Cal) +
                                 parseFloat(values.adjustment);
                                 total = total.toFixed(2)
                                 tableData+= ` <tr>
@@ -3136,13 +3138,12 @@
                                             <td>${values.splOTCal}</td>
                                             <td>${values.lgl2Cal}</td>
                                             <td>${values.lgl2OTCal}</td>
+                                            <td>${values.lgl1Cal}</td>
                                             <td>${values.nightDiffCal}</td>
                                             <td>${values.adjustment}</td>
                                             <td>${total}</td>
                                             <td>
-                                            <a href="/api-get-update-tvi-tonsTransaction-sqlModel/${values.id}"
-                                                <button type="button" class="btn btn-primary">
-                                            <i class="fas fa-plus-square"></i>Edit</button></a> 
+                                             
                                         
                                             </td>
                                         
@@ -3175,7 +3176,7 @@
 
                 table.querySelectorAll("tr").forEach(row => {
                 // sumTons += parseFloat(row.querySelectorAll("td")[2].textContent);
-                sumTotalAmount += parseFloat(row.querySelectorAll("td")[13].textContent);
+                sumTotalAmount += parseFloat(row.querySelectorAll("td")[14].textContent);
                 });
 
                 // const sumTotalHoursComma = sumTons.toLocaleString("en-US");
