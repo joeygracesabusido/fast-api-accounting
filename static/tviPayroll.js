@@ -559,14 +559,32 @@ $(document).ready(function() {
 //                                         $('#provisunOT_total_cal').val(product);
 //                                         calculatetotalGross()
 //                                         }
-                    
+        
+// <!-- ====================================This is for computation of Legal 1 ==================================== -->
+                                    
+                                        $(document).ready(function() {
+                                            $('#lgl1, #salary_rate').on('input', function() {
+                                                calculateNightDiff();
+                                            });
+                                            });
+
+                                            function calculateNightDiff() {
+                                            let product
+                                            var lgl1 = $('#lgl1').val();
+                                            var salaryRate = $('#salary_rate').val();
+                                            
+                                            product = lgl1  * salaryRate;
+                                            product = product.toFixed(2)
+                                            $('#lgl1_cal').val(product);
+                                            calculatetotalGross()
+                                            }
                     
                                     
                     
 // <!-- ====================================This is for computation of Regday  Night diff ==================================== -->
                                     
                                         $(document).ready(function() {
-                                        $('#nightDiff, #salary_rate_Adan').on('input', function() {
+                                        $('#nightDiff, #salary_rate').on('input', function() {
                                             calculateNightDiff();
                                         });
                                         });
@@ -574,7 +592,7 @@ $(document).ready(function() {
                                         function calculateNightDiff() {
                                         let product
                                         var nightDiff = $('#nightDiff').val();
-                                        var salaryRate = $('#salary_rate_Adan').val();
+                                        var salaryRate = $('#salary_rate').val();
                                         
                                         product = nightDiff  * ((salaryRate)/8 * 0.10);
                                         product = product.toFixed(2)
@@ -712,6 +730,7 @@ $(document).ready(function() {
                                             let nightDiff_lgl2_cal;
                                             let nightDiff_lgl2OT_cal;
                                             let adjustment;
+                                            let lgl1_cal;
                     
                     
                                             regdayCal = $('#regday_cal').val() || 0;
@@ -729,6 +748,7 @@ $(document).ready(function() {
                                             nightDiff_lgl2_cal = $('#nightDiff_lgl2_cal').val() || 0;
                                             nightDiff_lgl2OT_cal = $('#nightDiff_lgl2OT_cal').val() || 0;
                                             adjustment = $('#adjustment').val() || 0;
+                                            lgl1_cal = $('#lgl1_cal').val() || 0;
                                             
                                             let product;
                                             let product2
@@ -739,7 +759,7 @@ $(document).ready(function() {
                                                             + parseFloat(nightDiff_cal) + parseFloat(nightDiff_regdayOT_cal)
                                                             + parseFloat(nightDiff_spl_cal) + parseFloat(nightDiff_splOT_cal)
                                                             + parseFloat(nightDiff_lgl2_cal) + parseFloat(nightDiff_lgl2OT_cal)
-                                                            + parseFloat(adjustment));
+                                                            + parseFloat(adjustment) + parseFloat(lgl1_cal));
                     
                                             product2 = product.toFixed(2);
                                             const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
