@@ -594,7 +594,7 @@ async def get_updateDiesel(request:Request,id, username: str = Depends(Employeev
         data={}   
         
         data.update({
-            'id': id_update,
+            'id': id,
             'transaction_date': transaction_date,
             'equipment_id': equipment_id,
             'withdrawal_slip': withdrawal_slip,
@@ -612,7 +612,15 @@ async def get_updateDiesel(request:Request,id, username: str = Depends(Employeev
                                         {"request":request,"agg_result_list":agg_result_list
                                         })
 
-
+@employee_user.put("/api-update-diesel-employeeLogin2/{id}")
+async def updateDieselRizalEmployeeLogin(id,items: RizalDiesel,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    
+    Dieselrizal_class.updateDieselRizal_emp(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
+                                            withdrawal_slip=items.withdrawal_slip,use_liter=items.use_liter,
+                                            price=items.price,amount=items.amount,username=username,id=id)
+    # print(insertTonnageRizal())
+    return  {'Messeges':'Data has been Save'}
 
 
 #============================================Rizal Tonnage Frame=========================================

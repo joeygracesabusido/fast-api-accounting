@@ -639,6 +639,31 @@ class Dieselrizal_class(): # this class is for Diesel Rizal
             data = results.all()
             return data
 
+    @staticmethod
+    def updateDieselRizal_emp(id,transaction_date,equipment_id,withdrawal_slip,use_liter,price,amount,username):
+        """This function is for updating Rizal Equipment"""
+
+        with Session(engine) as session:
+            statement = select(diesel_consumption).where(diesel_consumption.id == id)
+            results = session.exec(statement)
+
+            result = results.one()
+
+            
+            result.transaction_date = transaction_date
+            result.equipment_id = equipment_id
+            result.withdrawal_slip = withdrawal_slip
+            result.use_liter = use_liter
+            result.price = price
+            result.amount = amount
+            result.username = username
+           
+            
+
+        
+            session.add(result)
+            session.commit()
+
 
 
     

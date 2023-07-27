@@ -1441,7 +1441,16 @@ def searchJV_printing(ref: Optional[str],token: str = Depends(oauth_scheme)):
 
     return journalData
 
-
+from models.model import RizalDiesel
+from config.models import Dieselrizal_class   
+@admin.put("/api-update-diesel-employeeLogin/{id}")
+async def updateDieselRizalEmployeeLogin(id,items: RizalDiesel,token: str = Depends(oauth_scheme)):
+    """This function is to update employee Details"""
     
+    Dieselrizal_class.updateDieselRizal_emp(transaction_date=items.transaction_date,equipment_id=items.equipment_id,
+                                            withdrawal_slip=items.withdrawal_slip,use_liter=items.use_liter,
+                                            price=items.price,amount=items.amount,username=token,id=id)
+    # print(insertTonnageRizal())
+    return  {'Messeges':'Data has been Save'}
 
     

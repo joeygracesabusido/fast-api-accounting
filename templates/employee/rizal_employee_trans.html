@@ -635,6 +635,7 @@
                                     <td>Price</td>
                                     <td>Total Amount</td>
                                     <td>Cummulative Amount</td>
+                                    <td>Action</td>
                                 </tr>
                             </thead>
                             <tbody id="table_body_diesel">
@@ -650,7 +651,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                      
+                                        <td></td>
                                     </tr>
                                    
                                 
@@ -2268,6 +2269,12 @@
                                         <td>${values.price}</td>
                                         <td>${values.amount}</td>
                                         <td>${values.totalAmount}</td>
+                                        <td>
+                                        <a href="/update-diesel-employeeLogin/${values.id}"
+                                        <button type="button" class="btn btn-primary">
+                                        <i class="fas fa-database"></i> Edit</button></a> 
+                                        
+                                    </td>
                                     
                                     
                                     </tr>`;
