@@ -627,6 +627,21 @@ def dieselSumRizal(datefrom,dateto,equipment_id):
         data = results.all()
         return data
     
+class Dieselrizal_class(): # this class is for Diesel Rizal
+    @staticmethod
+    def getdieselRizalID(id):
+
+        with Session(engine) as session:
+            statement = select(diesel_consumption).where(diesel_consumption.id == id)
+                    
+            results = session.exec(statement) 
+
+            data = results.all()
+            return data
+
+
+
+    
 #=================================================Tonnage Frame================================================
 def insertTonnageRizal(transDate,equipment_id,tripTicket,
                         totalTrip,totalTonnage,rate,amount,driverOperator,

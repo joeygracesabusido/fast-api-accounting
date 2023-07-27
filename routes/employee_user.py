@@ -27,6 +27,8 @@ from schemas.user import usersEntity
 from config.db import mydb
 # from config.db import worker
 
+from config.models import Dieselrizal_class
+
 
 from jose import jwt
 
@@ -567,6 +569,49 @@ async def get_dieselSumRizal(datefrom,dateto,equipment_id: Optional[str],
     
 
     return DieselData
+
+
+@employee_user.get("/update-diesel-employeeLogin/{id}", response_class=HTMLResponse)
+async def get_updateDiesel(request:Request,id, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for dispalying Diesel Transaction using ID"""
+    myresult = Dieselrizal_class.getdieselRizalID(id=id)
+   
+    
+    agg_result_list = []
+    
+    for i in myresult:
+        id_update = i.id,
+        transaction_date = i.transaction_date
+        equipment_id = i.equipment_id
+        withdrawal_slip = i.withdrawal_slip
+        use_liter = i.use_liter
+        price = i.price
+        amount = i.amount
+        
+        
+        
+
+        data={}   
+        
+        data.update({
+            'id': id_update,
+            'transaction_date': transaction_date,
+            'equipment_id': equipment_id,
+            'withdrawal_slip': withdrawal_slip,
+            'use_liter': use_liter,
+            'price': price,
+            'amount': amount,
+        
+        })
+
+        agg_result_list.append(data)
+
+    # return agg_result_list
+
+    return  templates.TemplateResponse("employee/updateDieselRizal.html", 
+                                        {"request":request,"agg_result_list":agg_result_list
+                                        })
+
 
 
 
