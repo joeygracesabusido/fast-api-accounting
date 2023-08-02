@@ -1237,7 +1237,9 @@ async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str 
     
     return payrollData
 
-
-
+# ============================================GRC Transaction ============================================
+@employee_user.get("/grc-payroll-transaction/", response_class=HTMLResponse)
+async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)): # this is for GRC transaction
+    return templates.TemplateResponse("employee/grc_payroll.html", {"request":request})
 
 
