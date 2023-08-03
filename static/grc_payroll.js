@@ -126,13 +126,17 @@ $(document).ready(function() {
                     }else if(employee_id >= 2022 && employee_id <=2999){
                         provi_rate = 429
                         $('#provi_rate').val(provi_rate)
-                    }else if (employee_id >= 6000 && employee_id <=7000){
+                    }else if (employee_id >= 6000 && employee_id <=6999){
                         provi_rate = 351
                         $('#provi_rate').val(provi_rate)
                     }else if (employee_id >= 5000 && employee_id <=5999){
                         provi_rate = 350
                         $('#provi_rate').val(provi_rate)
+                    }else if (employee_id >= 7000 && employee_id <=7999){
+                        provi_rate = 350
+                        $('#provi_rate').val(provi_rate)
                     }
+
                      else {
                         provi_rate = 429
                         $('#provi_rate').val(provi_rate)
@@ -659,7 +663,7 @@ const insertPayrollGRC = async() => {
 
     if (isFilled) {
         try {
-            const response = await fetch(`/api-insert-tvi-payroll/`, {
+            const response = await fetch(`/api-insert-grc-payroll/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
@@ -668,7 +672,7 @@ const insertPayrollGRC = async() => {
             // Check if the response was successful
             if (response.status === 200) {
                 window.alert("Your data has been saved");
-                window.location.assign("/employee-transaction-tvi/");
+                window.location.assign("/employee-transaction-grc/");
             } else if (response.status === 401) {
                 window.alert("Unauthorized credential. Please login");
             }
@@ -690,4 +694,69 @@ BTN_saveGRC_Payroll.addEventListener("click", insertPayrollGRC);
                     
                     
                                                                              
-// =========================This function is for Displaying Data of Tons Transaction ============================
+// =======================================This function is for Inserting Employee ================================
+    
+    // Define the InsertTons function
+    const  InsertEmployee = async () => {
+        // Get the values of the input fields
+        const data = {
+            employee_id: document.getElementById("employeeID").value,
+            lastName: document.getElementById("lastName").value,
+            firstName: document.getElementById("firstName").value,
+            middleName: document.getElementById("middleName").value,
+            gender: document.getElementById("gender").value,
+            address_employee: document.getElementById("address").value,
+            contactNumber: document.getElementById("contactNum").value,
+            contact_person: document.getElementById("conPerson").value,
+            emer_cont_person: document.getElementById("emerCon").value,
+            position: document.getElementById("position").value,
+            date_hired: document.getElementById("dateHire").value,
+            department: document.getElementById("department").value,
+            end_contract: document.getElementById("endofContract").value,
+            tin: document.getElementById("tin").value,
+            sssNumber: document.getElementById("sss").value,
+            phicNumber: document.getElementById("phic").value,
+            hdmfNumber: document.getElementById("hdmf").value,
+            employment_status: document.getElementById("empStatus").value,
+            salary_rate: document.getElementById("salaryRate").value,
+            taxCode: document.getElementById("taxcode").value,
+            off_on_details: document.getElementById("on_offDetail").value,
+            Salary_Detail: document.getElementById("salaryDetails").value,
+            
+           
+            
+             
+        };
+       
+        console.log(data)
+    
+        if (data.employee_id == '') {
+            window.alert("Please fill up Employee ID");
+        } else {
+            try {
+                const response = await fetch(`/api-insert-employee-employeeLogin/`,{
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+    
+                // Check if the response was successful
+                if (response.status === 200) {
+                    window.alert("Your data has been saved");
+                    console.log(data);
+                    window.location.assign("/employee-transaction-grc/");
+                } else if (response.status === 401) {
+                    window.alert("Unauthorized credential. Please login");
+                }
+            } catch (error) {
+                // Catch any errors and log them to the console
+                window.alert(error);
+                console.log(error);
+            }
+        }
+    }
+    
+    // Attach the event listener to the button
+    var Btn_employee_save = document.querySelector('#Btn_employee_save');
+    Btn_employee_save.addEventListener("click", InsertEmployee);
+    

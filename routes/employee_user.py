@@ -1238,8 +1238,20 @@ async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str 
     return payrollData
 
 # ============================================GRC Transaction ============================================
+from config.grcDB import GrcViews
 @employee_user.get("/grc-payroll-transaction/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)): # this is for GRC transaction
     return templates.TemplateResponse("employee/grc_payroll.html", {"request":request})
 
 
+@employee_user.post("/api-insert-grc-payroll/")
+async def insertPayroll_GRC(items:TVIPayroll, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for inserting payroll  adan"""
+    GrcViews.insertGrcPayrollAdan(transDate=items.transDate,employee_id=items.employee_id,first_name=items.first_name,
+                    last_name=items.last_name,salaryRate=items.salaryRate,addOnRate=items.addOnRate,
+                        salaryDetails=items.salaryDetails,regDay=items.regDay,regDayOt=items.regDayOt,
+                        sunday=items.sunday,sundayOT=items.sundayOT,spl=items.spl,
+                        splOT=items.splOT,lgl2=items.lgl2,lgl2OT=items.lgl2OT,nightDiff=items.nightDiff,
+                        adjustment=items.adjustment,lgl1=items.lgl1, user=username)
+
+    return('Data has been Save')

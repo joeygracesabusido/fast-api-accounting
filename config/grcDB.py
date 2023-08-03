@@ -47,6 +47,31 @@ class Adan_payroll_grc(SQLModel, table=True):
     date_credited: datetime = Field(default_factory=datetime.utcnow)
 
 
+
+class GrcViews():# this is for views function for GRC project
+
+    @staticmethod
+    def insertGrcPayrollAdan(transDate,employee_id,first_name,last_name,salaryRate,
+                    addOnRate,salaryDetails,regDay,regDayOt,sunday,sundayOT,
+                    spl,splOT,lgl2,lgl2OT,nightDiff,adjustment,lgl1,user):
+        """This function is for inserting Payroll to  surigaoDB table adan_payroll_grc"""
+        insertData = Adan_payroll_grc(transDate=transDate,employee_id=employee_id,first_name=first_name,last_name=last_name,
+                                            salaryRate=salaryRate,addOnRate=addOnRate,salaryDetails=salaryDetails,
+                                            regDay=regDay,regDayOt=regDayOt,sunday=sunday,sundayOT=sundayOT,spl=spl,
+                                            splOT=splOT,lgl2=lgl2,lgl2OT=lgl2OT,nightDiff=nightDiff,adjustment=adjustment,lgl1=lgl1, user=user)
+
+
+        session = Session(engine)
+
+        session.add(insertData)
+        
+        session.commit()
+
+        session.close()
+
+
+
+
 def create_db_and_tables():
     
     SQLModel.metadata.create_all(engine)
