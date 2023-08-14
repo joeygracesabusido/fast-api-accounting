@@ -7,6 +7,8 @@ import mysql.connector
 
 import urllib.parse
 
+from typing import List
+
 
 
 connection_string = "mysql+pymysql://{user}:{password}@{host}:{port}/{database}".format(
@@ -69,6 +71,35 @@ class GrcViews():# this is for views function for GRC project
 
         session.close()
 
+
+    @staticmethod # this is for function get Payroll GRC
+    def getPayroll(
+        datefrom: Optional[date],
+        dateto: Optional[date],
+        employeeID: Optional[str] ) : 
+
+
+        with Session(engine) as session: 
+            statement = ''
+            
+            if employeeID:
+                statement =  select(Adan_payroll_grc).where(Adan_payroll_grc.employee_id.ilike(f"%{employeeID}%"))
+
+            elif datefrom and dateto:
+                statement =  select(Adan_payroll_grc).where(Adan_payroll_grc.transDate.between(datefrom,dateto))
+
+            elif datefrom =='' and dateto =='' and employeeID =='':
+                statement = select(Adan_payroll_grc)
+            else:
+                statement =  select(Adan_payroll_grc).where(Adan_payroll_grc.transDate.between(datefrom,dateto),
+                                                Adan_payroll_grc.employee_id.ilike(f"%{employeeID}%"))
+                        
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
 
 
 

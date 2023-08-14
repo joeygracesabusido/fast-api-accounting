@@ -1255,3 +1255,6 @@ async def insertPayroll_GRC(items:TVIPayroll, username: str = Depends(Employeeva
                         adjustment=items.adjustment,lgl1=items.lgl1, user=username)
 
     return('Data has been Save')
+
+
+

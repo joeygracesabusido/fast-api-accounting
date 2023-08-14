@@ -85,6 +85,7 @@
               <button type="button"  data-frame="rental-list"  class="btn btn-link">Rental List</button>
               <button type="button"  data-frame="insert-employee"  class="btn btn-link">Add Employee</button>
               <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button>
+              <button type="button"  data-frame="payroll-list"  class="btn btn-link">Payroll List</button>
             </div>
           </div>
 
@@ -616,7 +617,119 @@
                     </div>
 
               
+                  <div id="payroll-list" style="display: none;">
+                      <!-- Account List Content -->
+                      <h1>Rental List</h1>
+                      <div class="container mt-3">
+                        
+                        <label for="DateFRomTons"
+                        >Date From</label>
+                        
+                            <input 
+                            type="date"
+                            name="datefrom_payroll"
+                            id="datefrom_payroll"
+                            class="form-control"
+                            >
 
+                        <label for="DateToTons"
+                        >Date To</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateto_payroll"
+                            id="dateto_payroll"
+                            class="form-control"
+                            >
+
+                          <label for="DateToTons"
+                          >Employee ID</label>
+                          
+                              <input 
+                              type="text"
+                              name="employeeID_payroll"
+                              id="employeeID_payroll"
+                              class="form-control"
+                              >
+    
+
+                        <br>
+                        
+                        <button type="button" id="BtnSearch_Payroll" name="BtnSearch_Payroll"  class="btn btn-primary">Search</button>
+                        
+                    </div>
+
+
+                    <div  class="container mt-3 table-responsive">
+                      <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                          <thead class="table-dark">
+                              <tr>
+                                  <td>No</td>
+                                  <td>FirstName</td>
+                                  <td>LastName</td>
+                                  <td>RegDay</td>
+                                  <td>RegDayOT</td>
+                                  <td>Sunday</td>
+                                  <td>SundayOT</td>
+                                  <td>SPL</td>
+                                  <td>SPLOT</td>
+                                  <td>LGL2</td>
+                                  <td>LGL2OT</td>
+                                  <td>LGL1</td>
+                                  <td>NighDiff</td>
+                                  <td>Adjustment</td>
+                                  <td>Total</td>
+                                  <td>Action</td>
+                                  
+                              </tr>
+                          </thead>
+                          <tbody id="table_body_payroll">
+                          
+                                  
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                  </tr>
+                              
+                              
+                          </tbody>
+          
+                      
+          
+                      </table>
+          
+                  <br>
+
+                  <label for="TotalAmount" >Total Amount</label>
+                        <input
+                            type="text"
+                            name="totalPayrollAmount"
+                            id="totalPayrollAmount"
+                            style="text-align: right;"
+                            >
+                        </input> 
+                          
+                          
+                  </div>
+
+
+
+
+                  </div>
                 
 
 
@@ -661,19 +774,14 @@
     </script>
 
     <script type="text/javascript">
-
-           
-
       
-
-
     </script>
 
     
 
 
     
-    <script src="/static/grc_transaction.js"></script>
+    <script src="/static/grcTransaction.js"></script>
     
     
 

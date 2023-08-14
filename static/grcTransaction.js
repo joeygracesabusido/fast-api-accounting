@@ -15,20 +15,7 @@ $(document).ready(function() {
     });
     });
 
-    // $(document).ready(function() {
-    //     $('#total_rental_hour2,#rentalRateInsertRental').change(function (){
-    //         const value1 = $('#total_rental_hour2').val() ;
-    //         const value2 = $('#rentalRateInsertRental').val() ;
-        
-    //         const product = parseFloat(value1) * parseFloat(value2);
-    //         console.log(product)
-    //         var formattedAmount = product.toLocaleString("en-US", { style: "currency", currency: "USD" });
-        
-    //         $('#total_amount').val(product);
-
-    //     });
-        
-    // });
+   
 
     $(document).ready(function() {
         $('#total_rental_hour, #rentalRateInsertRental').on('input', function() {
@@ -116,3 +103,97 @@ $(document).ready(function() {
     // Attach the event listener to the button
     var Btn_employee_save = document.querySelector('#Btn_employee_save');
     Btn_employee_save.addEventListener("click", InsertEmployee);
+
+
+    const  displayPayroll =  async () => {
+        var datefrom = document.getElementById("datefrom_payroll").value || 0
+        var dateto = document.getElementById("dateto_payroll").value || 0
+        var employeeID = document.getElementById("employeeID_payroll").value || 0
+        
+        const search_url = `/grc-payroll-list-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&employeeID=${employeeID}`;
+
+
+        const responce = await fetch(search_url)
+        const data = await responce.json();
+        console.log(data)
+
+        if (data.length === 0) {
+                window.alert('No Data available');
+            };
+        
+        
+        if (responce.status === 200){
+            let tableData="";
+            let sum = 0;
+            data.map((values, index)=>{
+                const columnNumber = index + 1; 
+                // Calculate the sum of the values
+                let total = parseFloat(values.regDayCal) + parseFloat(values.regDayOtCal) + 
+                parseFloat(values.sundayCal) + parseFloat(values.sundayOTCal) + 
+                parseFloat(values.splCal) + parseFloat(values.splOTCal) + 
+                parseFloat(values.lgl2Cal) + parseFloat(values.lgl2OTCal) + 
+                parseFloat(values.nightDiffCal) + parseFloat(values.lgl1Cal) +
+                parseFloat(values.adjustment);
+                total = total.toFixed(2)
+                tableData+= ` <tr>
+                            <td>${columnNumber}</td>
+                            <td>${values.first_name}</td>
+                            <td>${values.last_name}</td>
+                            <td>${values.regDayCal}</td>
+                            <td>${values.regDayOtCal}</td>
+                            <td>${values.sundayCal}</td>
+                            <td>${values.sundayOTCal}</td>
+                            <td>${values.splCal}</td>
+                            <td>${values.splOTCal}</td>
+                            <td>${values.lgl2Cal}</td>
+                            <td>${values.lgl2OTCal}</td>
+                            <td>${values.lgl1Cal}</td>
+                            <td>${values.nightDiffCal}</td>
+                            <td>${values.adjustment}</td>
+                            <td>${total}</td>
+                            <td>
+                             
+                        
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body_payroll").innerHTML=tableData;
+            // var test = 1000
+            // document.getElementById("fter_totalBillinglTons").value = test;
+            sumtoTalAmount()
+        }else if (responce.status === 401){
+            window.alert("Unauthorized Credentials Please Log in")
+        }
+
+    };
+
+
+    var BtnSearch_Payroll = document.querySelector('#BtnSearch_Payroll');
+    BtnSearch_Payroll.addEventListener("click", displayPayroll);
+
+
+  
+
+   
+       // This is for total of Payroll for Adan in Table
+    const sumtoTalAmount = () => {
+        const table = document.querySelector("#table_body_payroll");
+        let sumTons = 0;
+        let sumTotalAmount = 0;
+
+        table.querySelectorAll("tr").forEach(row => {
+        // sumTons += parseFloat(row.querySelectorAll("td")[2].textContent);
+        sumTotalAmount += parseFloat(row.querySelectorAll("td")[14].textContent);
+        });
+
+        // const sumTotalHoursComma = sumTons.toLocaleString("en-US");
+        const sumTotalAmountComma = sumTotalAmount.toLocaleString("en-US");
+
+        // document.querySelector("#flter_totalTrip_inct").value = sumTotalHoursComma;
+        document.querySelector("#totalPayrollAmount").value = sumTotalAmountComma;
+    };
+    
+
+
+   

@@ -8,7 +8,7 @@ from routes.zamboanga_client import zamboanga_client
 from routes.rizal_project import rizal_project
 from routes.employee_user import employee_user
 from routes.tvi import tviProject
-from routes.grc_employee import grc_admin
+from routes.grc_employee import grcRouter
 
 from mysql.connector import connect
 from fastapi.staticfiles import StaticFiles
@@ -40,7 +40,7 @@ app.include_router(zamboanga_client)
 app.include_router(rizal_project)
 app.include_router(employee_user)
 app.include_router(tviProject)
-app.include_router(grc_admin)
+app.include_router(grcRouter)
 
 
 
