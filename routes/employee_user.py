@@ -188,10 +188,13 @@ def employee_sign_up(items:EmployeeUser):
             "created": items.created
             
             }
+        
+        mydb.employee_login.create_index([("username", 1)], unique=True)
         mydb.employee_login.insert_one(dataInsert)
     
     except Exception as ex:
-        print("Error", f"Error due to :{str(ex)}")
+        error_message = f"Error due to: {str(ex)}"
+        return {"error": error_message}
     return {"message":"User has been save"} 
 
 

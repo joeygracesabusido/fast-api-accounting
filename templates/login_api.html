@@ -216,68 +216,61 @@
     </div>
 
     <script type="text/javascript">
-        function insert_employee_user(){
-            var fullname = document.getElementById("fullname").value
-            var username = document.getElementById("username1").value
-            var password = document.getElementById("password1").value
-           
-            var p1 = document.getElementById("password1").value
-            var p2 = document.getElementById("password2").value
+        function insert_employee_user() {
+            var fullname = document.getElementById("fullname").value;
+            var username = document.getElementById("username1").value;
+            var password = document.getElementById("password1").value;
 
-            var data = {}
-            
-            data["fullname"] = document.getElementById("fullname").value
-            data["username"] = document.getElementById("username1").value
-            data["password"] = document.getElementById("password1").value
-            data["status"] = document.getElementById("status").value
-            data["created"] = document.getElementById("trans_date").value
-            
-            console.log(data)
-            if (fullname =='' || password =='' || username =='' ){
-                window.alert("Please fill up Blank Fields");
-            }else{
-                if (p1 != p2 || fullname =='' || password =='' || username =='' ){
-                window.alert("Password is not Equal");
-            }else{
-                fetch("/api-employee-sign-up/", {
-                method:'POST', 
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(data)
-                    })
+            var p1 = document.getElementById("password1").value;
+            var p2 = document.getElementById("password2").value;
+
+            var data = {
+                "fullname": fullname,
+                "username": username,
+                "password": password,
+                "status": document.getElementById("status").value,
+                "created": document.getElementById("trans_date").value
+            };
+
+            console.log(data);
+
+            if (fullname === '' || password === '' || username === '') {
+                window.alert("Please fill up all required fields.");
+                return;
+            }
+
+            if (p1 !== p2) {
+                window.alert("Passwords do not match.");
+                return;
+            }
+
+                    fetch("/api-employee-sign-up/", {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                })
                 .then(function (response) {
-                    // Save the response status in a variable to use later.
-                    fetch_status = response.status;
-                    // Handle success
-                    // eg. Convert the response to JSON and return
                     return response.json();
-                }) 
-                .then(function (json) {
-                    // Check if the response were success
-                    if (fetch_status == 200) {
-                        // Use the converted JSON
-                        window.alert("Your Data has been Updated");
-                        window.location.assign("/index");
-                        console.log(json);
-                    } else if (fetch_status == 401){
-                        window.alert("UnAuthorized please Login");
+                })
+                .then(function (responseJson) {
+                    if ("error" in responseJson) {
+                        window.alert("Error: " + responseJson.error);
+                    } else if ("message" in responseJson) {
+                        window.alert(responseJson.message);
+                        if ("error" in responseJson) {
+                            window.alert("Error: " + responseJson.error);
+                        } else if ("message" in responseJson) {
+                            window.alert(responseJson.message);
+                            window.location.assign("/index");
+                        }
                     }
                 })
-                .catch(function (error){
-                    // Catch errors
-                    window.alert(error);
+                .catch(function (error) {
+                    window.alert("Error: " + error.message);
                     console.log(error);
                 });
 
-            }
-
-
-            }
-            
-            
-            
-            
         }
-        
 
     </script>
 
