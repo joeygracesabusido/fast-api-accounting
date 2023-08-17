@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import condecimal
-from sqlmodel import Field, Session, SQLModel, create_engine,select,func,funcfilter,within_group
+from sqlmodel import Field, Session, SQLModel, create_engine,select,func,funcfilter,within_group, Index
 
 from datetime import datetime, date
 import mysql.connector
@@ -48,6 +48,20 @@ class Adan_payroll_grc(SQLModel, table=True):
     date_updated:  Optional[datetime] = Field(default=None)
     date_credited: datetime = Field(default_factory=datetime.utcnow)
 
+class GrcEquipment(SQLModel, table=True):
+    __tablename__ = 'grc_equipment'
+    id: Optional[int] = Field(default=None, primary_key=True)
+    equipment_id: str = Field(default=None)
+    equipmentDiscription: str = Field(default=None)
+    rentalRate: condecimal(max_digits=8, decimal_places=2) = Field(default=0)
+    comments: str = Field(default=None)
+    owners: str = Field(default=None)
+    user: str = Field(default=None)
+    date_updated:  Optional[datetime] = Field(default=None)
+    date_credited: datetime = Field(default_factory=datetime.utcnow)
+
+
+    __table_args__ = (Index("idx_grcEquipment_unique", "equipment_id", unique=True),)
 
 
 class GrcViews():# this is for views function for GRC project
@@ -102,6 +116,33 @@ class GrcViews():# this is for views function for GRC project
             return data
 
 
+    @staticmethod
+    def insertEquipmentGRC(equipment_id,equipmentDiscription,
+                            rentalRate,comments,owners,user):# this function is for inserting Equipment
+
+       
+        insertData = GrcEquipment(equipment_id=equipment_id,equipmentDiscription=equipmentDiscription,
+                                rentalRate=rentalRate,comments=comments,owners=owners,user=user)
+
+
+        session = Session(engine)
+
+        session.add(insertData)
+        
+        session.commit()
+
+        session.close()
+    @staticmethod
+    def getEquipment(): # this function is to get all record for equipment in GRC
+
+        with Session(engine) as session:
+            statement = select(GrcEquipment)
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
 
 def create_db_and_tables():
     

@@ -147,3 +147,33 @@ async def getEmployeeSurigao(username: str = Depends(EmployeevalidateLogin))->Li
     
    
     return employeeData
+
+from models.model import EquipmentGRC
+from config.grcDB import GrcViews
+@grcRouter.post("/api-insert-grc-equipment/")
+async def insertPayroll_GRC(items:EquipmentGRC, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for inserting equipment to GRC table"""
+    GrcViews.insertEquipmentGRC(equipment_id=items.equipment_id,equipmentDiscription=items.equipmentDiscription,
+                                    rentalRate=items.rentalRate,comments=items.comments,
+                                    owners=items.owners,user=username)
+
+    return('Data has been Save')
+
+
+@grcRouter.get("/api-search-autocomplete-grc-equipment/")
+def autocomplete_grc_equipment(term: Optional[str] = None):
+    # this is to autocomplete Routes
+
+    
+    # Ensure you're correctly handling query parameters, 'term' in this case
+
+    equipment = GrcViews.getEquipment()
+
+    if term:
+        filtered_equipment = [item for item in equipment if term.lower() in item.equipment_id.lower()]
+    else:
+        filtered_equipment = []
+
+    suggestions = [{"value": item.equipment_id,"rentalRate": item.rentalRate} for item in filtered_equipment]
+    return suggestions
+   

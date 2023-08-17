@@ -407,6 +407,16 @@ class TVIPayroll(BaseModel):
     date_credited: Optional[datetime]
 
 
+class EquipmentGRC(BaseModel):
+    equipment_id: str 
+    equipmentDiscription: str 
+    rentalRate: float
+    comments: str 
+    owners: str 
+    user: Optional[str]
+    date_updated:  Optional[datetime]
+    date_credited: Optional[datetime]
+
     
     
     
