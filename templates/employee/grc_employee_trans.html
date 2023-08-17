@@ -84,6 +84,7 @@
               <button type="button"  data-frame="add-rental"  class="btn btn-link">Insert Rental</button>
               <button type="button"  data-frame="rental-list"  class="btn btn-link">Rental List</button>
               <button type="button"  data-frame="insert-employee"  class="btn btn-link">Add Employee</button>
+              <button type="button"  data-frame="employee-list"  class="btn btn-link">Employee List</button>
               <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button>
               <button type="button"  data-frame="payroll-list"  class="btn btn-link">Payroll List</button>
             </div>
@@ -579,7 +580,7 @@
                                     <option value="MWE">MWE</option>
                                    
                                   </select>
-                                <label for="floatingInputGrid">PHIC no.<label>
+                                <label for="floatingInputGrid">Tax Status<label>
                               </div>
                             </div>
                         </div>
@@ -730,6 +731,74 @@
 
 
                   </div>
+
+
+
+                  <div id="employee-list" style="display: none;">
+                    <!-- Account List Content -->
+                    <h1>Employee List</h1>
+
+                    <div class="container mt-3">
+                        
+                      <label for="Employee Name"
+                      >Search</label>
+                      
+                          <input 
+                          type="text"
+                          name="searchInput"
+                          id="searchInput"
+                          
+                          >
+                      
+                     
+                  </div>
+
+                  <div  class="container mt-3 table-responsive">
+                      <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                          <thead class="table-dark">
+                              <tr>
+                                  <td>Employee ID</td>
+                                  <td>First Name</td>
+                                  <td>Last Name</td>
+                                  <td>Position</td>
+                                  <td>Department</td>
+                                  <td>On/Off Details</td>
+                                  <td>Employement Status</td>
+                                  
+                              </tr>
+                          </thead>
+                          <tbody id="table_body_employee">
+                          
+                                  
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                     
+                                      
+                                  </tr>
+                              
+                              
+                          </tbody>
+          
+                      
+          
+                      </table>
+          
+                      
+                          
+                          
+                  </div>
+
+              
+                                            
+                  </div>
+
+
                 
 
 

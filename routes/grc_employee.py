@@ -121,3 +121,29 @@ async def payrollList(datefrom: Optional[date] = None,
     
     
     return payrollData
+
+
+from config.models import getAllEmployee_Surigao
+@grcRouter.get("/api-get-grc-employeeDetails-employeeLogin/")
+async def getEmployeeSurigao(username: str = Depends(EmployeevalidateLogin))->List:
+    """This function is to update employee Details"""
+    results = getAllEmployee_Surigao()
+
+    employeeData = [
+        
+            {
+                "employee_id": x.employee_id,
+                "lastName": x.lastName,
+                "firstName": x.firstName,
+                "position": x.position,
+                "department": x.department,
+                "off_on_details": x.off_on_details,
+                "employment_status": x.employment_status
+
+               
+            }
+            for x in results
+        ]
+    
+   
+    return employeeData

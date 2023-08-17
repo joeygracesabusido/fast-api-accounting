@@ -196,4 +196,89 @@ $(document).ready(function() {
     
 
 
+    // this function is for getting List of Employee
+    async function employeeData(){
+        const search_url = `/api-get-grc-employeeDetails-employeeLogin/`;
+            const responce =  await fetch(search_url)
+            const data =  await responce.json();
+            console.log(data)
+
+            function filterData(searchValue) {
+                return data.filter(item => {
+                    const lastName = item.lastName.toLowerCase();
+                    const firstName = item.firstName.toLowerCase();
+                    const position = item.position.toLowerCase();
+                    return lastName.includes(searchValue) || firstName.includes(searchValue) || position.includes(searchValue);
+                });
+            }
+
+            function displayData(filteredData) {
+                const tbody = document.querySelector("#table_body_employee");
+                tbody.innerHTML = "";
+                filteredData.forEach(item => {
+                    const tr = document.createElement("tr");
+                    const employee_id = document.createElement("td");
+                    employee_id.textContent = item.employee_id;
+                    const lastName = document.createElement("td");
+                    lastName.textContent = item.lastName;
+                    const firstName = document.createElement("td");
+                    firstName.textContent = item.firstName;
+                    const position = document.createElement("td");
+                    position.textContent = item.position;
+                    const department = document.createElement("td");
+                    department.textContent = item.department;
+                    const off_on_details = document.createElement("td");
+                    off_on_details.textContent = item.off_on_details;
+                    const employment_status = document.createElement("td");
+                    employment_status.textContent = item.employment_status;
+
+
+                    tr.appendChild(employee_id);
+                    tr.appendChild(lastName);
+                    tr.appendChild(firstName);
+                    tr.appendChild(position);
+                    tr.appendChild(department);
+                    tr.appendChild(off_on_details);
+                    tr.appendChild(employment_status);
+                    tbody.appendChild(tr);
+                });
+            }
+
+            const searchInput = document.querySelector("#searchInput");
+            searchInput.addEventListener("input", event => {
+                const searchValue = event.target.value.trim().toLowerCase();
+                const filteredData = filterData(searchValue);
+                displayData(filteredData);
+            });
+
+
+
+
+    }
    
+    employeeData()
+
+
+
+    // this is for  automatic end of contract function
+    
+    const dateInput = document.getElementById('dateHire');
+    const endofContractInput = document.getElementById('endofContract');
+    
+    dateInput.addEventListener('input', () => {
+        const selectedDate = new Date(dateInput.value);
+        const maturityDays = 150; // Number of days for maturity
+    
+        const maturityDate = new Date(selectedDate);
+        maturityDate.setDate(selectedDate.getDate() + maturityDays);
+    
+        const year = maturityDate.getFullYear();
+        const month = String(maturityDate.getMonth() + 1).padStart(2, '0');
+        const day = String(maturityDate.getDate()).padStart(2, '0');
+    
+        const formattedMaturityDate = `${year}-${month}-${day}`;
+        endofContractInput.value = formattedMaturityDate;
+    
+        console.log(maturityDate);
+        // Perform additional actions with the maturityDate if needed
+    });

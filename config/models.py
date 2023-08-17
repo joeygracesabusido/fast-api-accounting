@@ -247,6 +247,25 @@ def getAllEmployee_TVI():
         return data
 
 
+#================================================Employee Details=================================
+def getAllEmployee_Surigao():
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session: 
+        project1 = 'Surigao-GRC'
+        project2 = 'Surigao-GRC'
+        filter_condition = ((employee_details.department.like ('%'+project1 +'%')) |
+                             (employee_details.department.like ('%'+project2 +'%')))
+        statement = select(employee_details).where(filter_condition) \
+        .order_by(employee_details.lastName.asc())
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+
+        
+        return data
+
+
 
 
 
