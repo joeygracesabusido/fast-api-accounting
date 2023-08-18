@@ -176,4 +176,21 @@ def autocomplete_grc_equipment(term: Optional[str] = None):
 
     suggestions = [{"value": item.equipment_id,"rentalRate": item.rentalRate} for item in filtered_equipment]
     return suggestions
+
+
+@grcRouter.get("/api-search-autocomplete-grc-employee/")
+def autocomplete_grc_employee(term: Optional[str] = None):
+    # this is to autocomplete Routes
+    # Ensure you're correctly handling query parameters, 'term' in this case
+
+    employeeData = getAllEmployee_Surigao()
+    print(employeeData)
+
+    if term:
+        filtered_employee = [item for item in employeeData if term.lower() in item.lastName.lower()]
+    else:
+        filtered_employee = []
+
+    suggestions = [{"lastName": item.lastName,"firstname": item.firstName} for item in filtered_employee]
+    return suggestions
    

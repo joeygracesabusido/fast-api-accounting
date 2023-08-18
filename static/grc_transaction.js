@@ -285,41 +285,76 @@ $(document).ready(function() {
 
 
  // Define the Insert Equipment function
- const  InsertEquipment = async () => {
-    // Get the values of the input fields
+//  const InsertEquipment = async () => {
+//     const data = {
+//         equipment_id: document.getElementById("equipment_id").value,
+//         equipmentDiscription: document.getElementById("equipment_description").value,
+//         rentalRate: document.getElementById("rentalRate").value,
+//         comments: document.getElementById("comments").value,
+//         owners: document.getElementById("Owner").value,
+//     };
+
+//     try {
+//         const response = await fetch(`/api-insert-grc-equipment/`, {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify(data),
+//         });
+
+//         const responseData = await response.json();
+       
+//         if ("error" in responseData) {
+//             window.alert("Error: " + responseData.error);
+//         } else if ("message" in responseData) {
+//             window.alert(responseData.message);
+//             window.location.assign("/employee-transaction-grc/");
+//         }
+//         if (response.status === 401) {
+//             window.alert("Unauthorized credential. Please login");
+//         }
+//     } catch (error) {
+//         window.alert("Duplicate Equipment ID");
+//         console.log(error);
+//     }
+// };
+
+
+ const InsertEquipment = async () => {
     const data = {
         equipment_id: document.getElementById("equipment_id").value,
         equipmentDiscription: document.getElementById("equipment_description").value,
         rentalRate: document.getElementById("rentalRate").value,
         comments: document.getElementById("comments").value,
         owners: document.getElementById("Owner").value,
-     
     };
-   
-    console.log(data)
 
-        try {
-            const response = await fetch(`/api-insert-grc-equipment/`,{
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
+    try {
+        const response = await fetch(`/api-insert-grc-equipment/`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
 
-            // Check if the response was successful
-            if (response.status === 200) {
-                window.alert("Your data has been saved");
-                console.log(data);
-                window.location.assign("/employee-transaction-grc/");
-            } else if (response.status === 401) {
-                window.alert("Unauthorized credential. Please login");
-            }
-        } catch (error) {
-            // Catch any errors and log them to the console
-            window.alert(error);
-            console.log(error);
+        const responseData = await response.json();
+
+       
+        if (response.status === 401) {
+            window.alert("Unauthorized credential. Please login");
+        } else if (responseData.error) {
+            window.alert("Error: " + responseData.error);
+        } else if (response.status === 200) {
+            window.alert("Your data has been saved!!!!");
+            window.location.assign("/employee-transaction-grc/");
+        } else {
+            window.alert("An unknown error occurred");
         }
-    
-}
+    } catch (error) {
+        window.alert(error);
+        console.log(error);
+    }
+};
+
+
 
 // Attach the event listener to the button
 var Btn_equipment_save = document.querySelector('#Btn_SaveEquipment');
@@ -356,4 +391,5 @@ $(document).ready(function() {
 });
 
 
+// this function is for inserting Rental Transaction for GRC
 

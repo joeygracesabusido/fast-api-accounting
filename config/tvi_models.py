@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import condecimal
-from sqlmodel import Field, Session, SQLModel, create_engine,select,func,funcfilter,within_group
+from sqlmodel import Field, Session, SQLModel, create_engine,select,func,funcfilter,within_group, Index
 
 from datetime import datetime, date
 import mysql.connector
@@ -89,7 +89,7 @@ class tvi_tonnage(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     transDate: date
     equipmentId: str = Field(index=True)
-    tripTicket: str = Field(default=None)
+    tripTicket: str = Field(default=None,unique=True)
     routes: str = Field(default=None)
     trips: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     volume_tons: condecimal(max_digits=9, decimal_places=2)
@@ -100,6 +100,8 @@ class tvi_tonnage(SQLModel, table=True):
     user: str = Field(default=None)
     date_updated:  Optional[datetime] = Field(default=None)
     date_credited: datetime = Field(default_factory=datetime.utcnow)
+
+    __table_args__ = (Index("idx_tvi_tonnage_unique", "equipmentId", unique=True),)
 
 class  tviRoutes(SQLModel, table=True):
     """This is for TVI Routes"""

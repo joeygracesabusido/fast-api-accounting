@@ -1,6 +1,7 @@
 from typing import Optional
 from pydantic import condecimal
 from sqlmodel import Field, Session, SQLModel, create_engine,select,func,funcfilter,within_group, Index
+from sqlalchemy.exc import SQLAlchemyError
 
 from datetime import datetime, date
 import mysql.connector
@@ -56,6 +57,26 @@ class GrcEquipment(SQLModel, table=True):
     rentalRate: condecimal(max_digits=8, decimal_places=2) = Field(default=0)
     comments: str = Field(default=None)
     owners: str = Field(default=None)
+    user: str = Field(default=None)
+    date_updated:  Optional[datetime] = Field(default=None)
+    date_credited: datetime = Field(default_factory=datetime.utcnow)
+
+
+    __table_args__ = (Index("idx_grcEquipment_unique", "equipment_id", unique=True),)
+
+class GrcRental(SQLModel, table=True):
+    __tablename__ = 'grc_rental'
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    demr: str = Field(unique=True,default=None)
+    equipment_id: str = Field(default=None,index=True)
+    timeIn: Optional[datetime] = Field(default=None)
+    timeOut: Optional[datetime] = Field(default=None)
+    totalHours: condecimal(max_digits=8, decimal_places=2) = Field(default=0)
+    rentalRate: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    shift: str = Field(default=None)
+    driver_operator: str = Field(default=None)
     user: str = Field(default=None)
     date_updated:  Optional[datetime] = Field(default=None)
     date_credited: datetime = Field(default_factory=datetime.utcnow)
@@ -126,12 +147,49 @@ class GrcViews():# this is for views function for GRC project
 
 
         session = Session(engine)
-
-        session.add(insertData)
+        # session.add(insertData)
         
-        session.commit()
+        # session.commit()
 
-        session.close()
+        # session.close()
+        try:
+            session.add(insertData)
+            session.commit()
+            return {"message": "Data has been saved"}  # Return a success message
+        except Exception as e:
+            session.rollback()
+            error_message = f"Error due to: {str(e)}"
+           
+            return {"error": error_message}
+        finally:
+            session.close()
+
+
+    @staticmethod
+    def insertRentalGRC():# this function is for inserting Equipment
+
+       
+        insertData = GrcEquipment()
+
+
+        session = Session(engine)
+        # session.add(insertData)
+        
+        # session.commit()
+
+        # session.close()
+        try:
+            session.add(insertData)
+            session.commit()
+            return {"message": "Data has been saved"}  # Return a success message
+        except Exception as e:
+            session.rollback()
+            error_message = f"Error due to: {str(e)}"
+           
+            return {"error": error_message}
+        finally:
+            session.close()
+
     @staticmethod
     def getEquipment(): # this function is to get all record for equipment in GRC
 
