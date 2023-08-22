@@ -1240,7 +1240,49 @@ async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str 
     
     return payrollData
 
+
+@employee_user.get("/tvi-diesel-update-employeeLogin/", response_class=HTMLResponse)
+async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)): # this is for GRC transaction
+    return templates.TemplateResponse("employee/updateDieselTvi.html", {"request":request})
+from models.model import TviDiesel
+from config.tvi_models import getDieselTVI_all, updateTVIDiesel
+@employee_user.get("/api-search-autocomplete-tiv-diesel-transaction/")
+def autocomplete_grc_equipment(term: Optional[int] = None,username: str = Depends(EmployeevalidateLogin)):
+   
+    # Ensure you're correctly handling query parameters, 'term' in this case
+
+    dieselData = getDieselTVI_all()
+
+    if term:
+       filtered_equipment = [item for item in dieselData if term == item.id]
+    else:
+        filtered_equipment = []
+
+    suggestions = [{"value": item.id,
+                    "transDate": item.transDate,
+                    "equipmentId": item.equipmentId,
+                    "withdrawalSlip": item.withdrawalSlip,
+                    "totalliters": item.totalliters,
+                    "price": item.price,
+                    "totalAmount": item.totalAmount,
+                    
+                    } for item in filtered_equipment]
+    return suggestions
+
+
+@employee_user.put("/api-update-tiv-diesel-employeeLogin/")
+async def updateDieselTviEmployeeLogin(id: int,items: TviDiesel,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+    updateTVIDiesel(transDate=items.transDate,equipmentId=items.equipmentId,withdrawalSlip=items.withdrawalSlip,
+                        totalliters=items.totalliters,price=items.price,
+                        totalAmount=items.totalAmount,user=username,date_updated=today,id=id)
+                        
+    # print(insertTonnageRizal())
+    return  {'Messeges':'Data has been Save'}
+
 # ============================================GRC Transaction ============================================
+
 from config.grcDB import GrcViews
 @employee_user.get("/grc-payroll-transaction/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)): # this is for GRC transaction

@@ -619,6 +619,19 @@ def getDieselTVI_id(id):
        
         return data
 
+def getDieselTVI_all():
+    """This function is for querying all equipment in Rizal"""
+    with Session(engine) as session:
+        
+
+        statement = select(tvidieseltransaction)
+                    
+        results = session.exec(statement) 
+
+        data = results.all()
+       
+        return data
+
 def getDieselTVI_withSlip(withdrawalSlip):
     """This function is for querying all equipment in Rizal"""
     with Session(engine) as session:

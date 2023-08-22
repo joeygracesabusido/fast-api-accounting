@@ -68,7 +68,7 @@ class GrcRental(SQLModel, table=True):
     __tablename__ = 'grc_rental'
     id: Optional[int] = Field(default=None, primary_key=True)
     transDate: date
-    demr: str = Field(unique=True,default=None)
+    demr: str = Field(max_length=50)
     equipment_id: str = Field(default=None,index=True)
     timeIn: Optional[datetime] = Field(default=None)
     timeOut: Optional[datetime] = Field(default=None)
@@ -82,7 +82,7 @@ class GrcRental(SQLModel, table=True):
     date_credited: datetime = Field(default_factory=datetime.utcnow)
 
 
-    __table_args__ = (Index("idx_grcEquipment_unique", "equipment_id", unique=True),)
+    __table_args__ = (Index("idx_grcEquipment_unique", "demr", unique=True),)
 
 
 class GrcViews():# this is for views function for GRC project
@@ -117,17 +117,22 @@ class GrcViews():# this is for views function for GRC project
         with Session(engine) as session: 
             statement = ''
             
-            if employeeID:
+            if employeeID and datefrom == '' and dateto == '':
                 statement =  select(Adan_payroll_grc).where(Adan_payroll_grc.employee_id.ilike(f"%{employeeID}%"))
 
-            elif datefrom and dateto:
-                statement =  select(Adan_payroll_grc).where(Adan_payroll_grc.transDate.between(datefrom,dateto))
-
-            elif datefrom =='' and dateto =='' and employeeID =='':
-                statement = select(Adan_payroll_grc)
-            else:
+            if datefrom and dateto and employeeID:
                 statement =  select(Adan_payroll_grc).where(Adan_payroll_grc.transDate.between(datefrom,dateto),
                                                 Adan_payroll_grc.employee_id.ilike(f"%{employeeID}%"))
+
+            if datefrom and dateto and employeeID == '':
+                statement =  select(Adan_payroll_grc).where(Adan_payroll_grc.transDate.between(datefrom,dateto)
+                                               )
+
+            # elif datefrom =='' and dateto =='' and employeeID =='':
+            #     statement = select(Adan_payroll_grc)
+            # else:
+            #     statement =  select(Adan_payroll_grc).where(Adan_payroll_grc.transDate.between(datefrom,dateto),
+            #                                     Adan_payroll_grc.employee_id.ilike(f"%{employeeID}%"))
                         
             results = session.exec(statement) 
 
@@ -147,37 +152,7 @@ class GrcViews():# this is for views function for GRC project
 
 
         session = Session(engine)
-        # session.add(insertData)
         
-        # session.commit()
-
-        # session.close()
-        try:
-            session.add(insertData)
-            session.commit()
-            return {"message": "Data has been saved"}  # Return a success message
-        except Exception as e:
-            session.rollback()
-            error_message = f"Error due to: {str(e)}"
-           
-            return {"error": error_message}
-        finally:
-            session.close()
-
-
-    @staticmethod
-    def insertRentalGRC():# this function is for inserting Equipment
-
-       
-        insertData = GrcEquipment()
-
-
-        session = Session(engine)
-        # session.add(insertData)
-        
-        # session.commit()
-
-        # session.close()
         try:
             session.add(insertData)
             session.commit()
@@ -201,6 +176,35 @@ class GrcViews():# this is for views function for GRC project
 
             
             return data
+
+
+    @staticmethod
+    def insertRentalGRC(transDate,demr,equipment_id,timeIn,timeOut,
+                            totalHours,rentalRate,amount,shift,
+                                driver_operator,user):# this function is for inserting Equipment
+
+       
+        insertData = GrcRental(transDate=transDate,demr=demr,equipment_id=equipment_id,
+                                timeIn=timeIn,timeOut=timeOut,totalHours=totalHours,
+                                rentalRate=rentalRate,amount=amount,shift=shift,driver_operator=driver_operator,
+                                user=user)
+
+
+        session = Session(engine)
+      
+        try:
+            session.add(insertData)
+            session.commit()
+            return {"message": "Data has been saved"}  # Return a success message
+        except Exception as e:
+            session.rollback()
+            error_message = f"Error due to: {str(e)}"
+           
+            return {"error": error_message}
+        finally:
+            session.close()
+
+    
 
 def create_db_and_tables():
     

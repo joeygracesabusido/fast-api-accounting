@@ -330,7 +330,7 @@
                                 </div>
                                 <br>
                                 <button type="button" id="Btn_rental_save" class="btn btn-primary">Save</button>
-
+                                
 
 
                     </div>
@@ -657,6 +657,10 @@
                         <br>
                         
                         <button type="button" id="BtnSearch_Payroll" name="BtnSearch_Payroll"  class="btn btn-primary">Search</button>
+                        <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
+                          Export Excel
+                          <i class="fas fa-database"></i>
+                      </button>
                         
                     </div>
 
@@ -758,8 +762,8 @@
                           <thead class="table-dark">
                               <tr>
                                   <td>Employee ID</td>
-                                  <td>First Name</td>
                                   <td>Last Name</td>
+                                  <td>First Name</td>
                                   <td>Position</td>
                                   <td>Department</td>
                                   <td>On/Off Details</td>

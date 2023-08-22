@@ -406,6 +406,16 @@ class TVIPayroll(BaseModel):
     date_updated: Optional[datetime]
     date_credited: Optional[datetime]
 
+class TviDiesel(BaseModel):
+    """This is for employee transaction Inserting Diesel"""
+    transDate: date
+    equipmentId: str 
+    withdrawalSlip: str 
+    totalliters: float
+    price: float
+    totalAmount: float
+    
+
 
 class EquipmentGRC(BaseModel):
     equipment_id: str 
@@ -415,6 +425,21 @@ class EquipmentGRC(BaseModel):
     owners: str 
     user: Optional[str]
     date_updated:  Optional[datetime]
+    date_credited: Optional[datetime]
+
+class GrcRentalModels(BaseModel):
+    transDate: date
+    demr: str 
+    equipment_id: str
+    timeIn: Optional[datetime] 
+    timeOut: Optional[datetime] 
+    totalHours: float
+    rentalRate: float
+    amount: float
+    shift: str 
+    driver_operator: str 
+    user: Optional[str]
+    date_updated:  Optional[datetime] 
     date_credited: Optional[datetime]
 
     

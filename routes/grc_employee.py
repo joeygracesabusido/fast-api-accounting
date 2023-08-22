@@ -148,7 +148,7 @@ async def getEmployeeSurigao(username: str = Depends(EmployeevalidateLogin))->Li
    
     return employeeData
 
-from models.model import EquipmentGRC
+from models.model import EquipmentGRC,GrcRentalModels
 from config.grcDB import GrcViews
 @grcRouter.post("/api-insert-grc-equipment/")
 async def insertPayroll_GRC(items:EquipmentGRC, username: str = Depends(EmployeevalidateLogin)):
@@ -184,13 +184,24 @@ def autocomplete_grc_employee(term: Optional[str] = None):
     # Ensure you're correctly handling query parameters, 'term' in this case
 
     employeeData = getAllEmployee_Surigao()
-    print(employeeData)
+    
 
     if term:
-        filtered_employee = [item for item in employeeData if term.lower() in item.lastName.lower()]
+        filtered_employee = [item for item in employeeData if term.lower() in item.lastName.lower()  or term.lower() in item.firstName.lower() ]
+       
     else:
         filtered_employee = []
 
-    suggestions = [{"lastName": item.lastName,"firstname": item.firstName} for item in filtered_employee]
+    suggestions = [{"value": item.lastName + " , " + item.firstName} for item in filtered_employee]
+    print(suggestions)
     return suggestions
    
+@grcRouter.post("/api-insert-grc-rental/")
+async def insertPayroll_GRC(items:GrcRentalModels, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for inserting equipment to GRC table"""
+    GrcViews.insertRentalGRC(transDate=items.transDate,demr=items.demr,equipment_id=items.equipment_id,
+                                timeIn=items.timeIn,timeOut=items.timeOut,totalHours=items.totalHours,
+                                    rentalRate=items.rentalRate,amount=items.amount,
+                                        shift=items.shift,driver_operator=items.driver_operator)
+
+    return('Data has been Save')
