@@ -590,11 +590,10 @@ def insertDiesel_tvi(transDate,equipmentId,withdrawalSlip,
 
     session.close()
 
-def getDieselTVI_all(datefrom,dateto,equipmentId):
+def getDieselTVI_all_v1(datefrom,dateto,equipmentId):
     """This function is for querying all equipment in Rizal"""
     with Session(engine) as session:
-        statement = select(tvidieseltransaction).where(tvidieseltransaction.transDate >= datefrom ,
-                         tvidieseltransaction.transDate <= dateto ) \
+        statement = select(tvidieseltransaction).where(tvidieseltransaction.transDate.between(datefrom,dateto)) \
                          .filter(tvidieseltransaction.equipmentId.like ('%'+ equipmentId +'%')) \
                          .order_by(tvidieseltransaction.id.asc())
                     

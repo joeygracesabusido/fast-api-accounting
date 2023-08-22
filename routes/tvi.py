@@ -612,11 +612,11 @@ async def insertDieselTvi(items:TVIDiesel,username: str = Depends(validateLogin)
 
     return  {'Messeges':'Data has been Save'}
 
-from config.tvi_models import getDieselTVI_all
+from config.tvi_models import getDieselTVI_all_v1
 @tviProject.get("/api-search-tvi-diesel-trans/")
 def search_tvi_dieseltransAll(datefrom,dateto,equipmentId: Optional[str]):
     """This is for searching all Data from Diesel table"""
-    data = getDieselTVI_all(datefrom=datefrom,dateto=dateto,equipmentId=equipmentId)
+    data = getDieselTVI_all_v1(datefrom=datefrom,dateto=dateto,equipmentId=equipmentId)
     
     costData = [
 
