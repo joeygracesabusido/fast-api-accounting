@@ -197,11 +197,48 @@ def autocomplete_grc_employee(term: Optional[str] = None):
     return suggestions
    
 @grcRouter.post("/api-insert-grc-rental/")
-async def insertPayroll_GRC(items:GrcRentalModels, username: str = Depends(EmployeevalidateLogin)):
+async def insert_rental_GRC(items:GrcRentalModels, username: str = Depends(EmployeevalidateLogin)):
     """This function is for inserting equipment to GRC table"""
-    GrcViews.insertRentalGRC(transDate=items.transDate,demr=items.demr,equipment_id=items.equipment_id,
-                                timeIn=items.timeIn,timeOut=items.timeOut,totalHours=items.totalHours,
-                                    rentalRate=items.rentalRate,amount=items.amount,
-                                        shift=items.shift,driver_operator=items.driver_operator)
+    try:
+        GrcViews.insertRentalGRC(transDate=items.transDate,demr=items.demr,equipment_id=items.equipment_id,
+                                    timeIn=items.timeIn,timeOut=items.timeOut,totalHours=items.totalHours,
+                                        rentalRate=items.rentalRate,amount=items.amount,
+                                            shift=items.shift,driver_operator=items.driver_operator,user=username)
 
-    return('Data has been Save')
+        return('Data has been Save')
+
+    except Exception as e:
+        error_message = str(e)  # Use the actual error message from the exception
+       
+        return {"error": error_message}
+
+
+@grcRouter.get("/api-get-grc-rental-transaction-employeeLogin/")
+async def getRental_views(datefrom: Optional[date],dateto:Optional[date],equipment_id: Optional[str],
+                            username: str = Depends(EmployeevalidateLogin))->List:
+    """This function is to update employee Details"""
+    results = GrcViews.getRental(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    rentalData = [
+        
+            {
+               "id": x. id,
+                "transDate": x.transDate,
+                "demr": x.demr,
+                "equipment_id": x.equipment_id,
+                "timeIn": x.timeIn,
+                "timeOut": x.timeOut,
+                "totalHours": x.totalHours,
+                "rentalRate": x.rentalRate,
+                "amount": x.amount,
+                "shift": x.shift,
+                "driver_operator": x.driver_operator,
+                "user": x.user,
+
+               
+            }
+            for x in results
+        ]
+    
+   
+    return rentalData

@@ -183,7 +183,7 @@ class GrcViews():# this is for views function for GRC project
                             totalHours,rentalRate,amount,shift,
                                 driver_operator,user):# this function is for inserting Equipment
 
-       
+        
         insertData = GrcRental(transDate=transDate,demr=demr,equipment_id=equipment_id,
                                 timeIn=timeIn,timeOut=timeOut,totalHours=totalHours,
                                 rentalRate=rentalRate,amount=amount,shift=shift,driver_operator=driver_operator,
@@ -191,19 +191,35 @@ class GrcViews():# this is for views function for GRC project
 
 
         session = Session(engine)
+        session.add(insertData)
+        session.commit()
+        session.close()
       
-        try:
-            session.add(insertData)
-            session.commit()
-            return {"message": "Data has been saved"}  # Return a success message
-        except Exception as e:
-            session.rollback()
-            error_message = f"Error due to: {str(e)}"
-           
-            return {"error": error_message}
-        finally:
-            session.close()
+        # try:
+        #     session.add(insertData)
+        #     session.commit()
+        #     return {"message": "Data has been saved"}  # Return a success message
+        # except Exception as e:
+        #     session.rollback()
+        #     error_message = str(e)  # Use the actual error message from the exception
+        #     return {"error": error_message}
+        # finally:
+        #     session.close()
+    @staticmethod
+    def getRental( datefrom: Optional[date],
+        dateto: Optional[date],
+        equipment_id: Optional[str]): # this function is to get all record for rental in GRC
 
+        with Session(engine) as session:
+            
+            statement = select(GrcRental).where(GrcRental.transDate.between(datefrom,dateto))\
+                .filter(GrcRental.equipment_id.like ('%'+ equipment_id +'%')).order_by(GrcRental.id)
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
     
 
 def create_db_and_tables():

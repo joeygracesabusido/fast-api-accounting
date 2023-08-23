@@ -167,7 +167,7 @@
                                         </input>  
             
 
-                                        <label for="floatingInputGrid" style="font-size: 15px;">EUR</label>
+                                        <label for="floatingInputGrid" style="font-size: 15px;">DEMR</label>
                                     
                                     </div>
                                 </div>
@@ -340,46 +340,117 @@
 
 
                     <div id="rental-list" style="display: none;">
-                        <!-- Account List Content -->
-                        <h1>Rental List</h1>
-                            <div class="row g-2">
-                                <div class="col-md">
-                                    <div class="form-floating">
-                                    <input type="date" class="form-control" id="transDate">
-                                    <label for="floatingInputGrid" style="font-size: 15px;">Date</label>
-                                    </div>
-                                </div>
-                                <div class="col-md">
-                                    <div class="form-floating">
-                                    <input type="text" class="form-control" id="equipment_id_insertRental">
-                                    <label for="floatingInputGrid" style="font-size: 15px;" >Equipment ID</label>
-
-                                    
-                                    </div>
-                                </div>
-                            </div>
+                      <!-- Account List Content -->
+                      <h1>Rental List</h1>
+  
+                        <div class="container mt-3">
+                              
+                          <label for="DateFRomTons"
+                          >Date From</label>
+                          
+                              <input 
+                              type="date"
+                              name="datefrom_rental"
+                              id="datefrom_rental"
+                              class="form-control"
+                              >
+  
+                          <label for="DateToTons"
+                          >Date To</label>
+                          
+                              <input 
+                              type="date"
+                              name="dateto_rental"
+                              id="dateto_rental"
+                              class="form-control"
+                              >
+  
+                            <label for="DateToTons"
+                            >Equipment ID</label>
+                            
+                                <input 
+                                type="text"
+                                name="equipmentID_rental"
+                                id="equipmentID_rental"
+                                class="form-control"
+                                >
+      
 
                                 <br>
-
-
-                                <div class="row g-2">
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                        <input type="text" class="form-control" id="personal_info">
-                                        <label for="floatingInputGrid" style="font-size: 15px;">Personal Info</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="account_name">
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Account Name</label>
-
+                        
+                                <button type="button" id="BtnSearch_Rental" name="BtnSearch_Rental"  class="btn btn-primary">Search</button>
+                                <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
+                                  Export Excel
+                                  <i class="fas fa-database"></i>
+                              </button>
+                            
+                          
+                        </div>
+  
+                        <div  class="container mt-3 table-responsive">
+                            <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <td>No</td>
+                                        <td>Transaction ID</td>
+                                        <td>Date</td>
+                                        <td>DEMR</td>
+                                        <td>Equipment ID</td>
+                                        <td>Total Hours</td>
+                                        <td>Rental Rate</td>
+                                        <td>Amount</td>
+                                        <td>Action</td>
+                                       
                                         
-                                        </div>
-                                    </div>
-                                </div>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body_rental">
+                                
+                                        
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            
+                                        </tr>
+                                    
+                                    
+                                </tbody>
+                
+                            
+                
+                            </table>
 
+                            <br>
 
+                            <label for="TotalAmount" >Total Hours</label>
+                                  <input
+                                      type="text"
+                                      name="totalHours_rental"
+                                      id="totalHours_rental"
+                                      style="text-align: right;"
+                                      >
+                                  </input> 
+
+                            <label for="TotalAmount" >Total Amount</label>
+                                  <input
+                                      type="text"
+                                      name="totalamount_rental"
+                                      id="totalamount_rental"
+                                      style="text-align: right;"
+                                      >
+                                  </input> 
+                
+                            
+                                
+                                
+                        </div>
                     </div>
 
 <!-- =================================This is for Inserting Employee================================ -->
@@ -742,73 +813,68 @@
                     <!-- Account List Content -->
                     <h1>Employee List</h1>
 
-                    <div class="container mt-3">
+                      <div class="container mt-3">
+                            
+                          <label for="Employee Name"
+                          >Search</label>
+                          
+                              <input 
+                              type="text"
+                              name="searchInput"
+                              id="searchInput"
+                              
+                              >
+                          
                         
-                      <label for="Employee Name"
-                      >Search</label>
-                      
-                          <input 
-                          type="text"
-                          name="searchInput"
-                          id="searchInput"
-                          
-                          >
-                      
-                     
-                  </div>
+                      </div>
 
-                  <div  class="container mt-3 table-responsive">
-                      <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
-                          <thead class="table-dark">
-                              <tr>
-                                  <td>Employee ID</td>
-                                  <td>Last Name</td>
-                                  <td>First Name</td>
-                                  <td>Position</td>
-                                  <td>Department</td>
-                                  <td>On/Off Details</td>
-                                  <td>Employement Status</td>
-                                  
-                              </tr>
-                          </thead>
-                          <tbody id="table_body_employee">
-                          
-                                  
+                      <div  class="container mt-3 table-responsive">
+                          <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                              <thead class="table-dark">
                                   <tr>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                     
+                                      <td>Employee ID</td>
+                                      <td>Last Name</td>
+                                      <td>First Name</td>
+                                      <td>Position</td>
+                                      <td>Department</td>
+                                      <td>On/Off Details</td>
+                                      <td>Employement Status</td>
                                       
                                   </tr>
+                              </thead>
+                              <tbody id="table_body_employee">
+                              
+                                      
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                        
+                                          
+                                      </tr>
+                                  
+                                  
+                              </tbody>
+              
+                          
+              
+                          </table>
+              
+                          
                               
                               
-                          </tbody>
-          
-                      
-          
-                      </table>
-          
-                      
-                          
-                          
+                      </div>
                   </div>
-
               
                                             
-                  </div>
+                  
 
 
-                
-
-
-               
-
-             
+        
                 </main>
            
         </div>

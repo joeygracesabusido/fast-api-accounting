@@ -11,6 +11,7 @@ $(document).ready(function() {
         totalHours = elapsedInSeconds.toFixed(2)
         $('#total_rental_hour').val(totalHours);
         calculateAmount()
+        calculateAmount2();
        
     });
     });
@@ -34,6 +35,25 @@ $(document).ready(function() {
         const stringNumber = product.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         $('#total_amount').val(stringNumber);
       
+        }
+
+    $(document).ready(function() {
+        $('#total_rental_hour, #rentalRateInsertRental').on('input', function() {
+            calculateAmount2();
+        });
+        });
+
+        function calculateAmount2() {
+        let product
+        var totalHours = $('#total_rental_hour').val();
+        var rentalRate = $('#rentalRateInsertRental').val();
+        
+        product = totalHours  * rentalRate;
+        // product = product.toFixed(2)
+        // var formattedAmount = product.toLocaleString("en-US", { style: "currency", currency: "USD" });
+        const stringNumber2 = product.toFixed(2)
+        $('#total_amount2').val(stringNumber2);
+        
         }
 
 
@@ -438,32 +458,39 @@ const insertRental = async () => {
         timeOut: document.getElementById("end").value,
         totalHours: document.getElementById("total_rental_hour").value,
         rentalRate: document.getElementById("rentalRateInsertRental").value,
-        amount: document.getElementById("total_amount").value,
+        amount: document.getElementById("total_amount2").value,
         shift: document.getElementById("shift").value,
         driver_operator: document.getElementById("driverOperator").value,
        
     };
 
     try {
-        const response = await fetch(`/api-insert-grc-equipment/`, {
+        const response = await fetch(`/api-insert-grc-rental/`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
         });
 
         const responseData = await response.json();
-
-       
-        if (response.status === 401) {
-            window.alert("Unauthorized credential. Please login");
-        } else if (responseData.error) {
-            window.alert("Error: " + responseData.error);
-        } else if (response.status === 200) {
-            window.alert("Your data has been saved!!!!");
-            window.location.assign("/employee-transaction-grc/");
+        console.log(responseData);
+        
+        if (responseData.error) {
+            // Error occurred on the server side
+            if (responseData.error === "Duplicate entry for DEMR") {
+                window.alert("Error: Duplicate entry for DEMR");
+            } else if (response.status === 401) {
+                window.alert("Unauthorized credential. Please login");
+            }
+            else {
+                window.alert("Error: " + responseData.error);
+            }
         } else {
-            window.alert("An unknown error occurred");
+            // Data saved successfully
+            window.alert("Your data has been saved!!!!");
+            // window.location.assign("/employee-transaction-grc/");
         }
+       
+        
     } catch (error) {
         window.alert("Duplicate Tripticket no.");
         console.log(error);
@@ -476,3 +503,89 @@ const insertRental = async () => {
 var Btn_rental_save = document.querySelector('#Btn_rental_save');
 Btn_rental_save.addEventListener("click", insertRental);
 
+// this function is for displaying Rental Transaction 
+const  displayRental =  async () => {
+    var datefrom = document.getElementById("datefrom_rental").value || ''
+    var dateto = document.getElementById("dateto_rental").value || ''
+    var equipmentID = document.getElementById("equipmentID_rental").value || ''
+    
+    const search_url = `/api-get-grc-rental-transaction-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+
+
+    const responce = await fetch(search_url)
+    const data = await responce.json();
+    console.log(data)
+
+    if (data.length === 0) {
+            window.alert('No Data available');
+        };
+    
+    
+    if (responce.status === 200){
+        let tableData="";
+        let sum = 0;
+        data.map((values, index)=>{
+            const columnNumber = index + 1; 
+            
+            tableData+= ` <tr>
+                        <td>${columnNumber}</td>
+                        <td>${values.id}</td>
+                        <td>${values.transDate}</td>
+                        <td>${values.demr}</td>
+                        <td>${values.equipment_id}</td>
+                        <td>${values.totalHours}</td>
+                        <td>${values.rentalRate}</td>
+                        <td>${values.amount}</td>
+                        
+                        
+                        <td>
+                         
+                    
+                        </td>
+                    
+                    </tr>`;
+        });
+        document.getElementById("table_body_rental").innerHTML=tableData;
+        // var test = 1000
+        // document.getElementById("fter_totalBillinglTons").value = test;
+        sumtoTalAmountRental()
+    }else if (responce.status === 401){
+        window.alert("Unauthorized Credentials Please Log in")
+    }
+
+};
+
+
+var BtnSearch_Rental = document.querySelector('#BtnSearch_Rental');
+BtnSearch_Rental.addEventListener("click", displayRental);
+
+
+   // This is for total of Rental 
+   const sumtoTalAmountRental = () => {
+    const table = document.querySelector("#table_body_rental");
+    let sumTotalHours = 0;
+    let sumTotalAmount = 0;
+
+    table.querySelectorAll("tr").forEach(row => {
+        sumTotalHours += parseFloat(row.querySelectorAll("td")[5].textContent);
+        sumTotalAmount += parseFloat(row.querySelectorAll("td")[7].textContent);
+    });
+
+    // const sumTotalHoursComma = sumTons.toLocaleString("en-US");
+    const sumTotalHoursComma = sumTotalHours.toLocaleString("en-US");
+    const sumTotalAmountComma = sumTotalAmount.toLocaleString("en-US");
+
+    // document.querySelector("#flter_totalTrip_inct").value = sumTotalHoursComma;
+    document.querySelector("#totalamount_rental").value = sumTotalAmountComma;
+    document.querySelector("#totalHours_rental").value = sumTotalHoursComma;
+};
+
+
+// this function is for exporting excel for rental transaction
+function html_table_excel_payroll(type){
+    var data = document.getElementById('table_body_rental');
+    var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+    XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+    XLSX.writeFile(file, 'rentallist.' + type);
+
+}
