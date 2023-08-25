@@ -242,3 +242,51 @@ async def getRental_views(datefrom: Optional[date],dateto:Optional[date],equipme
     
    
     return rentalData
+
+@grcRouter.get("/update-rental-grc/{id}", response_class=HTMLResponse)
+async def grc_template(id:Optional[int],request: Request, username: str = Depends(EmployeevalidateLogin)):
+
+    results = GrcViews.getRental_id(item_id=id)
+
+    rentalData = [
+        
+            {
+               "id": results.id,
+                "transDate": results.transDate,
+                "demr": results.demr,
+                "equipment_id": results.equipment_id,
+                "timeIn": results.timeIn,
+                "timeOut": results.timeOut,
+                "totalHours": results.totalHours,
+                "rentalRate": results.rentalRate,
+                "amount": results.amount,
+                "shift": results.shift,
+                "driver_operator": results.driver_operator,
+                "user": results.user,
+
+               
+            }
+           
+        ]
+    
+   
+    return templates.TemplateResponse("employee/grc_updateRental.html", {"request":request,"rentalData":rentalData})
+
+@grcRouter.put("/api-update-rental-grc-employeeLogin/{id}")
+async def updateGRCRental(id,items:GrcRentalModels,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update Rental"""
+    today = datetime.now()
+    try:
+        GrcViews.updateRental(transDate=items.transDate,demr=items.demr,equipment_id=items.equipment_id,
+                                timeIn=items.timeIn,timeOut=items.timeOut,
+                                totalHours=items.totalHours,rentalRate=items.rentalRate,
+                                amount=items.amount,shift=items.shift,driver_operator=items.driver_operator,
+                                user=username,date_updated=today,item_id=id)
+
+    except Exception as e:
+        error_message = str(e)  # Use the actual error message from the exception
+    
+        return {"error": error_message}
+
+
+    return  {'Messeges':'Data has been Updated'}

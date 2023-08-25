@@ -539,7 +539,9 @@ const  displayRental =  async () => {
                         
                         
                         <td>
-                         
+                            <a href="/update-rental-grc/${values.id}"
+                            <button type="button" class="btn btn-primary">
+                            <i class="fas fa-database"></i> Edit</button></a> 
                     
                         </td>
                     

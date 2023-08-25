@@ -220,6 +220,51 @@ class GrcViews():# this is for views function for GRC project
 
             
             return data
+
+    @staticmethod
+    def getRental_id(item_id): # this function is to get record for rental tru id in GRC
+
+        with Session(engine) as session:
+            
+            statement = select(GrcRental).where(GrcRental.id == item_id)
+            results = session.exec(statement) 
+
+            data = results.one()
+
+            
+            return data
+
+    def updateRental(transDate,demr,equipment_id,timeIn,
+                    timeOut,totalHours,rentalRate,amount,
+                    shift,driver_operator,user,date_updated,item_id):
+        """This function is for updating Rizal Equipment"""
+
+        with Session(engine) as session:
+            statement = select(GrcRental).where(GrcRental.id == item_id)
+            results = session.exec(statement)
+
+            result = results.one()
+
+            
+            result.transDate = transDate
+            result.demr = demr
+            result.equipment_id = equipment_id
+            result.timeIn = timeIn
+            result.timeOut = timeOut
+            result.totalHours = totalHours
+            result.rentalRate = rentalRate
+            result.amount = amount
+            result.shift = shift
+            result.driver_operator = driver_operator
+            result.user = user
+            result.date_updated = date_updated
+
+            
+
+        
+            session.add(result)
+            session.commit()
+            session.refresh(result)
     
 
 def create_db_and_tables():
