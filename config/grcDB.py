@@ -84,6 +84,34 @@ class GrcRental(SQLModel, table=True):
 
     __table_args__ = (Index("idx_grcEquipment_unique", "demr", unique=True),)
 
+class DieselGrc(SQLModel, table=True):
+    __tablename__ = 'diesel_grc'
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    withdrawal_slip: str = Field(max_length=50)
+    equipment_id: str = Field(default=None,index=True)
+    literUse: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    price: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    user: str = Field(default=None)
+    date_updated:  Optional[datetime] = Field(default=None)
+    date_credited: datetime = Field(default_factory=datetime.utcnow)
+
+    __table_args__ = (Index("idx_DieselGrc_unique", "withdrawal_slip", unique=True),)
+
+class ExpensesGrc(SQLModel, table=True):
+    __tablename__ = 'expenses_grc'
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    agency: str = Field(default=None)
+    account_name: str = Field(default=None)
+    amount: condecimal(max_digits=10, decimal_places=2) = Field(default=0)
+    particular: str = Field(default=None)
+    user: str = Field(default=None)
+    date_updated:  Optional[datetime] = Field(default=None)
+    date_credited: datetime = Field(default_factory=datetime.utcnow)
+
+
 
 class GrcViews():# this is for views function for GRC project
 
@@ -265,6 +293,22 @@ class GrcViews():# this is for views function for GRC project
             session.add(result)
             session.commit()
             session.refresh(result)
+
+    @staticmethod
+    def insertDieselGrc(transDate,withdrawal_slip,equipment_id,literUse,price,
+                            amount, user):# this function is for inserting Diesel
+
+        
+        insertData = DieselGrc(transDate=transDate,withdrawal_slip=withdrawal_slip,equipment_id=equipment_id,
+                               literUse=literUse,price=price,amount=amount, user=user)
+
+
+        session = Session(engine)
+        session.add(insertData)
+        session.commit()
+        session.close()
+      
+      
     
 
 def create_db_and_tables():

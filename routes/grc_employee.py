@@ -148,7 +148,7 @@ async def getEmployeeSurigao(username: str = Depends(EmployeevalidateLogin))->Li
    
     return employeeData
 
-from models.model import EquipmentGRC,GrcRentalModels
+from models.model import EquipmentGRC,GrcRentalModels,GrcDiesel
 from config.grcDB import GrcViews
 @grcRouter.post("/api-insert-grc-equipment/")
 async def insertPayroll_GRC(items:EquipmentGRC, username: str = Depends(EmployeevalidateLogin)):
@@ -182,19 +182,25 @@ def autocomplete_grc_equipment(term: Optional[str] = None):
 def autocomplete_grc_employee(term: Optional[str] = None):
     # this is to autocomplete Routes
     # Ensure you're correctly handling query parameters, 'term' in this case
+    try:
 
-    employeeData = getAllEmployee_Surigao()
-    
+        employeeData = getAllEmployee_Surigao()
+        
 
-    if term:
-        filtered_employee = [item for item in employeeData if term.lower() in item.lastName.lower()  or term.lower() in item.firstName.lower() ]
+        if term:
+            filtered_employee = [item for item in employeeData if term.lower() in item.lastName.lower()  or term.lower() in item.firstName.lower() ]
+        
+        else:
+            filtered_employee = []
+
+        suggestions = [{"value": item.lastName + " , " + item.firstName} for item in filtered_employee]
        
-    else:
-        filtered_employee = []
+        return suggestions
 
-    suggestions = [{"value": item.lastName + " , " + item.firstName} for item in filtered_employee]
-    print(suggestions)
-    return suggestions
+    except Exception as e:
+        error_message = str(e)  # Use the actual error message from the exception
+        
+        return {"error": error_message}
    
 @grcRouter.post("/api-insert-grc-rental/")
 async def insert_rental_GRC(items:GrcRentalModels, username: str = Depends(EmployeevalidateLogin)):
@@ -290,3 +296,20 @@ async def updateGRCRental(id,items:GrcRentalModels,username: str = Depends(Emplo
 
 
     return  {'Messeges':'Data has been Updated'}
+
+
+# ========================================This is for Diesel Transactions====================================
+@grcRouter.post("/api-insert-grc-diesel/")
+async def insert_diesel_GRC(items:GrcDiesel, username: str = Depends(EmployeevalidateLogin)):
+    """This function is for inserting equipment to GRC table"""
+    try:
+        GrcViews.insertDieselGrc(transDate=items.transDate,withdrawal_slip=items.withdrawal_slip,
+                                    equipment_id=items.equipment_id,literUse=items.literUse,
+                                    price=items.price,amount=items.amount,user=username)
+
+        return('Data has been Save')
+
+    except Exception as e:
+        error_message = str(e)  # Use the actual error message from the exception
+       
+        return {"error": error_message}

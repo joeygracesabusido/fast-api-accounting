@@ -442,6 +442,17 @@ class GrcRentalModels(BaseModel):
     date_updated:  Optional[datetime] 
     date_credited: Optional[datetime]
 
+class GrcDiesel(BaseModel):
+
+    transDate: date
+    withdrawal_slip: str 
+    equipment_id: str
+    literUse: float
+    price: float
+    amount: float
+    user: Optional[str]
+    date_updated:  Optional[datetime] 
+    date_credited: Optional[datetime]
     
     
     
