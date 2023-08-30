@@ -382,12 +382,7 @@ Btn_equipment_save.addEventListener("click", InsertEquipment);
 
 // this is for autocomplete of Equipment
 
-// $(document).ready(function(){
-//     $("#equipment_id_insertRental").autocomplete({
-//             source: "/api-search-autocomplete-grc-equipment/"
-//             });
 
-//         } );
 
 $(document).ready(function() {
     $("#equipment_id_insertRental").autocomplete({
@@ -637,18 +632,19 @@ $(document).ready(function() {
     
     }
 
-// this function is for 
+// this function is for Inserting Diesel
     const insertDiesel = async () => {
         const data = {
-            transDate: document.getElementById("transDate").value,
-            withdrawal_slip: document.getElementById("eur_form").value,
-            equipment_id: document.getElementById("equipment_id_insertRental").value,
-            literUse: document.getElementById("total_rental_hour").value,
-            price: document.getElementById("rentalRateInsertRental").value,
-            amount: document.getElementById("total_amount2").value,
+            transDate: document.getElementById("transDate_diesel").value,
+            withdrawal_slip: document.getElementById("withdrawal_slip_diesel").value,
+            equipment_id: document.getElementById("equipment_id_diesel").value,
+            literUse: document.getElementById("literUse_diesel").value,
+            price: document.getElementById("price_diesel").value,
+            amount: document.getElementById("amount_diesel2").value,
            
            
         };
+        console.log(data)
     
         try {
             const response = await fetch(`/api-insert-grc-diesel/`, {
@@ -683,4 +679,97 @@ $(document).ready(function() {
             console.log(error);
         }
     };
+
+    var BtnSave_diesel = document.querySelector('#Btn_diesel_save');
+    BtnSave_diesel.addEventListener("click", insertDiesel);
     
+    // this function is for displaying Diesel Transaction 
+    const  displayDiesel =  async () => {
+        var datefrom = document.getElementById("datefrom_diesel").value || ''
+        var dateto = document.getElementById("dateto_diesel").value || ''
+        var equipmentID = document.getElementById("equipmentID_diesel").value || ''
+        
+        const search_url = `/api-get-grc-diesel-transaction-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+    
+    
+        const responce = await fetch(search_url)
+        const data = await responce.json();
+        console.log(data)
+    
+        if (data.length === 0) {
+                window.alert('No Data available');
+            };
+        
+        
+        if (responce.status === 200){
+            let tableData="";
+            let sum = 0;
+            data.map((values, index)=>{
+                const columnNumber = index + 1; 
+                
+                tableData+= ` <tr>
+                            <td>${columnNumber}</td>
+                            <td>${values.id}</td>
+                            <td>${values.transDate}</td>
+                            <td>${values.withdrawal_slip}</td>
+                            <td>${values.equipment_id}</td>
+                            <td>${values.literUse}</td>
+                            <td>${values.price}</td>
+                            <td>${values.amount}</td>
+                            
+                            
+                            <td>
+                                <a href="/update-diesel-grc/${values.id}"
+                                <button type="button" class="btn btn-primary">
+                                <i class="fas fa-database"></i> Edit</button></a> 
+                        
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body_diesel").innerHTML=tableData;
+            // var test = 1000
+            // document.getElementById("fter_totalBillinglTons").value = test;
+            sumtoTalAmountDiesel()
+        }else if (responce.status === 401){
+            window.alert("Unauthorized Credentials Please Log in")
+        }
+    
+    };
+    
+    
+    var BtnSearch_Diesel = document.querySelector('#BtnSearch_diesel');
+    BtnSearch_Diesel.addEventListener("click", displayDiesel);
+    
+    
+       // This is for total of Rental 
+       const sumtoTalAmountDiesel = () => {
+        const table = document.querySelector("#table_body_diesel");
+        let sumTotalLiterrs = 0;
+        let sumTotalAmount = 0;
+    
+        table.querySelectorAll("tr").forEach(row => {
+            sumTotalLiterrs += parseFloat(row.querySelectorAll("td")[5].textContent);
+            sumTotalAmount += parseFloat(row.querySelectorAll("td")[7].textContent);
+        });
+    
+        // const sumTotalHoursComma = sumTons.toLocaleString("en-US");
+        const sumTotalLitersComa= sumTotalLiterrs.toLocaleString("en-US");
+        const sumTotalAmountComma = sumTotalAmount.toLocaleString("en-US");
+    
+        // document.querySelector("#flter_totalTrip_inct").value = sumTotalHoursComma;
+        document.querySelector("#totalLtrs_diesel").value = sumTotalLitersComa;
+        document.querySelector("#totalamount_diesel").value = sumTotalAmountComma;
+    };
+    
+
+// // this function is for exporting excel for diesel transaction
+
+
+function html_table_excel_diesel(type){
+    var data = document.getElementById('table_body_diesel');
+    var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+    XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+    XLSX.writeFile(file, 'diesellist.' + type);
+
+}

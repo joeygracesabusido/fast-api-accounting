@@ -313,3 +313,74 @@ async def insert_diesel_GRC(items:GrcDiesel, username: str = Depends(Employeeval
         error_message = str(e)  # Use the actual error message from the exception
        
         return {"error": error_message}
+
+
+@grcRouter.get("/api-get-grc-diesel-transaction-employeeLogin/")
+async def getDiesel_views(datefrom: Optional[date],dateto:Optional[date],equipment_id: Optional[str],
+                            username: str = Depends(EmployeevalidateLogin))->List:
+    """This function is to update employee Details"""
+    results = GrcViews.getDiesel(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+    dieselData = [
+        
+            {
+               "id": x. id,
+                "transDate": x.transDate,
+                "withdrawal_slip": x.withdrawal_slip,
+                "equipment_id": x.equipment_id,
+                "literUse": x.literUse,
+                "price": x.price,
+                "amount": x.amount,
+                "user": x.user,
+
+               
+            }
+            for x in results
+        ]
+    
+   
+    return dieselData
+
+
+@grcRouter.get("/update-diesel-grc/{id}", response_class=HTMLResponse)
+async def grc_template(id:Optional[int],request: Request, username: str = Depends(EmployeevalidateLogin)):
+
+    results = GrcViews.getDiesel_id(item_id=id)
+
+    dieselData = [
+        
+            {
+              "id": results. id,
+                "transDate": results.transDate,
+                "withdrawal_slip": results.withdrawal_slip,
+                "equipment_id": results.equipment_id,
+                "literUse": results.literUse,
+                "price": results.price,
+                "amount": results.amount,
+                "user": results.user,
+
+               
+            }
+           
+        ]
+    
+   
+    return templates.TemplateResponse("employee/grc_updateDiesel.html", {"request":request,"dieselData":dieselData})
+
+@grcRouter.put("/api-update-diesel-grc-employeeLogin/{id}")
+async def updateGRCDiesel(id,items:GrcDiesel,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update Rental"""
+    today = datetime.now()
+    try:
+        GrcViews.updateDiesel(transDate=items.transDate,withdrawal_slip=items.withdrawal_slip,
+                                    equipment_id=items.equipment_id,literUse=items.literUse,
+                                    price=items.price,amount=items.amount,
+                                    user=username,date_updated=today,item_id=id)
+
+    except Exception as e:
+        error_message = str(e)  # Use the actual error message from the exception
+    
+        return {"error": error_message}
+
+
+    return  {'Messeges':'Data has been Updated'}

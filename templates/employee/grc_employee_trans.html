@@ -84,6 +84,7 @@
               <button type="button"  data-frame="add-rental"  class="btn btn-link">Insert Rental</button>
               <button type="button"  data-frame="rental-list"  class="btn btn-link">Rental List</button>
               <button type="button"  data-frame="insert-diesel"  class="btn btn-link">Add Diesel</button>
+              <button type="button"  data-frame="diesel-list"  class="btn btn-link">Diesel List</button>
               <button type="button"  data-frame="insert-employee"  class="btn btn-link">Add Employee</button>
               <button type="button"  data-frame="employee-list"  class="btn btn-link">Employee List</button>
               <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button>
@@ -380,10 +381,10 @@
                                 <br>
                         
                                 <button type="button" id="BtnSearch_Rental" name="BtnSearch_Rental"  class="btn btn-primary">Search</button>
-                                <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
+                                <!-- <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
                                   Export Excel
                                   <i class="fas fa-database"></i>
-                              </button>
+                              </button> -->
                             
                           
                         </div>
@@ -521,6 +522,122 @@
                   
                             <button type="button" id="Btn_diesel_save" class="btn btn-primary">Save</button>
 
+                  </div>
+
+
+<!-- =============================This function is for Diesel List======================================= -->
+                  <div id="diesel-list" style="display: none;">
+                    <!-- Account List Content -->
+                    <h1>Diesel List</h1>
+
+                      <div class="container mt-3">
+                            
+                        <label 
+                        >Date From</label>
+                        
+                            <input 
+                            type="date"
+                            name="datefrom_diesel"
+                            id="datefrom_diesel"
+                            class="form-control"
+                            >
+
+                        <label
+                        >Date To</label>
+                        
+                            <input 
+                            type="date"
+                            name="dateto_diesel"
+                            id="dateto_diesel"
+                            class="form-control"
+                            >
+
+                          <label for="DateToTons"
+                          >Equipment ID</label>
+                          
+                              <input 
+                              type="text"
+                              name="equipmentID_diesel"
+                              id="equipmentID_diesel"
+                              class="form-control"
+                              >
+
+
+                              <br>
+                      
+                              <button type="button" id="BtnSearch_diesel" name="BtnSearch_diesel"  class="btn btn-primary">Search</button>
+                              <button type="submit"  onclick="html_table_excel_diesel('xlsx')" class="btn btn-secondary">
+                                Export Excel
+                                <i class="fas fa-database"></i>
+                            </button>
+                          
+                        
+                      </div>
+
+                      <div  class="container mt-3 table-responsive">
+                          <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                              <thead class="table-dark">
+                                  <tr>
+                                      <td>No</td>
+                                      <td>Transaction ID</td>
+                                      <td>Date</td>
+                                      <td>Withdrawal Slip</td>
+                                      <td>Equipment ID</td>
+                                      <td>Liters</td>
+                                      <td>Price</td>
+                                      <td>Amount</td>
+                                      <td>Action</td>
+                                    
+                                      
+                                  </tr>
+                              </thead>
+                              <tbody id="table_body_diesel">
+                              
+                                      
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          
+                                      </tr>
+                                  
+                                  
+                              </tbody>
+
+                          
+
+                          </table>
+
+                          <br>
+
+                          <label for="TotalAmount" >Total Liters</label>
+                                <input
+                                    type="text"
+                                    name="totalLtrs_diesel"
+                                    id="totalLtrs_diesel"
+                                    style="text-align: right;"
+                                    >
+                                </input> 
+
+                          <label for="TotalAmount" >Total Amount</label>
+                                <input
+                                    type="text"
+                                    name="totalamount_diesel"
+                                    id="totalamount_diesel"
+                                    style="text-align: right;"
+                                    >
+                                </input> 
+
+                          
+                              
+                              
+                      </div>
                   </div>
 
 
@@ -994,7 +1111,7 @@
 
 
     
-    <script src="/static/grc_transactions.js"></script>
+    <script src="/static/grc_transaction.js"></script>
     
     
 

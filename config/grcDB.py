@@ -307,6 +307,62 @@ class GrcViews():# this is for views function for GRC project
         session.add(insertData)
         session.commit()
         session.close()
+
+    @staticmethod
+    def getDiesel( datefrom: Optional[date],
+        dateto: Optional[date],
+        equipment_id: Optional[str]): # this function is to get all record for rental in GRC
+
+        with Session(engine) as session:
+            
+            statement = select(DieselGrc).where(DieselGrc.transDate.between(datefrom,dateto))\
+                .filter(DieselGrc.equipment_id.ilike(f"%{equipment_id}%")).order_by(DieselGrc.id)
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
+
+    @staticmethod
+    def getDiesel_id(item_id): # this function is to get record for rental tru id in GRC
+
+        with Session(engine) as session:
+            
+            statement = select(DieselGrc).where(DieselGrc.id == item_id)
+            results = session.exec(statement) 
+
+            data = results.one()
+
+            
+            return data
+
+    def updateDiesel(transDate,withdrawal_slip,equipment_id,literUse,price,
+                            amount, user,date_updated,item_id):
+        """This function is for updating Rizal Equipment"""
+
+        with Session(engine) as session:
+            statement = select(DieselGrc).where(DieselGrc.id == item_id)
+            results = session.exec(statement)
+
+            result = results.one()
+
+            
+            result.transDate = transDate
+            result.withdrawal_slip = withdrawal_slip
+            result.equipment_id = equipment_id
+            result.literUse = literUse
+            result.price = price
+            result.amount = amount
+            result.user = user
+            result.date_updated = date_updated
+
+            
+
+        
+            session.add(result)
+            session.commit()
+            session.refresh(result)
       
       
     

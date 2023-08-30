@@ -140,9 +140,10 @@ $(document).ready(function() {
                         window.alert("Error: " + responseData.error);
                     }
                 } else {
+                    
                     // Data saved successfully
                     window.alert("Your data has been saved!!!!");
-                    // window.location.assign("/employee-transaction-grc/");
+                    window.location.assign("/employee-transaction-grc/");
                 }
                
                 
