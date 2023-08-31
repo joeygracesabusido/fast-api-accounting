@@ -234,6 +234,17 @@ class GrcViews():# this is for views function for GRC project
         # finally:
         #     session.close()
     @staticmethod
+    def getRentals(): # this is to get all rentals
+        with Session(engine) as session:
+            statement = select(GrcRental)
+            results = session.exec(statement)
+            data = results.all()
+            return data
+
+
+
+
+    @staticmethod
     def getRental( datefrom: Optional[date],
         dateto: Optional[date],
         equipment_id: Optional[str]): # this function is to get all record for rental in GRC

@@ -83,6 +83,7 @@
               <button type="button"  data-frame="add-equipment"  class="btn btn-link">Add Equipment</button>
               <button type="button"  data-frame="add-rental"  class="btn btn-link">Insert Rental</button>
               <button type="button"  data-frame="rental-list"  class="btn btn-link">Rental List</button>
+              <button type="button"  data-frame="rental-sum-list"  class="btn btn-link">Rental Report</button>
               <button type="button"  data-frame="insert-diesel"  class="btn btn-link">Add Diesel</button>
               <button type="button"  data-frame="diesel-list"  class="btn btn-link">Diesel List</button>
               <button type="button"  data-frame="insert-employee"  class="btn btn-link">Add Employee</button>
@@ -454,6 +455,119 @@
                                 
                         </div>
                     </div>
+
+
+<!-- ==========================================This is for Sum Rental List Frame================================ -->
+
+                <div id="rental-sum-list" style="display: none;">
+                  <!-- Account List Content -->
+                  <h1>Rental List</h1>
+
+                    <div class="container mt-3">
+                          
+                      <label for="DateFRomTons"
+                      >Date From</label>
+                      
+                          <input 
+                          type="date"
+                          name="datefrom_rental_sum"
+                          id="datefrom_rental_sum"
+                          class="form-control"
+                          >
+
+                      <label for="DateToTons"
+                      >Date To</label>
+                      
+                          <input 
+                          type="date"
+                          name="dateto_rental_sum"
+                          id="dateto_rental_sum"
+                          class="form-control"
+                          >
+
+                        <label for="DateToTons"
+                        >Equipment ID</label>
+                        
+                            <input 
+                            type="text"
+                            name="equipmentID_rental_sum"
+                            id="equipmentID_rental_sum"
+                            class="form-control"
+                            >
+
+
+                            <br>
+                    
+                            <button type="button" id="BtnSearch_Rental_sum" name="BtnSearch_Rental_sum"  class="btn btn-primary">Search</button>
+                            <!-- <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
+                              Export Excel
+                              <i class="fas fa-database"></i>
+                          </button> -->
+                        
+                      
+                    </div>
+
+                    <div  class="container mt-3 table-responsive">
+                        <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                                <tr>
+                                    <td>No</td>
+                                    <td>Equipment ID</td>
+                                    <td>Total Hours</td>
+                                    <td>Amount</td>
+                                    
+                                    
+                                  
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="table_body_rental_sum">
+                            
+                                    
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        
+                                       
+                                       
+                                        
+                                    </tr>
+                                
+                                
+                            </tbody>
+
+                        
+
+                        </table>
+
+                        <br>
+
+                        <label for="TotalAmount" >Total Hours</label>
+                              <input
+                                  type="text"
+                                  name="totalHours_rental_sum"
+                                  id="totalHours_rental_sum"
+                                  style="text-align: right;"
+                                  >
+                              </input> 
+
+                        <label for="TotalAmount" >Total Amount</label>
+                              <input
+                                  type="text"
+                                  name="totalamount_rental_sum"
+                                  id="totalamount_rental_sum"
+                                  style="text-align: right;"
+                                  >
+                              </input> 
+
+                        
+                            
+                            
+                    </div>
+                </div>
+
 
 <!-- =================================This is for Inserting Diesel================================ -->
                   <div id="insert-diesel" style="display: none;">
@@ -1107,11 +1221,13 @@
       
     </script>
 
+
+
     
 
 
     
-    <script src="/static/grc_transaction.js"></script>
+    <script src="/static/grc_transactions.js"></script>
     
     
 

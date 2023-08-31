@@ -249,6 +249,36 @@ async def getRental_views(datefrom: Optional[date],dateto:Optional[date],equipme
    
     return rentalData
 
+
+@grcRouter.get("/api-get-grc-rentals-transaction-employeeLogin/") # this is to get all rentals
+async def getRental_views(username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = GrcViews.getRentals()
+
+    rentalData = [
+        
+            {
+               "id": x. id,
+                "transDate": x.transDate,
+                "demr": x.demr,
+                "equipment_id": x.equipment_id,
+                "timeIn": x.timeIn,
+                "timeOut": x.timeOut,
+                "totalHours": x.totalHours,
+                "rentalRate": x.rentalRate,
+                "amount": x.amount,
+                "shift": x.shift,
+                "driver_operator": x.driver_operator,
+                "user": x.user,
+
+               
+            }
+            for x in results
+        ]
+    
+   
+    return rentalData
+
 @grcRouter.get("/update-rental-grc/{id}", response_class=HTMLResponse)
 async def grc_template(id:Optional[int],request: Request, username: str = Depends(EmployeevalidateLogin)):
 

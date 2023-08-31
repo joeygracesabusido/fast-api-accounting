@@ -773,3 +773,315 @@ function html_table_excel_diesel(type){
     XLSX.writeFile(file, 'diesellist.' + type);
 
 }
+
+
+// //  this function is for dispalying the table of Sum of the Rental 
+// $(document).ready(function () {
+//     // Function to update the table based on the search criteria
+//     function updateTable(data) {
+//       const tableBody = $("#table_body_rental_sum");
+//       tableBody.empty(); // Clear previous data
+
+//       let totalHours = 0;
+//       let totalAmount = 0;
+
+//       data.forEach((item, index) => {
+//         const row = $("<tr>");
+//         row.append($("<td>").text(index + 1));
+//         row.append($("<td>").text(item.id));
+//         row.append($("<td>").text(item.transDate));
+//         row.append($("<td>").text(item.demr));
+//         row.append($("<td>").text(item.equipment_id));
+//         row.append($("<td>").text(item.totalHours));
+//         row.append($("<td>").text(item.rentalRate));
+//         row.append($("<td>").text(item.amount));
+        
+//         // ... Add other columns here
+        
+//         tableBody.append(row);
+
+//         totalHours += item.totalHours;
+//         totalAmount += item.amount;
+//       });
+
+//       $("#totalHours_rental_sum").val(totalHours.toFixed(2));
+//       $("#totalamount_rental_sum").val(totalAmount.toFixed(2));
+//     }
+
+//     // Search button click event handler
+//     $("#BtnSearch_Rental_sum").click(function () {
+//       const dateFrom = $("#datefrom_rental_sum").val();
+//       const dateTo = $("#dateto_rental_sum").val();
+//       const equipmentID = $("#equipmentID_rental_sum").val();
+
+//       // Make an AJAX request to your backend API with the search criteria
+//       $.ajax({
+//         url: `/api-get-grc-rentals-transaction-employeeLogin/?dateFrom=${dateFrom}&dateTo=${dateTo}&equipmentID=${equipmentID}`,
+//         method: "GET",
+//         success: function (response) {
+//           updateTable(response);
+//         },
+//         error: function () {
+//           console.log("Error fetching data.");
+//         },
+//       });
+//     });
+//   });
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     const search_url = `/api-get-grc-rentals-transaction-employeeLogin/`;
+  
+//     fetch(search_url)
+//       .then((response) => response.json())
+
+//       .then((data) => {
+//         console.log(data); // Log the retrieved data to the console
+//         const tableBody = document.getElementById("table_body_rental_sum");
+//         const totalHoursInput = document.getElementById("totalHours_rental_sum");
+//         const totalAmountInput = document.getElementById("totalamount_rental_sum");
+//         const searchButton = document.getElementById("BtnSearch_Rental_sum");
+  
+//         function updateTable(filteredData) {
+//           let tableContent = "";
+  
+//           filteredData.forEach((item, index) => {
+//             tableContent += `
+//               <tr>
+//                 <td>${index + 1}</td>
+//                 <td>${item.transactionID}</td>
+//                 <td>${item.date}</td>
+//                 <td>${item.equipmentID}</td>
+//                 <td>${item.totalHours}</td>
+//                 <td>${item.amount}</td>
+//                 <td>Action</td>
+//               </tr>
+//             `;
+//           });
+  
+//           tableBody.innerHTML = tableContent;
+//         }
+  
+//         function calculateTotals(filteredData) {
+//           const totalHours = filteredData.reduce(
+//             (sum, item) => sum + parseFloat(item.totalHours),
+//             0
+//           );
+//           const totalAmount = filteredData.reduce(
+//             (sum, item) => sum + parseFloat(item.amount),
+//             0
+//           );
+  
+//           totalHoursInput.value = totalHours.toFixed(2);
+//           totalAmountInput.value = totalAmount.toFixed(2);
+//         }
+  
+//         searchButton.addEventListener("click", function () {
+//           const dateFrom = document.getElementById("datefrom_rental_sum").value;
+//           const dateTo = document.getElementById("dateto_rental_sum").value;
+//           const equipmentID = document.getElementById("equipmentID_rental_sum").value;
+  
+//           const filteredData = data.filter((item) => {
+//             return (
+//               (!dateFrom || item.date >= dateFrom) &&
+//               (!dateTo || item.date <= dateTo) &&
+//               (!equipmentID || item.equipmentID === equipmentID)
+//             );
+//           });
+  
+//           updateTable(filteredData);
+//           calculateTotals(filteredData);
+//         });
+//       });
+//   });
+  
+// this function is for displaying Rental Sum Transaction 
+// const  displayRentalSum =  async () => {
+//     let totalHoursInput = document.getElementById('totalHours_rental_sum').value
+//     let totalAmountInput = document.getElementById('totalamount_rental_sum').value
+    
+//     const search_url = `/api-get-grc-rentals-transaction-employeeLogin/`;
+
+
+//     const responce = await fetch(search_url)
+//     const data = await responce.json();
+    
+
+//     if (data.length === 0) {
+//             window.alert('No Data available');
+//         };
+    
+    
+//     if (responce.status === 200){
+
+        
+
+//         function updateTable(filteredData) {
+//           let tableContent = "";
+  
+//           filteredData.forEach((item, index) => {
+//             tableContent += `
+//               <tr>
+//                 <td>${index + 1}</td>
+//                 <td>${item.equipment_id}</td>
+//                 <td>${item.totalHours}</td>
+//                 <td>${item.amount}</td>
+                
+                
+//               </tr>
+//             `;
+//           });
+  
+//           document.getElementById("table_body_rental_sum").innerHTML = tableContent;
+//         }
+
+
+//                 function calculateTotals(filteredData) {
+//                     const totalHours = filteredData.reduce(
+//                     (sum, item) => sum + parseFloat(item.totalHours),
+//                     0
+//                     );
+//                     const totalAmount = filteredData.reduce(
+//                     (sum, item) => sum + parseFloat(item.amount),
+//                     0
+//                     );
+            
+//                     totalHoursInput.value = totalHours.toFixed(2);
+//                     totalAmountInput.value = totalAmount.toFixed(2);
+//                 }
+                
+            
+                
+//                     const dateFrom = document.getElementById("datefrom_rental_sum").value;
+//                     const dateTo = document.getElementById("dateto_rental_sum").value;
+//                     const equipment_id = document.getElementById("equipmentID_rental_sum").value;
+            
+//                     const filteredData = data.filter((item) => {
+//                     return (
+//                         (!dateFrom || item.transDate >= dateFrom) &&
+//                         (!dateTo || item.transDate <= dateTo) &&
+//                         (!equipment_id || item.equipment_id === equipment_id)
+//                     );
+//                     });
+                   
+//                     updateTable(filteredData);
+//                     calculateTotals(filteredData);
+            
+        
+        
+        
+//     }else if (responce.status === 401){
+//         window.alert("Unauthorized Credentials Please Log in")
+//     }
+
+// };
+
+
+// var BtnSearch_Rental_sum = document.querySelector('#BtnSearch_Rental_sum');
+// BtnSearch_Rental_sum.addEventListener("click", displayRentalSum);
+
+const displayRentalSum = async () => {
+    let totalHoursInput = document.getElementById('totalHours_rental_sum').value;
+    let totalAmountInput = document.getElementById('totalamount_rental_sum').value;
+    
+    const search_url = `/api-get-grc-rentals-transaction-employeeLogin/`;
+  
+    const response = await fetch(search_url);
+    const data = await response.json();
+  
+    if (data.length === 0) {
+      window.alert('No Data available');
+      return;
+    }
+  
+    if (response.status === 200) {
+      function updateTable(groupedData) {
+        let tableContent = "";
+    
+        Object.keys(groupedData).forEach((equipment_id, index) => {
+          const item = groupedData[equipment_id];
+          tableContent += `
+            <tr>
+              <td>${index + 1}</td>
+              <td>${equipment_id}</td>
+              <td>${item.totalHours.toFixed(2)}</td>
+              <td>${item.totalAmount.toFixed(2)}</td>
+            </tr>
+          `;
+        });
+    
+        document.getElementById("table_body_rental_sum").innerHTML = tableContent;
+        sumtoTalAmountRentalTotal()
+      }
+  
+      function groupByEquipmentIdAndCalculateSum(filteredData) {
+        const groupedData = {};
+  
+        filteredData.forEach((item) => {
+          if (!groupedData[item.equipment_id]) {
+            groupedData[item.equipment_id] = {
+              totalHours: 0,
+              totalAmount: 0,
+            };
+          }
+  
+          groupedData[item.equipment_id].totalHours += parseFloat(item.totalHours);
+          groupedData[item.equipment_id].totalAmount += parseFloat(item.amount);
+        });
+  
+        return groupedData;
+      }
+  
+      const dateFrom = document.getElementById("datefrom_rental_sum").value;
+      const dateTo = document.getElementById("dateto_rental_sum").value;
+      const equipment_id = document.getElementById("equipmentID_rental_sum").value;
+  
+      const filteredData = data.filter((item) => {
+        return (
+          (!dateFrom || item.transDate >= dateFrom) &&
+          (!dateTo || item.transDate <= dateTo) &&
+          (!equipment_id || item.equipment_id === equipment_id)
+        );
+      });
+  
+      if (dateFrom || dateTo) {
+        const groupedData = groupByEquipmentIdAndCalculateSum(filteredData);
+        updateTable(groupedData);
+        calculateTotals(groupedData);
+        
+      } else {
+        updateTable(filteredData);
+        calculateTotals(filteredData);
+        
+      }
+    } else if (response.status === 401) {
+      window.alert("Unauthorized Credentials Please Log in");
+    }
+  };
+  
+  var BtnSearch_Rental_sum = document.querySelector('#BtnSearch_Rental_sum');
+  BtnSearch_Rental_sum.addEventListener("click", displayRentalSum);
+
+
+
+   // This is for total of Rental 
+   const sumtoTalAmountRentalTotal = () => {
+    const table = document.querySelector("#table_body_rental_sum");
+    let sumTotalLiterrs = 0;
+    let sumTotalAmount = 0;
+
+    table.querySelectorAll("tr").forEach(row => {
+        sumTotalLiterrs += parseFloat(row.querySelectorAll("td")[2].textContent);
+        sumTotalAmount += parseFloat(row.querySelectorAll("td")[3].textContent);
+    });
+
+    // const sumTotalHoursComma = sumTons.toLocaleString("en-US");
+    const sumTotalLitersComa= sumTotalLiterrs.toLocaleString("en-US");
+    const sumTotalAmountComma = sumTotalAmount.toLocaleString("en-US");
+
+    // document.querySelector("#flter_totalTrip_inct").value = sumTotalHoursComma;
+    document.querySelector("#totalHours_rental_sum").value = sumTotalLitersComa;
+    document.querySelector("#totalamount_rental_sum").value = sumTotalAmountComma;
+};
+  
+  

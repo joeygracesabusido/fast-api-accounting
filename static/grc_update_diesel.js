@@ -96,3 +96,6 @@ $(document).ready(function() {
 
     var Btn_update_diesel = document.querySelector('#Btn_update_diesel');
     Btn_update_diesel.addEventListener("click", updateDiesel);
+
+
+
