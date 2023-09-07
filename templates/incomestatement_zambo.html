@@ -1,6 +1,18 @@
 {% extends 'index.html' %}
 
 {% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
+
+
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
+
 <body>
     <form method="POST">
             <div class="container mt-3">
@@ -34,6 +46,11 @@
 
                     <button type="submit" name='submit' id='submitBtn' class="btn btn-success">
                         Search Data
+                        <i class="fas fa-database"></i>
+                    </button>
+
+                    <button type="button" name='Btn_print' id='Btn_print' class="btn btn-warning">
+                        Print
                         <i class="fas fa-database"></i>
                     </button>
                     
@@ -105,16 +122,7 @@
 
             </div>
 
-            <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-
-
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.js"></script>
-
-
-        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/api/sum().js"></script>
+       
 
        <!-- This is for jquery Date picker -->
 
@@ -214,6 +222,11 @@
            
 
     </form>
+
+
+    <script src="/static/zambaonga_income_report.js"></script>
+
+  
 
 </body>
 

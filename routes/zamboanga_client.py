@@ -524,10 +524,10 @@ async def insert_journal_entry(request: Request):
 @zamboanga_client.get("/income-statement-zambo/", response_class=HTMLResponse)
 async def get_income_statement(request:Request,username: str = Depends(validateLogin)):
     """This function is for querying income statement"""
-    return templates.TemplateResponse("incomestatement.html",{'request':request})
+    return templates.TemplateResponse("incomestatement_zambo.html",{'request':request})
 
 @zamboanga_client.post("/income-statement-zambo/", response_class=HTMLResponse)
-async def get_income_statement(request:Request):
+async def get_income_statement(request:Request,username: str = Depends(validateLogin)):
     """This function is for querying income statement"""
     form = await request.form()
 
@@ -591,6 +591,58 @@ async def get_income_statement(request:Request):
     
 
     return templates.TemplateResponse("incomestatement_zambo.html",{'request':request,'agg_result_list':agg_result_list})
+
+@zamboanga_client.get("/api-income-statement-zamboanga/")
+def get_income_statement(datefrom,dateto,username: str = Depends(validateLogin)):
+    """This function is for querying income statement"""
+    
+
+    date_time_obj_from = datetime.strptime(datefrom, '%Y-%m-%d')
+
+    date_time_obj_to = datetime.strptime(dateto, '%Y-%m-%d')
+
+    agg_result= mydb.journal_entry_zambo.aggregate(
+        [
+        {"$match":{'date_entry': {'$gte':date_time_obj_from, '$lte':date_time_obj_to},
+            '$or': [
+            {'bsClass': {"$regex": "^Income"}},
+            {'bsClass': {"$regex": "^Cost of Sales"}},
+            {'bsClass': {"$regex": "^General & Administrative"}}
+        ] }},
+        # {"$match": { "cut_off_period": date } },
+        # {'$sort' : { '$meta': "textScore" }, '$account_disc': -1 },
+        {"$group" : 
+            {"_id" :  '$acoount_number',
+            "accountName": {'$first':'$account_disc'},
+            "bsClass": {'$first':'$bsClass'},
+            "totalDebit" : {"$sum" : '$debit_amount'},
+            "totalCredit" : {"$sum" : '$credit_amount'},
+            
+            }},
+        {'$sort':{'_id': 1}}
+            
+        ])
+    
+        
+    
+
+    agg_result_list = [
+        
+            {
+                "account_number": i['_id'],
+                "accountName": i['accountName'],
+                "amount": abs(i['totalDebit'] - i['totalCredit']),
+                "bsClass": i['bsClass'],
+                
+            
+            }
+           for i in agg_result
+        ]
+
+    
+
+    return agg_result_list
+
 @zamboanga_client.get('/update-journal-entry/{id}',response_class=HTMLResponse)
 async def update_journalEntry(id,request:Request, username: str = Depends(validateLogin)):
     """This function is for updating Journal Entry"""
