@@ -812,7 +812,8 @@ def getPayrollTransactions(datefrom,dateto,department,on_off_details):
                         payroll_computation.otherforms_save,payroll_computation.taxable_amount,
                         payroll_computation.total_mandatory,payroll_computation.taxable_mwe_detail,
                         payroll_computation.sss_save,payroll_computation.phic_save,
-                        payroll_computation.hmdf_save,payroll_computation.cut_off_date,
+                        payroll_computation.hmdf_save,payroll_computation.sss_provi_save,
+                        payroll_computation.cut_off_date,
                         ) \
                         .where(payroll_computation.cut_off_date.between(datefrom,dateto)
                         ,payroll_computation.department.like ('%'+ department +'%'),

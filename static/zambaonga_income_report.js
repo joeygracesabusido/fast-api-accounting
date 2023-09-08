@@ -1,3 +1,16 @@
+const borderlessTable = {
+    margin: [0, 5, 0, 15], // Adjust margins as needed
+    layout: {
+        hLineWidth: function (i, node) {
+            return 0; // No horizontal lines
+        },
+        vLineWidth: function (i, node) {
+            return 0; // No vertical lines
+        },
+    },
+};
+
+
 const printIncomeReport = async () => {
     const datefrom = document.querySelector("#trans_date_from").value;
     const dateto = document.querySelector("#trans_date_to").value;
@@ -69,7 +82,7 @@ const printIncomeReport = async () => {
                     // Set the border color to white
                     borderColor: '#FFFFFF',
                     // Set a smaller line width to make the borders appear thinner
-                    lineWidth: 0.05,
+                    lineWidth: 1,
                 },
             };
 

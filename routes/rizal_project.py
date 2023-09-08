@@ -176,6 +176,8 @@ async def get_employee_payroll(datefrom,dateto,on_off_details:Optional[str], dep
                 "sss_save": i['sss_save'],
                 "phic_save": i['phic_save'],
                 "hmdf_save": i['hmdf_save'],
+                "sss_save": i['sss_save'],
+                "sss_provi_save": i.sss_provi_save,
                 "cut_off_date": i['cut_off_date'],
                 
                 # "equipmentID": i['equipment_id']
