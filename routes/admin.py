@@ -159,6 +159,21 @@ def sign_up(fullname: str, username: str, password: str, status: str,created: Un
     mydb.login.insert_one(dataInsert)
     return {"message":"User has been save"} 
 
+# @admin.post('/sign-up-developer')
+# def sign_up_developer(fullname: str, username: str, password: str, status: str,created: Union[datetime, None] = Body(default=None)):
+#     """This function is for inserting """
+#     dataInsert = dict()
+#     dataInsert = {
+#         "fullname": fullname,
+#         "username": username,
+#         "password": get_password_hash(password),
+#         "status": status,
+#         "created": created
+        
+#         }
+#     mydb.developer_credential.insert_one(dataInsert)
+#     return {"message":"User has been save"} 
+
 
 @admin.post('/token')
 def login(response:Response,form_data: OAuth2PasswordRequestForm = Depends()):

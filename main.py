@@ -9,6 +9,7 @@ from routes.rizal_project import rizal_project
 from routes.employee_user import employee_user
 from routes.tvi import tviProject
 from routes.grc_employee import grcRouter
+from routes.developer import developer
 
 from mysql.connector import connect
 from fastapi.staticfiles import StaticFiles
@@ -41,6 +42,7 @@ app.include_router(rizal_project)
 app.include_router(employee_user)
 app.include_router(tviProject)
 app.include_router(grcRouter)
+app.include_router(developer)
 
 
 
