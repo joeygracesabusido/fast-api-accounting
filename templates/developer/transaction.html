@@ -80,632 +80,34 @@
           <div class="col-md-3 custom-border">
             <div class="transButton">
                 
-              <button type="button"  data-frame="add-equipment"  class="btn btn-link">Add Equipment</button>
-              <button type="button"  data-frame="add-rental"  class="btn btn-link">Insert Rental</button>
-              <button type="button"  data-frame="rental-list"  class="btn btn-link">Rental List</button>
-              <button type="button"  data-frame="rental-sum-list"  class="btn btn-link">Rental Report</button>
-              <button type="button"  data-frame="insert-diesel"  class="btn btn-link">Add Diesel</button>
-              <button type="button"  data-frame="diesel-list"  class="btn btn-link">Diesel List</button>
-              <button type="button"  data-frame="insert-employee"  class="btn btn-link">Add Employee</button>
-              <button type="button"  data-frame="employee-list"  class="btn btn-link">Employee List</button>
-              <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button>
-              <button type="button"  data-frame="payroll-list"  class="btn btn-link">Payroll List</button>
+              <button type="button"  data-frame="admin-login-credentials" id="admin-login-button"  class="btn btn-link">Admin Login List</button>
+              <button type="button"  data-frame="employee-login-credentials" id="employee-login-button"  class="btn btn-link">Employee Login List</button>
+              <button type="button"  data-frame="insert-access-setting"  class="btn btn-link">Insert Access Setting</button>
+              <!-- <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button> -->
+             
             </div>
           </div>
 
 <!-- ======================This is for  Adding Equipment -->
                 <div class="col-md-9">
                     <main id="main-section">
-                        <div id="add-equipment" style="display: none;">
-                    
-                            <h1>ADD EQUIPMENT</h1>
-                        
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="equipment_id">
-                            <label for="floatingInputGrid" style="font-size: 15px;">Equipment ID</label>
-                        </div>
-                        <br>
-
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="equipment_description">
-                            <label for="floatingInputGrid" style="font-size: 15px;">Equipment Discription</label>
-                        </div>
-                        <br>
-
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="rentalRate">
-                            <label for="floatingInputGrid" style="font-size: 15px;">Rental Rate</label>
-                        </div>
-                        <br>
-
-                        <div class="form-floating">
-                            <textarea class="form-control"  placeholder="Leave a comment here" id="comments"></textarea>
-                            <label for="floatingTextarea">Comments</label>
-                        </div>
-
-                        <br>
-
-                    
-                        <div class="form-floating">
-                            <select class="form-select" id="Owner" aria-label="Floating label select example">
-
-                                    <option selected>----select menu----</option>
-                                    <option value="LD Global">LD Global</option>
-                                    <option value="MVD">MVD</option>
-                                    <option value="sari">SARI</option>
-                                </select>
-                            <label for="floatingInputGrid" style="font-size: 15px;" >Owner</label>
-                        </div>
-                        <br>
-                    
-
-                        <button type="button" id="Btn_SaveEquipment"   class="btn btn-success">Save</button>
-                       
-
-                </div>
-
-
-
-<!-- ===========================This frame id for Adding Rental Transactions====================== -->
-
-                    <div id="add-rental" style="display: none;">
+                      <div id="admin-login-credentials" style="display: none;">
                         <!-- Account List Content -->
-                        <h1>INSERT RENTAL GRC</h1>
-                            <div class="row g-2">
-                                <div class="col-md">
-                                    <div class="form-floating">
-                                    <input type="date" class="form-control" id="transDate">
-                                    <label for="floatingInputGrid" style="font-size: 15px;">Date</label>
-                                    </div>
-                                </div>
-                                <div class="col-md">
-                                    <div class="form-floating">
-                                        <input
-                                            type="text"
-                                            name="eur_form"
-                                            id="eur_form"
-                                        
-                                            class="form-control"
-                                            >
-                                        </input>  
-            
-
-                                        <label for="floatingInputGrid" style="font-size: 15px;">DEMR</label>
-                                    
-                                    </div>
-                                </div>
-                            </div>
-
-                                <br>
-
-                                <div class="col-md">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="equipment_id_insertRental">
-                                        <label for="floatingInputGrid" style="font-size: 15px;" >Equipment ID</label>
-                                   
-                                    </div>
-                                </div>
-
-                                <br>
-
-                                <div class="row g-2">
-
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <input
-                                                type="datetime-local"
-                                                name="start"
-                                                id="start"
-                                                class="form-control"
-                                                >
-                                            </input> 
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Time IN</label>
-
-                                        
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <input
-                                                type="datetime-local"
-                                                name="end"
-                                                id="end"
-                                                class="form-control"
-                                                >
-                                            </input>  
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Time Out</label>
-
-                                        
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br>
-
-                                <div class="row g-2">
-
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <input
-                                                type="number"
-                                                name="total_rental_hour"
-                                                id="total_rental_hour"
-                                                class="form-control"
-                                                >
-                                            </input> 
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Total Rental Hour</label>
-
-                                        
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <input
-                                                type="number"
-                                                name="rentalRateInsertRental"
-                                                id="rentalRateInsertRental"
-                                                
-                                                class="form-control"
-                                                >
-                                            </input>  
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Rental Rate</label>
-
-                                        
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br>
-
-                                <div class="row g-2">
-
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <input
-                                                type="text"
-                                                name="total_amount"
-                                                id="total_amount"
-                                                class="form-control"
-                                                >
-                                            </input> 
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Total Amount</label>
-
-                                        
-                                        </div>
-                                    </div>
-                                    
-                                    
-
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <select class="form-select" id="shift" aria-label="Floating label select example">
-
-                                                <option selected>----select menu----</option>
-                                                <option value="NS">Night Shift</option>
-                                                <option value="DS">Day Shift</option>
-                                               
-                                            </select>
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Shift</label>
-
-                                        
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br>
-
-                                <div class="row g-2">
-
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <input
-                                                type="text"
-                                                name="driverOperator"
-                                                id="driverOperator"
-                                                class="form-control"
-                                                >
-                                            </input> 
-                                            <label for="floatingInputGrid" style="font-size: 15px;">Driver</label>
-
-                                        
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md">
-                                        <div class="form-floating">
-                                            <input
-                                                type="number" hidden
-                                                name="total_amount2"
-                                                id="total_amount2"
-                                               
-                                                class="form-control"
-                                                >
-                                            </input>  
-                                            <label for="floatingInputGrid" style="font-size: 15px;"></label>
-
-                                        
-                                        </div>
-                                    </div>
-       
-                                  
-                                </div>
-                                <br>
-                                <button type="button" id="Btn_rental_save" class="btn btn-primary">Save</button>
-                                
-
-
-                    </div>
-
-
-
-<!-- ==========================================This is for Rental List Frame================================ -->
-
-                    <div id="rental-list" style="display: none;">
-                      <!-- Account List Content -->
-                      <h1>Rental List</h1>
-  
-                        <div class="container mt-3">
-                              
-                          <label for="DateFRomTons"
-                          >Date From</label>
-                          
-                              <input 
-                              type="date"
-                              name="datefrom_rental"
-                              id="datefrom_rental"
-                              class="form-control"
-                              >
-  
-                          <label for="DateToTons"
-                          >Date To</label>
-                          
-                              <input 
-                              type="date"
-                              name="dateto_rental"
-                              id="dateto_rental"
-                              class="form-control"
-                              >
-  
-                            <label for="DateToTons"
-                            >Equipment ID</label>
-                            
-                                <input 
-                                type="text"
-                                name="equipmentID_rental"
-                                id="equipmentID_rental"
-                                class="form-control"
-                                >
-      
-
-                                <br>
-                        
-                                <button type="button" id="BtnSearch_Rental" name="BtnSearch_Rental"  class="btn btn-primary">Search</button>
-                                <!-- <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
-                                  Export Excel
-                                  <i class="fas fa-database"></i>
-                              </button> -->
-                            
-                          
-                        </div>
-  
+                        <h1>Admin Log-in List</h1>
                         <div  class="container mt-3 table-responsive">
-                            <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <td>No</td>
-                                        <td>Transaction ID</td>
-                                        <td>Date</td>
-                                        <td>DEMR</td>
-                                        <td>Equipment ID</td>
-                                        <td>Total Hours</td>
-                                        <td>Rental Rate</td>
-                                        <td>Amount</td>
-                                        <td>Action</td>
-                                       
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody id="table_body_rental">
-                                
-                                        
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            
-                                        </tr>
-                                    
-                                    
-                                </tbody>
-                
-                            
-                
-                            </table>
-
-                            <br>
-
-                            <label for="TotalAmount" >Total Hours</label>
-                                  <input
-                                      type="text"
-                                      name="totalHours_rental"
-                                      id="totalHours_rental"
-                                      style="text-align: right;"
-                                      >
-                                  </input> 
-
-                            <label for="TotalAmount" >Total Amount</label>
-                                  <input
-                                      type="text"
-                                      name="totalamount_rental"
-                                      id="totalamount_rental"
-                                      style="text-align: right;"
-                                      >
-                                  </input> 
-                
-                            
-                                
-                                
-                        </div>
-                    </div>
-
-
-<!-- ==========================================This is for Sum Rental List Frame================================ -->
-
-                <div id="rental-sum-list" style="display: none;">
-                  <!-- Account List Content -->
-                  <h1>Rental List</h1>
-
-                    <div class="container mt-3">
-                          
-                      <label for="DateFRomTons"
-                      >Date From</label>
-                      
-                          <input 
-                          type="date"
-                          name="datefrom_rental_sum"
-                          id="datefrom_rental_sum"
-                          class="form-control"
-                          >
-
-                      <label for="DateToTons"
-                      >Date To</label>
-                      
-                          <input 
-                          type="date"
-                          name="dateto_rental_sum"
-                          id="dateto_rental_sum"
-                          class="form-control"
-                          >
-
-                        <label for="DateToTons"
-                        >Equipment ID</label>
-                        
-                            <input 
-                            type="text"
-                            name="equipmentID_rental_sum"
-                            id="equipmentID_rental_sum"
-                            class="form-control"
-                            >
-
-
-                            <br>
-                    
-                            <button type="button" id="BtnSearch_Rental_sum" name="BtnSearch_Rental_sum"  class="btn btn-primary">Search</button>
-                            <!-- <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
-                              Export Excel
-                              <i class="fas fa-database"></i>
-                          </button> -->
-                        
-                      
-                    </div>
-
-                    <div  class="container mt-3 table-responsive">
-                        <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
-                            <thead class="table-dark">
-                                <tr>
-                                    <td>No</td>
-                                    <td>Equipment ID</td>
-                                    <td>Total Hours</td>
-                                    <td>Amount</td>
-                                    
-                                    
-                                  
-                                    
-                                </tr>
-                            </thead>
-                            <tbody id="table_body_rental_sum">
-                            
-                                    
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        
-                                       
-                                       
-                                        
-                                    </tr>
-                                
-                                
-                            </tbody>
-
-                        
-
-                        </table>
-
-                        <br>
-
-                        <label for="TotalAmount" >Total Hours</label>
-                              <input
-                                  type="text"
-                                  name="totalHours_rental_sum"
-                                  id="totalHours_rental_sum"
-                                  style="text-align: right;"
-                                  >
-                              </input> 
-
-                        <label for="TotalAmount" >Total Amount</label>
-                              <input
-                                  type="text"
-                                  name="totalamount_rental_sum"
-                                  id="totalamount_rental_sum"
-                                  style="text-align: right;"
-                                  >
-                              </input> 
-
-                        
-                            
-                            
-                    </div>
-                </div>
-
-
-<!-- =================================This is for Inserting Diesel================================ -->
-                  <div id="insert-diesel" style="display: none;">
-                    <!-- Account List Content -->
-                    <h1>Add Diesel Transaction</h1>
-                    <div class="row g-2">
-                        <div class="col-md">
-                          <div class="form-floating">
-                            <input type="date" class="form-control" id="transDate_diesel" >
-                            <label for="floatingInputGrid">Date</label>
-                          </div>
-                        </div>
-                        <div class="col-md">
-                          <div class="form-floating">
-                            <input type="text" class="form-control" id="withdrawal_slip_diesel">
-                            <label for="floatingInputGrid">Withdrawal Slip</label>
-                          </div>
-                        </div>
-                    </div>
-
-                    <br>
-
-
-                    <div class="row g-2">
-                        <div class="col-md">
-                          <div class="form-floating">
-                            <input type="text" class="form-control" id="equipment_id_diesel" >
-                            <label for="floatingInputGrid">Equipment ID</label>
-                          </div>
-                        </div>
-                        <div class="col-md">
-                          <div class="form-floating">
-                            <input type="number" class="form-control" id="literUse_diesel">
-                            <label for="floatingInputGrid">Liter<label>
-                          </div>
-                        </div>
-                    </div>
-
-                    <br>
-
-
-                    <div class="row g-2">
-                        <div class="col-md">
-                          <div class="form-floating">
-                            <input type="number" class="form-control" id="price_diesel">
-                            <label for="floatingInputGrid">Price</label>
-                          </div>
-                        </div>
-                        <div class="col-md">
-                          <div class="form-floating">
-                            <input type="text" class="form-control" id="amount_diesel">
-                            <label for="floatingInputGrid">Amount<label>
-                          </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="col-md">
-                      <div class="form-floating">
-                        <input type="number" class="form-control" id="amount_diesel2" hidden>
-                       
-                      </div>
-                    </div>
-
-                    <br>
-
-                  
-                            <button type="button" id="Btn_diesel_save" class="btn btn-primary">Save</button>
-
-                  </div>
-
-
-<!-- =============================This function is for Diesel List======================================= -->
-                  <div id="diesel-list" style="display: none;">
-                    <!-- Account List Content -->
-                    <h1>Diesel List</h1>
-
-                      <div class="container mt-3">
-                            
-                        <label 
-                        >Date From</label>
-                        
-                            <input 
-                            type="date"
-                            name="datefrom_diesel"
-                            id="datefrom_diesel"
-                            class="form-control"
-                            >
-
-                        <label
-                        >Date To</label>
-                        
-                            <input 
-                            type="date"
-                            name="dateto_diesel"
-                            id="dateto_diesel"
-                            class="form-control"
-                            >
-
-                          <label for="DateToTons"
-                          >Equipment ID</label>
-                          
-                              <input 
-                              type="text"
-                              name="equipmentID_diesel"
-                              id="equipmentID_diesel"
-                              class="form-control"
-                              >
-
-
-                              <br>
-                      
-                              <button type="button" id="BtnSearch_diesel" name="BtnSearch_diesel"  class="btn btn-primary">Search</button>
-                              <button type="submit"  onclick="html_table_excel_diesel('xlsx')" class="btn btn-secondary">
-                                Export Excel
-                                <i class="fas fa-database"></i>
-                            </button>
-                          
-                        
-                      </div>
-
-                      <div  class="container mt-3 table-responsive">
                           <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                               <thead class="table-dark">
                                   <tr>
-                                      <td>No</td>
-                                      <td>Transaction ID</td>
-                                      <td>Date</td>
-                                      <td>Withdrawal Slip</td>
-                                      <td>Equipment ID</td>
-                                      <td>Liters</td>
-                                      <td>Price</td>
-                                      <td>Amount</td>
-                                      <td>Action</td>
-                                    
+                                      <td>#</td>
+                                      <td>ID</td>
+                                      <td>Full Name</td>
+                                      <td>username</td>
+                                      <td>Status</td>
+                                     
                                       
                                   </tr>
                               </thead>
-                              <tbody id="table_body_diesel">
+                              <tbody id="table_body_admin">
                               
                                       
                                       <tr>
@@ -714,435 +116,37 @@
                                           <td></td>
                                           <td></td>
                                           <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
+                                         
+                                        
                                           
                                       </tr>
                                   
                                   
                               </tbody>
-
-                          
-
-                          </table>
-
-                          <br>
-
-                          <label for="TotalAmount" >Total Liters</label>
-                                <input
-                                    type="text"
-                                    name="totalLtrs_diesel"
-                                    id="totalLtrs_diesel"
-                                    style="text-align: right;"
-                                    >
-                                </input> 
-
-                          <label for="TotalAmount" >Total Amount</label>
-                                <input
-                                    type="text"
-                                    name="totalamount_diesel"
-                                    id="totalamount_diesel"
-                                    style="text-align: right;"
-                                    >
-                                </input> 
-
-                          
-                              
-                              
-                      </div>
-                  </div>
-
-
-
-
-<!-- =================================This is for Inserting Employee================================ -->
-                    <div id="insert-employee" style="display: none;">
-                        <!-- Account List Content -->
-                        <h1>Add Employee</h1>
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="employeeID" >
-                                <label for="floatingInputGrid">Employee ID</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="lastName">
-                                <label for="floatingInputGrid">Last Name</label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="firstName" >
-                                <label for="floatingInputGrid">First Name</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="middleName">
-                                <label for="floatingInputGrid">Middle Name<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <select class="form-select" id="gender" aria-label="Floating label select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                   
-                                  </select>
-                                <label for="floatingInputGrid">Gender</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="address">
-                                <label for="floatingInputGrid">Address<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="contactNum">
-                                <label for="floatingInputGrid">Contact Number</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="conPerson">
-                                <label for="floatingInputGrid">Contact Person<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="emerCon">
-                                <label for="floatingInputGrid">Emergency Contact Num</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="position">
-                                <label for="floatingInputGrid">Position<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="date" class="form-control" id="dateHire">
-                                <label for="floatingInputGrid">Date Hired</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <select class="form-select" id="department" aria-label="Floating label select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="Head Office">Head Office</option>
-                                    <option value="Admin-Site">Admin-Site</option>
-                                    <option value="Pampanga">Pampanga</option>
-                                    <option value="Rizal-R&F">Rizal-R&F</option>
-                                    <option value="Surigao">Surigao</option>
-                                    <option value="Surigao-GRC">Surigao-GRC</option>
-                                    <option value="Zamboanga">Zamboanga</option>
-                                    <option value="Bayug">Bayug</option>
-                                   
-                                  </select>
-                                <label for="floatingInputGrid">Department<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="date" class="form-control" id="endofContract">
-                                <label for="floatingInputGrid">End of Contract</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="tin">
-                                <label for="floatingInputGrid">TIN<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="sss">
-                                <label for="floatingInputGrid">SSS no</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="phic">
-                                <label for="floatingInputGrid">PHIC no.<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="text" class="form-control" id="hdmf">
-                                <label for="floatingInputGrid">HDMF no</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <select class="form-select" id="empStatus" aria-label="Floating label select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="Employeed">Employeed</option>
-                                    <option value="Resigned">Resigned</option>
-                                    <option value="Terminated">Terminated</option>
-                                   
-                                  </select>
-                                <label for="floatingInputGrid">Status<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <input type="number" class="form-control" id="salaryRate">
-                                <label for="floatingInputGrid">Salary Rate</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <select class="form-select" id="taxcode" aria-label="Floating label select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="Taxable">Taxable</option>
-                                    <option value="MWE">MWE</option>
-                                   
-                                  </select>
-                                <label for="floatingInputGrid">Tax Status<label>
-                              </div>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row g-2">
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <select class="form-select" id="on_offDetail" aria-label="Floating label select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="on">on</option>
-                                    <option value="off">off</option>
-                                   
-                                  </select>
-                               
-                                <label for="floatingInputGrid">ON-OFF</label>
-                              </div>
-                            </div>
-                            <div class="col-md">
-                              <div class="form-floating">
-                                <select class="form-select" id="salaryDetails" aria-label="Floating label select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="Monthly">Monthly</option>
-                                    <option value="Daily">Daily</option>
-                                   
-                                  </select>
-                                <label for="floatingInputGrid">Salary Details<label>
-                              </div>
-                            </div>
-                        </div>
-                        <br>
-                        <button type="button" id="Btn_employee_save" class="btn btn-primary">Save</button>
-
-                    </div>
-
               
-                  <div id="payroll-list" style="display: none;">
-                      <!-- Account List Content -->
-                      <h1>Rental List</h1>
-                      <div class="container mt-3">
-                        
-                        <label for="DateFRomTons"
-                        >Date From</label>
-                        
-                            <input 
-                            type="date"
-                            name="datefrom_payroll"
-                            id="datefrom_payroll"
-                            class="form-control"
-                            >
-
-                        <label for="DateToTons"
-                        >Date To</label>
-                        
-                            <input 
-                            type="date"
-                            name="dateto_payroll"
-                            id="dateto_payroll"
-                            class="form-control"
-                            >
-
-                          <label for="DateToTons"
-                          >Employee ID</label>
                           
-                              <input 
-                              type="text"
-                              name="employeeID_payroll"
-                              id="employeeID_payroll"
-                              class="form-control"
-                              >
-    
-
-                        <br>
-                        
-                        <button type="button" id="BtnSearch_Payroll" name="BtnSearch_Payroll"  class="btn btn-primary">Search</button>
-                        <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
-                          Export Excel
-                          <i class="fas fa-database"></i>
-                      </button>
-                        
-                    </div>
-
-
-                    <div  class="container mt-3 table-responsive">
-                      <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
-                          <thead class="table-dark">
-                              <tr>
-                                  <td>No</td>
-                                  <td>FirstName</td>
-                                  <td>LastName</td>
-                                  <td>RegDay</td>
-                                  <td>RegDayOT</td>
-                                  <td>Sunday</td>
-                                  <td>SundayOT</td>
-                                  <td>SPL</td>
-                                  <td>SPLOT</td>
-                                  <td>LGL2</td>
-                                  <td>LGL2OT</td>
-                                  <td>LGL1</td>
-                                  <td>NighDiff</td>
-                                  <td>Adjustment</td>
-                                  <td>Total</td>
-                                  <td>Action</td>
-                                  
-                              </tr>
-                          </thead>
-                          <tbody id="table_body_payroll">
-                          
-                                  
-                                  <tr>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                  </tr>
+              
+                          </table>
+              
+                        </div>
                               
                               
-                          </tbody>
-          
-                      
-          
-                      </table>
-          
-                  <br>
-
-                  <label for="TotalAmount" >Total Amount</label>
-                        <input
-                            type="text"
-                            name="totalPayrollAmount"
-                            id="totalPayrollAmount"
-                            style="text-align: right;"
-                            >
-                        </input> 
-                          
-                          
-                  </div>
-
-
-
-
-                  </div>
-
-
-
-                  <div id="employee-list" style="display: none;">
-                    <!-- Account List Content -->
-                    <h1>Employee List</h1>
-
-                      <div class="container mt-3">
-                            
-                          <label for="Employee Name"
-                          >Search</label>
-                          
-                              <input 
-                              type="text"
-                              name="searchInput"
-                              id="searchInput"
-                              
-                              >
-                          
-                        
                       </div>
+<!-- =====================================Employee Credential Login========================================= -->
 
-                      <div  class="container mt-3 table-responsive">
+                      <div id="employee-login-credentials" style="display: none;">
+                        <!-- Account List Content -->
+                        <h1>Employee Log-in List</h1>
+                        <div  class="container mt-3 table-responsive">
                           <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                               <thead class="table-dark">
                                   <tr>
-                                      <td>Employee ID</td>
-                                      <td>Last Name</td>
-                                      <td>First Name</td>
-                                      <td>Position</td>
-                                      <td>Department</td>
-                                      <td>On/Off Details</td>
-                                      <td>Employement Status</td>
+                                      <td>#</td>
+                                      <td>ID</td>
+                                      <td>Full Name</td>
+                                      <td>username</td>
+                                      <td>Status</td>
+                                     
                                       
                                   </tr>
                               </thead>
@@ -1155,8 +159,7 @@
                                           <td></td>
                                           <td></td>
                                           <td></td>
-                                          <td></td>
-                                          <td></td>
+                                         
                                         
                                           
                                       </tr>
@@ -1168,66 +171,166 @@
               
                           </table>
               
-                          
+                        </div>
                               
                               
                       </div>
-                  </div>
-              
-                                            
-                  
+ <!-- ==================================This is for inserting the ============================ -->
+                <div id="insert-access-setting" style="display: none;">
+                                    
+                    <h1>Insert Access Setting</h1>
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="user_id">
+                                <label for="floatingInputGrid" style="font-size: 18px;">User ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="user_name">
+                                <label for="floatingInputGrid" style="font-size: 18px;">User Name</label>
+                            </div>
+                        </div>
 
+                    </div>
+                    <br>
 
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <select class="form-select" id="accounting_write" aria-label="Floating label select example">
+    
+                                    <option selected>----select menu----</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                
+                                </select>
+                                <label for="floatingInputGrid" style="font-size: 18px;">Accounting Write</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                                <div class="form-floating">
+                                    <select class="form-select" id="accounting_read" aria-label="Floating label select example">
         
-                </main>
-           
-        </div>
+                                        <option selected>----select menu----</option>
+                                        <option value="True">True</option>
+                                        <option value="False">False</option>
+                                    
+                                    </select>
+                                    <label for="floatingInputGrid" style="font-size: 18px;">Accounting Read</label>
+                                </div>
+    
+
+                        </div>
+                       
+
+                    </div>
+                    <br>
+
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <select class="form-select" id="payroll_write" aria-label="Floating label select example">
+    
+                                    <option selected>----select menu----</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                
+                                </select>
+                                <label for="floatingInputGrid" style="font-size: 18px;">Payroll Write</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                                <div class="form-floating">
+                                    <select class="form-select" id="payroll_read" aria-label="Floating label select example">
+        
+                                        <option selected>----select menu----</option>
+                                        <option value="True">True</option>
+                                        <option value="False">False</option>
+                                    
+                                    </select>
+                                    <label for="floatingInputGrid" style="font-size: 18px;">Payroll Read</label>
+                                </div>
+    
+
+                        </div>
+                       
+
+                    </div>
+
+
+                    <br>
+
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <select class="form-select" id="site_transaction_write" aria-label="Floating label select example">
+    
+                                    <option selected>----select menu----</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                
+                                </select>
+                                <label for="floatingInputGrid" style="font-size: 18px;">Site Transaction Write</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                                <div class="form-floating">
+                                    <select class="form-select" id="site_transaction_read" aria-label="Floating label select example">
+        
+                                        <option selected>----select menu----</option>
+                                        <option value="True">True</option>
+                                        <option value="False">False</option>
+                                    
+                                    </select>
+                                    <label for="floatingInputGrid" style="font-size: 18px;">Site Transaction Read</label>
+                                </div>
+    
+
+                        </div>
+                       
+
+                    </div>
+                    
+
+                        
+                       
+
+
+                        <button type="button" id="Btn_Save_Access"   class="btn btn-success">Save</button>
+
+
+                    </div>
+<!-- ====================================================================================================== -->
+
+                    </main>
     </div>
-    </div>
+
+
+    
+            <script>
+
+                  document.addEventListener("DOMContentLoaded", function() {
+                      const buttons = document.querySelectorAll("[data-frame]");
+                      const mainSection = document.getElementById("main-section");
       
-    
-
-    <!-- <script>
-      $(document).ready(function () {
-                $('#myTable3').DataTable();
-            });
-
-    </script> -->
-
-    
-
-    <script>
-
-            document.addEventListener("DOMContentLoaded", function() {
-                const buttons = document.querySelectorAll("[data-frame]");
-                const mainSection = document.getElementById("main-section");
-
-                buttons.forEach(function(button) {
-                button.addEventListener("click", function() {
-                    const frameId = button.getAttribute("data-frame");
-                    const frames = document.querySelectorAll("#main-section > div");
-
-                    frames.forEach(function(frame) {
-                    frame.style.display = frame.id === frameId ? "block" : "none";
-                    });
-                });
-                });
-            });
-
-    </script>
-
-    <script type="text/javascript">
-    
+                      buttons.forEach(function(button) {
+                      button.addEventListener("click", function() {
+                          const frameId = button.getAttribute("data-frame");
+                          const frames = document.querySelectorAll("#main-section > div");
       
-    </script>
-
-
+                          frames.forEach(function(frame) {
+                          frame.style.display = frame.id === frameId ? "block" : "none";
+                          });
+                      });
+                      });
+                  });
+      
+          </script>
 
     
-
-
-    
-    <script src="/static/grc_transactions.js"></script>
+    <script src="/static/developer/transactions.js"></script>
     
     
 

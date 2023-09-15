@@ -453,6 +453,24 @@ class GrcDiesel(BaseModel):
     user: Optional[str]
     date_updated:  Optional[datetime] 
     date_credited: Optional[datetime]
+
+
+# developer transactions
+class AccessSetting(BaseModel):
+
+    user_id: str
+    username: str
+    accounting_write: bool
+    accounting_read: bool
+    payroll_write: bool
+    payroll_read:bool
+    site_transaction_write: bool
+    site_transaction_read: bool
+    date_updated:  Optional[datetime] 
+    date_credited: Optional[datetime]
+
+
+
     
     
     
