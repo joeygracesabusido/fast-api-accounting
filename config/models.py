@@ -1,11 +1,15 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import condecimal
-from sqlmodel import Field, Session, SQLModel, create_engine,select,func,funcfilter,within_group
+from sqlmodel import (Field, Session, SQLModel,
+                       create_engine,select,func,funcfilter,
+                       within_group, Index,
+                       Relationship)
 
 from datetime import datetime, date
 import mysql.connector
 
 import urllib.parse
+from enum import Enum
 
 # from sqlalchemy.schema import ThreadLocalMetaData as ThreadLocalMetaData
 
@@ -223,6 +227,62 @@ class tax_table(SQLModel, table=True):
     amountTo : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     amountbase : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     percentageAmount : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+
+class WarehouseInventoryLink(SQLModel, table=True):
+    inventory_item_id: Optional[int] = Field(
+        default=None, foreign_key="inventory_items.id", primary_key=True
+    )
+    inventory_transaction_id: Optional[int] = Field(
+    default=None, foreign_key="inventory_transaction.id", primary_key=True
+)
+
+class Inventoryitems(SQLModel, table=True):
+    """This is for warehouse inventory"""
+    __tablename__ = "inventory_items"  # Specify your desired table name
+    id: Optional[int] = Field(default=None, primary_key=True)
+    item_name: str = Field(default=None, max_length=50, index=True)
+    description: str = Field(default=None)
+    category: str = Field(default=None, max_length=50)
+    uom: str = Field(max_length=50, default=None)
+    supplier: str = Field(default=None, max_length=200)
+    price: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    quantity_in_stock: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    minimum_stock_level: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    location: str = Field(default=None, max_length=50)
+    user: str = Field(default=None)
+    date_updated: Optional[datetime] = Field(default=None)
+    date_credited: datetime = Field(default_factory=datetime.utcnow)
+    
+    __table_args__ = (Index("idx_warehouseInventory_unique", "item_name", unique=True),)
+
+    inventory_items: List["InventoryTransaction"] = Relationship(back_populates="inventory_transaction", link_model=WarehouseInventoryLink)
+
+
+# class TransactionTypeEnum(str, Enum):
+#     Purchase = "Purchase"
+#     Sale = "Sale"
+#     Return = "Return"
+#     Adjustment = "Adjustment"
+
+
+class InventoryTransaction(SQLModel, table=True):
+    __tablename__ = "inventory_transaction"  # Specify your desired table name
+    id: Optional[int] = Field(default=None, primary_key=True)
+    inventory_item_id: Optional[int] = Field(default=None, foreign_key="inventory_items.id")
+    transaction_type: str = Field(default=None, max_length=75)
+    transaction_date: date
+    quantity: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    unit_price: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    total_price: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    mrs_no: str = Field(max_length=50, default=None)
+    si_no_or_withslip_no: str = Field(max_length=50, default=None)
+    end_user: str = Field(default=None, max_length=75)
+    user: str = Field(default=None)
+    date_updated: Optional[datetime] = Field(default=None)
+    date_credited: datetime = Field(default_factory=datetime.utcnow)
+
+
+    inventory_transactions: List[Inventoryitems] = Relationship(back_populates="inventory_items", link_model=WarehouseInventoryLink)
 
 
 def create_db_and_tables():
@@ -955,6 +1015,25 @@ def testJoinTable(datefrom,dateto):
         return data
 
 
+#================================================Inventory Frame ===========================================
+def insert_invetory_item(item_name,description,category,uom,
+                         supplier,price,quantity_in_stock,minimum_stock_level,
+                         location,user):
+    """This function is for inserting Equipmnet of Rizal """
+    insertData = Inventoryitems(item_name=item_name,description=description,
+                                category=category,uom=uom,supplier=supplier,
+                                price=price,quantity_in_stock=quantity_in_stock,
+                                minimum_stock_level=minimum_stock_level,
+                                location=location,user=user)
+    
+
+    session = Session(engine)
+
+    session.add(insertData)
+    
+    session.commit()
+
+    session.close()
 
 
 

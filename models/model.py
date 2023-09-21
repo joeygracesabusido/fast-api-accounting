@@ -470,7 +470,17 @@ class AccessSetting(BaseModel):
     date_credited: Optional[datetime]
 
 
-
-    
-    
-    
+#============================================Inventory Transaction Frame=====================================
+class InventoryItemsModel(BaseModel):
+    item_name: str 
+    description: str 
+    category: str 
+    uom: str 
+    supplier: str 
+    price: float
+    quantity_in_stock: float
+    minimum_stock_level: float
+    location: str 
+    user: Optional[str]
+    date_updated: Optional[datetime]
+    date_credited: Optional[datetime]

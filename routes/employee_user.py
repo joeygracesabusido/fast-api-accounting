@@ -277,8 +277,8 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 from config.models import (insertEquipmentRental,getallRental,
                             insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking,
                             select_rizalEquipment,rentalSumRizal,dieselSumRizal,getChartRental
-                            ,getMonthlyRental,updateTonnage)
-from models.model import RizalRental,RizalDiesel
+                            ,getMonthlyRental,updateTonnage,insert_invetory_item)
+from models.model import RizalRental,RizalDiesel,InventoryItemsModel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
     """This function is to update employee Details"""
@@ -719,7 +719,19 @@ async def get_dieselChecker(tripTicket:Optional[str],
     
 
     return DieselData
-#===================================================Equipment Rizal Frame================================
+#===================================================Inventory Frame =======================================
+@employee_user.get("/inventory-frame-rizal/", response_class=HTMLResponse)
+async def inventory_frame_rizal(request: Request, username: str = Depends(EmployeevalidateLogin)):
+    return templates.TemplateResponse("rizal/inventory.html", {"request":request})
+
+
+@employee_user.post("/api-insert-inventory-rizal-employee/")
+async def insert_inventory(items:InventoryItemsModel, username: str = Depends(EmployeevalidateLogin)): # this is for inserting inventory item
+    insert_invetory_item(item_name=items.item_name, description=items.description,uom=items.uom,
+                         supplier=items.supplier,price=items.price,quantity_in_stock=items.quantity_in_stock,
+                         minimum_stock_level=items.minimum_stock_level,user=username)
+    return('Data has been Save')
+
 
 
 

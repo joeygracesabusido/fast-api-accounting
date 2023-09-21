@@ -80,6 +80,16 @@
                 Cost List
             </button>
 
+            <br><br>
+
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#equipment_monitoring">
+                Equipment Monitoring
+            </button>
+
+            <br>
+
+            <button type="button"   onclick="window.location.href='/inventory-frame-rizal/'"  class="btn btn-link">Inventory</button>
+
            
 
             
@@ -1597,6 +1607,136 @@
     </div>
 </div>
 
+<!-- ===============================================Equipment Monitoring ============================== -->
+
+<div class="modal fade" id="equipment_monitoring" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Equipment Monitoring</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
+        
+        <div class="modal-body">
+
+            <label for="TransactionDate" >Transaction Date</label><br>
+            <input
+                type="date"
+                name="trans_date_ep_monitoring"
+                id="trans_date_ep_monitoring"
+                class="form-control"
+                >
+            </input>
+
+            <label for="Equipment" >EUR</label>
+            <input
+                type="text"
+                name="eur_form"
+                id="eur_form"
+               
+                class="form-control"
+                >
+            </input>  
+
+            <label for="Equipment" >Equipment</label>
+            <input
+                type="text"
+                name="equipment_id"
+                id="equipment_id"
+               
+                class="form-control"
+                >
+            </input>  
+
+            <label for="Equipment" >Time IN</label>
+                <input
+                    type="datetime-local"
+                    name="start"
+                    id="start"
+                    class="form-control"
+                    >
+                </input>  
+            <label for="Equipment" >Time OUT</label>
+                <input
+                    type="datetime-local"
+                    name="end"
+                    id="end"
+                    class="form-control"
+                    >
+                </input>  
+            <!-- <label for="Equipment" >Total Rental Hours Computation</label>
+                <input
+                type="number"
+                name="totalHours"
+                id="totalHours"
+                step="0.01"
+                class="form-control"
+                
+                >
+                </input>   -->
+
+            <label for="Total Hours" >Total Hours</label>
+                <input
+                type="number"
+                name="total_rental_hour"
+                id="total_rental_hour"
+                step="0.01"
+                class="form-control"
+                
+                >
+                </input>  
+
+            <label for="Rental Rate" >Rental Rate</label>
+                <input
+                    type="number"
+                    name="rental_rate"
+                    id="rental_rate"
+                    step="0.01"
+                    
+                    class="form-control"
+                    
+                    >
+                </input> 
+
+            
+                <input
+                    type="number" hidden
+                    name="rental_amount"
+                    id="rental_amount"
+                    class="form-control"
+                    
+                    >
+                </input>  
+
+            
+            <label for="Amount" >Amount</label>
+                <input
+                    type="text"
+                    name="rental_amount2"
+                    id="rental_amount2"
+                    class="form-control"
+                    
+                    >
+                </input>  
+            
+
+        
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" id="buttonSave" onclick="insertRental()"class="btn btn-primary">Save</button>
+        <!-- <button type="button" name ="save_button" id="save_button" class="btn btn-success">Save</button> -->
+        <button type="submit"  onclick="html_table_excel_rental('xlsx')" class="btn btn-secondary">
+                Export Excel
+                <i class="fas fa-database"></i>
+            </button>
+        </div>
+    </div>
+    </div>
+</div>
 
                 
 <!-- ===========================================for Java Scripts Function=========================================== -->
