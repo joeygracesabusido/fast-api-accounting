@@ -48,8 +48,11 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
-
-from config.db import mydb
+# from config.db import mydb
+from config.mongodb_con import create_mongo_client
+mydb = create_mongo_client()
+# from config.db import create_mongo_client
+# mydb = create_mongo_client()
 # from config.database import engine,sessionLocal,Base
 
 # from config.db import worker

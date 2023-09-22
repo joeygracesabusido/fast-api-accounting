@@ -3,8 +3,14 @@
 from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response,status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from config.db import mydb
+
+# from config.db import mydb
+# from config.db import create_mongo_client
+# mydb = create_mongo_client()
 # from config.db import worker
+
+from config.mongodb_con import create_mongo_client
+mydb = create_mongo_client()
 
 from bson import ObjectId
 from typing import Optional

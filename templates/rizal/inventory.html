@@ -90,56 +90,122 @@
                     <div id="insert-inventory" style="display: none;">
                     
                         <h1>Add Inventory Item</h1>
-                    
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="item_name">
-                                    <label for="floatingInputGrid" style="font-size: 19px;">Item Name</label>
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="item_name">
+                                        <label for="floatingInputGrid" style="font-size: 19px;">Item Name</label>
+                                    </div>
                                 </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="description">
+                                        <label for="floatingInputGrid" style="font-size: 19px;">Discription</label>
+                                    </div>
+
+                                </div>
+                                
+                                
+                            </div>
+                            <br>
+
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="category" aria-label="Floating label select example">
+                                            <option selected>Open this select menu</option>
+                                            <option value="MECHANICAL SUPPLIES">MECHANICAL SUPPLIES</option>
+                                            <option value="OIL & LUBES">OIL & LUBES</option>
+                                            <option value="REPAIR AND MAINTENANCE">REPAIR AND MAINTENANCE</option>
+                                            <option value="TIRES">TIRES</option>
+                                            <option value="TOOLS">TOOLS</option>
+                                           
+                                          </select>
+                                        <label for="floatingInputGrid" style="font-size: 19px;">Category</label>
+                                    </div>
+
+                                    
+
+                                </div>
+
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="uom">
+                                        <label for="floatingInputGrid" style="font-size: 19px;">UOM</label>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+                            <br>
+
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="supplier">
+                                        <label for="floatingTextarea">Supplier</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                    
+                                        <input type="number" class="form-control" id="price">
+                                        <label for="floatingInputGrid" style="font-size: 19px;" >Price</label>
+                                    </div>
+
+                                </div>
+
+                               
+
+                            </div>
+                            <br>
+
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                    
+                                        <input type="number" class="form-control" id="quantity_in_stock">
+                                        <label for="floatingInputGrid" style="font-size: 19px;" >Quantity in Stock</label>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                    
+                                        <input type="number" class="form-control" id="minimum_stock_level">
+                                        <label for="floatingInputGrid" style="font-size: 19px;" >Minimum Stock level</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                                 <br>
 
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="description">
-                                    <label for="floatingInputGrid" style="font-size: 19px;">Discription</label>
-                                </div>
-                                <br>
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                    
+                                        <input type="text" class="form-control" id="location">
+                                        <label for="floatingInputGrid" style="font-size: 19px;" >Location</label>
+                                    </div>
 
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="uom">
-                                    <label for="floatingInputGrid" style="font-size: 19px;">UOM</label>
-                                </div>
-                                <br>
-
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="supplier">
-                                    <label for="floatingTextarea">Supplier</label>
                                 </div>
 
-                                <br>
+                               
 
+                            </div>
+
+                            <br>
+    
                             
-                                <div class="form-floating">
-                                    
-                                    <input type="number" class="form-control" id="price">
-                                    <label for="floatingInputGrid" style="font-size: 19px;" >Price</label>
-                                </div>
-                                <br>
 
-                                <div class="form-floating">
-                                    
-                                    <input type="number" class="form-control" id="quantity_in_stock">
-                                    <label for="floatingInputGrid" style="font-size: 19px;" >Quantity in Stock</label>
-                                </div>
-                                <br>
-
-                                <div class="form-floating">
-                                    
-                                    <input type="number" class="form-control" id="minimum_stock_level">
-                                    <label for="floatingInputGrid" style="font-size: 19px;" >Minimum Stock level</label>
-                                </div>
-                                <br>
-                            
-
-                                <button type="button" id="Btn_SaveEquipment"   class="btn btn-success">Save</button>
+                                <button type="button" id="Btn_Save_inventory"   class="btn btn-success">Save</button>
                             
 
                     </div>
@@ -175,6 +241,8 @@
     });
 
 </script>
+
+<script src="/static/inventory/inventory_transaction.js"></script>
 
 
 {% endblock %}

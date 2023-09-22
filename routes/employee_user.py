@@ -23,8 +23,10 @@ from models.model import EmployeeUser
 
 from schemas.user import usersEntity
 
+# from config.db import mydb
+from config.mongodb_con import create_mongo_client
+mydb = create_mongo_client()
 
-from config.db import mydb
 # from config.db import worker
 
 from config.models import Dieselrizal_class
@@ -58,8 +60,10 @@ password1 = ""
 def authenticate_user(username, password):
     
     user = mydb.employee_login.find({'$and':[{"username":username},{'status':'Approved'}]})
+    
 
     for i in user:
+       
         username = i['username']
         password1 = i['password']
         
@@ -110,6 +114,7 @@ async def login(response: Response, request:Request):
             
             
             token = jwt.encode(access_token, JWT_SECRET,algorithm=ALGORITHM)
+           
             
             msg.append('Login Succesful')
             response = templates.TemplateResponse("login_api.html", {"request":request,"msg":msg})
@@ -727,13 +732,19 @@ async def inventory_frame_rizal(request: Request, username: str = Depends(Employ
 
 @employee_user.post("/api-insert-inventory-rizal-employee/")
 async def insert_inventory(items:InventoryItemsModel, username: str = Depends(EmployeevalidateLogin)): # this is for inserting inventory item
-    insert_invetory_item(item_name=items.item_name, description=items.description,uom=items.uom,
-                         supplier=items.supplier,price=items.price,quantity_in_stock=items.quantity_in_stock,
-                         minimum_stock_level=items.minimum_stock_level,user=username)
-    return('Data has been Save')
+    
+    try:
+        insert_invetory_item(item_name=items.item_name, description=items.description,
+                             category=items.category,uom=items.uom,
+                            supplier=items.supplier,price=items.price,quantity_in_stock=items.quantity_in_stock,
+                            minimum_stock_level=items.minimum_stock_level,location=items.location, user=username)
+        # return('Data has been Save')
 
 
-
+    except Exception as ex:
+        error_message = f"Error due to: {str(ex)}"
+        return {"error": error_message}
+    return {"message":"User has been save"} 
 
 #===============================================Cost Frame Function =======================================
 

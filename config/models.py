@@ -228,13 +228,13 @@ class tax_table(SQLModel, table=True):
     amountbase : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     percentageAmount : condecimal(max_digits=9, decimal_places=2) = Field(default=0)
 
-class WarehouseInventoryLink(SQLModel, table=True):
-    inventory_item_id: Optional[int] = Field(
-        default=None, foreign_key="inventory_items.id", primary_key=True
-    )
-    inventory_transaction_id: Optional[int] = Field(
-    default=None, foreign_key="inventory_transaction.id", primary_key=True
-)
+# class WarehouseInventoryLink(SQLModel, table=True):
+#     inventory_item_id: Optional[int] = Field(
+#         default=None, foreign_key="inventory_items.id", primary_key=True
+#     )
+#     inventory_transaction_id: Optional[int] = Field(
+#     default=None, foreign_key="inventory_transaction.id", primary_key=True
+# )
 
 class Inventoryitems(SQLModel, table=True):
     """This is for warehouse inventory"""
@@ -255,7 +255,7 @@ class Inventoryitems(SQLModel, table=True):
     
     __table_args__ = (Index("idx_warehouseInventory_unique", "item_name", unique=True),)
 
-    inventory_items: List["InventoryTransaction"] = Relationship(back_populates="inventory_transaction", link_model=WarehouseInventoryLink)
+    # inventory_items: List["InventoryTransaction"] = Relationship(back_populates="inventory_transaction", link_model=WarehouseInventoryLink)
 
 
 # class TransactionTypeEnum(str, Enum):
@@ -282,7 +282,7 @@ class InventoryTransaction(SQLModel, table=True):
     date_credited: datetime = Field(default_factory=datetime.utcnow)
 
 
-    inventory_transactions: List[Inventoryitems] = Relationship(back_populates="inventory_items", link_model=WarehouseInventoryLink)
+    # inventory_transactions: List[Inventoryitems] = Relationship(back_populates="inventory_items", link_model=WarehouseInventoryLink)
 
 
 def create_db_and_tables():
@@ -1034,7 +1034,6 @@ def insert_invetory_item(item_name,description,category,uom,
     session.commit()
 
     session.close()
-
 
 
 # create_db_and_tables()

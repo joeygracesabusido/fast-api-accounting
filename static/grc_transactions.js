@@ -339,7 +339,7 @@ $(document).ready(function() {
 // };
 
 
- const InsertEquipment = async () => {
+const InsertEquipment = async () => {
     const data = {
         equipment_id: document.getElementById("equipment_id").value,
         equipmentDiscription: document.getElementById("equipment_description").value,

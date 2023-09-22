@@ -6,9 +6,12 @@ from datetime import datetime, date
 
 from schemas.user import usersEntity
 
+# from config.db import mydb
+# from config.db import create_mongo_client
+# mydb = create_mongo_client()
 
-from config.db import mydb
-
+from config.mongodb_con import create_mongo_client
+mydb = create_mongo_client()
 
 from jose import jwt
 

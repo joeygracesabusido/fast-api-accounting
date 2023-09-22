@@ -20,3 +20,15 @@ mydb = client['ldglobal']
 # p.join()
 
 # continue to use the original client instance in the parent process
+
+
+# def create_mongo_client():
+#     var_url = f"mongodb+srv://joeysabusido:genesis11@cluster0.bmdqy.mongodb.net/ldglobal?retryWrites=true&w=majority"
+#     client = MongoClient(var_url, maxPoolSize=None)
+#     conn = client['ldglobal']
+
+#     return conn
+    
+    # Now you can use mydb for database operations
+
+

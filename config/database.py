@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 # from sqlalchemy import *
 import mysql.connector
 import sqlalchemy
-import databases
+# import databases
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 # SQLALCHEMY_DATABASE_URL = "mysql+pymysql://host:192.46.225.247,user:joeysabusido, \
