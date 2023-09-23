@@ -249,6 +249,7 @@ class Inventoryitems(SQLModel, table=True):
     quantity_in_stock: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     minimum_stock_level: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     location: str = Field(default=None, max_length=50)
+    tax_code: str = Field(default=None, max_length=50)
     user: str = Field(default=None)
     date_updated: Optional[datetime] = Field(default=None)
     date_credited: datetime = Field(default_factory=datetime.utcnow)
@@ -1016,24 +1017,78 @@ def testJoinTable(datefrom,dateto):
 
 
 #================================================Inventory Frame ===========================================
-def insert_invetory_item(item_name,description,category,uom,
-                         supplier,price,quantity_in_stock,minimum_stock_level,
-                         location,user):
-    """This function is for inserting Equipmnet of Rizal """
-    insertData = Inventoryitems(item_name=item_name,description=description,
-                                category=category,uom=uom,supplier=supplier,
-                                price=price,quantity_in_stock=quantity_in_stock,
-                                minimum_stock_level=minimum_stock_level,
-                                location=location,user=user)
+class Inventory:
+
+    def insert_invetory_item(item_name,description,category,uom,
+                            supplier,price,quantity_in_stock,minimum_stock_level,
+                            location,tax_code,user):
+        """This function is for inserting Equipmnet of Rizal """
+        insertData = Inventoryitems(item_name=item_name,description=description,
+                                    category=category,uom=uom,supplier=supplier,
+                                    price=price,quantity_in_stock=quantity_in_stock,
+                                    minimum_stock_level=minimum_stock_level,
+                                    location=location,tax_code=tax_code,user=user)
+        
+
+        session = Session(engine)
+
+        session.add(insertData)
+        
+        session.commit()
+
+        session.close()
+
+
+    def get_inventory_all():
+        """This is for querying inventory  Table"""
+        with Session(engine) as session:
+            statement = select(Inventoryitems) \
+                            .order_by(Inventoryitems.item_name)
+            results = session.exec(statement) 
+
+            data = results.all()
+            return data
+
+
+    def get_inventory_item_id(item_id):
+        """This is for querying inventory  Table"""
+        with Session(engine) as session:
+            statement = select(Inventoryitems).where(Inventoryitems.id == item_id) 
+                           
+            results = session.exec(statement) 
+
+            data = results.one()
+            return data
     
+    def update_inventory_item(item_name,description,category,uom,
+                            supplier,price,minimum_stock_level,
+                            location,date_updated,tax_code,user,id):
+        """This function is for updating Rizal Inventory"""
 
-    session = Session(engine)
+        with Session(engine) as session:
+            statement = select(Inventoryitems).where(Inventoryitems.id == id)
+            results = session.exec(statement)
 
-    session.add(insertData)
-    
-    session.commit()
+            result = results.one()
 
-    session.close()
+            
+            result.item_name = item_name
+            result.description = description
+            result.category = category
+            result.uom = uom
+            result.supplier = supplier
+            result.price = price
+            result.minimum_stock_level = minimum_stock_level
+            result.location = location
+            result.user = user
+            result.tax_code = tax_code
+            result.date_updated = date_updated
+            
+
+        
+            session.add(result)
+            session.commit()
+            session.refresh(result)
 
 
 # create_db_and_tables()

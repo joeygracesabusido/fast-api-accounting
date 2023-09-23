@@ -282,7 +282,7 @@ async def api_login(request: Request, username: str = Depends(EmployeevalidateLo
 from config.models import (insertEquipmentRental,getallRental,
                             insertRizalDiesel,diesel_consumption,getallDiesel,getAllDiesel_checking,
                             select_rizalEquipment,rentalSumRizal,dieselSumRizal,getChartRental
-                            ,getMonthlyRental,updateTonnage,insert_invetory_item)
+                            ,getMonthlyRental,updateTonnage,Inventory)
 from models.model import RizalRental,RizalDiesel,InventoryItemsModel
 @employee_user.post("/api-insert-employee-rizal-rental/")
 async def insertRental(items:RizalRental,username: str = Depends(EmployeevalidateLogin)):
@@ -734,10 +734,11 @@ async def inventory_frame_rizal(request: Request, username: str = Depends(Employ
 async def insert_inventory(items:InventoryItemsModel, username: str = Depends(EmployeevalidateLogin)): # this is for inserting inventory item
     
     try:
-        insert_invetory_item(item_name=items.item_name, description=items.description,
+        Inventory.insert_invetory_item(item_name=items.item_name, description=items.description,
                              category=items.category,uom=items.uom,
                             supplier=items.supplier,price=items.price,quantity_in_stock=items.quantity_in_stock,
-                            minimum_stock_level=items.minimum_stock_level,location=items.location, user=username)
+                            minimum_stock_level=items.minimum_stock_level,location=items.location,
+                            tax_code=items.tax_code, user=username)
         # return('Data has been Save')
 
 
@@ -745,6 +746,78 @@ async def insert_inventory(items:InventoryItemsModel, username: str = Depends(Em
         error_message = f"Error due to: {str(ex)}"
         return {"error": error_message}
     return {"message":"User has been save"} 
+
+
+@employee_user.get("/api-get-inventory-all-rizal-employeeLogin/")
+async def get_all_inventory_api(username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    results = Inventory.get_inventory_all()
+
+    costData = [
+        
+            {
+                "id": x.id,
+                "item_name": x.item_name,
+                "description": x.description,
+                "category": x.category,
+                "uom": x.uom,
+                "supplier": x.supplier,
+                "price": x.price,
+                "quantity_in_stock": x.quantity_in_stock,
+                "minimum_stock_level": x.minimum_stock_level,
+                "location": x.location,
+                "tax_code": x.tax_code,
+                "user": x.user,
+                
+            
+            }
+            for x in results
+        ]
+    
+
+    return costData
+
+@employee_user.get("/api-search-autocomplete-inventory-name-rizal/")
+def autocomplete_inventory_item(term: Optional[str] = None):
+    # this is to autocomplete Routes
+    # Ensure you're correctly handling query parameters, 'term' in this case
+    try:
+
+        inventory_item_data = Inventory.get_inventory_all()
+        
+
+        if term:
+            filtered_employee = [item for item in inventory_item_data if term.lower() in item.item_name.lower()]
+        
+        else:
+            filtered_employee = []
+
+        suggestions = [
+                {"value": item.item_name,
+                 "id": item.id,
+                    "item_name": item.item_name,
+                    "description": item.description,
+                    "category": item.category,
+                    "uom": item.uom,
+                    "supplier": item.supplier,
+                    "price": item.price,
+                    "quantity_in_stock": item.quantity_in_stock,
+                    "minimum_stock_level": item.minimum_stock_level,
+                    "location": item.location,
+                    "tax_code": item.tax_code,
+                
+                }
+              for item in filtered_employee
+            ]
+       
+        return suggestions
+
+    except Exception as e:
+        error_message = str(e)  # Use the actual error message from the exception
+        
+        return {"error": error_message}
+
+
 
 #===============================================Cost Frame Function =======================================
 

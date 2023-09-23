@@ -481,6 +481,7 @@ class InventoryItemsModel(BaseModel):
     quantity_in_stock: float
     minimum_stock_level: float
     location: str 
+    tax_code: str
     user: Optional[str]
     date_updated: Optional[datetime]
     date_credited: Optional[datetime]

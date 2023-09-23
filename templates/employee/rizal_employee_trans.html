@@ -900,6 +900,7 @@
                         <option value="BH 02">BH 02</option>
                         <option value="BH 03">BH 03</option>
                         <option value="BH 05">BH 05</option>
+                        <option value="PAX01">PAX01</option>
                         <option value="TX 1202">TX 1202</option>
                         <option value="TX 1204">TX 1204</option>
                     </select>
@@ -2560,6 +2561,13 @@
 
                 else if(Backhoe === 'BH 05'){
                     bachoeValue = 1.42
+                    totalTons = bachoeValue * Bucket
+                    totalTons2 = parseFloat(totalTons).toFixed(2)
+                    $('#totalTons_Tons').val(totalTons2);
+                    calculateProduct_amountTons2()
+                    calculateProduct_amountTons()
+                }else if(Backhoe === 'PAX01'){
+                    bachoeValue = 3.15
                     totalTons = bachoeValue * Bucket
                     totalTons2 = parseFloat(totalTons).toFixed(2)
                     $('#totalTons_Tons').val(totalTons2);
