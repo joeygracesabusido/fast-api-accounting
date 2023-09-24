@@ -485,3 +485,23 @@ class InventoryItemsModel(BaseModel):
     user: Optional[str]
     date_updated: Optional[datetime]
     date_credited: Optional[datetime]
+
+class InventoryTransactionsModel(BaseModel):
+    inventory_item_id: int 
+    transaction_type: str 
+    transaction_date: date
+    quantity: float
+    unit_price: float
+    total_price: float
+    mrs_no: str 
+    si_no_or_withslip_no: str 
+    end_user: str 
+    user: Optional[str]
+    date_updated: Optional[datetime]
+    date_credited: Optional[datetime]
+
+class InventoryTransactionsPerQuantityUpdate(BaseModel):
+    inventory_item_id: Optional[int]
+    transaction_type: Optional[str]
+    quantity: float
+    

@@ -633,7 +633,7 @@ async def updateDieselRizalEmployeeLogin(id,items: RizalDiesel,username: str = D
 
 #============================================Rizal Tonnage Frame=========================================
 from config.models import insertTonnageRizal,getallTonnage,getAllTonnage_checking
-from models.model import RizalTonnagehaul
+from models.model import RizalTonnagehaul,InventoryTransactionsModel,InventoryTransactionsPerQuantityUpdate
 @employee_user.post("/api-insert-rizalTonnage-employeeLogin/")
 async def insertTonnage(items: RizalTonnagehaul,username: str = Depends(EmployeevalidateLogin)):
     """This function is to update employee Details"""
@@ -816,6 +816,77 @@ def autocomplete_inventory_item(term: Optional[str] = None):
         error_message = str(e)  # Use the actual error message from the exception
         
         return {"error": error_message}
+
+@employee_user.put("/api-update-inventory-rizal-employeeLogin/")
+async def api_update_inventory_item(id,items: InventoryItemsModel,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update invtory Details"""
+    try:
+        Inventory.update_inventory_item(item_name=items.item_name,description=items.description,
+                                        category=items.category,uom=items.uom,
+                                        supplier=items.supplier,price=items.price,
+                                        minimum_stock_level=items.minimum_stock_level,
+                                        location=items.location,date_updated=datetime.now(),
+                                        tax_code=items.tax_code,user=username,item_id=id)
+        
+    except Exception as ex:
+        error_message = f"Error due to: {str(ex)}"
+        return {"error": error_message}
+    return {"message":"User has been save"} 
+
+
+@employee_user.post("/api-insert-inventory-transaction-rizal-employee/")
+async def insert_inventory_transasction(items:InventoryTransactionsModel,
+                                         username: str = Depends(EmployeevalidateLogin)): # this is for inserting inventory item
+    
+    try:
+        if items.transaction_type == 'Withdrawal':
+
+            result = Inventory.get_inventory_item_id(item_id=items.inventory_item_id)
+
+            if result.quantity_in_stock <= items.quantity:
+
+                Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
+                                                    transaction_type=items.transaction_type,
+                                                    transaction_date=items.transaction_date,
+                                                    quantity=items.quantity,unit_price=items.unit_price,
+                                                    total_price=items.total_price,mrs_no=items.mrs_no,
+                                                    si_no_or_withslip_no=items.si_no_or_withslip_no,
+                                                    end_user=items.end_user,user=username)
+            else:
+                return{"error": "Quantity withdrawal is morethan in stock"}
+        else:
+            Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
+                                                    transaction_type=items.transaction_type,
+                                                    transaction_date=items.transaction_date,
+                                                    quantity=items.quantity,unit_price=items.unit_price,
+                                                    total_price=items.total_price,mrs_no=items.mrs_no,
+                                                    si_no_or_withslip_no=items.si_no_or_withslip_no,
+                                                    end_user=items.end_user,user=username)
+
+
+    except Exception as ex:
+        error_message = f"Error due to: {str(ex)}"
+        return {"error": error_message}
+    return {"message":"User has been save"} 
+
+@employee_user.put("/api-update-inventory-item-quantity-rizal-employeeLogin/")
+async def api_update_inventory_item_per_transaction(id,items: InventoryTransactionsPerQuantityUpdate,
+                                                    username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update inventory Details"""
+    try:
+        if items.transaction_type == 'Purchases':
+            Inventory.update_inventory_item_per_inventory_transaction(quantity=items.quantity,item_id= id)
+        elif items.transaction_type == 'Withdrawal':
+            Inventory.update_inventory_item_per_inventory_transaction(quantity=-items.quantity,item_id= id)
+        elif items.transaction_type == 'Return':
+            Inventory.update_inventory_item_per_inventory_transaction(quantity=-items.quantity,item_id= id)
+       
+        
+    except Exception as ex:
+        error_message = f"Error due to: {str(ex)}"
+        return {"error": error_message}
+    return {"message":"User has been save"} 
+      
 
 
 

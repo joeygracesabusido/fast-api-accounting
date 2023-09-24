@@ -90,6 +90,8 @@
                   <button type="button"  data-frame="inventory-list"  class="btn btn-link">Inventory List</button>
                   <button type="button"  data-frame="insert-inventory"  class="btn btn-link">Add Inventory Item</button>
                   <button type="button"  data-frame="update-inventory"  class="btn btn-link">Update Inventory</button>
+                  <button type="button"  data-frame="insert-inventory-transactions"  class="btn btn-link">Inventory Transaction</button>
+                  <button type="button"  data-frame="inventory-transaction-list"  class="btn btn-link">Inventory Transaction List</button>
                   <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button>
                   
                 </div>
@@ -239,7 +241,7 @@
 <!-- =============================This function is for Inventory List======================================= -->
                   <div id="inventory-list" style="display: none;">
                     <!-- Account List Content -->
-                    <h1>Diesel List</h1>
+                    <h1>Inventory List</h1>
 
                       <div class="container mt-3">
                             
@@ -318,7 +320,7 @@
                 <div id="update-inventory" style="display: none;">
                                     
                     <h1>Update Inventory Item</h1>
-                    <input type="text"  class="form-control" id="item_id">
+                    <input type="text" hidden  class="form-control" id="item_id">
                         <div class="row g-2">
                             <div class="col-md">
                                 <div class="form-floating">
@@ -452,6 +454,221 @@
                             <button type="button" id="Btn_update_inventory"   class="btn btn-success">Update</button>
                         
 
+                </div>
+
+<!--================================ this is for inserting  inventory Transactions ===========================-->
+            <div id="insert-inventory-transactions" style="display: none;">
+                                                
+                <h1>Insert Inventory Transaction</h1>
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text"   class="form-control" id="inventory_transaction_name">
+                            <label for="floatingInputGrid" style="font-size: 19px;">Inventory ID</label>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" hidden   class="form-control" id="inventory_item_id">
+                            
+                        </div>
+
+                    </div>
+                    
+                </div>
+                
+                
+                <br>
+               
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <select class="form-select" id="transaction_type" aria-label="Floating label select example">
+                                    <option selected>Open this select menu</option>
+                                    <option value="Purchases">Purchases</option>
+                                    <option value="Withdrawal">Withdrawal</option>
+                                    <option value="Return">Return</option>
+                                    
+                                
+                                </select>
+                                <label for="floatingInputGrid" style="font-size: 19px;">Transacion Type</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="transaction_date">
+                                <label for="floatingInputGrid" style="font-size: 19px;">Date</label>
+                            </div>
+
+                        </div>
+                        
+                        
+                    </div>
+                    <br>
+
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="quantity">
+                                <label for="floatingInputGrid" style="font-size: 19px;">Quantity</label>
+                            </div>
+
+                            
+
+                        </div>
+
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="unit_price">
+                                <label for="floatingInputGrid" style="font-size: 19px;">Unit Price</label>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                    <br>
+
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="total_price">
+                                <label for="floatingTextarea">Total Price</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="number" hidden class="form-control" id="total_price2">
+                                
+                            </div>
+                        </div>
+
+                        <div class="col-md">
+                            <div class="form-floating">
+                            
+                                <input type="number" class="form-control" id="mrs_no">
+                                <label for="floatingInputGrid" style="font-size: 19px;" >MRS no.</label>
+                            </div>
+
+                        </div>
+
+                    
+
+                    </div>
+                    <br>
+
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                            
+                                <input type="number" class="form-control" id="si_no_or_withslip_no">
+                                <label for="floatingInputGrid" style="font-size: 19px;" >SI/Withdrawal Slip</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md">
+                            <div class="form-floating">
+                            
+                                <input type="text" class="form-control" id="end_user">
+                                <label for="floatingInputGrid" style="font-size: 19px;" >End User</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                        <br>
+
+                    
+                    
+
+                        <button type="button" id="Btn_save_inventory_transactions"   class="btn btn-success">Save</button>
+                    
+
+            </div>
+
+
+<!-- =============================This function is for Inventory Transaction List======================================= -->
+                <div id="inventory-transaction-list" style="display: none;">
+                    <!-- Account List Content -->
+                    <h1>Inventory List</h1>
+
+                    <div class="container mt-3">
+                            
+                    
+                        <label for="Search"
+                        >Equipment ID</label>
+                        
+                            <input 
+                            type="text"
+                            name="inventory_search"
+                            id="inventory_search"
+                            class="form-control"
+                            >
+
+
+                                                    
+                        
+                    </div>
+
+                    <div  class="container mt-3 table-responsive">
+                        <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                            <thead class="table-dark">
+                                <tr>
+                                    
+                                    <td>Item Name</td>
+                                    <td>Description</td>
+                                    <td>Category</td>
+                                    <td>UOM</td>
+                                    <td>Supplier</td>
+                                    <td>Price</td>
+                                    <td>Quantity</td>
+                                    <td>Stock Level</td>
+                                    <td>Location</td>
+                                    <td>Tax Code</td>
+                                    
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="table_body_inventory">
+                            
+                                    
+                                    <tr >
+                                        <td style="font-size: smaller"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        
+                                        
+                                    </tr>
+                                
+                                
+                            </tbody>
+
+                        
+
+                        </table>
+
+                        <br>
+
+                        
+
+                        
+                            
+                            
+                    </div>
                 </div>
 
 

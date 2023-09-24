@@ -1022,7 +1022,7 @@ class Inventory:
     def insert_invetory_item(item_name,description,category,uom,
                             supplier,price,quantity_in_stock,minimum_stock_level,
                             location,tax_code,user):
-        """This function is for inserting Equipmnet of Rizal """
+        """This function is for inserting Inventory of Rizal """
         insertData = Inventoryitems(item_name=item_name,description=description,
                                     category=category,uom=uom,supplier=supplier,
                                     price=price,quantity_in_stock=quantity_in_stock,
@@ -1060,13 +1060,30 @@ class Inventory:
             data = results.one()
             return data
     
-    def update_inventory_item(item_name,description,category,uom,
-                            supplier,price,minimum_stock_level,
-                            location,date_updated,tax_code,user,id):
+    def update_inventory_item_per_inventory_transaction(quantity,item_id):
         """This function is for updating Rizal Inventory"""
 
         with Session(engine) as session:
-            statement = select(Inventoryitems).where(Inventoryitems.id == id)
+            statement = select(Inventoryitems).where(Inventoryitems.id == item_id)
+            results = session.exec(statement)
+
+            result = results.one()
+
+            result.quantity_in_stock = float(result.quantity_in_stock)
+            result.quantity_in_stock = float(result.quantity_in_stock) + quantity
+            
+        
+            session.add(result)
+            session.commit()
+            session.refresh(result)
+
+    def update_inventory_item(item_name,description,category,uom,
+                            supplier,price,minimum_stock_level,
+                            location,date_updated,tax_code,user,item_id):
+        """This function is for updating Rizal Inventory"""
+
+        with Session(engine) as session:
+            statement = select(Inventoryitems).where(Inventoryitems.id == item_id)
             results = session.exec(statement)
 
             result = results.one()
@@ -1089,6 +1106,27 @@ class Inventory:
             session.add(result)
             session.commit()
             session.refresh(result)
+
+    def insert_inventory_transaction(inventory_item_id,transaction_type,transaction_date,
+                                     quantity,unit_price,total_price,
+                                     mrs_no,si_no_or_withslip_no,
+                                     end_user,user):
+        """This function is for inserting Inventory of Rizal """
+        insertData = InventoryTransaction(inventory_item_id=inventory_item_id,transaction_type=transaction_type,
+                                          transaction_date=transaction_date,quantity=quantity,
+                                          unit_price=unit_price,total_price=total_price,
+                                          mrs_no=mrs_no,si_no_or_withslip_no=si_no_or_withslip_no,
+                                          end_user=end_user,user=user)
+        
+
+        session = Session(engine)
+
+        session.add(insertData)
+        
+        session.commit()
+
+        session.close()
+
 
 
 # create_db_and_tables()
