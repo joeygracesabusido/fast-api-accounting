@@ -1127,6 +1127,48 @@ class Inventory:
 
         session.close()
 
+    def get_inventory_transaction(datefrom:Optional[date],dateto:Optional[date],
+                                  category_type:Optional[str],end_user:Optional[str],transaction_type:Optional[str]):
+        """This is for querying inventory transaction  Table"""
+        with Session(engine) as session:
+
+            statement = select(InventoryTransaction, Inventoryitems) \
+                .where(
+                    (InventoryTransaction.inventory_item_id == Inventoryitems.id) &
+                        InventoryTransaction.transaction_date.between(datefrom,dateto)
+                    
+                )
+            
+                
+            if category_type :
+                statement = statement.where(Inventoryitems.category.ilike(f'%{category_type}%'))
+            if transaction_type:
+                statement = statement.where(InventoryTransaction.transaction_type.ilike(f'%{transaction_type}%'))
+            if category_type and transaction_type:
+                statement = statement.where(InventoryTransaction.transaction_type.ilike(f'%{transaction_type}%') &
+                                            Inventoryitems.category.ilike(f'%{category_type}%'))
+            if end_user:
+                statement = statement.where(InventoryTransaction.end_user.ilike(f'%{end_user}%'))
+                
+            results = session.exec(statement)
+            data = results.all()
+
+
+            return data
+
+            
+    @staticmethod
+    def get_inventory_transaction_all_join(): # this function is for getting all inventory transactions
+        with Session(engine) as session:
+            # results = session.query(InventoryTransaction, Inventoryitems).\
+            # join(Inventoryitems, InventoryTransaction.inventory_item_id == Inventoryitems.id).\
+            # all()
+            statement = select(InventoryTransaction, Inventoryitems) \
+                            .where(InventoryTransaction.inventory_item_id == Inventoryitems.id)
+            results = session.exec(statement)
+
+            data = results.all()
+            return data
 
 
 # create_db_and_tables()

@@ -597,21 +597,63 @@
 <!-- =============================This function is for Inventory Transaction List======================================= -->
                 <div id="inventory-transaction-list" style="display: none;">
                     <!-- Account List Content -->
-                    <h1>Inventory List</h1>
+                    <h1>Inventory Transacion List</h1>
 
                     <div class="container mt-3">
                             
                     
                         <label for="Search"
-                        >Equipment ID</label>
+                        >Date From</label>
+                        
+                            <input 
+                            type="date"
+                            name="inventory_transaction_list_datefrom"
+                            id="inventory_transaction_list_datefrom"
+                            
+                            >
+
+                        <label for="Search"
+                        >Date To</label>
+                        
+                            <input 
+                            type="date"
+                            name="inventory_transaction_list_dateto"
+                            id="inventory_transaction_list_dateto"
+                            
+                            >
+
+                        <label for="Search"
+                        >Category</label>
                         
                             <input 
                             type="text"
-                            name="inventory_search"
-                            id="inventory_search"
-                            class="form-control"
+                            name="inventory_transaction_list_category"
+                            id="inventory_transaction_list_category"
+                            
                             >
 
+                        <label for="Search"
+                        >Transaction Type</label>
+                        
+                            <input 
+                            type="text"
+                            name="inventory_transaction_list_transaction_type"
+                            id="inventory_transaction_list_transaction_type"
+                           
+                            >
+
+                        <label for="Search"
+                        >End User</label>
+                        
+                            <input 
+                            type="text"
+                            name="inventory_transaction_list_end_user"
+                            id="inventory_transaction_list_end_user"
+                            
+                            >
+
+                        
+                            <button type="button" id="Btn_search_inventory_transactions"   class="btn btn-success">Search</button>
 
                                                     
                         
@@ -621,26 +663,26 @@
                         <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
                             <thead class="table-dark">
                                 <tr>
-                                    
+                                    <td>No.</td>
+                                    <td>Date</td>
                                     <td>Item Name</td>
                                     <td>Description</td>
-                                    <td>Category</td>
-                                    <td>UOM</td>
-                                    <td>Supplier</td>
-                                    <td>Price</td>
                                     <td>Quantity</td>
-                                    <td>Stock Level</td>
-                                    <td>Location</td>
+                                    <td>Price</td>
+                                    <td>Total Price</td>
+                                    <td>End User</td>
                                     <td>Tax Code</td>
+                                    <td>Transaction Type</td>
+                                    
                                     
                                     
                                 </tr>
                             </thead>
-                            <tbody id="table_body_inventory">
+                            <tbody id="table_body_inventory_transaction_list">
                             
                                     
                                     <tr >
-                                        <td style="font-size: smaller"></td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

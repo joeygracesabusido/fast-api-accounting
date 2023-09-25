@@ -445,3 +445,59 @@ $(document).ready( function() {
   minLength: 1
   });
 } );
+
+// this function is to display Inventory Transaction List
+const  displayInventoryTransactionlist =  async () => {
+  var datefrom = document.getElementById("inventory_transaction_list_datefrom").value 
+  var dateto = document.getElementById("inventory_transaction_list_dateto").value 
+  var category_type = document.getElementById("inventory_transaction_list_category").value 
+  var transaction_type = document.getElementById("inventory_transaction_list_transaction_type").value 
+  var end_user = document.getElementById("inventory_transaction_list_end_user").value 
+  
+  const search_url = `/api-get-inventory-transaction-rizal-employeeLogin/?datefrom=${datefrom}&dateto=${dateto}&category_type=${category_type}&transaction_type=${transaction_type}&end_user=${end_user}`;
+
+
+  const responce = await fetch(search_url)
+  const data = await responce.json();
+  console.log(data)
+
+  if (data.length === 0) {
+          window.alert('No Data available');
+      };
+  
+  
+  if (responce.status === 200){
+      let tableData="";
+      let sum = 0;
+      data.map((values, index)=>{
+          const columnNumber = index + 1; 
+         
+          tableData+= ` <tr>
+                      <td>${columnNumber}</td>
+                      <td>${values.transaction_date}</td>
+                      <td>${values.item_name}</td>
+                      <td>${values.description}</td>
+                      <td>${values.quantity}</td>
+                      <td>${values.unit_price}</td>
+                      <td>${values.total_price}</td>
+                      <td>${values.end_user}</td>
+                      <td>${values.tax_code}</td>
+                      <td>${values.transaction_type}</td>
+                     
+                  
+                  </tr>`;
+      });
+      document.getElementById("table_body_inventory_transaction_list").innerHTML=tableData;
+      // var test = 1000
+      // document.getElementById("fter_totalBillinglTons").value = test;
+      
+  }else if (responce.status === 401){
+      window.alert("Unauthorized Credentials Please Log in")
+  }
+
+};
+
+
+var Btn_search_inventory_transactions = document.querySelector('#Btn_search_inventory_transactions');
+Btn_search_inventory_transactions.addEventListener("click", displayInventoryTransactionlist);
+

@@ -843,7 +843,7 @@ async def insert_inventory_transasction(items:InventoryTransactionsModel,
 
             result = Inventory.get_inventory_item_id(item_id=items.inventory_item_id)
 
-            if result.quantity_in_stock <= items.quantity:
+            if result.quantity_in_stock >= items.quantity:
 
                 Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
                                                     transaction_type=items.transaction_type,
@@ -886,6 +886,76 @@ async def api_update_inventory_item_per_transaction(id,items: InventoryTransacti
         error_message = f"Error due to: {str(ex)}"
         return {"error": error_message}
     return {"message":"User has been save"} 
+
+
+@employee_user.get("/api-get-inventory-transaction-rizal-employeeLogin/") # this is for list of inventory Transacstions
+async def get_all_inventory_transaction_api(datefrom:Optional[date],dateto:Optional[date],
+                                  category_type:Optional[str],end_user:Optional[str],
+                                  transaction_type: Optional[str],
+                                  username: str = Depends(EmployeevalidateLogin)):
+    
+
+
+    results = Inventory.get_inventory_transaction(datefrom=datefrom,
+                                                  dateto=dateto,category_type=category_type,
+                                                  end_user=end_user,transaction_type=transaction_type)
+
+    print(results)
+
+    inventory_transaction_data = []
+    for inv_trans,inv_item in results:
+        data = {
+        "id": inv_trans.id,
+        "inventory_item_id": inv_trans.inventory_item_id,
+        "transaction_type": inv_trans.transaction_type,
+        "transaction_date": inv_trans.transaction_date,
+        "quantity": inv_trans.quantity,
+        "unit_price": inv_trans.unit_price,
+        "total_price": inv_trans.total_price,
+        "mrs_no": inv_trans.mrs_no,
+        "si_no_or_withslip_no": inv_trans.si_no_or_withslip_no,
+        "end_user": inv_trans.end_user,
+        "user": inv_trans.user,
+        "item_name": inv_item.item_name,  # Access item_name from the InventoryItem object
+        "description": inv_item.description,
+        "tax_code": inv_item.tax_code,
+        "category": inv_item.category
+    }
+
+        inventory_transaction_data.append(data)
+    
+
+    return inventory_transaction_data
+
+@employee_user.get("/api-get-inventory-transaction-rizal-employeeLogin2/") # this is for list of inventory Transacstions
+async def get_all_inventory_transaction_api2(
+                                  username: str = Depends(EmployeevalidateLogin)):
+    
+
+    results = Inventory.get_inventory_transaction_all_join()
+
+    inventory_transaction_data = []
+    for inv_trans,inv_item in results:
+        data = {
+        "id": inv_trans.id,
+        "inventory_item_id": inv_trans.inventory_item_id,
+        "transaction_type": inv_trans.transaction_type,
+        "transaction_date": inv_trans.transaction_date,
+        "quantity": inv_trans.quantity,
+        "unit_price": inv_trans.unit_price,
+        "total_price": inv_trans.total_price,
+        "mrs_no": inv_trans.mrs_no,
+        "si_no_or_withslip_no": inv_trans.si_no_or_withslip_no,
+        "end_user": inv_trans.end_user,
+        "user": inv_trans.user,
+        "item_name": inv_item.item_name,  # Access item_name from the InventoryItem object
+        "description": inv_item.description
+    }
+
+        inventory_transaction_data.append(data)
+    
+
+    return inventory_transaction_data
       
 
 
