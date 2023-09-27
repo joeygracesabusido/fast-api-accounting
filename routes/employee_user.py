@@ -2,6 +2,7 @@ import json
 from lib2to3.pgen2 import token
 from pyexpat import model
 from re import I
+import logging
 
 
 from authentication.utils import OAuth2PasswordBearerWithCookie
@@ -28,6 +29,9 @@ from config.mongodb_con import create_mongo_client
 mydb = create_mongo_client()
 
 # from config.db import worker
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 from config.models import Dieselrizal_class
 
@@ -862,6 +866,46 @@ async def insert_inventory_transasction(items:InventoryTransactionsModel,
                                                     total_price=items.total_price,mrs_no=items.mrs_no,
                                                     si_no_or_withslip_no=items.si_no_or_withslip_no,
                                                     end_user=items.end_user,user=username)
+
+
+    except Exception as ex:
+        error_message = f"Error due to: {str(ex)}"
+        return {"error": error_message}
+    return {"message":"User has been save"} 
+
+
+from models.model import InventoryTransactionsModel2
+@employee_user.post("/api-insert-inventory-transaction-rizal-employee-testing/")
+async def insert_inventory_transasction(
+    items: InventoryTransactionsModel,
+    username: str = Depends(EmployeevalidateLogin)
+):
+    try:
+
+        logging.debug(f"Received items: {items}")
+        # if items.transaction_type == 'Withdrawal':
+
+        #     result = Inventory.get_inventory_item_id(item_id=items.inventory_item_id)
+
+        #     if result.quantity_in_stock >= items.quantity:
+
+        #         Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
+        #                                             transaction_type=items.transaction_type,
+        #                                             transaction_date=items.transaction_date,
+        #                                             quantity=items.quantity,unit_price=items.unit_price,
+        #                                             total_price=items.total_price,mrs_no=items.mrs_no,
+        #                                             si_no_or_withslip_no=items.si_no_or_withslip_no,
+        #                                             end_user=items.end_user,user=username)
+        #     else:
+        #         return{"error": "Quantity withdrawal is morethan in stock"}
+        # else:
+        #     Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
+        #                                             transaction_type=items.transaction_type,
+        #                                             transaction_date=items.transaction_date,
+        #                                             quantity=items.quantity,unit_price=items.unit_price,
+        #                                             total_price=items.total_price,mrs_no=items.mrs_no,
+        #                                             si_no_or_withslip_no=items.si_no_or_withslip_no,
+        #                                             end_user=items.end_user,user=username)
 
 
     except Exception as ex:

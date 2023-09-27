@@ -8,6 +8,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
 
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" /> -->
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <style>
@@ -92,6 +96,8 @@
                   <button type="button"  data-frame="update-inventory"  class="btn btn-link">Update Inventory</button>
                   <button type="button"  data-frame="insert-inventory-transactions"  class="btn btn-link">Inventory Transaction</button>
                   <button type="button"  data-frame="inventory-transaction-list"  class="btn btn-link">Inventory Transaction List</button>
+                  <button type="button"  data-frame="insert-inventory-transactions2"  class="btn btn-link">Inventory Transaction 2</button>
+
                   <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button>
                   
                 </div>
@@ -460,32 +466,12 @@
             <div id="insert-inventory-transactions" style="display: none;">
                                                 
                 <h1>Insert Inventory Transaction</h1>
-                <div class="row g-2">
-                    <div class="col-md">
-                        <div class="form-floating">
-                            <input type="text"   class="form-control" id="inventory_transaction_name">
-                            <label for="floatingInputGrid" style="font-size: 19px;">Inventory ID</label>
-                        </div>
-
-                    </div>
-
-                    <div class="col-md">
-                        <div class="form-floating">
-                            <input type="text" hidden   class="form-control" id="inventory_item_id">
-                            
-                        </div>
-
-                    </div>
-                    
-                </div>
                 
-                
-                <br>
                
                     <div class="row g-2">
                         <div class="col-md">
                             <div class="form-floating">
-                                <select class="form-select" id="transaction_type" aria-label="Floating label select example">
+                                <select class="form-select" id="transaction_type_list" aria-label="Floating label select example">
                                     <option selected>Open this select menu</option>
                                     <option value="Purchases">Purchases</option>
                                     <option value="Withdrawal">Withdrawal</option>
@@ -498,7 +484,7 @@
                         </div>
                         <div class="col-md">
                             <div class="form-floating">
-                                <input type="date" class="form-control" id="transaction_date">
+                                <input type="date" class="form-control" id="transaction_date_list">
                                 <label for="floatingInputGrid" style="font-size: 19px;">Date</label>
                             </div>
 
@@ -508,87 +494,108 @@
                     </div>
                     <br>
 
-                    <div class="row g-2">
-                        <div class="col-md">
-                            <div class="form-floating">
-                                <input type="number" class="form-control" id="quantity">
-                                <label for="floatingInputGrid" style="font-size: 19px;">Quantity</label>
-                            </div>
-
-                            
-
-                        </div>
-
-                        <div class="col-md">
-                            <div class="form-floating">
-                                <input type="number" class="form-control" id="unit_price">
-                                <label for="floatingInputGrid" style="font-size: 19px;">Unit Price</label>
-                            </div>
-
-                        </div>
-
-
-
-                    </div>
-
-                    <br>
-
-                    <div class="row g-2">
-                        <div class="col-md">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="total_price">
-                                <label for="floatingTextarea">Total Price</label>
-                            </div>
-                        </div>
-
-                        <div class="col-md">
-                            <div class="form-floating">
-                                <input type="number" hidden class="form-control" id="total_price2">
-                                
-                            </div>
-                        </div>
-
-                        <div class="col-md">
-                            <div class="form-floating">
-                            
-                                <input type="number" class="form-control" id="mrs_no">
-                                <label for="floatingInputGrid" style="font-size: 19px;" >MRS no.</label>
-                            </div>
-
-                        </div>
-
                     
 
-                    </div>
-                    <br>
-
                     <div class="row g-2">
+                        
+
                         <div class="col-md">
                             <div class="form-floating">
                             
-                                <input type="number" class="form-control" id="si_no_or_withslip_no">
+                                <input type="text" class="form-control" id="mrs_no_list">
+                                <label for="floatingInputGrid" style="font-size: 19px;" >MRS no.</label>
+                            </div>
+                        
+
+                        </div>
+
+                        <div class="col-md">
+                            <div class="form-floating">
+                            
+                                <input type="text" class="form-control" id="si_no_or_withslip_no_list">
                                 <label for="floatingInputGrid" style="font-size: 19px;" >SI/Withdrawal Slip</label>
                             </div>
 
                         </div>
 
+                    
+
+                    </div>
+                    
+
+                    <br>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <table class="table table-borderless">
+                                <thead class="border-bottom font-weight-bold">
+                                    <tr>
+                                        <td></td>
+                                        <td>INV-ID</td>
+                                        <td>Quantity</td>
+                                        <td>Price</td>
+                                        <td>Total Price</td>
+                                        <td>End User</td>
+                                        <td></td>
+        
+        
+                                        
+                                    
+                                        <!-- <td>
+                                            <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
+                                            </i>Add</button>
+                                        </td> -->
+        
+                                    
+                                    </tr>
+                                </thead>
+                                <tbody id="addrow">
+                                    
+                                    
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                        
+
+                    </div>
+                    <br>
+
+
+                    
+                    
+
+                    <div class="row g-2">
+                        
+
                         <div class="col-md">
                             <div class="form-floating">
                             
-                                <input type="text" class="form-control" id="end_user">
-                                <label for="floatingInputGrid" style="font-size: 19px;" >End User</label>
+                              
+                            </div>
+                        
+
+                        </div>
+
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="TotalAmount" style="text-align: right;">
+                                <label for="floatingInputGrid" style="font-size: 19px;" >Total Amount</label>
+                               
                             </div>
 
                         </div>
 
+                    
+
                     </div>
 
-                        <br>
+                    <br>
 
-                    
+                    <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
+                    </i>Add Line</button>
                     
 
-                        <button type="button" id="Btn_save_inventory_transactions"   class="btn btn-success">Save</button>
+                    <button type="button" id="Btn_save_inventory_list"   class="btn btn-success">Save</button>
                     
 
             </div>
@@ -705,6 +712,8 @@
 
                         <br>
 
+
+
                         
 
                         
@@ -712,6 +721,146 @@
                             
                     </div>
                 </div>
+
+
+<!--================================ this is for inserting  inventory Transactions ===========================-->
+<div id="insert-inventory-transactions2" style="display: none;">
+                                                
+    <h1>Insert Inventory Transaction</h1>
+    <div class="row g-2">
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="text"   class="form-control" id="inventory_transaction_name">
+                <label for="floatingInputGrid" style="font-size: 19px;">Inventory ID</label>
+            </div>
+
+        </div>
+
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="text" hidden   class="form-control" id="inventory_item_id">
+                
+            </div>
+
+        </div>
+        
+    </div>
+    
+    
+    <br>
+   
+        <div class="row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <select class="form-select" id="transaction_type" aria-label="Floating label select example">
+                        <option selected>Open this select menu</option>
+                        <option value="Purchases">Purchases</option>
+                        <option value="Withdrawal">Withdrawal</option>
+                        <option value="Return">Return</option>
+                        
+                    
+                    </select>
+                    <label for="floatingInputGrid" style="font-size: 19px;">Transacion Type</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="date" class="form-control" id="transaction_date">
+                    <label for="floatingInputGrid" style="font-size: 19px;">Date</label>
+                </div>
+
+            </div>
+            
+            
+        </div>
+        <br>
+
+        <div class="row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="quantity">
+                    <label for="floatingInputGrid" style="font-size: 19px;">Quantity</label>
+                </div>
+
+                
+
+            </div>
+
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="unit_price">
+                    <label for="floatingInputGrid" style="font-size: 19px;">Unit Price</label>
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+        <br>
+
+        <div class="row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="total_price">
+                    <label for="floatingTextarea">Total Price</label>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="form-floating">
+                    <input type="number" hidden class="form-control" id="total_price2">
+                    
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="form-floating">
+                
+                    <input type="number" class="form-control" id="mrs_no">
+                    <label for="floatingInputGrid" style="font-size: 19px;" >MRS no.</label>
+                </div>
+
+            </div>
+
+        
+
+        </div>
+        <br>
+
+        <div class="row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                
+                    <input type="number" class="form-control" id="si_no_or_withslip_no">
+                    <label for="floatingInputGrid" style="font-size: 19px;" >SI/Withdrawal Slip</label>
+                </div>
+
+            </div>
+
+            <div class="col-md">
+                <div class="form-floating">
+                
+                    <input type="text" class="form-control" id="end_user">
+                    <label for="floatingInputGrid" style="font-size: 19px;" >End User</label>
+                </div>
+
+            </div>
+
+        </div>
+
+            <br>
+
+        
+        
+
+            <button type="button" id="Btn_save_inventory_transactions"   class="btn btn-success">Save</button>
+        
+
+</div>
+
+
 
 
 

@@ -4,7 +4,7 @@ from datetime import datetime, date
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-from typing import Optional
+from typing import Optional, List
 
 # from config.database import Base
 
@@ -504,4 +504,21 @@ class InventoryTransactionsPerQuantityUpdate(BaseModel):
     inventory_item_id: Optional[int]
     transaction_type: Optional[str]
     quantity: float
+
+class InventoryItem(BaseModel):
+    inventory_item_id: int
+    quantity: float
+    unit_price: float
+    total_price: float
+    end_user: str
+
+
+class InventoryTransactionsModel2(BaseModel):
+    transaction_type: str
+    transaction_date: str
+    mrs_no: int
+    si_no_or_withslip_no: int
+    items: List[InventoryItem]
+
+
     

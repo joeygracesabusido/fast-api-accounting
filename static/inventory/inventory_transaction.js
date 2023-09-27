@@ -501,3 +501,317 @@ const  displayInventoryTransactionlist =  async () => {
 var Btn_search_inventory_transactions = document.querySelector('#Btn_search_inventory_transactions');
 Btn_search_inventory_transactions.addEventListener("click", displayInventoryTransactionlist);
 
+// Setting the Click Event Listener on the Submit Button
+$(document).ready(function(){
+  var maxField = 10; //Input fields increment limitation
+  var addButton = $('#add_button'); //Add button selector
+  var wrapper = $('#addrow'); //Input field wrapper
+  var x = 0; //Initial field counter is 1
+  
+  // });
+  //Once add button is clicked
+  $(addButton).click(function(){
+      //Check maximum number of input fields
+      x++; //Increment field counter
+      var fieldHTML = `<tr>
+
+      <td>
+         
+      <div class="col-md">
+        <div class="form-floating">
+              <input
+              type="text" hidden
+              name="inventory_item_id${x}"
+              id="inventory_item_id${x}"
+              class="inventory_item_id"
+              style="width: 35px;"
+              
+              >
+              </input
+        
+        </div>
+      </div>
+          
+          
+      </td>
+
+      <td>
+
+      <div class="col-md">
+          <div class="form-floating">
+              <input
+              type="text"
+              name="inventory_id_list${x}"
+              id="inventory_id_list${x}"
+              class="inventory_id_list"
+              style="width: 150px;"
+              
+                >
+                </input
+            
+          </div>
+      </div>
+        
+          
+          
+      </td>
+      
+
+     
+      
+
+      <td>
+          <div class="col-md">
+                <div class="form-floating">
+                    <input
+                    type="number"
+                    name="quantity_list${x}"
+                    id="quantity_list${x}"
+                    class="quantity_list"
+                    step="0.01"
+                    
+                    style="width: 100px;text-align: right;"
+                    
+                      >
+                      </input
+            
+                </div>
+          </div>
+
+
+          
+      </td>
+
+      <td>
+        <div class="col-md">
+              <div class="form-floating">
+              <input
+              type="number"
+              name="unit_price_list${x}"
+              id="unit_price_list${x}"
+              class="unit_price_list"
+              step="0.01"
+              
+              style="width: 100px;text-align: right;"
+              
+                >
+                </input
+                
+              </div>
+        </div>
+
+          
+          
+      </td>
+
+      <td>
+
+        <div class="col-md">
+              <div class="form-floating">
+              <input
+                  type="number"
+                  name="total_price_list${x}"
+                  id="total_price_list${x}"
+                  class="total_price_list"
+                  step="0.01"
+                  
+                  style="width: 150px;text-align: right;"
+                  
+              >
+              </input
+                
+              </div>
+        </div>
+          
+      </td>
+
+      <td>
+
+      <div class="col-md">
+            <div class="form-floating">
+            <input
+                type="text"
+                name="end_user_list${x}"
+                id="end_user_list${x}"
+                class="end_user_list"
+                step="0.01"
+                
+                style="width: 150px;text-align: right;"
+                
+            >
+            </input
+              
+            </div>
+      </div>
+        
+    </td>
+
+    
+      <td>
+          <button type="button"  id="remove_button" class="btn btn-danger"><i class="fas fa-database">
+          </i>X</button>
+      </td>
+      </tr> `; //New input field html 
+      $(wrapper).append(fieldHTML); //Add field html
+
+      // myFunction2();
+      
+  });
+
+
+
+
+  //Once remove button is clicked
+  $(wrapper).on('click', '#remove_button', function(e){
+      e.preventDefault();
+      $(this).closest('tr').remove(); //Remove field html 
+      myFunction2();
+      x--; //Decrement field counter
+  });
+
+  $(document).on('focus', `[id^="end_user_list"]`, function() {
+    $(this).autocomplete({
+    source: "/api-search-autocomplete-equipment-rizal/"
+    });
+    
+   
+});
+
+// this is for autocomplete for 
+$(document).on('focus', `[id^="inventory_id_list"]`, function() {
+  $(this).autocomplete({
+    source: function(request, response) {
+      $.ajax({
+        url: "/api-search-autocomplete-inventory-name-rizal/",
+        data: { term: request.term },
+        dataType: "json",
+        success: function(data) {
+          response(data);
+          
+        }
+      });
+    },
+    minLength: 1, // Minimum number of characters to trigger autocomplete
+    select: function(event, ui) {
+      // Get the current x value from the ID of the input field
+      var x = this.id.match(/\d+/)[0];
+
+      $("#inventory_id_list" + x).val(ui.item.item_name);
+      $("#unit_price_list" + x).val(ui.item.price);
+
+      var unitPrice = parseFloat($("#unit_price_list" + x).val());
+      var quantity = parseFloat($("#quantity_list" + x).val());
+      var totalPrice = unitPrice * quantity;
+
+      $("#total_price_list" + x).val(totalPrice.toFixed(2)); // Set the value with 2 decimal places
+      
+      myFunction2()
+      return false;
+    }
+  });
+});
+
+
+});
+
+
+// this function is for total Amount
+function myFunction2() {
+  let totalPriceElements = document.getElementsByClassName('total_price_list');
+  let total_price_sum = 0;
+
+  for (let i = 0; i < totalPriceElements.length; i++) {
+    let totalValue = parseFloat(totalPriceElements[i].value);
+    if (!isNaN(totalValue)) {
+      total_price_sum += totalValue;
+    }
+  }
+
+  total_price_sum = total_price_sum.toFixed(2);
+  document.getElementById('TotalAmount').value = total_price_sum;
+}
+
+// $(document).ready(function() {
+//   myFunction2(); // Call your function when the document is ready
+
+//   function myFunction2() {
+//     let total_price_sum = 0;
+//     $('.total_price_list').each(function() {
+//       let totalValue = parseFloat($(this).val());
+//       if (!isNaN(totalValue)) {
+//         total_price_sum += totalValue;
+//       }
+//     });
+
+//     total_price_sum = total_price_sum.toFixed(2);
+//     $('#TotalAmount').val(total_price_sum);
+//   }
+
+ 
+// });
+
+
+
+// this function is for inserting data to inventory transactions
+$(document).ready(() => {
+  // Event handler for the "Save" button
+  $("#Btn_save_inventory_list").click(() => {
+    // Gather data from input fields
+    const transactionType = $("#transaction_type_list").val();
+    const transactionDate = $("#transaction_date_list").val();
+    const mrs_no = $("#mrs_no_list").val();
+    const si_no_or_withslip_no = $("#si_no_or_withslip_no_list").val();
+
+    // Gather data from the table (items)
+    const items = [];
+    $("#addrow tbody tr").each(function() {
+      const inventory_item_id = $(this).find(".inventory_item_id").val();
+      const quantity = parseFloat($(this).find(".quantity_list").val());
+      const unitPrice = parseFloat($(this).find(".unit_price_list").val());
+      const totalValue = parseFloat($(this).find(".total_price_list").val());
+      const endUser = $(this).find(".end_user_list").val();
+
+      // Check if any of the numeric fields are not valid numbers
+      if (isNaN(quantity) || isNaN(unitPrice) || isNaN(totalValue)) {
+        alert("Please enter valid numeric values for quantity, unit price, and total price.");
+        return; // Exit the loop and do not proceed
+      }
+
+      items.push({
+        inventory_item_id,
+        quantity,
+        unit_price: unitPrice,
+        total_price: totalValue,
+        end_user: endUser
+      });
+    });
+
+    // Construct the transaction object
+    const transactionData = {
+      transaction_type: transactionType,
+      transaction_date: transactionDate,
+      mrs_no,
+      si_no_or_withslip_no,
+      items
+    };
+
+    // Send an AJAX request to save the transaction
+    $.ajax({
+      type: "POST",
+      url: "/api-insert-inventory-transaction-rizal-employee-testing/",
+      data: JSON.stringify(transactionData),
+      contentType: "application/json",
+      success: (response) => {
+        // Handle the response here, e.g., show a success message
+        console.log("Transaction saved successfully", response);
+        alert("Transaction saved successfully.");
+        // Optionally, you can redirect the user or perform other actions
+      },
+      error: (error) => {
+        // Handle the error here, e.g., show an error message
+        console.error("Error saving transaction", error);
+        alert("Error saving transaction. Please try again.");
+      }
+    });
+  });
+});

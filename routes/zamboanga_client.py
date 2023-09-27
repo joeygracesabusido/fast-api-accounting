@@ -276,7 +276,7 @@ async def insert_journal_entry(request: Request,username: str = Depends(validate
 
 
 @zamboanga_client.post("/insert-journal-entry-zambo2/", response_class=HTMLResponse)
-async def insert_journal_entry(request: Request):
+async def insert_journal_entry(request: Request,username: str = Depends(validateLogin)):
     """This function is for posting accounting"""
     form = await request.form()
 
@@ -288,50 +288,62 @@ async def insert_journal_entry(request: Request):
 
     date_time_obj_to = datetime.strptime(trans_date, '%Y-%m-%d')
 
+    account_title =[]
+    debitAmount = []
+    craditAmount =[]
+    index = 1
+
+    while form.get(f'accountTitle{index}')!= None:
+        account_title.append(form.get(f'accountTitle{index}'))
+        debitAmount.append(form.get(f'amount{index}'))
+        craditAmount.append(form.get(f'credit_amount{index}'))
+        index+=1
+        
+
     
-    account_title =[
-        form.get('accountTitle1'),
-        form.get('accountTitle2'),
-        form.get('accountTitle3'),
-        form.get('accountTitle4'),
-        form.get('accountTitle5'),
-        form.get('accountTitle6'),
-        form.get('accountTitle7'),
-        form.get('accountTitle8'),
-        form.get('accountTitle9'),
-        form.get('accountTitle10')
-    ]
+    # account_title =[
+    #     form.get('accountTitle1'),
+    #     form.get('accountTitle2'),
+    #     form.get('accountTitle3'),
+    #     form.get('accountTitle4'),
+    #     form.get('accountTitle5'),
+    #     form.get('accountTitle6'),
+    #     form.get('accountTitle7'),
+    #     form.get('accountTitle8'),
+    #     form.get('accountTitle9'),
+    #     form.get('accountTitle10')
+    # ]
 
    
     
 
-    debitAmount = [
-        form.get('amount1'),
-        form.get('amount2'),
-        form.get('amount3'),
-        form.get('amount4'),
-        form.get('amount5'),
-        form.get('amount6'),
-        form.get('amount7'),
-        form.get('amount8'),
-        form.get('amount9'),
-        form.get('amount10')
-    ]
+    # debitAmount = [
+    #     form.get('amount1'),
+    #     form.get('amount2'),
+    #     form.get('amount3'),
+    #     form.get('amount4'),
+    #     form.get('amount5'),
+    #     form.get('amount6'),
+    #     form.get('amount7'),
+    #     form.get('amount8'),
+    #     form.get('amount9'),
+    #     form.get('amount10')
+    # ]
     
 
-    craditAmount = [
-        form.get('credit_amount1'),
-        form.get('credit_amount2'),
-        form.get('credit_amount3'),
-        form.get('credit_amount4'),
-        form.get('credit_amount5'),
-        form.get('credit_amount6'),
-        form.get('credit_amount7'),
-        form.get('credit_amount8'),
-        form.get('credit_amount9'),
-        form.get('credit_amount10')
+    # craditAmount = [
+    #     form.get('credit_amount1'),
+    #     form.get('credit_amount2'),
+    #     form.get('credit_amount3'),
+    #     form.get('credit_amount4'),
+    #     form.get('credit_amount5'),
+    #     form.get('credit_amount6'),
+    #     form.get('credit_amount7'),
+    #     form.get('credit_amount8'),
+    #     form.get('credit_amount9'),
+    #     form.get('credit_amount10')
 
-    ]
+    # ]
 
     
 

@@ -1127,6 +1127,26 @@ class Inventory:
 
         session.close()
 
+    def insert_inventory_transaction_list(inventory_trans_list,user):
+        """This function is for inserting Inventory of Rizal """
+        insertDatas = []
+        for i in inventory_trans_list:
+            
+            insertData = InventoryTransaction(inventory_item_id=i.inventory_item_id,transaction_type=i.transaction_type,
+                                          transaction_date=i.transaction_date,quantity=i.quantity,
+                                          unit_price=i.unit_price,total_price=i.total_price,
+                                          mrs_no=i.mrs_no,si_no_or_withslip_no=i.si_no_or_withslip_no,
+                                          end_user=i.end_user,user=user)
+            
+            insertDatas.append(insertData)
+        session = Session(engine)
+
+        session.add(insertData)
+        
+        session.commit()
+
+        session.close()
+
     def get_inventory_transaction(datefrom:Optional[date],dateto:Optional[date],
                                   category_type:Optional[str],end_user:Optional[str],transaction_type:Optional[str]):
         """This is for querying inventory transaction  Table"""
