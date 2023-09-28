@@ -698,6 +698,7 @@ $(document).on('focus', `[id^="inventory_id_list"]`, function() {
 
       $("#inventory_id_list" + x).val(ui.item.item_name);
       $("#unit_price_list" + x).val(ui.item.price);
+      $("#inventory_item_id" + x).val(ui.item.id);
 
       var unitPrice = parseFloat($("#unit_price_list" + x).val());
       var quantity = parseFloat($("#quantity_list" + x).val());
@@ -731,87 +732,133 @@ function myFunction2() {
   document.getElementById('TotalAmount').value = total_price_sum;
 }
 
-// $(document).ready(function() {
-//   myFunction2(); // Call your function when the document is ready
 
-//   function myFunction2() {
-//     let total_price_sum = 0;
-//     $('.total_price_list').each(function() {
-//       let totalValue = parseFloat($(this).val());
-//       if (!isNaN(totalValue)) {
-//         total_price_sum += totalValue;
-//       }
-//     });
-
-//     total_price_sum = total_price_sum.toFixed(2);
-//     $('#TotalAmount').val(total_price_sum);
-//   }
-
- 
-// });
 
 
 
 // this function is for inserting data to inventory transactions
-$(document).ready(() => {
-  // Event handler for the "Save" button
-  $("#Btn_save_inventory_list").click(() => {
-    // Gather data from input fields
-    const transactionType = $("#transaction_type_list").val();
-    const transactionDate = $("#transaction_date_list").val();
-    const mrs_no = $("#mrs_no_list").val();
-    const si_no_or_withslip_no = $("#si_no_or_withslip_no_list").val();
 
-    // Gather data from the table (items)
-    const items = [];
-    $("#addrow tbody tr").each(function() {
-      const inventory_item_id = $(this).find(".inventory_item_id").val();
-      const quantity = parseFloat($(this).find(".quantity_list").val());
-      const unitPrice = parseFloat($(this).find(".unit_price_list").val());
-      const totalValue = parseFloat($(this).find(".total_price_list").val());
-      const endUser = $(this).find(".end_user_list").val();
+const insert_inventory_transaction_list = async () => {
+  // Create an array to store the data for each row
+ 
+  const rowData = [];
+  const elements = document.querySelectorAll('[id^="inventory_id_list"]');
+  elements.forEach((element) => {
+    const inputValue = element.value;
+    const inventoryItemID = document.querySelector(`#${element.id.replace('inventory_id_list', 'inventory_item_id')}`).value;
+    const quantity = document.querySelector(`#${element.id.replace('inventory_id_list', 'quantity_list')}`).value;
+    const unitPrice = document.querySelector(`#${element.id.replace('inventory_id_list', 'unit_price_list')}`).value;
+    const totalPrice = document.querySelector(`#${element.id.replace('inventory_id_list', 'total_price_list')}`).value;
+    const endUser = document.querySelector(`#${element.id.replace('inventory_id_list', 'end_user_list')}`).value;
 
-      // Check if any of the numeric fields are not valid numbers
-      if (isNaN(quantity) || isNaN(unitPrice) || isNaN(totalValue)) {
-        alert("Please enter valid numeric values for quantity, unit price, and total price.");
-        return; // Exit the loop and do not proceed
-      }
+    const trans_type = document.querySelector(`#transaction_type_list`).value;
+    const trans_date = document.querySelector(`#transaction_date_list`).value;
+    const mrs = document.querySelector(`#mrs_no_list`).value;
+    const si_withdrawal_no = document.querySelector(`#si_no_or_withslip_no_list`).value;
 
-      items.push({
-        inventory_item_id,
-        quantity,
-        unit_price: unitPrice,
-        total_price: totalValue,
-        end_user: endUser
-      });
-    });
-
-    // Construct the transaction object
-    const transactionData = {
-      transaction_type: transactionType,
-      transaction_date: transactionDate,
-      mrs_no,
-      si_no_or_withslip_no,
-      items
+    // Create an object for each row of data
+    const rowDataItem ={
+      inventory_item_id: inventoryItemID,
+      transaction_type: trans_type,
+      transaction_date: trans_date,
+      quantity: quantity,
+      unit_price: unitPrice,
+      total_price: totalPrice,
+      mrs_no: mrs,
+      si_no_or_withslip_no: si_withdrawal_no,
+      end_user: endUser,
     };
-
-    // Send an AJAX request to save the transaction
-    $.ajax({
-      type: "POST",
-      url: "/api-insert-inventory-transaction-rizal-employee-testing/",
-      data: JSON.stringify(transactionData),
-      contentType: "application/json",
-      success: (response) => {
-        // Handle the response here, e.g., show a success message
-        console.log("Transaction saved successfully", response);
-        alert("Transaction saved successfully.");
-        // Optionally, you can redirect the user or perform other actions
-      },
-      error: (error) => {
-        // Handle the error here, e.g., show an error message
-        console.error("Error saving transaction", error);
-        alert("Error saving transaction. Please try again.");
-      }
-    });
+   
+   // Add the row's data object to the rowData array
+   rowData.push(rowDataItem);
+    
+  
   });
-});
+
+  // Iterate over rowData (array of objects)
+  rowData.forEach(async (item) => {
+    console.log(item);
+  
+    // Perform custom processing for each item here
+   
+
+    try {
+      const response = await fetch('/api-insert-inventory-transaction-rizal-employee-testing/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(item), // Send the current item as JSON
+      });
+
+      const responseData = await response.json();
+  
+      if (response.status === 401) {
+        window.alert("Unauthorized credential. Please login");
+      } else if (responseData.error) {
+        window.alert("Error: " + responseData.error);
+  
+      } else if (response.status === 200) {
+
+        await updateInventoryItemQuantity2(
+          item.inventory_item_id,
+          item.transaction_type,
+          item.quantity
+        );
+
+        window.alert("Your data has been saved!!!!");
+        // Trigger updateInventory after successfully inserting inventory transactions
+      
+       
+        window.location.assign("/inventory-frame-rizal/");
+      } else {
+        window.alert("An unknown error occurred");
+      }
+    } catch (error) {
+      window.alert(error);
+      console.log(error);
+    }
+  });
+  
+
+  
+  
+  
+};
+
+var Btn_save_inventory_list = document.querySelector('#Btn_save_inventory_list');
+Btn_save_inventory_list.addEventListener('click', insert_inventory_transaction_list);
+
+
+const updateInventoryItemQuantity2 = async (itemId, transactionType, quantity) => {
+  const data = {
+    transaction_type: transactionType,
+    quantity: quantity,
+    // Add other fields here as needed
+  };
+
+  try {
+    const response = await fetch(`/api-update-inventory-item-quantity-rizal-employeeLogin/?id=${itemId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await response.json();
+
+    if (response.status === 401) {
+      window.alert("Unauthorized credential. Please login");
+    } else if (responseData.error) {
+      window.alert("Error: " + responseData.error);
+    } else if (response.status === 200) {
+      // window.alert("Inventory item quantity updated successfully!");
+      // You can perform additional actions here after the update is successful
+    } else {
+      window.alert("An unknown error occurred");
+    }
+  } catch (error) {
+    window.alert(error);
+    console.error("Error updating inventory item quantity:", error);
+  }
+};
+

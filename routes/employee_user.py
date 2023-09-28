@@ -871,7 +871,7 @@ async def insert_inventory_transasction(items:InventoryTransactionsModel,
     except Exception as ex:
         error_message = f"Error due to: {str(ex)}"
         return {"error": error_message}
-    return {"message":"User has been save"} 
+    return {"message":"Data has been save"} 
 
 
 from models.model import InventoryTransactionsModel2
@@ -882,36 +882,36 @@ async def insert_inventory_transasction(
 ):
     try:
 
-        logging.debug(f"Received items: {items}")
-        # if items.transaction_type == 'Withdrawal':
+       
+        if items.transaction_type == 'Withdrawal':
 
-        #     result = Inventory.get_inventory_item_id(item_id=items.inventory_item_id)
+            result = Inventory.get_inventory_item_id(item_id=items.inventory_item_id)
 
-        #     if result.quantity_in_stock >= items.quantity:
+            if result.quantity_in_stock >= items.quantity:
 
-        #         Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
-        #                                             transaction_type=items.transaction_type,
-        #                                             transaction_date=items.transaction_date,
-        #                                             quantity=items.quantity,unit_price=items.unit_price,
-        #                                             total_price=items.total_price,mrs_no=items.mrs_no,
-        #                                             si_no_or_withslip_no=items.si_no_or_withslip_no,
-        #                                             end_user=items.end_user,user=username)
-        #     else:
-        #         return{"error": "Quantity withdrawal is morethan in stock"}
-        # else:
-        #     Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
-        #                                             transaction_type=items.transaction_type,
-        #                                             transaction_date=items.transaction_date,
-        #                                             quantity=items.quantity,unit_price=items.unit_price,
-        #                                             total_price=items.total_price,mrs_no=items.mrs_no,
-        #                                             si_no_or_withslip_no=items.si_no_or_withslip_no,
-        #                                             end_user=items.end_user,user=username)
+                Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
+                                                    transaction_type=items.transaction_type,
+                                                    transaction_date=items.transaction_date,
+                                                    quantity=items.quantity,unit_price=items.unit_price,
+                                                    total_price=items.total_price,mrs_no=items.mrs_no,
+                                                    si_no_or_withslip_no=items.si_no_or_withslip_no,
+                                                    end_user=items.end_user,user=username)
+            else:
+                return{"error": "Quantity withdrawal is morethan in stock"}
+        else:
+            Inventory.insert_inventory_transaction(inventory_item_id=items.inventory_item_id,
+                                                    transaction_type=items.transaction_type,
+                                                    transaction_date=items.transaction_date,
+                                                    quantity=items.quantity,unit_price=items.unit_price,
+                                                    total_price=items.total_price,mrs_no=items.mrs_no,
+                                                    si_no_or_withslip_no=items.si_no_or_withslip_no,
+                                                    end_user=items.end_user,user=username)
 
 
     except Exception as ex:
         error_message = f"Error due to: {str(ex)}"
         return {"error": error_message}
-    return {"message":"User has been save"} 
+    return {"message":"Data has been save"} 
 
 @employee_user.put("/api-update-inventory-item-quantity-rizal-employeeLogin/")
 async def api_update_inventory_item_per_transaction(id,items: InventoryTransactionsPerQuantityUpdate,
