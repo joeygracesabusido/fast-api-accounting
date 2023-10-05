@@ -101,6 +101,8 @@ const  InsertAccessSetting = async () => {
         payroll_read: document.getElementById("payroll_read").value,
         site_transaction_write: document.getElementById("site_transaction_write").value,
         site_transaction_read: document.getElementById("site_transaction_read").value,
+        inventory_write: document.getElementById("inventory_write").value,
+        inventory_read: document.getElementById('inventory_read').value,
        
        
         

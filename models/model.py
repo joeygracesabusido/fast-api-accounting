@@ -468,6 +468,8 @@ class AccessSetting(BaseModel):
     site_transaction_read: bool
     date_updated:  Optional[datetime] 
     date_credited: Optional[datetime]
+    inventory_write: bool
+    inventory_read: bool
 
 
 #============================================Inventory Transaction Frame=====================================

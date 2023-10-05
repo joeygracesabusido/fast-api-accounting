@@ -252,7 +252,9 @@ async def insert_access_login(item:AccessSetting): # this function is for insert
         "payroll_read": item.payroll_read,
         "site_transaction_write": item.site_transaction_write,
         "site_transaction_read": item.site_transaction_read,
-        "date_credited": datetime.now()
+        "date_credited": datetime.now(),
+        "inventory_write": item.inventory_write,
+        "inventory_read": item.inventory_read
  
         }
     mydb.access_setting.insert_one(dataInsert)

@@ -5,6 +5,16 @@ from re import I
 import logging
 
 
+import os
+
+# Set the PASSLIB_BUILTIN_BCRYPT variable
+os.environ['PASSLIB_BUILTIN_BCRYPT'] = 'enabled'
+
+# Import Passlib and continue with your code
+from passlib.hash import bcrypt
+
+
+
 from authentication.utils import OAuth2PasswordBearerWithCookie
 
 from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, status
@@ -31,7 +41,7 @@ mydb = create_mongo_client()
 # from config.db import worker
 
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 from config.models import Dieselrizal_class
 
@@ -731,55 +741,85 @@ async def get_dieselChecker(tripTicket:Optional[str],
 #===================================================Inventory Frame =======================================
 @employee_user.get("/inventory-frame-rizal/", response_class=HTMLResponse)
 async def inventory_frame_rizal(request: Request, username: str = Depends(EmployeevalidateLogin)):
-    return templates.TemplateResponse("rizal/inventory.html", {"request":request})
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['inventory_read'] or i['inventory_write']:
+            return templates.TemplateResponse("rizal/inventory.html", {"request":request})
+        
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+       
+    
 
 
 @employee_user.post("/api-insert-inventory-rizal-employee/")
 async def insert_inventory(items:InventoryItemsModel, username: str = Depends(EmployeevalidateLogin)): # this is for inserting inventory item
-    
-    try:
-        Inventory.insert_invetory_item(item_name=items.item_name, description=items.description,
-                             category=items.category,uom=items.uom,
-                            supplier=items.supplier,price=items.price,quantity_in_stock=items.quantity_in_stock,
-                            minimum_stock_level=items.minimum_stock_level,location=items.location,
-                            tax_code=items.tax_code, user=username)
-        # return('Data has been Save')
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['inventory_write']:
+            try:
+                Inventory.insert_invetory_item(item_name=items.item_name, description=items.description,
+                                    category=items.category,uom=items.uom,
+                                    supplier=items.supplier,price=items.price,quantity_in_stock=items.quantity_in_stock,
+                                    minimum_stock_level=items.minimum_stock_level,location=items.location,
+                                    tax_code=items.tax_code, user=username)
+                # return('Data has been Save')
 
 
-    except Exception as ex:
-        error_message = f"Error due to: {str(ex)}"
-        return {"error": error_message}
-    return {"message":"User has been save"} 
+            except Exception as ex:
+                error_message = f"Error due to: {str(ex)}"
+                return {"error": error_message}
+            return {"message":"User has been save"} 
+        
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
 
 
 @employee_user.get("/api-get-inventory-all-rizal-employeeLogin/")
 async def get_all_inventory_api(username: str = Depends(EmployeevalidateLogin)):
     """This function is to update employee Details"""
-    results = Inventory.get_inventory_all()
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['inventory_read']:
+            results = Inventory.get_inventory_all()
 
-    costData = [
-        
-            {
-                "id": x.id,
-                "item_name": x.item_name,
-                "description": x.description,
-                "category": x.category,
-                "uom": x.uom,
-                "supplier": x.supplier,
-                "price": x.price,
-                "quantity_in_stock": x.quantity_in_stock,
-                "minimum_stock_level": x.minimum_stock_level,
-                "location": x.location,
-                "tax_code": x.tax_code,
-                "user": x.user,
+            costData = [
                 
+                    {
+                        "id": x.id,
+                        "item_name": x.item_name,
+                        "description": x.description,
+                        "category": x.category,
+                        "uom": x.uom,
+                        "supplier": x.supplier,
+                        "price": x.price,
+                        "quantity_in_stock": x.quantity_in_stock,
+                        "minimum_stock_level": x.minimum_stock_level,
+                        "location": x.location,
+                        "tax_code": x.tax_code,
+                        "user": x.user,
+                        
+                    
+                    }
+                    for x in results
+                ]
             
-            }
-            for x in results
-        ]
-    
 
-    return costData
+            return costData
+
+         # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
 
 @employee_user.get("/api-search-autocomplete-inventory-name-rizal/")
 def autocomplete_inventory_item(term: Optional[str] = None):
@@ -824,19 +864,26 @@ def autocomplete_inventory_item(term: Optional[str] = None):
 @employee_user.put("/api-update-inventory-rizal-employeeLogin/")
 async def api_update_inventory_item(id,items: InventoryItemsModel,username: str = Depends(EmployeevalidateLogin)):
     """This function is to update invtory Details"""
-    try:
-        Inventory.update_inventory_item(item_name=items.item_name,description=items.description,
-                                        category=items.category,uom=items.uom,
-                                        supplier=items.supplier,price=items.price,
-                                        minimum_stock_level=items.minimum_stock_level,
-                                        location=items.location,date_updated=datetime.now(),
-                                        tax_code=items.tax_code,user=username,item_id=id)
-        
-    except Exception as ex:
-        error_message = f"Error due to: {str(ex)}"
-        return {"error": error_message}
-    return {"message":"User has been save"} 
-
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['inventory_write']:
+            try:
+                Inventory.update_inventory_item(item_name=items.item_name,description=items.description,
+                                                category=items.category,uom=items.uom,
+                                                supplier=items.supplier,price=items.price,
+                                                minimum_stock_level=items.minimum_stock_level,
+                                                location=items.location,date_updated=datetime.now(),
+                                                tax_code=items.tax_code,user=username,item_id=id)
+                
+            except Exception as ex:
+                error_message = f"Error due to: {str(ex)}"
+                return {"error": error_message}
+            return {"message":"User has been save"} 
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
 
 @employee_user.post("/api-insert-inventory-transaction-rizal-employee/")
 async def insert_inventory_transasction(items:InventoryTransactionsModel,
@@ -1000,7 +1047,22 @@ async def get_all_inventory_transaction_api2(
     
 
     return inventory_transaction_data
-      
+
+@employee_user.get("/api-get-access-setting/") # this is to get access setting
+async def get_all_inventory_transaction_api2(
+                                  username: str = Depends(EmployeevalidateLogin)):
+    
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['inventory_read']:
+            print('True')
+        else:
+            print('False')
+
+
+
+#==========================================Other Cost Frame ===========================================
+
 
 
 
