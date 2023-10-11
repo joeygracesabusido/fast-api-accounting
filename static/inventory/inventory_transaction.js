@@ -474,6 +474,7 @@ const  displayInventoryTransactionlist =  async () => {
          
           tableData+= ` <tr>
                       <td>${columnNumber}</td>
+                      <td>${values.id}</td>
                       <td>${values.transaction_date}</td>
                       <td>${values.item_name}</td>
                       <td>${values.description}</td>
@@ -861,4 +862,13 @@ const updateInventoryItemQuantity2 = async (itemId, transactionType, quantity) =
     console.error("Error updating inventory item quantity:", error);
   }
 };
+
+
+function html_table_excel(type){
+  var data = document.getElementById('table_body');
+  var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+  XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+  XLSX.writeFile(file, 'file.' + type);
+
+}
 

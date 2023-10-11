@@ -661,7 +661,10 @@
 
                         
                             <button type="button" id="Btn_search_inventory_transactions"   class="btn btn-success">Search</button>
-
+                            <button type="submit"  onclick="html_table_excel('xlsx')" class="btn btn-secondary">
+                                Export Excel
+                                <i class="fas fa-database"></i>
+                            </button>
                                                     
                         
                     </div>
@@ -671,6 +674,7 @@
                             <thead class="table-dark">
                                 <tr>
                                     <td>No.</td>
+                                    <td>Trans ID</td>
                                     <td>Date</td>
                                     <td>Item Name</td>
                                     <td>Description</td>
@@ -689,6 +693,7 @@
                             
                                     
                                     <tr >
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
