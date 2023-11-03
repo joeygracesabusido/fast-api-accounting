@@ -145,6 +145,33 @@ class Cashadvance(BaseModel):
     ca_deduction:float
 
 
+class SgmcEquipment(BaseModel):
+    """This is for equipmenti Pydantic model for SGMC"""
+
+    equipment_id: str 
+    equipmentDiscription: str 
+    rentalRate: float
+    comments: str 
+    owners: str 
+    user: Optional[str]
+    date_updated:  Optional[datetime] 
+    date_credited: Optional[datetime] 
+
+class RentalSgmc(BaseModel):
+    """This is for SGMC Rental Equipment model"""
+    transDate: date
+    eur: str 
+    equipment_id: str 
+    timeIn: float
+    timeOut: float
+    totalHours: float
+    rentalRate: float
+    amount: float
+    shift: str 
+    driver_operator: str 
+    user: Optional[str]
+    date_updated:  Optional[datetime]
+    date_credited: Optional[datetime]
 
 
 # ==========================================Zamboanga Table============================================
