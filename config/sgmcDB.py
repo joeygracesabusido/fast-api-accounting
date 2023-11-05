@@ -111,12 +111,12 @@ class SGMCViews():
             return data
 
     @staticmethod
-    def insert_rental_sgmc(transDate,demr,equipment_id,timeIn,timeOut,
+    def insert_rental_sgmc(transDate,eur,equipment_id,timeIn,timeOut,
                             totalHours,rentalRate,amount,shift,
                                 driver_operator,user,date_credited):# this function is for inserting Equipment Rental
 
         
-        insertData = SgmcRental(transDate=transDate,demr=demr,equipment_id=equipment_id,
+        insertData = SgmcRental(transDate=transDate,eur=eur,equipment_id=equipment_id,
                                 timeIn=timeIn,timeOut=timeOut,totalHours=totalHours,
                                 rentalRate=rentalRate,amount=amount,shift=shift,driver_operator=driver_operator,
                                 user=user,date_credited=date_credited)
@@ -126,6 +126,68 @@ class SGMCViews():
         session.add(insertData)
         session.commit()
         session.close()
+
+
+    @staticmethod
+    def getRental( datefrom: Optional[date],
+        dateto: Optional[date],
+        equipment_id: Optional[str]): # this function is to get all record for rental in SGMC
+
+        with Session(engine) as session:
+            
+            statement = select(SgmcRental).where(SgmcRental.transDate.between(datefrom,dateto))\
+                .filter(SgmcRental.equipment_id.like ('%'+ equipment_id +'%')).order_by(SgmcRental.id)
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
+        
+    @staticmethod
+    def getRental_id(item_id): # this function is to get record for rental tru id in GRC
+
+        with Session(engine) as session:
+            
+            statement = select(SgmcRental).where(SgmcRental.id == item_id)
+            results = session.exec(statement) 
+
+            data = results.one()
+
+            
+            return data
+
+    def updateRental(transDate,eur,equipment_id,timeIn,
+                    timeOut,totalHours,rentalRate,amount,
+                    shift,driver_operator,user,date_updated,item_id):
+        """This function is for updating Rental in Smgc Project"""
+
+        with Session(engine) as session:
+            statement = select(SgmcRental).where(SgmcRental.id == item_id)
+            results = session.exec(statement)
+
+            result = results.one()
+
+            
+            result.transDate = transDate
+            result.eur = eur
+            result.equipment_id = equipment_id
+            result.timeIn = timeIn
+            result.timeOut = timeOut
+            result.totalHours = totalHours
+            result.rentalRate = rentalRate
+            result.amount = amount
+            result.shift = shift
+            result.driver_operator = driver_operator
+            result.user = user
+            result.date_updated = date_updated
+
+            
+
+        
+            session.add(result)
+            session.commit()
+            session.refresh(result)
 
 
 # create_db_and_tables()

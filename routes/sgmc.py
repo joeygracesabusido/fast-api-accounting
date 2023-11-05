@@ -76,22 +76,41 @@ def ValidationLogin(request:Request):
 
 @sgmcRouter.get("/employee-transaction-sgmc/", response_class=HTMLResponse)
 async def sgmc_template(request: Request, username: str = Depends(ValidationLogin)):
-    return templates.TemplateResponse("sgmc/sgmc_transaction.html", {"request":request}) 
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc':
+            return templates.TemplateResponse("sgmc/sgmc_transaction.html", {"request":request}) 
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
 
 @sgmcRouter.post("/insert-equipment-sgmc/")
 async def insert_rental_sgmc(items:SgmcEquipment, username: str = Depends(ValidationLogin)):
     """This function is for inserting equipment to GRC table"""
-    try:
-        SGMCViews.insert_equipment_sgmc(equipment_id=items.equipment_id,equipmentDiscription=items.equipmentDiscription,
-                                        rentalRate=items.rentalRate, comments=items.comments,owners=items.owners,
-                                        user=username,date_credited=datetime.now())
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_write'] \
+                and i['site_transaction_read']:
+            try:
+                SGMCViews.insert_equipment_sgmc(equipment_id=items.equipment_id,equipmentDiscription=items.equipmentDiscription,
+                                                rentalRate=items.rentalRate, comments=items.comments,owners=items.owners,
+                                                user=username,date_credited=datetime.now())
 
-        return('Data has been Save')
+                return('Data has been Save')
 
-    except Exception as e:
-        error_message = str(e)  # Use the actual error message from the exception
-       
-        return {"error": error_message}
+            except Exception as e:
+                error_message = str(e)  # Use the actual error message from the exception
+            
+                return {"error": error_message}
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
 
 @sgmcRouter.get("/api-search-autocomplete-sgmc-equipment/")
 def autocomplete_grc_equipment(term: Optional[str] = None): # this is for autocomplete of equipment
@@ -108,19 +127,128 @@ def autocomplete_grc_equipment(term: Optional[str] = None): # this is for autoco
     suggestions = [{"value": item.equipment_id,"rentalRate": item.rentalRate} for item in filtered_equipment]
     return suggestions
 
-@sgmcRouter.post("/api-insert-grc-rental/")
+@sgmcRouter.post("/api-insert-sgmc-rental/")
 async def insert_rental_GRC(items:RentalSgmc, username: str = Depends(ValidationLogin)):
-    """This function is for inserting equipment to GRC table"""
-    try:
-        SGMCViews.insert_rental_sgmc(transDate=items.transDate,demr=items.demr,equipment_id=items.equipment_id,
-                                    timeIn=items.timeIn,timeOut=items.timeOut,totalHours=items.totalHours,
-                                        rentalRate=items.rentalRate,amount=items.amount,
-                                            shift=items.shift,driver_operator=items.driver_operator,user=username,
-                                            date_credited=datetime.now)
+    """This function is for inserting rental for  SGMC  table"""
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_write'] \
+                and i['site_transaction_read']:
+            try:
+                SGMCViews.insert_rental_sgmc(transDate=items.transDate,eur=items.eur,equipment_id=items.equipment_id,
+                                            timeIn=items.timeIn,timeOut=items.timeOut,totalHours=items.totalHours,
+                                                rentalRate=items.rentalRate,amount=items.amount,
+                                                    shift=items.shift,driver_operator=items.driver_operator,user=username,
+                                                    date_credited=datetime.now)
 
-        return('Data has been Save')
+                return('Data has been Save')
+
+            except Exception as e:
+                error_message = str(e)  # Use the actual error message from the exception
+            
+                return {"error": error_message}
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+    
+@sgmcRouter.get("/api-get-sgmc-rental-transaction/")
+async def getRental_views(datefrom: Optional[date],dateto:Optional[date],equipment_id: Optional[str],
+                            username: str = Depends(ValidationLogin))->List:
+    """This function is to update employee Details"""
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_read']:
+
+            results = SGMCViews.getRental(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+            rentalData = [
+                
+                    {
+                    "id": x. id,
+                        "transDate": x.transDate,
+                        "eur": x.eur,
+                        "equipment_id": x.equipment_id,
+                        "timeIn": x.timeIn,
+                        "timeOut": x.timeOut,
+                        "totalHours": x.totalHours,
+                        "rentalRate": x.rentalRate,
+                        "amount": x.amount,
+                        "shift": x.shift,
+                        "driver_operator": x.driver_operator,
+                        "user": x.user,
+
+                    
+                    }
+                    for x in results
+                ]
+            
+        
+            return rentalData
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+    
+
+@sgmcRouter.get("/update-rental-sgmc/{id}", response_class=HTMLResponse)
+async def grc_template(id:Optional[int],request: Request, username: str = Depends(ValidationLogin)):
+
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_write']:
+
+            results = SGMCViews.getRental_id(item_id=id)
+
+            rentalData = [
+                
+                    {
+                    "id": results.id,
+                        "transDate": results.transDate,
+                        "eur": results.eur,
+                        "equipment_id": results.equipment_id,
+                        "timeIn": results.timeIn,
+                        "timeOut": results.timeOut,
+                        "totalHours": results.totalHours,
+                        "rentalRate": results.rentalRate,
+                        "amount": results.amount,
+                        "shift": results.shift,
+                        "driver_operator": results.driver_operator,
+                        "user": results.user,
+
+                    
+                    }
+                
+                ]
+            
+        
+            return templates.TemplateResponse("sgmc/sgmc_update_rental.html", {"request":request,"rentalData":rentalData})
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+    
+@sgmcRouter.put("/api-update-rental-sgmc/{id}")
+async def updateGRCRental(id,items:RentalSgmc,username: str = Depends(ValidationLogin)):
+    """This function is to update Rental"""
+    today = datetime.now()
+    try:
+        SGMCViews.updateRental(transDate=items.transDate,eur=items.eur,equipment_id=items.equipment_id,
+                                timeIn=items.timeIn,timeOut=items.timeOut,
+                                totalHours=items.totalHours,rentalRate=items.rentalRate,
+                                amount=items.amount,shift=items.shift,driver_operator=items.driver_operator,
+                                user=username,date_updated=today,item_id=id)
 
     except Exception as e:
         error_message = str(e)  # Use the actual error message from the exception
-       
+    
         return {"error": error_message}
+
+
+    return  {'Messeges':'Data has been Updated'}

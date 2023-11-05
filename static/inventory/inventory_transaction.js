@@ -864,17 +864,12 @@ const updateInventoryItemQuantity2 = async (itemId, transactionType, quantity) =
 };
 
 
-document.addEventListener("DOMContentLoaded", function() {
-  // Your code here
-  html_table_excel(type);
-});
 
-
-function html_table_excel(type){
+function html_table_excel(type) {
   var data = document.getElementById('table_body_inventory_transaction_list');
-  var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
-  XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
-  XLSX.writeFile(file, 'file.' + type);
-
+  var file = XLSX.utils.table_to_book(data, { sheet: "sheet1" });
+  XLSX.write(file, { booktype: type, bookSST: true, type: 'base64' });
+  XLSX.writeFile(file, 'inventory.' + type);
 }
+
 
