@@ -6,7 +6,7 @@ from datetime import datetime, date
 
 from schemas.user import usersEntity
 
-from models.model import SgmcEquipment, RentalSgmc
+from models.model import SgmcEquipment, RentalSgmc, DieselSGMC
 from config.sgmcDB import SGMCViews
 
 # from config.db import mydb
@@ -124,7 +124,7 @@ def autocomplete_grc_equipment(term: Optional[str] = None): # this is for autoco
     else:
         filtered_equipment = []
 
-    suggestions = [{"value": item.equipment_id,"rentalRate": item.rentalRate} for item in filtered_equipment]
+    suggestions = [{"value": item.equipment_id,"rentalRate": item.rentalRate,"id":item.id} for item in filtered_equipment]
     return suggestions
 
 @sgmcRouter.post("/api-insert-sgmc-rental/")
@@ -237,18 +237,148 @@ async def grc_template(id:Optional[int],request: Request, username: str = Depend
 @sgmcRouter.put("/api-update-rental-sgmc/{id}")
 async def updateGRCRental(id,items:RentalSgmc,username: str = Depends(ValidationLogin)):
     """This function is to update Rental"""
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_write']:
+            today = datetime.now()
+            try:
+                SGMCViews.updateRental(transDate=items.transDate,eur=items.eur,equipment_id=items.equipment_id,
+                                        timeIn=items.timeIn,timeOut=items.timeOut,
+                                        totalHours=items.totalHours,rentalRate=items.rentalRate,
+                                        amount=items.amount,shift=items.shift,driver_operator=items.driver_operator,
+                                        user=username,date_updated=today,item_id=id)
+
+            except Exception as e:
+                error_message = str(e)  # Use the actual error message from the exception
+            
+                return {"error": error_message}
+
+
+            return  {'Messeges':'Data has been Updated'}
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+                
+                )
+
+@sgmcRouter.post("/api-insert-diesel-sgmc/")
+async def insert_diesel_sgmc(items:DieselSGMC, username: str = Depends(ValidationLogin) ): # this function is for inserting diesel 
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_write']:
+            try:
+                SGMCViews.insert_diesel_sgmc(transDate=items.transDate,withdrawal_slip=items.withdrawal_slip,
+                                             equipment_id=items.equipment_id,literUse=items.literUse,
+                                             price=items.price,amount=items.amount,
+                                             user=username,date_credited=datetime.now())
+
+                return('Data has been Save')
+
+            except Exception as e:
+                error_message = str(e)  # Use the actual error message from the exception
+            
+                return {"error": error_message}
+            
+    # error message if not autorized for this transaction
+    raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized",
+            
+            )
+
+
+@sgmcRouter.get("/api-get-sgmc-diesel-transaction/")
+async def getRental_views(datefrom: Optional[date],dateto:Optional[date],equipment_id: Optional[str],
+                            username: str = Depends(ValidationLogin))->List:
+    """This function is to update employee Details"""
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_read']:
+
+            results = SGMCViews.get_diesel(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+            dieselData = [
+                
+                    {
+                    "id": diesel_data. id,
+                        "transDate": diesel_data.transDate,
+                        "withdrawal_slip": diesel_data.withdrawal_slip,
+                        "equipment_id": equipment_data.equipment_id,
+                        "literUse": diesel_data.literUse,
+                        "price": diesel_data.price,
+                        "amount": diesel_data.amount,
+                        "user": diesel_data.user,
+                        "date_credited": diesel_data.date_credited,
+                       
+
+                    
+                    }
+                    for diesel_data,equipment_data in results
+                ]
+            
+        
+            return dieselData
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+    
+
+@sgmcRouter.get("/update-diesel-sgmc/{id}", response_class=HTMLResponse)
+async def grc_template(id:Optional[int],request: Request, username: str = Depends(ValidationLogin)):
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_read']:
+
+            results = SGMCViews.getDiesel_id(item_id=id)
+
+            dieselData = [
+                
+                    {
+                    "id": diesel_data. id,
+                        "transDate": diesel_data.transDate,
+                        "withdrawal_slip": diesel_data.withdrawal_slip,
+                        "equipment_id": equipment_data.equipment_id,
+                        "literUse": diesel_data.literUse,
+                        "price": diesel_data.price,
+                        "amount": diesel_data.amount,
+                        "user": diesel_data.user,
+                        "date_credited": diesel_data.date_credited,
+                        "equipment_id_id": equipment_data.id,
+
+                    
+                    }
+                    for diesel_data,equipment_data in results
+            ]
+            
+            # print(dieselData)
+        
+            return templates.TemplateResponse("sgmc/sgmc_update_diesel.html", {"request":request,"dieselData":dieselData})
+
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )   
+
+
+@sgmcRouter.put("/api-update-diesel-sgmc/{id}")
+async def updateGRCRental(id,items:DieselSGMC,username: str = Depends(ValidationLogin)):
+    """This function is to update Rental"""
     today = datetime.now()
     try:
-        SGMCViews.updateRental(transDate=items.transDate,eur=items.eur,equipment_id=items.equipment_id,
-                                timeIn=items.timeIn,timeOut=items.timeOut,
-                                totalHours=items.totalHours,rentalRate=items.rentalRate,
-                                amount=items.amount,shift=items.shift,driver_operator=items.driver_operator,
-                                user=username,date_updated=today,item_id=id)
-
+        SGMCViews.updateDiesel(transDate=items.transDate,withdrawal_slip=items.withdrawal_slip,
+                               equipment_id=items.equipment_id,literUse=items.literUse,
+                              price=items.price,amount=items.amount,user=username,
+                              date_updated=today,item_id=id)
     except Exception as e:
         error_message = str(e)  # Use the actual error message from the exception
     
         return {"error": error_message}
 
 
-    return  {'Messeges':'Data has been Updated'}
+    return  {'Messeges':'Data has been Updated'}  

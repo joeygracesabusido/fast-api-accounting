@@ -4,7 +4,6 @@ from sqlmodel import Field, Session, SQLModel, create_engine,select,func,funcfil
 from sqlalchemy.exc import SQLAlchemyError
 
 from datetime import datetime, date
-import mysql.connector
 
 import urllib.parse
 
@@ -61,12 +60,13 @@ class SgmcRental(SQLModel, table=True):
 
     __table_args__ = (Index("idx_grcEquipment_unique", "eur", unique=True),)
 
-class DieselSgmc(SQLModel, table=True):
+
+class DieselSGMC(SQLModel, table=True):
     __tablename__ = 'diesel_sgmc'
     id: Optional[int] = Field(default=None, primary_key=True)
     transDate: date
     withdrawal_slip: str = Field(max_length=50)
-    equipment_id: str = Field(default=None,index=True)
+    equipment_id: Optional[int] = Field(default=None, foreign_key="sgmc_equipment.id")
     literUse: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     price: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
@@ -75,7 +75,6 @@ class DieselSgmc(SQLModel, table=True):
     date_credited: datetime = Field(default_factory=datetime.utcnow)
 
     __table_args__ = (Index("idx_DieselGrc_unique", "withdrawal_slip", unique=True),)
-
 
 
 
@@ -156,7 +155,7 @@ class SGMCViews():
 
             
             return data
-
+    @staticmethod
     def updateRental(transDate,eur,equipment_id,timeIn,
                     timeOut,totalHours,rentalRate,amount,
                     shift,driver_operator,user,date_updated,item_id):
@@ -188,6 +187,98 @@ class SGMCViews():
             session.add(result)
             session.commit()
             session.refresh(result)
+
+    
+
+    @staticmethod
+    def insert_diesel_sgmc(transDate,withdrawal_slip,equipment_id,literUse,price,
+                            amount, user, date_credited):# this function is for inserting Diesel
+
+        
+        insertData = DieselSGMC(transDate=transDate,withdrawal_slip=withdrawal_slip,
+                                equipment_id=equipment_id,literUse=literUse,price=price,
+                                amount=amount,user=user,date_credited=date_credited)
+
+
+        session = Session(engine)
+        session.add(insertData)
+        session.commit()
+        session.close()
+
+
+    @staticmethod
+    def get_diesel( datefrom: Optional[date],
+        dateto: Optional[date],
+        equipment_id: Optional[str]): # this function is to get all record for rental in SGMC
+
+        with Session(engine) as session:
+            
+            statement = select(DieselSGMC, SgmcEquipment) \
+                .where(
+                    (DieselSGMC.equipment_id == SgmcEquipment.id) &
+                        DieselSGMC.transDate.between(datefrom,dateto) 
+                      
+                )
+            
+            if equipment_id:
+                statement = statement.where(SgmcEquipment.equipment_id.ilike(f'%{equipment_id}%'))
+
+
+            results = session.exec(statement)
+            data = results.all()
+
+            
+            return data
+        
+    @staticmethod
+    def getDiesel_id(item_id): # this function is to get record for rental tru id in SGMC
+
+        with Session(engine) as session:
+
+            statement = select(DieselSGMC, SgmcEquipment) \
+                .where(
+                    (DieselSGMC.equipment_id == SgmcEquipment.id) &
+                        DieselSGMC.id == item_id
+                      
+                )
+            
+            
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
+
+    @staticmethod   
+    def updateDiesel(transDate,withdrawal_slip,equipment_id,literUse,price,
+                            amount, user,date_updated,item_id):
+        """This function is for updating Rizal Equipment"""
+
+        with Session(engine) as session:
+            statement = select(DieselSGMC).where(DieselSGMC.id == item_id)
+            results = session.exec(statement)
+
+            result = results.one()
+
+            
+            result.transDate = transDate
+            result.withdrawal_slip = withdrawal_slip
+            result.equipment_id = equipment_id
+            result.literUse = literUse
+            result.price = price
+            result.amount = amount
+            result.user = user
+            result.date_updated = date_updated
+
+            
+
+        
+            session.add(result)
+            session.commit()
+            session.refresh(result)
+      
+
 
 
 # create_db_and_tables()

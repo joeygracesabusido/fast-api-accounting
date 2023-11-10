@@ -267,4 +267,489 @@ BtnSearch_Rental.addEventListener("click", displayRental);
     document.querySelector("#totalHours_rental").value = sumTotalHoursComma;
 };
 
+// this function is for printing PDF for rental Report
+
+const printRentalPDF = async () => {
+
+    var datefrom = document.getElementById("datefrom_rental").value;
+    var dateto = document.getElementById("dateto_rental").value;
+    var equipmentID = document.getElementById("equipmentID_rental").value;
+  
+    const search_url = `/api-get-sgmc-rental-transaction/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+  
+    const response = await fetch(search_url);
+    const dataSet = await response.json();
+    
+      const docDefinition = {
+        pageOrientation: 'landscape',
+        content: [
+          { text: 'LD GLOBAL LEGACY, INC.', style: 'header' },
+          { text: 'EQUIPMENT RENTAL REPORT', style: 'header' },
+          { text: `COVERAGE : Date From: ${datefrom}  AND  Date TO: ${dateto}`, style: 'header' },
+          { text: '\n' },
+          {
+            table: {
+              headerRows: 1,
+              widths: ['auto', 'auto', 'auto', 'auto'],
+              body: [
+                ['Equipment ID', 'Total Hours', 'Total Amount', 'Entries'],
+                ...generateTableRows(dataSet),
+              ],
+            },
+            layout: {
+              defaultBorder: false,
+              paddingTop: function (i, node) { return 5; },
+              paddingBottom: function (i, node) { return 5; },
+            },
+          },
+
+          { text: '\n' },
+// this start of signatories
+          {
+            columns: [
+              // "Prepared by" section
+              {
+                width: 'auto',
+                stack: [
+                  { text: 'Prepared by:', style: 'right_side_task' },
+                  { text: 'MARIA LOIDA YANA', style: 'right_side_name_desig' },
+                  { text: 'Billing/Accounting', style: 'right_side_name_desig' }, // You can add additional empty lines if needed
+                ],
+              },
+
+              
+
+      
+              // "Reconciled by" section
+              {
+                width: 'auto',
+                stack: [
+                  { text: 'Reconciled by:', style: 'left_side_task' },
+                  { text: 'MARIA LOURDES R. ACERO', style: 'left_side_name_desig' },
+                  { text: 'BILLING/ACCOUNTING ENGINEERING MONITORING SUPERVISOR', style: 'left_side_name_desig' },
+                ],
+              },
+
+              
+            ],
+
+
+        
+          },
+
+          { text: '\n' },
+          {
+          columns: [
+          
+
+             // "Noted by" section
+             {
+              width: 'auto',
+              stack: [
+                { text: 'Noted  by:',style: 'right_side_task' },
+                { text: 'ARIEL GACES', style: 'right_side_name_desig' },
+                { text: 'LD Global - Officer in Charge', style: 'right_side_name_desig' },
+              ],
+            },
+
+            // "Reconciled by" section
+            {
+                width: 'auto',
+                stack: [
+                  { text: 'Recommending Approval:', style: 'left_side_task_2nd' },
+                  { text: 'ENGR. FITZGERALD CANAREZ', style: 'left_side_name_desig_2nd' },
+                  { text: 'OPERATIONS MINE SUPERVISOR', style: 'left_side_name_desig_2nd' },
+                ],
+              },
+
+          
+          ],
+
+        },
+
+        { text: '\n' },
+          {
+          columns: [
+          
+
+             // "Verified  by" section
+             {
+              width: 'auto',
+              stack: [
+                { text: 'Verified  by:',style: 'left_side_task_3rd' },
+                { text: 'RAYMOND C. SINOC', style: 'left_side_name_desig_3rd' },
+                { text: 'SGMC - BILLING OFFICER', style: 'left_side_name_desig_3rd' },
+              ],
+            },
+
+           
+
+          
+          ],
+
+        },
+// this is the part of 
+        ],
+        styles: {
+          header: {
+            fontSize: 15,
+            bold: true,
+            alignment: 'center',
+          },
+          bodyText: {
+            fontSize: 10,
+            alignment: 'right',
+          },
+          entryText: {
+            fontSize: 11,
+            bold: false,
+            alignment: 'right',
+          },
+
+        // this is for right side task 
+        right_side_task: { 
+            fontSize: 11,
+            bold: false,
+            margin: [20, 0, 0, 0],
+          },
+
+        right_side_name_desig: {
+            fontSize: 11,
+            bold: false,
+            margin: [50, 0, 0, 0],
+          },
+
+
+        //   this is for left side task
+          left_side_task: { 
+            fontSize: 11,
+            bold: false,
+            margin: [220, 0, 0, 0],
+          },
+
+          left_side_task_2nd: {
+            fontSize: 11,
+            bold: false,
+            margin: [180, 0, 0, 0],
+          },
+
+          left_side_task_3rd: {
+            fontSize: 11,
+            bold: false,
+            margin: [365, 0, 0, 0],
+          },
+
+          left_side_name_desig: {
+            fontSize: 11,
+            bold: false,
+            margin: [270, 0, 0, 0],
+          },
+
+          left_side_name_desig_2nd: {
+            fontSize: 11,
+            bold: false,
+            margin: [230, 0, 0, 0],
+          },
+
+          left_side_name_desig_3rd: {
+            fontSize: 11,
+            bold: false,
+            margin: [415, 0, 0, 0],
+          },
+          
+        },
+      };
+      
+      function generateTableRows(dataSet) {
+        const rows = [];
+        const groupedData = groupDataByEquipment(dataSet);
+      
+        Object.entries(groupedData).forEach(([equipmentId, equipmentData]) => {
+          rows.push([
+            equipmentId,
+            equipmentData.totalHours ? equipmentData.totalHours.toLocaleString("en-US") : '',
+            equipmentData.amount ? equipmentData.amount.toLocaleString("en-US") : '',
+            generateEntriesTable(equipmentData.entries),
+          ]);
+        });
+      
+        return rows;
+      }
+      
+      function groupDataByEquipment(dataSet) {
+        const groupedData = {};
+        dataSet.forEach((data) => {
+          const { equipment_id, totalHours, amount } = data;
+          if (!groupedData[equipment_id]) {
+            groupedData[equipment_id] = {
+                totalHours: 0,
+            amount: 0,
+              entries: [],
+            };
+          }
+          groupedData[equipment_id].totalHours += parseFloat(totalHours);
+          groupedData[equipment_id].amount += parseFloat(amount);
+          groupedData[equipment_id].entries.push(data);
+        });
+        return groupedData;
+      }
+      
+      function generateEntriesTable(entries) {
+        const body = [
+          [
+            { text: 'ID', style: 'entryText' },
+            { text: 'Trans Date', style: 'entryText' },
+            { text: 'EUR', style: 'entryText' },
+            { text: 'Total Hours', style: 'entryText' },
+            { text: 'Rental Rate', style: 'entryText' },
+            { text: 'Rental Amount', style: 'entryText' },
+          ],
+          ...entries.map((entry) =>  [
+           
+            { text: entry.id.toString(), style: 'entryText' },
+            { text: entry.transDate, style: 'entryText' },
+            { text: entry.eur, style: 'entryText' },
+            { text: entry.totalHours, style: 'entryText' },
+            { text: entry.rentalRate, style: 'entryText' },
+            { text: entry.amount, style: 'entryText' },
+          
+          ]),
+
+        
+
+          
+
+        ];
+      
+        return {
+          table: {
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            body,
+          },
+          layout: 'lightHorizontalLines',
+        };
+      }
+
+      
+
+      
+      
+      const pdfDoc = pdfMake.createPdf(docDefinition);
+      pdfDoc.download('rental_report.pdf');
+      
+}
+
+const BTN_printRentalPDF = document.querySelector('#printRentalPDF');
+BTN_printRentalPDF.addEventListener("click", printRentalPDF);
+
+
+function html_table_excel_rental(type){
+    var data = document.getElementById('table_body_rental');
+    var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+    XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+    XLSX.writeFile(file, 'rentallist.' + type);
+
+}
+
+
+
+// ======================================Diesel Transaction==============================
+
+// this is for autocomplete of equipment for diesel
+
+
+$(document).ready(function() {
+    $("#equipment_id_diesel").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "/api-search-autocomplete-sgmc-equipment/",
+                data: { term: request.term },
+                dataType: "json",
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        select: function(event, ui) {
+            $("#equipment_id_diesel").val(ui.item.value);
+            $("#equip_id").val(ui.item.id);
+            
+            return false;
+        }
+    });
+});
+
+
+// this function is for calculation of Diesel Amount
+$(document).ready(function() {
+    $('#literUse_diesel, #price_diesel').on('input', function() {
+        calculateDiesel();
+    });
+    });
+
+    function calculateDiesel() {
+    let product
+    var liters = $('#literUse_diesel').val() || 0;
+    var price = $('#price_diesel').val() || 0;
+    
+    product = liters  * price;
+    // product = product.toFixed(2)
+    var formattedAmount = product.toLocaleString("en-US", { style: "currency", currency: "Php" });
+    const stringNumber2 = product.toFixed(2)
+    $('#amount_diesel').val(formattedAmount);
+    $('#amount_diesel2').val(stringNumber2);
+    
+    }
+
+// this function is for Inserting Diesel
+    const insertDiesel = async () => {
+        const data = {
+            transDate: document.getElementById("transDate_diesel").value,
+            withdrawal_slip: document.getElementById("withdrawal_slip_diesel").value,
+            equipment_id: document.getElementById("equip_id").value,
+            literUse: document.getElementById("literUse_diesel").value,
+            price: document.getElementById("price_diesel").value,
+            amount: document.getElementById("amount_diesel2").value,
+           
+           
+        };
+        console.log(data)
+    
+        try {
+            const response = await fetch(`/api-insert-diesel-sgmc/`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+    
+            const responseData = await response.json();
+            console.log(responseData);
+            
+            if (responseData.error) {
+                // Error occurred on the server side
+                if (responseData.error === "Duplicate entry for Withdrawal Slip") {
+                    window.alert("Error: Duplicate entry for Withdrawal Slip");
+                } 
+                else {
+                    window.alert("Error: " + responseData.error);
+                }
+            }else if (response.status === 401) {
+                window.alert("Unauthorized credential. Please login");
+            }
+             else {
+                // Data saved successfully
+                window.alert("Your data has been saved!!!!");
+                window.location.assign("/employee-transaction-sgmc/");
+            }
+           
+            
+        } catch (error) {
+            window.alert(error);
+            console.log(error);
+        }
+    };
+
+    var BtnSave_diesel = document.querySelector('#Btn_diesel_save');
+    BtnSave_diesel.addEventListener("click", insertDiesel);
+
+
+    // this function is for displaying Diesel Transaction 
+    const  displayDiesel =  async () => {
+        var datefrom = document.getElementById("datefrom_diesel").value || ''
+        var dateto = document.getElementById("dateto_diesel").value || ''
+        var equipmentID = document.getElementById("equipmentID_diesel").value || ''
+        
+        const search_url = `/api-get-sgmc-diesel-transaction/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+    
+    
+        const responce = await fetch(search_url)
+        const data = await responce.json();
+        console.log(data)
+    
+        if (data.length === 0) {
+                window.alert('No Data available');
+            };
+        
+        
+        if (responce.status === 200){
+            let tableData="";
+            let sum = 0;
+            data.map((values, index)=>{
+                const columnNumber = index + 1; 
+                
+                tableData+= ` <tr>
+                            <td>${columnNumber}</td>
+                            <td>${values.id}</td>
+                            <td>${values.transDate}</td>
+                            <td>${values.withdrawal_slip}</td>
+                            <td>${values.equipment_id}</td>
+                            <td>${values.literUse}</td>
+                            <td>${values.price}</td>
+                            <td>${values.amount}</td>
+                            
+                            
+                            <td>
+                                <a href="/update-diesel-sgmc/${values.id}"
+                                <button type="button" class="btn btn-primary">
+                                <i class="fas fa-database"></i> Edit</button></a> 
+                        
+                            </td>
+                        
+                        </tr>`;
+            });
+            document.getElementById("table_body_diesel").innerHTML=tableData;
+            // var test = 1000
+            // document.getElementById("fter_totalBillinglTons").value = test;
+            sumtoTalAmountDiesel()
+        }else if (responce.status === 401){
+            window.alert("Unauthorized Credentials Please Log in")
+        }
+    
+    };
+    
+    
+    var BtnSearch_Diesel = document.querySelector('#BtnSearch_diesel');
+    BtnSearch_Diesel.addEventListener("click", displayDiesel);
+    
+    
+       // This is for total of Rental 
+       const sumtoTalAmountDiesel = () => {
+        const table = document.querySelector("#table_body_diesel");
+        let sumTotalLiterrs = 0;
+        let sumTotalAmount = 0;
+    
+        table.querySelectorAll("tr").forEach(row => {
+            sumTotalLiterrs += parseFloat(row.querySelectorAll("td")[5].textContent);
+            sumTotalAmount += parseFloat(row.querySelectorAll("td")[7].textContent);
+        });
+    
+        // const sumTotalHoursComma = sumTons.toLocaleString("en-US");
+        const sumTotalLitersComa= sumTotalLiterrs.toLocaleString("en-US");
+        const sumTotalAmountComma = sumTotalAmount.toLocaleString("en-US");
+    
+        // document.querySelector("#flter_totalTrip_inct").value = sumTotalHoursComma;
+        document.querySelector("#totalLtrs_diesel").value = sumTotalLitersComa;
+        document.querySelector("#totalamount_diesel").value = sumTotalAmountComma;
+    };
+    
+
+//  this function is for exporting excel for diesel transaction
+
+
+function html_table_excel_diesel(type){
+    var data = document.getElementById('table_body_diesel');
+    var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});
+    XLSX.write(file,{ booktype: type, bookSST: true, type: 'base64'});
+    XLSX.writeFile(file, 'diesellist.' + type);
+
+}
+
+
+  
+
+
+
+
+    
+
 

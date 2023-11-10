@@ -173,6 +173,18 @@ class RentalSgmc(BaseModel):
     date_updated:  Optional[datetime]
     date_credited: Optional[datetime]
 
+class DieselSGMC(BaseModel):
+    transDate: date
+    withdrawal_slip: str
+    equipment_id: Optional[int] 
+    literUse: float
+    price: float
+    amount: float
+    user: Optional[str]
+    date_updated:  Optional[datetime]
+    date_credited: Optional[datetime]
+
+
 
 # ==========================================Zamboanga Table============================================
 

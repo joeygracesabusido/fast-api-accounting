@@ -76,6 +76,7 @@
 <body>
 
     <div class="container">
+      <h1>SGMC TRANSACTION</h1>
         <div class="row">
           <div class="col-md-3 custom-border">
             <div class="transButton">
@@ -382,10 +383,14 @@
                                 <br>
                         
                                 <button type="button" id="BtnSearch_Rental" name="BtnSearch_Rental"  class="btn btn-primary">Search</button>
-                                <!-- <button type="submit"  onclick="html_table_excel_payroll('xlsx')" class="btn btn-secondary">
+                                <button type="submit"  onclick="html_table_excel_rental('xlsx')" class="btn btn-secondary">
                                   Export Excel
                                   <i class="fas fa-database"></i>
-                              </button> -->
+                              </button>
+
+                              <button type="button" id="printRentalPDF" name="printRentalPDF"  class="btn btn-warning">Print Rental</button>
+
+
                             
                           
                         </div>
@@ -577,13 +582,13 @@
                         <div class="col-md">
                           <div class="form-floating">
                             <input type="date" class="form-control" id="transDate_diesel" >
-                            <label for="floatingInputGrid">Date</label>
+                            <label for="floatingInputGrid" style="font-size: large;">Date</label>
                           </div>
                         </div>
                         <div class="col-md">
                           <div class="form-floating">
                             <input type="text" class="form-control" id="withdrawal_slip_diesel">
-                            <label for="floatingInputGrid">Withdrawal Slip</label>
+                            <label for="floatingInputGrid" style="font-size: large;">Withdrawal Slip</label>
                           </div>
                         </div>
                     </div>
@@ -595,13 +600,13 @@
                         <div class="col-md">
                           <div class="form-floating">
                             <input type="text" class="form-control" id="equipment_id_diesel" >
-                            <label for="floatingInputGrid">Equipment ID</label>
+                            <label for="floatingInputGrid" style="font-size: large;">Equipment ID</label>
                           </div>
                         </div>
                         <div class="col-md">
                           <div class="form-floating">
                             <input type="number" class="form-control" id="literUse_diesel">
-                            <label for="floatingInputGrid">Liter<label>
+                            <label for="floatingInputGrid" style="font-size: large;">Liter<label>
                           </div>
                         </div>
                     </div>
@@ -613,13 +618,13 @@
                         <div class="col-md">
                           <div class="form-floating">
                             <input type="number" class="form-control" id="price_diesel">
-                            <label for="floatingInputGrid">Price</label>
+                            <label for="floatingInputGrid" style="font-size: large;">Price</label>
                           </div>
                         </div>
                         <div class="col-md">
                           <div class="form-floating">
                             <input type="text" class="form-control" id="amount_diesel">
-                            <label for="floatingInputGrid">Amount<label>
+                            <label for="floatingInputGrid" style="font-size: large;">Amount<label>
                           </div>
                         </div>
                     </div>
@@ -627,6 +632,13 @@
                     <div class="col-md">
                       <div class="form-floating">
                         <input type="number" class="form-control" id="amount_diesel2" hidden>
+                       
+                      </div>
+                    </div>
+
+                    <div class="col-md">
+                      <div class="form-floating">
+                        <input type="number" class="form-control" id="equip_id" hidden>
                        
                       </div>
                     </div>
