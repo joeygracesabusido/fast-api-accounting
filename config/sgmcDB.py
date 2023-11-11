@@ -135,7 +135,7 @@ class SGMCViews():
         with Session(engine) as session:
             
             statement = select(SgmcRental).where(SgmcRental.transDate.between(datefrom,dateto))\
-                .filter(SgmcRental.equipment_id.like ('%'+ equipment_id +'%')).order_by(SgmcRental.id)
+                .filter(SgmcRental.equipment_id.like ('%'+ equipment_id +'%')).order_by(SgmcRental.transDate)
             results = session.exec(statement) 
 
             data = results.all()
