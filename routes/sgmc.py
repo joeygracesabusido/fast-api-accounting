@@ -6,7 +6,7 @@ from datetime import datetime, date
 
 from schemas.user import usersEntity
 
-from models.model import SgmcEquipment, RentalSgmc, DieselSGMC
+from models.model import SgmcEquipment, RentalSgmc, DieselSGMC, CostSGMC_model
 from config.sgmcDB import SGMCViews
 
 # from config.db import mydb
@@ -382,3 +382,30 @@ async def updateGRCRental(id,items:DieselSGMC,username: str = Depends(Validation
 
 
     return  {'Messeges':'Data has been Updated'}  
+
+
+@sgmcRouter.post("/api-insert-cost-sgmc/")
+async def insert_diesel_sgmc(items:CostSGMC_model, username: str = Depends(ValidationLogin) ): # this function is for inserting diesel 
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_write']:
+            try:
+                SGMCViews.insert_cost_sgmc(transDate=items.transDate,equipment_id=items.equipment_id,
+                                             cost_details=items.cost_details,amount=items.amount,
+                                             particular=items.particular,user=username,
+                                             date_created=items.date_created)
+
+                return('Data has been Save')
+
+            except Exception as e:
+                error_message = str(e)  # Use the actual error message from the exception
+            
+                return {"error": error_message}
+            
+    # error message if not autorized for this transaction
+    raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized",
+            
+            )
+

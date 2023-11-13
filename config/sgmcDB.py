@@ -77,6 +77,19 @@ class DieselSGMC(SQLModel, table=True):
     __table_args__ = (Index("idx_DieselGrc_unique", "withdrawal_slip", unique=True),)
 
 
+class CostSGMC(SQLModel, table=True):
+    __tablename__ = 'cost_sgmc'
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    equipment_id: Optional[int] = Field(default=None, foreign_key="sgmc_equipment.id")
+    cost_details: str = Field(max_length=150,)
+    amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    particular: str = Field(default=None)
+    user: str = Field(default=None)
+    date_updated:  Optional[datetime] = Field(default=None)
+    date_created: datetime = Field(default_factory=datetime.utcnow)
+
+
 
 def create_db_and_tables():
     
@@ -277,7 +290,52 @@ class SGMCViews():
             session.add(result)
             session.commit()
             session.refresh(result)
-      
+
+
+
+# ===========================================Costing  FRame========================================================
+
+    @staticmethod
+    def insert_cost_sgmc(transDate,equipment_id,cost_details,
+                    amount,particular,user,date_created):
+
+        insertData = CostSGMC(transDate=transDate,
+                                equipment_id=equipment_id,cost_details=cost_details,
+                                amount=amount,particular=particular, 
+                                user=user,date_created=date_created)
+
+
+        session = Session(engine)
+        session.add(insertData)
+        session.commit()
+        session.close()
+
+
+    @staticmethod
+    def get_diesel( datefrom: Optional[date],
+        dateto: Optional[date],
+        equipment_id: Optional[str]): # this function is to get all record for rental in SGMC
+
+        with Session(engine) as session:
+            
+            statement = select(CostSGMC, SgmcEquipment) \
+                .where(
+                    (CostSGMC.equipment_id == SgmcEquipment.id) &
+                        CostSGMC.transDate.between(datefrom,dateto) 
+                      
+                )
+            
+            if equipment_id:
+                statement = statement.where(SgmcEquipment.equipment_id.ilike(f'%{equipment_id}%'))
+
+
+            results = session.exec(statement)
+            data = results.all()
+
+            
+            return data
+
+              
 
 
 

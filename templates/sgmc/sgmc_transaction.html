@@ -87,6 +87,7 @@
               <button type="button"  data-frame="rental-sum-list"  class="btn btn-link">Rental Report</button>
               <button type="button"  data-frame="insert-diesel"  class="btn btn-link">Add Diesel</button>
               <button type="button"  data-frame="diesel-list"  class="btn btn-link">Diesel List</button>
+              <button type="button"  data-frame="add-cost"  class="btn btn-link">Add Cost</button>
               <button type="button"  data-frame="insert-employee"  class="btn btn-link">Add Employee</button>
               <button type="button"  data-frame="employee-list"  class="btn btn-link">Employee List</button>
               <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button>
@@ -94,7 +95,7 @@
             </div>
           </div>
 
-<!-- ======================This is for  Adding Equipment -->
+<!-- ======================This is for  Adding Equipment ----------------------------------------------->
                 <div class="col-md-9">
                     <main id="main-section">
                         <div id="add-equipment" style="display: none;">
@@ -765,6 +766,70 @@
                               
                       </div>
                   </div>
+
+
+<!-- ---------------------------------------Costing Frame-------------------------------------------------- -->
+
+
+               
+                      <div id="add-cost" style="display: none;">
+                  
+                          <h1>ADD COST</h1>
+
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="trans_date_cost">
+                            <label for="floatingInputGrid" style="font-size: 19px;">Transaction Date</label>
+                        </div>
+                      <br>
+                      <div class="form-floating">
+                          <input type="text" class="form-control" id="equipment_id_cost">
+                          <label for="floatingInputGrid" style="font-size: 19px;">Equipment ID</label>
+                      </div>
+                      <br>
+
+                      <div class="form-floating">
+                        <select class="form-select" id="cost_details" aria-label="Floating label select example">
+
+                                <option selected>----select menu----</option>
+                                <option value="Amortization & Depreciation">Amortization & Depreciation</option>
+                                <option value="Fuel">Fuel</option>
+                                <option value="Meals">Meals</option>
+                                <option value="Mechanical Supplies">Mechanical Supplies</option>
+                                <option value="Oil & Lubes">Oil & Lubes</option>
+                                <option value="Others">Others</option>
+                                <option value="Repairs & Maintenance">Repairs & Maintenance</option>
+                                <option value="Salaries & Wages">Salaries & Wages</option>
+                                <option value="Tires">Tires</option>
+                                <option value="Transpo">Transpo</option>
+                            </select>
+                        <label for="floatingInputGrid" style="font-size: 15px;" >Cost Details</label>
+                    </div>
+                    <br>
+
+                      
+
+                      <div class="form-floating">
+                          <input type="text" class="form-control" id="amount_cost">
+                          <label for="floatingInputGrid" style="font-size: 19px;">Amount</label>
+                      </div>
+                      <br>
+
+                      <div class="form-floating">
+                          <textarea class="form-control"  placeholder="Leave a comment here" id="particular"></textarea>
+                          <label for="floatingTextarea">Particular</label>
+                      </div>
+
+                      <br>
+
+                  
+                      
+                  
+
+                      <button type="button" id="Btn_save_cost"   class="btn btn-success">Save</button>
+                    
+
+                </div>
+
 
 
 

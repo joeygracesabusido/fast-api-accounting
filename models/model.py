@@ -183,7 +183,15 @@ class DieselSGMC(BaseModel):
     user: Optional[str]
     date_updated:  Optional[datetime]
     date_credited: Optional[datetime]
-
+class CostSGMC_model(BaseModel):
+    transDate: date
+    equipment_id: Optional[int]
+    cost_details: str 
+    amount: float
+    particular: str 
+    user: Optional[str]
+    date_updated:  Optional[datetime]
+    date_created: Optional[datetime]
 
 
 # ==========================================Zamboanga Table============================================
