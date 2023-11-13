@@ -543,6 +543,60 @@ const BTN_printRentalPDF = document.querySelector('#printRentalPDF');
 BTN_printRentalPDF.addEventListener("click", printRentalPDF);
 
 
+
+const print_rental_report_PDF = async () => {
+
+  var datefrom = document.getElementById("datefrom_rental").value;
+  var dateto = document.getElementById("dateto_rental").value;
+  
+  console.log(dateto)
+  const search_url = `/api-get-sgmc-rental-report-list/?datefrom=${datefrom}&dateto=${dateto}`;
+
+  const response = await fetch(search_url);
+  const data = await response.json();
+  console.log(data)
+
+  // Create document definition
+  const documentDefinition = {
+    content: [
+      { text: 'LD GLOBAL LEGACY, INC.', style: 'header' },
+      { text: 'EQUIPMENT RENTAL REPORT', style: 'header' },
+      { text: `COVERAGE : Date From: ${datefrom}  AND  Date TO: ${dateto}`, style: 'header' },
+      { text: '\n' },
+        {
+            table: {
+                headerRows: 1,
+                body: [
+                    ['Equipment ID', 'Total Hours'],
+                    ...data.rentalData.map(entry => [entry.equipment_id, entry.totalHours])
+                ]
+            }
+        },
+        { text: ` Grand Total Hours: ${data.totalHoursRunningTotal}`, style: 'total' }
+    ],
+    styles: {
+        header: {
+            fontSize: 15,
+            bold: true,
+            margin: [0, 0, 0, 0]
+        },
+        total: {
+            fontSize: 16,
+            bold: false,
+            margin: [0, 10, 0, 0]
+        }
+    }
+};
+const pdfDoc = pdfMake.createPdf(documentDefinition);
+pdfDoc.download('rental_report_summary.pdf');
+}
+
+const BTN_print_report_sum_PDF = document.querySelector('#print_rental_report_sum');
+BTN_print_report_sum_PDF.addEventListener("click", print_rental_report_PDF);
+
+
+
+
 function html_table_excel_rental(type){
     var data = document.getElementById('table_body_rental');
     var file = XLSX.utils.table_to_book(data,{sheet: "sheet1"});

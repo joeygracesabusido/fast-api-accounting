@@ -148,7 +148,25 @@ class SGMCViews():
         with Session(engine) as session:
             
             statement = select(SgmcRental).where(SgmcRental.transDate.between(datefrom,dateto))\
-                .filter(SgmcRental.equipment_id.like ('%'+ equipment_id +'%')).order_by(SgmcRental.id)
+                .filter(SgmcRental.equipment_id.like ('%'+ equipment_id +'%')).order_by(SgmcRental.transDate)
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
+        
+    @staticmethod
+    def getRental_report( datefrom: Optional[date],
+        dateto: Optional[date]): # this function is to get all record for rental in SGMC
+
+        with Session(engine) as session:
+
+            statement = select(SgmcRental.equipment_id,func.sum(SgmcRental.totalHours).label('totalHours'),
+                    ).group_by(SgmcRental.equipment_id).where(SgmcRental.transDate.between(datefrom,dateto))
+         
+            
+            
             results = session.exec(statement) 
 
             data = results.all()

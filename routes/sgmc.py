@@ -193,6 +193,67 @@ async def getRental_views(datefrom: Optional[date],dateto:Optional[date],equipme
                 detail= "Not Authorized",
                
                 )
+
+
+@sgmcRouter.get("/api-get-sgmc-rental-report-list/")
+async def getRental_views(datefrom: Optional[date],dateto:Optional[date],
+                            username: str = Depends(ValidationLogin))->List:
+    """This function is to update employee Details"""
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_read']:
+
+            results = SGMCViews.getRental_report(datefrom=datefrom,dateto=dateto)
+            # running_balance = 0
+            # rentalData = []
+            # for x in results:
+            #     # running_balance+=x.totalHours
+            #     data={}
+            #     data.update({
+                        
+            #             "equipment_id": x.equipment_id,  
+            #             "totalHours": x.totalHours,
+            #             "running_balance": running_balance + x['totalHours']
+            #         })
+            #     rentalData.append(data)
+            
+
+            # rentalData = [
+            #         {
+            #             "equipment_id": x.equipment_id,
+            #             "totalHours": x.totalHours,
+            #         }
+            #         for x in results
+            #     ]
+
+            # # Calculate running balance
+            # running_balance = 0
+            # for entry in rentalData:
+            #     entry['running_balance'] = running_balance + entry['totalHours']
+            #     running_balance = entry['running_balance']
+
+            rentalData = [
+                {
+                    "equipment_id": x.equipment_id,
+                    "totalHours": x.totalHours,
+                }
+                for x in results
+            ]
+
+            # Calculate running total of totalHours
+            total_hours_running_total = sum(entry['totalHours'] for entry in rentalData)
+
+            return {"rentalData": rentalData, "totalHoursRunningTotal": total_hours_running_total}
+                
+        
+            return rentalData
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+
     
 
 @sgmcRouter.get("/update-rental-sgmc/{id}", response_class=HTMLResponse)
