@@ -330,7 +330,7 @@ class SGMCViews():
 
 
     @staticmethod
-    def get_diesel( datefrom: Optional[date],
+    def get_cost( datefrom: Optional[date],
         dateto: Optional[date],
         equipment_id: Optional[str]): # this function is to get all record for rental in SGMC
 
