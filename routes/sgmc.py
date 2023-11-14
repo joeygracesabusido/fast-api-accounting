@@ -350,7 +350,7 @@ async def insert_diesel_sgmc(items:DieselSGMC, username: str = Depends(Validatio
 
 
 @sgmcRouter.get("/api-get-sgmc-diesel-transaction/")
-async def getRental_views(datefrom: Optional[date],dateto:Optional[date],equipment_id: Optional[str],
+async def get_update_diesel_views(datefrom: Optional[date],dateto:Optional[date],equipment_id: Optional[str],
                             username: str = Depends(ValidationLogin))->List:
     """This function is to update employee Details"""
     user =  mydb.access_setting.find({"username":username})
@@ -389,13 +389,13 @@ async def getRental_views(datefrom: Optional[date],dateto:Optional[date],equipme
     
 
 @sgmcRouter.get("/update-diesel-sgmc/{id}", response_class=HTMLResponse)
-async def grc_template(id:Optional[int],request: Request, username: str = Depends(ValidationLogin)):
+async def grc_update_diesel_api(id:Optional[int],request: Request, username: str = Depends(ValidationLogin)):
     user =  mydb.access_setting.find({"username":username})
     for i in user:
         if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_read']:
 
             results = SGMCViews.getDiesel_id(item_id=id)
-
+            print(results)
             dieselData = [
                 
                     {
@@ -415,7 +415,7 @@ async def grc_template(id:Optional[int],request: Request, username: str = Depend
                     for diesel_data,equipment_data in results
             ]
             
-            # print(dieselData)
+            print(dieselData)
         
             return templates.TemplateResponse("sgmc/sgmc_update_diesel.html", {"request":request,"dieselData":dieselData})
 
@@ -446,7 +446,7 @@ async def updateGRCRental(id,items:DieselSGMC,username: str = Depends(Validation
 
 
 @sgmcRouter.post("/api-insert-cost-sgmc/")
-async def insert_diesel_sgmc(items:CostSGMC_model, username: str = Depends(ValidationLogin) ): # this function is for inserting diesel 
+async def insert_cost_sgmc(items:CostSGMC_model, username: str = Depends(ValidationLogin) ): # this function is for inserting diesel 
     user =  mydb.access_setting.find({"username":username})
     for i in user:
         if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_write']:

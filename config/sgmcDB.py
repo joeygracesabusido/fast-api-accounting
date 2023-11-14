@@ -268,10 +268,13 @@ class SGMCViews():
 
             statement = select(DieselSGMC, SgmcEquipment) \
                 .where(
-                    (DieselSGMC.equipment_id == SgmcEquipment.id) &
-                        DieselSGMC.id == item_id
+                    (DieselSGMC.equipment_id == SgmcEquipment.id) 
+                        
                       
                 )
+
+            if item_id:
+                statement = statement.where(DieselSGMC.id == item_id)
             
             
             results = session.exec(statement) 
