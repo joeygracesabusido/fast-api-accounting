@@ -799,6 +799,140 @@ function html_table_excel_diesel(type){
 }
 
 
+$(document).ready(function() {
+  $("#equipment_id_cost").autocomplete({
+      source: function(request, response) {
+          $.ajax({
+              url: "/api-search-autocomplete-sgmc-equipment/",
+              data: { term: request.term },
+              dataType: "json",
+              success: function(data) {
+                  response(data);
+              }
+          });
+      },
+      select: function(event, ui) {
+          $("#equipment_id_cost").val(ui.item.value);
+          $("#equip_id_cost").val(ui.item.id);
+          
+          return false;
+      }
+  });
+});
+
+// this function is for Inserting cost for sgmc
+const insert_cost = async () => {
+  const data = {
+      transDate: document.getElementById("trans_date_cost").value,
+      equipment_id: document.getElementById("equip_id_cost").value,
+      cost_details: document.getElementById("cost_details").value,
+      amount: document.getElementById("amount_cost").value,
+      particular: document.getElementById("particular_cost").value,
+      
+     
+     
+  };
+  console.log(data)
+
+  try {
+      const response = await fetch(`/api-insert-cost-sgmc/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+      console.log(responseData);
+      
+      if (responseData.error) {
+          // Error occurred on the server side
+          if (responseData.error === "Duplicate entry for Withdrawal Slip") {
+              window.alert("Error: Duplicate entry for Withdrawal Slip");
+          } 
+          else {
+              window.alert("Error: " + responseData.error);
+          }
+      }else if (response.status === 401) {
+          window.alert("Unauthorized credential. Please login");
+      }
+       else {
+          // Data saved successfully
+          window.alert("Your data has been saved!!!!");
+          window.location.assign("/employee-transaction-sgmc/");
+      }
+     
+      
+  } catch (error) {
+      window.alert(error);
+      console.log(error);
+  }
+};
+
+var BtnSave_cost = document.querySelector('#Btn_save_cost');
+BtnSave_cost.addEventListener("click", insert_cost);
+
+
+
+    // this function is for displaying Cost Transaction 
+    const  display_cost =  async () => {
+      var datefrom = document.getElementById("datefrom_cost").value || ''
+      var dateto = document.getElementById("dateto_cost").value || ''
+      var equipmentID = document.getElementById("equipmentID_cost_search").value || ''
+      
+      const search_url = `/api-get-sgmc-cost-transaction/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${equipmentID}`;
+  
+  
+      const responce = await fetch(search_url)
+      const data = await responce.json();
+      console.log(data)
+  
+      if (data.length === 0) {
+              window.alert('No Data available');
+          };
+      
+      
+      if (responce.status === 200){
+          let tableData="";
+          let sum = 0;
+          data.costData.map((values, index)=>{
+              const columnNumber = index + 1; 
+              
+              tableData+= ` <tr>
+                          <td>${columnNumber}</td>
+                          <td>${values.id}</td>
+                          <td>${values.transDate}</td>
+                          <td>${values.equipment_id}</td>
+                          <td>${values.cost_details}</td>
+                          <td>${values.amount}</td>
+                          <td>${values.particular}</td>
+                         
+                          
+                          
+                          <td>
+                              <a href="/update-diesel-sgmc/${values.id}"
+                              <button type="button" class="btn btn-primary">
+                              <i class="fas fa-database"></i> Edit</button></a> 
+                      
+                          </td>
+                      
+                      </tr>`;
+          });
+          document.getElementById("table_body_cost").innerHTML=tableData;
+          document.getElementById('total_amount_cost').value = data.totalAmount
+          // var test = 1000
+          // document.getElementById("fter_totalBillinglTons").value = test;
+          sumtoTalAmountDiesel()
+      }else if (responce.status === 401){
+          window.alert("Unauthorized Credentials Please Log in")
+      }
+  
+  };
+  
+  
+  var BtnSearch_cost = document.querySelector('#BtnSearch_cost');
+  BtnSearch_cost.addEventListener("click", display_cost);
+  
+
 
 
 

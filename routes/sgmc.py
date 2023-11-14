@@ -470,3 +470,48 @@ async def insert_cost_sgmc(items:CostSGMC_model, username: str = Depends(Validat
             
             )
 
+
+@sgmcRouter.get("/api-get-sgmc-cost-transaction/")
+async def get_update_diesel_views(datefrom: Optional[date],dateto:Optional[date],equipment_id: Optional[str],
+                            username: str = Depends(ValidationLogin))->List:
+    """This function is to update employee Details"""
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_read']:
+
+            results = SGMCViews.get_cost(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+            costData = [
+                
+                    {
+                    "id": cost_data. id,
+                        "transDate": cost_data.transDate,
+                        "equipment_id": equipment_data.equipment_id,
+                        "cost_details": cost_data.cost_details,
+                        "amount": cost_data.amount,
+                        "particular":cost_data.particular,
+                        "user": cost_data.user,
+                        "date_created": cost_data.date_created,
+                       
+
+                    
+                    }
+                    for cost_data,equipment_data in results
+                ]
+            
+        
+            # return dieselData
+
+            # Calculate running total of totalHours
+            total_amount = sum(entry['amount'] for entry in costData)
+            total_amount2 = '{:,.2f}'.format(total_amount)
+
+            return {"costData": costData, "totalAmount": total_amount2}
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+    
+
