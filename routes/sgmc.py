@@ -513,5 +513,58 @@ async def get_update_diesel_views(datefrom: Optional[date],dateto:Optional[date]
                 detail= "Not Authorized",
                
                 )
-    
 
+
+@sgmcRouter.get("/update-cost-sgmc/{id}", response_class=HTMLResponse)
+async def grc_update_diesel_api(id:Optional[int],request: Request, username: str = Depends(ValidationLogin)):
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_write']:
+
+            results = SGMCViews.getcost_id(item_id=id)
+            print(results)
+            costData = [
+                
+                    {
+                        "id": cost_data. id,
+                        "transDate": cost_data.transDate,
+                        "equipment_id": equipment_data.equipment_id,
+                        "cost_details": cost_data.cost_details,
+                        "amount": cost_data.amount,
+                        "particular":cost_data.particular,
+                        "user": cost_data.user,
+                        "date_created": cost_data.date_created,
+                        "equipment_id_id": equipment_data.id,
+                    
+                    }
+                    for cost_data,equipment_data in results
+            ]
+            
+            print(costData)
+        
+            return templates.TemplateResponse("sgmc/sgmc_update_cost.html", {"request":request,"costData":costData})
+
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )   
+
+    
+@sgmcRouter.put("/api-update-cost-sgmc/{id}") # this is to update cost
+async def update_cost_sgmc(id,items:CostSGMC_model,username: str = Depends(ValidationLogin)):
+    """This function is to update Rental"""
+    today = datetime.now()
+    try:
+        SGMCViews.updateCost(transDate=items.transDate,equipment_id=items.equipment_id,
+                                cost_details=items.cost_details,amount=items.amount,
+                                particular=items.particular,user=username,
+                                date_updated=datetime.now(),item_id=id)
+    except Exception as e:
+        error_message = str(e)  # Use the actual error message from the exception
+    
+        return {"error": error_message}
+
+
+    return  {'Messeges':'Data has been Updated'}  

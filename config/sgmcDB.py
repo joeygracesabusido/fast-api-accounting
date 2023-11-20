@@ -262,7 +262,7 @@ class SGMCViews():
             return data
         
     @staticmethod
-    def getDiesel_id(item_id): # this function is to get record for rental tru id in SGMC
+    def getDiesel_id(item_id): # this function is to get record for diesel tru id in SGMC
 
         with Session(engine) as session:
 
@@ -355,6 +355,59 @@ class SGMCViews():
 
             
             return data
+
+
+    @staticmethod
+    def getcost_id(item_id): # this function is to get record for diesel tru id in SGMC
+
+        with Session(engine) as session:
+
+            statement = select(CostSGMC, SgmcEquipment) \
+                .where(
+                    (CostSGMC.equipment_id == SgmcEquipment.id) 
+                        
+                      
+                )
+
+            if item_id:
+                statement = statement.where(CostSGMC.id == item_id)
+            
+            
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
+
+
+    @staticmethod   
+    def updateCost(transDate,equipment_id,cost_details,
+                    amount,particular,user,date_updated,item_id):
+        """This function is for updating Rizal Equipment"""
+
+        with Session(engine) as session:
+            statement = select(CostSGMC).where(CostSGMC.id == item_id)
+            results = session.exec(statement)
+
+            result = results.one()
+
+            
+            result.transDate = transDate
+            result.equipment_id = equipment_id
+            result.cost_details = cost_details
+            result.particular = particular
+            result.amount = amount
+            result.user = user
+            result.date_updated = date_updated
+
+            
+
+        
+            session.add(result)
+            session.commit()
+            session.refresh(result)
+
 
               
 

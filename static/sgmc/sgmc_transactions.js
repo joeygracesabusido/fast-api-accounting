@@ -909,7 +909,7 @@ BtnSave_cost.addEventListener("click", insert_cost);
                           
                           
                           <td>
-                              <a href="/update-diesel-sgmc/${values.id}"
+                              <a href="/update-cost-sgmc/${values.id}"
                               <button type="button" class="btn btn-primary">
                               <i class="fas fa-database"></i> Edit</button></a> 
                       
