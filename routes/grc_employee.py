@@ -151,7 +151,7 @@ async def getEmployeeSurigao(username: str = Depends(EmployeevalidateLogin))->Li
    
     return employeeData
 
-from models.model import EquipmentGRC,GrcRentalModels,GrcDiesel
+from models.model import EquipmentGRC,GrcRentalModels,GrcDiesel,CostSGMC_model
 from config.grcDB import GrcViews
 @grcRouter.post("/api-insert-grc-equipment/")
 async def insertPayroll_GRC(items:EquipmentGRC, username: str = Depends(EmployeevalidateLogin)):
@@ -177,7 +177,7 @@ def autocomplete_grc_equipment(term: Optional[str] = None):
     else:
         filtered_equipment = []
 
-    suggestions = [{"value": item.equipment_id,"rentalRate": item.rentalRate} for item in filtered_equipment]
+    suggestions = [{"value": item.equipment_id,"rentalRate": item.rentalRate,"id": item.id} for item in filtered_equipment]
     return suggestions
 
 
@@ -417,3 +417,133 @@ async def updateGRCDiesel(id,items:GrcDiesel,username: str = Depends(Employeeval
 
 
     return  {'Messeges':'Data has been Updated'}
+
+
+
+    # ======================================= Cost Frame ============================================
+
+@grcRouter.post("/api-insert-cost-grc/")
+async def insert_cost_sgmc(items:CostSGMC_model, username: str = Depends(EmployeevalidateLogin) ): # this function is for inserting diesel 
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'grc' and i['site_transaction_write']:
+            try:
+                GrcViews.insert_cost_grc(transDate=items.transDate,equipment_id=items.equipment_id,
+                                             cost_details=items.cost_details,amount=items.amount,
+                                             particular=items.particular,user=username,
+                                             date_created=items.date_created)
+
+                return('Data has been Save')
+
+            except Exception as e:
+                error_message = str(e)  # Use the actual error message from the exception
+            
+                return {"error": error_message}
+            
+    # error message if not autorized for this transaction
+    raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Not Authorized",
+            
+            )
+
+
+@grcRouter.get("/api-get-grc-cost-transaction/")
+async def get_update_diesel_views(datefrom: Optional[date],dateto:Optional[date],equipment_id: Optional[str],
+                            username: str = Depends(EmployeevalidateLogin))->List:
+    """This function is to update employee Details"""
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'sgmc' and i['site_transaction_read']:
+
+            results = GrcViews.get_cost(datefrom=datefrom,dateto=dateto,equipment_id=equipment_id)
+
+            costData_grc = [
+                
+                    {
+                    "id": cost_data. id,
+                        "transDate": cost_data.transDate,
+                        "equipment_id": equipment_data.equipment_id,
+                        "cost_details": cost_data.cost_details,
+                        "amount": cost_data.amount,
+                        "particular":cost_data.particular,
+                        "user": cost_data.user,
+                        "date_created": cost_data.date_created,
+                       
+
+                    
+                    }
+                    for cost_data,equipment_data in results
+                ]
+            
+        
+            # return dieselData
+
+            # Calculate running total of totalHours
+            total_amount = sum(entry['amount'] for entry in costData_grc)
+            total_amount2 = '{:,.2f}'.format(total_amount)
+
+            return {"costData_grc": costData_grc, "totalAmount": total_amount2}
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )
+
+
+
+@grcRouter.get("/update-cost-grc/{id}", response_class=HTMLResponse)
+async def grc_update_diesel_api(id:Optional[int],request: Request, username: str = Depends(EmployeevalidateLogin)):
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin' or i['site'] == 'grc' and i['site_transaction_write']:
+
+            results = GrcViews.getcost_id(item_id=id)
+            print(results)
+            costData = [
+                
+                    {
+                        "id": cost_data. id,
+                        "transDate": cost_data.transDate,
+                        "equipment_id": equipment_data.equipment_id,
+                        "cost_details": cost_data.cost_details,
+                        "amount": cost_data.amount,
+                        "particular":cost_data.particular,
+                        "user": cost_data.user,
+                        "date_created": cost_data.date_created,
+                        "equipment_id_id": equipment_data.id,
+                    
+                    }
+                    for cost_data,equipment_data in results
+            ]
+            
+            print(costData)
+        
+            return templates.TemplateResponse("employee/grc_update_cost.html", {"request":request,"costData":costData})
+
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )   
+
+    
+@grcRouter.put("/api-update-cost-grc/{id}") # this is to update cost
+async def update_cost_sgmc(id,items:CostSGMC_model,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update Rental"""
+    today = datetime.now()
+    try:
+        GrcViews.updateCost(transDate=items.transDate,equipment_id=items.equipment_id,
+                                cost_details=items.cost_details,amount=items.amount,
+                                particular=items.particular,user=username,
+                                date_updated=datetime.now(),item_id=id)
+    except Exception as e:
+        error_message = str(e)  # Use the actual error message from the exception
+    
+        return {"error": error_message}
+
+
+    return  {'Messeges':'Data has been Updated'}  
+

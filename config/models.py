@@ -287,16 +287,6 @@ class InventoryTransaction(SQLModel, table=True):
 
     # inventory_transactions: List[Inventoryitems] = Relationship(back_populates="inventory_items", link_model=WarehouseInventoryLink)
 
-class OtherExoense(SQLModel, table=True):
-    __tablename__ = "other_expenses"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    equipmentID_id: Optional[int] = Field(default=None, foreign_key="equipment_details.id")
-    salary: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
-    others: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
-    meals: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
-    transpo: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
-    depreciation_amoritzation: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
 
 
 def create_db_and_tables():

@@ -99,17 +99,25 @@ class DieselGrc(SQLModel, table=True):
 
     __table_args__ = (Index("idx_DieselGrc_unique", "withdrawal_slip", unique=True),)
 
-class ExpensesGrc(SQLModel, table=True):
-    __tablename__ = 'expenses_grc'
+
+
+
+class CostGRC(SQLModel, table=True):
+    __tablename__ = 'cost_grc'
     id: Optional[int] = Field(default=None, primary_key=True)
     transDate: date
-    agency: str = Field(default=None)
-    account_name: str = Field(default=None)
-    amount: condecimal(max_digits=10, decimal_places=2) = Field(default=0)
+    equipment_id: Optional[int] = Field(default=None, foreign_key="grc_equipment.id")
+    cost_details: str = Field(max_length=150,)
+    amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
     particular: str = Field(default=None)
     user: str = Field(default=None)
     date_updated:  Optional[datetime] = Field(default=None)
-    date_credited: datetime = Field(default_factory=datetime.utcnow)
+    date_created: datetime = Field(default_factory=datetime.utcnow)
+
+
+def create_db_and_tables():
+    
+    SQLModel.metadata.create_all(engine)
 
 
 
@@ -375,12 +383,103 @@ class GrcViews():# this is for views function for GRC project
             session.commit()
             session.refresh(result)
       
-      
-    
 
-def create_db_and_tables():
-    
-    SQLModel.metadata.create_all(engine)
+# ===========================================Costing  FRame========================================================
+
+    @staticmethod
+    def insert_cost_grc(transDate,equipment_id,cost_details,
+                    amount,particular,user,date_created):
+
+        insertData = CostGRC(transDate=transDate,
+                                equipment_id=equipment_id,cost_details=cost_details,
+                                amount=amount,particular=particular, 
+                                user=user,date_created=date_created)
+
+
+        session = Session(engine)
+        session.add(insertData)
+        session.commit()
+        session.close()
+
+
+    @staticmethod
+    def get_cost( datefrom: Optional[date],
+        dateto: Optional[date],
+        equipment_id: Optional[str]): # this function is to get all record for rental in SGMC
+
+        with Session(engine) as session:
+            
+            statement = select(CostGRC, GrcEquipment) \
+                .where(
+                    (CostGRC.equipment_id == GrcEquipment.id) &
+                        CostGRC.transDate.between(datefrom,dateto) 
+                      
+                )
+            
+            if equipment_id:
+                statement = statement.where(GrcEquipment.equipment_id.ilike(f'%{equipment_id}%'))
+
+
+            results = session.exec(statement)
+            data = results.all()
+
+            
+            return data
+
+
+    @staticmethod
+    def getcost_id(item_id): # this function is to get record for diesel tru id in SGMC
+
+        with Session(engine) as session:
+
+            statement = select(CostGRC, GrcEquipment) \
+                .where(
+                    (CostGRC.equipment_id == GrcEquipment.id) 
+                        
+                      
+                )
+
+            if item_id:
+                statement = statement.where(CostGRC.id == item_id)
+            
+            
+            results = session.exec(statement) 
+
+            data = results.all()
+
+            
+            return data
+
+
+    @staticmethod   
+    def updateCost(transDate,equipment_id,cost_details,
+                    amount,particular,user,date_updated,item_id):
+        """This function is for updating Rizal Equipment"""
+
+        with Session(engine) as session:
+            statement = select(CostGRC).where(CostGRC.id == item_id)
+            results = session.exec(statement)
+
+            result = results.one()
+
+            
+            result.transDate = transDate
+            result.equipment_id = equipment_id
+            result.cost_details = cost_details
+            result.particular = particular
+            result.amount = amount
+            result.user = user
+            result.date_updated = date_updated
+
+            
+
+        
+            session.add(result)
+            session.commit()
+            session.refresh(result)
+ 
+
+
 
 # create_db_and_tables()
 

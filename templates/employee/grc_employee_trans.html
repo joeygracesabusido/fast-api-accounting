@@ -76,6 +76,7 @@
 <body>
 
     <div class="container">
+        <h1>GRC Transactions</h1>
         <div class="row">
           <div class="col-md-3 custom-border">
             <div class="transButton">
@@ -86,6 +87,8 @@
               <button type="button"  data-frame="rental-sum-list"  class="btn btn-link">Rental Report</button>
               <button type="button"  data-frame="insert-diesel"  class="btn btn-link">Add Diesel</button>
               <button type="button"  data-frame="diesel-list"  class="btn btn-link">Diesel List</button>
+              <button type="button"  data-frame="insert-cost"  class="btn btn-link">Add Cost</button>
+              <button type="button"  data-frame="cost-list"  class="btn btn-link">Cost List</button>
               <button type="button"  data-frame="insert-employee"  class="btn btn-link">Add Employee</button>
               <button type="button"  data-frame="employee-list"  class="btn btn-link">Employee List</button>
               <button type="button"   onclick="window.location.href='/grc-payroll-transaction/'"  class="btn btn-link">Payroll Adan</button>
@@ -1173,6 +1176,189 @@
                               
                       </div>
                   </div>
+
+
+
+<!-- ---------------------------------------Costing Frame-------------------------------------------------- -->
+
+
+               
+                  <div id="insert-cost" style="display: none;">
+                  
+                    <h1>ADD COST</h1>
+
+                  <div class="form-floating">
+                      <input type="date" class="form-control" id="trans_date_cost">
+                      <label for="floatingInputGrid" style="font-size: 19px;">Transaction Date</label>
+                  </div>
+                <br>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="equipment_id_cost">
+                    <label for="floatingInputGrid" style="font-size: 19px;">Equipment ID</label>
+                </div>
+                <br>
+
+                <div class="form-floating">
+                  <select class="form-select" id="cost_details" aria-label="Floating label select example">
+
+                          <option selected>----select menu----</option>
+                          <option value="Amortization & Depreciation">Amortization & Depreciation</option>
+                          <option value="Fuel">Fuel</option>
+                          <option value="Meals">Meals</option>
+                          <option value="Mechanical Supplies">Mechanical Supplies</option>
+                          <option value="Oil & Lubes">Oil & Lubes</option>
+                          <option value="Others">Others</option>
+                          <option value="Repairs & Maintenance">Repairs & Maintenance</option>
+                          <option value="Salaries & Wages">Salaries & Wages</option>
+                          <option value="Tires">Tires</option>
+                          <option value="Transpo">Transpo</option>
+                      </select>
+                  <label for="floatingInputGrid" style="font-size: 15px;" >Cost Details</label>
+              </div>
+              <br>
+
+                
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="amount_cost">
+                    <label for="floatingInputGrid" style="font-size: 19px;">Amount</label>
+                </div>
+                <br>
+
+                <div class="form-floating">
+                    <textarea class="form-control"  placeholder="Leave a comment here" id="particular_cost"></textarea>
+                    <label for="floatingTextarea">Particular</label>
+                </div>
+
+                <br>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" class="form-control" id="equip_id_cost" hidden>
+                   
+                  </div>
+                </div>
+            
+                <br>
+            
+
+                <button type="button" id="Btn_save_cost"   class="btn btn-success">Save</button>
+              
+
+          </div>
+
+
+
+          <!-- =============================This function is for Cost List======================================= -->
+          <div id="cost-list" style="display: none;">
+            <!-- Account List Content -->
+            <h1>Cost List</h1>
+
+              <div class="container mt-3">
+                    
+                <label 
+                >Date From</label>
+                
+                    <input 
+                    type="date"
+                    name="datefrom_cost"
+                    id="datefrom_cost"
+                    class="form-control"
+                    >
+
+                <label
+                >Date To</label>
+                
+                    <input 
+                    type="date"
+                    name="dateto_cost"
+                    id="dateto_cost"
+                    class="form-control"
+                    >
+
+                  <label for="DateToTons"
+                  >Equipment ID</label>
+                  
+                      <input 
+                      type="text"
+                      name="equipmentID_cost_search"
+                      id="equipmentID_cost_search"
+                      class="form-control"
+                      >
+
+
+                      <br>
+              
+                      <button type="button" id="BtnSearch_cost" name="BtnSearch_cost"  class="btn btn-primary">Search</button>
+                      <!-- <button type="submit"  onclick="html_table_excel_diesel('xlsx')" class="btn btn-secondary">
+                        Export Excel
+                        <i class="fas fa-database"></i>
+                    </button> -->
+                  
+                
+              </div>
+
+              <div  class="container mt-3 table-responsive">
+                  <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+                      <thead class="table-dark">
+                          <tr>
+                              <td>No</td>
+                              <td>Transaction ID</td>
+                              <td>Date</td>
+                              <td>Equipment ID</td>
+                              <td>Cost Details</td>
+                              <td>Amount</td>
+                              <td>Particular</td>
+                              <td>Action</td>
+                            
+                              
+                          </tr>
+                      </thead>
+                      <tbody id="table_body_cost">
+                      
+                              
+                              <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  
+                                  
+                              </tr>
+                          
+                          
+                      </tbody>
+
+                  
+
+                  </table>
+
+                  <br>
+
+                  <label for="TotalAmount" >Total Cost</label>
+                        <input
+                            type="text"
+                            name="total_amount_cost"
+                            id="total_amount_cost"
+                            style="text-align: right;"
+                            >
+                        </input> 
+
+                  
+
+                  
+                      
+                      
+              </div>
+          </div>
+
+
+
+
+
               
                                             
                   

@@ -872,8 +872,7 @@ var BtnSave_cost = document.querySelector('#Btn_save_cost');
 BtnSave_cost.addEventListener("click", insert_cost);
 
 
-
-    // this function is for displaying Cost Transaction 
+// this function is for displaying Cost Transaction 
     const  display_cost =  async () => {
       var datefrom = document.getElementById("datefrom_cost").value || ''
       var dateto = document.getElementById("dateto_cost").value || ''
