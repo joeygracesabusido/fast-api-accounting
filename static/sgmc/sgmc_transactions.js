@@ -303,7 +303,7 @@ const printRentalPDF = async () => {
             },
           },
 
-          { text: '\n' },
+        
 // this start of signatories
           {
             columns: [
@@ -325,8 +325,8 @@ const printRentalPDF = async () => {
                 width: 'auto',
                 stack: [
                   { text: 'Reconciled by:', style: 'left_side_task' },
-                  { text: 'MARIA LOURDES R. ACERO', style: 'left_side_name_desig' },
-                  { text: 'BILLING/ACCOUNTING ENGINEERING MONITORING SUPERVISOR', style: 'left_side_name_desig' },
+                  { text: 'JAYFFE AGUILAR', style: 'left_side_name_desig' },
+                  { text: 'MOTORPOOL BILLING OFFICER', style: 'left_side_name_desig' },
                 ],
               },
 
@@ -358,7 +358,7 @@ const printRentalPDF = async () => {
                 stack: [
                   { text: 'Recommending Approval:', style: 'left_side_task_2nd' },
                   { text: 'ENGR. FITZGERALD CANAREZ', style: 'left_side_name_desig_2nd' },
-                  { text: 'OPERATIONS MINE SUPERVISOR', style: 'left_side_name_desig_2nd' },
+                  { text: 'PROJECT MINE MANAGER', style: 'left_side_name_desig_2nd' },
                 ],
               },
 
@@ -376,7 +376,7 @@ const printRentalPDF = async () => {
              {
               width: 'auto',
               stack: [
-                { text: 'Verified  by:',style: 'left_side_task_3rd' },
+                { text: 'Reviewed by:',style: 'left_side_task_3rd' },
                 { text: 'RAYMOND C. SINOC', style: 'left_side_name_desig_3rd' },
                 { text: 'SGMC - BILLING OFFICER', style: 'left_side_name_desig_3rd' },
               ],
@@ -388,8 +388,35 @@ const printRentalPDF = async () => {
           ],
 
         },
+
+
+        
+          {
+          columns: [
+          
+
+             // "Verified  by" section
+             {
+              width: 'auto',
+              stack: [
+                { text: 'Verified  by:',style: 'left_side_task_3rd' },
+                { text: 'ENGR. REDZEL PARANAS', style: 'left_side_name_desig_3rd' },
+                { text: 'SGMC - BILLING OFFICER', style: 'left_side_name_desig_3rd' },
+              ],
+            },
+
+           
+
+          
+          ],
+
+        },
+
+        
 // this is the part of 
         ],
+
+        margin: [0, 0, 0, 0],
         styles: {
           header: {
             fontSize: 15,
