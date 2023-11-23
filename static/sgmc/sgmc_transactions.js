@@ -303,7 +303,7 @@ const printRentalPDF = async () => {
             },
           },
 
-        
+          { text: '\n' },
 // this start of signatories
           {
             columns: [
@@ -324,9 +324,20 @@ const printRentalPDF = async () => {
               {
                 width: 'auto',
                 stack: [
-                  { text: 'Reconciled by:', style: 'left_side_task' },
-                  { text: 'JAYFFE AGUILAR', style: 'left_side_name_desig' },
-                  { text: 'MOTORPOOL BILLING OFFICER', style: 'left_side_name_desig' },
+                  { text: 'Reconciled by:', style: 'reconcilled_by' },
+                  { text: 'JAYFFE AGUILAR', style: 'reconcilled_by_person' },
+                  { text: 'MOTORPOOL BILLING OFFICER', style: 'reconcilled_by_person' },
+                ],
+              },
+
+
+                // "Noted by" section
+             {
+                width: 'auto',
+                stack: [
+                  { text: 'Noted  by:',style: 'right_side_task' },
+                  { text: 'ARIEL GACES', style: 'right_side_name_desig' },
+                  { text: 'LD Global - Officer in Charge', style: 'right_side_name_desig' },
                 ],
               },
 
@@ -343,22 +354,38 @@ const printRentalPDF = async () => {
           
 
              // "Noted by" section
-             {
-              width: 'auto',
-              stack: [
-                { text: 'Noted  by:',style: 'right_side_task' },
-                { text: 'ARIEL GACES', style: 'right_side_name_desig' },
-                { text: 'LD Global - Officer in Charge', style: 'right_side_name_desig' },
-              ],
-            },
+             
 
             // "Reconciled by" section
             {
                 width: 'auto',
                 stack: [
-                  { text: 'Recommending Approval:', style: 'left_side_task_2nd' },
-                  { text: 'ENGR. FITZGERALD CANAREZ', style: 'left_side_name_desig_2nd' },
-                  { text: 'PROJECT MINE MANAGER', style: 'left_side_name_desig_2nd' },
+                    { text: 'Verified  by:',style: 'right_side_task' },
+                    { text: 'ENGR. REDZEL PARANAS', style: 'right_side_name_desig' },
+                    { text: 'MOTORPOOL MANAGER', style: 'right_side_name_desig' },
+                 
+                ],
+              },
+
+
+              {
+                width: 'auto',
+                stack: [
+                  
+                  { text: 'Recommending Approval:', style: 'recomend_by' },
+                  { text: 'ENGR. FITZGERALD CANAREZ', style: 'recomend_by_person' },
+                  { text: 'PROJECT MINE MANAGER', style: 'recomend_by_person' },
+                ],
+              },
+
+
+                 // "Noted by" section
+             {
+                width: 'auto',
+                stack: [
+                  { text: 'Approval:',style: 'approval' },
+                  { text: 'ENGR. TEODORO C. LICTAG', style: 'approval_person' },
+                  { text: 'SGMC-MINE RESIDENT MANAGER', style: 'approval_person' },
                 ],
               },
 
@@ -376,9 +403,9 @@ const printRentalPDF = async () => {
              {
               width: 'auto',
               stack: [
-                { text: 'Reviewed by:',style: 'left_side_task_3rd' },
-                { text: 'RAYMOND C. SINOC', style: 'left_side_name_desig_3rd' },
-                { text: 'SGMC - BILLING OFFICER', style: 'left_side_name_desig_3rd' },
+                { text: 'Reviewed by:',style: 'reviewed' },
+                { text: 'RAYMOND C. SINOC', style: 'reviewed_person' },
+                { text: 'SGMC - BILLING OFFICER', style: 'reviewed_person' },
               ],
             },
 
@@ -391,26 +418,7 @@ const printRentalPDF = async () => {
 
 
         
-          {
-          columns: [
-          
-
-             // "Verified  by" section
-             {
-              width: 'auto',
-              stack: [
-                { text: 'Verified  by:',style: 'left_side_task_3rd' },
-                { text: 'ENGR. REDZEL PARANAS', style: 'left_side_name_desig_3rd' },
-                { text: 'SGMC - BILLING OFFICER', style: 'left_side_name_desig_3rd' },
-              ],
-            },
-
-           
-
-          
-          ],
-
-        },
+         
 
         
 // this is the part of 
@@ -483,6 +491,61 @@ const printRentalPDF = async () => {
             bold: false,
             margin: [415, 0, 0, 0],
           },
+
+
+          reconcilled_by: { 
+            fontSize: 11,
+            bold: false,
+            margin: [110, 0, 0, 0],
+          },
+
+
+          reconcilled_by_person: { 
+            fontSize: 11,
+            bold: false,
+            margin: [160, 0, 0, 0],
+          },
+
+
+          recomend_by: { 
+            fontSize: 11,
+            bold: false,
+            margin: [70, 0, 0, 0],
+          },
+
+
+          recomend_by_person: { 
+            fontSize: 11,
+            bold: false,
+            margin: [110, 0, 0, 0],
+          },
+
+
+          approval: { 
+            fontSize: 11,
+            bold: false,
+            margin: [50, 0, 0, 0],
+          },
+
+        approval_person: {
+            fontSize: 11,
+            bold: false,
+            margin: [80, 0, 0, 0],
+          },
+
+
+          reviewed: { 
+            fontSize: 11,
+            bold: false,
+            margin: [485, 0, 0, 0],
+          },
+
+          reviewed_person: {
+            fontSize: 11,
+            bold: false,
+            margin: [515, 0, 0, 0],
+          },
+
           
         },
       };
