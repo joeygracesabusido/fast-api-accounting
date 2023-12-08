@@ -285,6 +285,20 @@ class InventoryTransaction(SQLModel, table=True):
     date_credited: datetime = Field(default_factory=datetime.utcnow)
 
 
+
+class CostRizal(SQLModel, table=True):
+    __tablename__ = 'cost_rizal'
+    id: Optional[int] = Field(default=None, primary_key=True)
+    transDate: date
+    equipment_id: Optional[int] = Field(default=None, foreign_key="equipment_details.id")
+    cost_details: str = Field(max_length=150,)
+    amount: condecimal(max_digits=9, decimal_places=2) = Field(default=0)
+    particular: str = Field(default=None)
+    user: str = Field(default=None)
+    date_updated:  Optional[datetime] = Field(default=None)
+    date_created: datetime = Field(default_factory=datetime.utcnow)
+
+
     # inventory_transactions: List[Inventoryitems] = Relationship(back_populates="inventory_items", link_model=WarehouseInventoryLink)
 
 
