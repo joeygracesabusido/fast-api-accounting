@@ -148,14 +148,19 @@ async def payrollList(datefrom: Optional[date] = None,
                 "spl": x.spl,
                 "lgl2": x.lgl2,
                 "lgl1": x.lgl1,
-                "total_amount": float(x.regday) * float(x.salary_rate)
-              
+                "total_no_days":  '{:.2f}'.format((float(x.regDay + x.sunday + x.spl + x.lgl2 + x.lgl1 ))),
+                "total_amount_13":  (float(x.regDay + x.sunday + x.spl + x.lgl2 + x.lgl1 ) * float(x.salaryRate)) / 12,
+                "total_amount_13_2":  '{:,.2f}'.format((float(x.regDay + x.sunday + x.spl + x.lgl2 + x.lgl1 ) * float(x.salaryRate)) / 12)
             }
             for x in results
         ]
+
+    total_amount = sum(entry['total_amount_13'] for entry in payrollData)
+    total_amount2 = '{:,.2f}'.format(total_amount)
     
     
-    return payrollData
+    # return payrollData
+    return {"payrollData": payrollData, "totalAmount": total_amount2}
 
 
 
