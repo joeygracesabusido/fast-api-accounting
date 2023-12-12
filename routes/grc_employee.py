@@ -126,6 +126,40 @@ async def payrollList(datefrom: Optional[date] = None,
     return payrollData
 
 
+@grcRouter.get('/grc-13month-list-grc/')
+async def payrollList(datefrom: Optional[date] = None,
+                        dateto: Optional[date] = None,
+                        employeeID: Optional[str] = None,
+                        username: str = Depends(EmployeevalidateLogin)):
+    """This is to get Payroll Transaction from GRC table"""
+
+    results = GrcViews.get_13_month(datefrom=datefrom,dateto=dateto,employeeID=employeeID)
+
+    payrollData = [
+        
+            {
+            
+                "employee_id": x.employee_id,
+                "first_name": x.first_name,
+                "last_name": x.last_name,
+                "salaryRate": x.salaryRate,
+                "regDay": x.regDay,
+                "sunday": x.sunday,
+                "spl": x.spl,
+                "lgl2": x.lgl2,
+                "lgl1": x.lgl1,
+                "total_amount": float(x.regday) * float(x.salary_rate)
+              
+            }
+            for x in results
+        ]
+    
+    
+    return payrollData
+
+
+
+
 from config.models import getAllEmployee_Surigao
 @grcRouter.get("/api-get-grc-employeeDetails-employeeLogin/")
 async def getEmployeeSurigao(username: str = Depends(EmployeevalidateLogin))->List:

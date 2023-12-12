@@ -1206,6 +1206,20 @@ class Inventory:
 
             data = results.all()
             return data
+        
+
+class RizalPayroll():
+
+    @staticmethod
+    def get13_hMonth_pay_comp( datefrom: Optional[date],
+        dateto: Optional[date],
+        department: Optional[str],
+        employee_id: Optional[str]):
+
+        with Session(engine) as session:
+
+            statement = select(payroll_computation.employee_id,payroll_computation.last_name,
+                               payroll_computation.first_name)
 
 
 # create_db_and_tables()

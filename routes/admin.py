@@ -720,6 +720,34 @@ def compt13Month(date1,date2,department,token: str = Depends(oauth_scheme)):
     # # Return the computations
     # return computations
 
+@admin.get('/api-get-comp13th2/')
+def compt13Month(date1,date2,department,token: str = Depends(oauth_scheme)):
+    """This function is for computation of 13th month"""
+    myresult = Database.computation13thMonth(date1=date1,date2=date2,department=department)
+
+    test = []
+    for i in myresult:
+        totalAmount = (float(i[2]) + float(i[3]) + float(i[4]) + float(i[5]) + float(i[6]) + float(i[7]) +
+                            float(i[8])) / 12
+        totalAmount2 = '{:,.2f}'.format(totalAmount)
+        data = {}
+        data.update({
+            "employee_id": i[0],
+            "lastname":i[1],
+            "fname": i[9],
+            "department": i[10],
+            "totalRegdays": i[2],
+            "TotalRegSun": i[3],
+            "TotalSpl": i[4],
+            "Totallgl2": i[5],
+            "Totalshoprate": i[6],
+            "TotalproviRate": i[7],
+            "TotalproviSun": i[8],
+            "totalAmount": totalAmount2
+        })
+        test.append(data)
+    return test
+
 @admin.get('/api-select-employee-transaction/')
 def get_employee_payroll_transactions(employee_id,token: str = Depends(oauth_scheme)):
     """This function is for displaying all reports or transaction for Employee  """
