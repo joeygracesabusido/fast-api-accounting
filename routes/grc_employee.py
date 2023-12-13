@@ -155,6 +155,8 @@ async def payrollList(datefrom: Optional[date] = None,
             for x in results
         ]
 
+    
+
     total_amount = sum(entry['total_amount_13'] for entry in payrollData)
     total_amount2 = '{:,.2f}'.format(total_amount)
     

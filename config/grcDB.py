@@ -178,40 +178,33 @@ class GrcViews():# this is for views function for GRC project
             return data
         
 
-    @staticmethod # this is for function get Payroll GRC  & SGMC
-    def get_13_month(
-        datefrom: Optional[date],
-        dateto: Optional[date],
-        employeeID: Optional[str] ) : 
+    @staticmethod
+    def get_13_month(datefrom: Optional[date], dateto: Optional[date], employeeID: Optional[str]):
 
-
-        with Session(engine) as session: 
-            
-            
-            with Session(engine) as session:
-
-                statement = select(Adan_payroll_grc.employee_id, Adan_payroll_grc.first_name,
-                                  Adan_payroll_grc.last_name,Adan_payroll_grc.salaryRate,
-                                   func.sum(Adan_payroll_grc.regDay).label("regDay"),
-                                   func.sum(Adan_payroll_grc.sunday).label("sunday"),
-                                   func.sum(Adan_payroll_grc.spl).label("spl"),
-                                   func.sum(Adan_payroll_grc.lgl2).label("lgl2"),
-                                    func.sum(Adan_payroll_grc.lgl1).label("lgl1")
-                                   ) \
-                    .where(
-                        (Adan_payroll_grc.transDate.between(datefrom,dateto))    
-                    ) \
-                .group_by(Adan_payroll_grc.employee_id,Adan_payroll_grc.first_name,
-                                Adan_payroll_grc.last_name,Adan_payroll_grc.salaryRate)
+        with Session(engine) as session:
+            statement = select(
+                Adan_payroll_grc.employee_id, Adan_payroll_grc.first_name,
+                Adan_payroll_grc.last_name, Adan_payroll_grc.salaryRate,
+                func.sum(Adan_payroll_grc.regDay).label("regDay"),
+                func.sum(Adan_payroll_grc.sunday).label("sunday"),
+                func.sum(Adan_payroll_grc.spl).label("spl"),
+                func.sum(Adan_payroll_grc.lgl2).label("lgl2"),
+                func.sum(Adan_payroll_grc.lgl1).label("lgl1")
+            ).where(
+                (Adan_payroll_grc.transDate.between(datefrom, dateto))
+            ).group_by(
+                Adan_payroll_grc.employee_id, Adan_payroll_grc.first_name,
+                Adan_payroll_grc.last_name, Adan_payroll_grc.salaryRate
+            )
 
             if employeeID:
                 statement = statement.where(Adan_payroll_grc.employee_id.ilike(f"%{employeeID}%"))
-            results = session.exec(statement) 
 
+            results = session.execute(statement)
             data = results.all()
 
-            
-            return data
+        return data
+
 
 
     @staticmethod

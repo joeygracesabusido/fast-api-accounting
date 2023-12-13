@@ -1225,9 +1225,9 @@ BtnSearch_cost.addEventListener("click", display_cost);
 const  display_13month =  async () => {
     var datefrom = document.getElementById("datefrom_13month").value || ''
     var dateto = document.getElementById("dateto_13thmonth").value || ''
-    var employeeID = document.getElementById("employeeID_13month_search").value || ''
+    var employeeID = document.getElementById("employeeID_13month_search").value
     
-    const search_url = `/grc-13month-list-grc/?datefrom=${datefrom}&dateto=${dateto}&equipment_id=${employeeID}`;
+    const search_url = `/grc-13month-list-grc/?datefrom=${datefrom}&dateto=${dateto}&employeeID=${employeeID}`;
 
 
     const responce = await fetch(search_url)
