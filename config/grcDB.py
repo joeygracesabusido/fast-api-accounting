@@ -195,7 +195,7 @@ class GrcViews():# this is for views function for GRC project
             ).group_by(
                 Adan_payroll_grc.employee_id, Adan_payroll_grc.first_name,
                 Adan_payroll_grc.last_name, Adan_payroll_grc.salaryRate
-            )
+            ).order_by(Adan_payroll_grc.last_name)
 
             if employeeID:
                 statement = statement.where(Adan_payroll_grc.employee_id.ilike(f"%{employeeID}%"))

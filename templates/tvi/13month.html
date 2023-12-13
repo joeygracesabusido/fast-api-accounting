@@ -17,4 +17,126 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
+
+
+
+<body>
+
+    
+    <div class="container mt-3">
+        <h1>TVI 13TH MONTH LIST</h1>        
+        <label 
+        >Date From</label>
+        
+            <input 
+            type="date"
+            name="datefrom_13month"
+            id="datefrom_13month"
+            class="form-control"
+            >
+
+        <label
+        >Date To</label>
+        
+            <input 
+            type="date"
+            name="dateto_13thmonth"
+            id="dateto_13thmonth"
+            class="form-control"
+            >
+
+          <label for="DateToTons"
+          >Employee ID</label>
+          
+              <input 
+              type="text"
+              name="employeeID_13month_search"
+              id="employeeID_13month_search"
+              class="form-control"
+              >
+
+
+              <br>
+      
+              <button type="button" id="BtnSearch_13thmonth" name="BtnSearch_13thmonth"  class="btn btn-primary">Search</button>
+              <!-- <button type="submit"  onclick="html_table_excel_diesel('xlsx')" class="btn btn-secondary">
+                Export Excel
+                <i class="fas fa-database"></i>
+            </button> -->
+          
+        
+      </div>
+
+      <div  class="container mt-3 table-responsive">
+          <table id="myTableTons" class="table table-bordered"  style="text-align: center;">
+              <thead class="table-dark">
+                  <tr>
+                      <td>No</td>
+                      <td>Employee ID</td>
+                      <td>Last Name</td>
+                      <td>First Name</td>
+                      <td>Salary Rate</td>
+                      <td>Reg Day</td>
+                      <td>Sunday</td>
+                      <td>Spl</td>
+                      <td>Lgl2</td>
+                      <td>Lgl1</td>
+                      <td>Total Days</td>
+                      <td>Total Amount</td>
+                    
+                      
+                  </tr>
+              </thead>
+              <tbody id="table_body_13thmonth">
+              
+                      
+                      <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          
+                          
+                      </tr>
+                  
+                  
+              </tbody>
+
+          
+
+          </table>
+
+          <br>
+
+          <label for="TotalAmount" >Total Amount</label>
+                <input
+                    type="text"
+                    name="total_amount_13thmonth"
+                    id="total_amount_13thmonth"
+                    style="text-align: right;"
+                    >
+                </input> 
+
+          
+
+          
+              
+              
+      </div>
+
+
+      <script src="/static/tvi/13tmonth.js"></script>
+
+
+
+</body>
+
 {% endblock %}

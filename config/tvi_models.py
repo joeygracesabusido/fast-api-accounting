@@ -731,6 +731,34 @@ def getPayrollTvi_id(id):
        
         return data
 
+class TviModel():
+    @staticmethod
+    def get_13_month(datefrom: Optional[date], dateto: Optional[date], employeeID: Optional[str]):
+
+        with Session(engine) as session:
+            statement = select(
+                Adan_payroll_tvi.employee_id, Adan_payroll_tvi.first_name,
+                Adan_payroll_tvi.last_name, Adan_payroll_tvi.salaryRate,
+                func.sum(Adan_payroll_tvi.regDay).label("regDay"),
+                func.sum(Adan_payroll_tvi.sunday).label("sunday"),
+                func.sum(Adan_payroll_tvi.spl).label("spl"),
+                func.sum(Adan_payroll_tvi.lgl2).label("lgl2"),
+                func.sum(Adan_payroll_tvi.lgl1).label("lgl1")
+            ).where(
+                (Adan_payroll_tvi.transDate.between(datefrom, dateto))
+            ).group_by(
+                Adan_payroll_tvi.employee_id, Adan_payroll_tvi.first_name,
+                Adan_payroll_tvi.last_name, Adan_payroll_tvi.salaryRate
+            ).order_by(Adan_payroll_tvi.last_name)
+
+            if employeeID:
+                statement = statement.where(Adan_payroll_tvi.employee_id.ilike(f"%{employeeID}%"))
+
+            results = session.execute(statement)
+            data = results.all()
+
+        return data
+
 # getRentalTVI_id('181')
 # select_tivEquipment_with_id(1)
 # getEquipmentTVI2()
