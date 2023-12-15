@@ -14,7 +14,7 @@ os.environ['PASSLIB_BUILTIN_BCRYPT'] = 'enabled'
 from passlib.hash import bcrypt
 
 
-
+from config.tvi_models import TviModel
 from authentication.utils import OAuth2PasswordBearerWithCookie
 
 from fastapi import APIRouter, Body, HTTPException, Depends, Request, Response, status
@@ -1582,6 +1582,48 @@ async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str 
     
     
     return payrollData
+
+
+
+
+
+@employee_user.get('/tvi-13month-list/')
+async def payrollList(datefrom: Optional[date] = None,
+                        dateto: Optional[date] = None,
+                        employeeID: Optional[str] = None,
+                        username: str = Depends(EmployeevalidateLogin)):
+    """This is to get Payroll Transaction from GRC table"""
+
+    results = TviModel.get_13_month(datefrom=datefrom,dateto=dateto,employeeID=employeeID)
+
+    payrollData = [
+        
+            {
+            
+                "employee_id": x.employee_id,
+                "first_name": x.first_name,
+                "last_name": x.last_name,
+                "salaryRate": x.salaryRate,
+                "regDay": x.regDay,
+                "sunday": x.sunday,
+                "spl": x.spl,
+                "lgl2": x.lgl2,
+                "lgl1": x.lgl1,
+                "total_no_days":  '{:.2f}'.format((float(x.regDay + x.sunday + x.spl + x.lgl2 + x.lgl1 ))),
+                "total_amount_13":  (float(x.regDay + x.sunday + x.spl + x.lgl2 + x.lgl1 ) * float(x.salaryRate)) / 12,
+                "total_amount_13_2":  '{:,.2f}'.format((float(x.regDay + x.sunday + x.spl + x.lgl2 + x.lgl1 ) * float(x.salaryRate)) / 12)
+            }
+            for x in results
+        ]
+
+    
+
+    total_amount = sum(entry['total_amount_13'] for entry in payrollData)
+    total_amount2 = '{:,.2f}'.format(total_amount)
+    
+    
+    # return payrollData
+    return {"payrollData": payrollData, "totalAmount": total_amount2}
 
 
 @employee_user.get("/tvi-diesel-update-employeeLogin/", response_class=HTMLResponse)
