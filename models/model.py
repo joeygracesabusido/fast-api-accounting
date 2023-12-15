@@ -438,7 +438,7 @@ class TVIPayroll(BaseModel):
     last_name: str 
     salaryRate: float
     addOnRate:  float
-    salaryDetails: str
+    salaryDetails: Optional[str]
     regDay: float
     regDayOt: float
     sunday: float

@@ -731,6 +731,46 @@ def getPayrollTvi_id(id):
        
         return data
 
+
+def update_payroll_tvi(transDate,employee_id,first_name,last_name,salaryRate,
+                    addOnRate,regDay,regDayOt,sunday,sundayOT,
+                    spl,splOT,lgl2,lgl2OT,nightDiff,adjustment,lgl1,user,date_updated,item_id):
+    """This function is for updating Rizal Equipment"""
+
+    with Session(engine) as session:
+        statement = select(Adan_payroll_tvi).where(Adan_payroll_tvi.id == item_id)
+        results = session.exec(statement)
+
+        result = results.one()
+
+           
+        result.transDate = transDate
+        result.employee_id = employee_id
+        result.first_name = first_name
+        result.last_name = last_name
+        result.salaryRate = salaryRate
+        result.addOnRate = addOnRate
+        result.regDay = regDay
+        result.regDayOt = regDayOt
+        result.sunday = sunday
+        result.sundayOT = sundayOT
+        result.spl = spl
+        result.splOT = splOT
+        result.lgl2 = lgl2
+        result.lgl2OT = lgl2OT
+        result.nightDiff = nightDiff
+        result.adjustment = adjustment
+        result.lgl1 = lgl1
+        result.user = user
+        result.date_updated = date_updated
+
+        
+
+    
+        session.add(result)
+        session.commit()
+        session.refresh(result)
+
 class TviModel():
     @staticmethod
     def get_13_month(datefrom: Optional[date], dateto: Optional[date], employeeID: Optional[str]):

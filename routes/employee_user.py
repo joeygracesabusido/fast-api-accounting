@@ -1540,7 +1540,7 @@ async def get_cost(datefrom:Optional[date],dateto: Optional[date],username: str 
     payrollData = [
         
             {
-                
+                "id": x.id,
                 "transDate": x.transDate,
                 "employee_id": x.employee_id,
                 "first_name": x.first_name,
@@ -1619,6 +1619,7 @@ async def payrollList(datefrom: Optional[date] = None,
         ]
 
     
+    
 
     total_amount = sum(entry['total_amount_13'] for entry in payrollData)
     total_amount2 = '{:,.2f}'.format(total_amount)
@@ -1627,6 +1628,81 @@ async def payrollList(datefrom: Optional[date] = None,
     # return payrollData
     return {"payrollData": payrollData, "totalAmount": total_amount2}
 
+from config.tvi_models import getPayrollTvi_id, update_payroll_tvi
+@employee_user.get("/tvi-update-payroll/{id}", response_class=HTMLResponse)
+async def api_updatePayroll_html(id,request: Request, username: str = Depends(EmployeevalidateLogin)):
+    user =  mydb.access_setting.find({"username":username})
+    for i in user:
+        if i['site'] == 'admin'  and i['site_transaction_write']:
+
+
+            results = getPayrollTvi_id(id=id)
+
+            payrollData = [
+                
+                    {
+                        "id": results.id,
+                        "transDate": results.transDate,
+                        "employee_id": results.employee_id,
+                        "first_name": results.first_name,
+                        "last_name": results.last_name,
+                        "salaryRate": results.salaryRate,
+                        "addOnRate": results.addOnRate,
+                        "regDay": results.regDay,
+                       
+                        "regDayOt": results.regDayOt,
+                        
+                        "sunday": results.sunday,
+                       
+                        "sundayOT": results.sundayOT,
+                       
+                        "spl": results.spl,
+                       
+                        "splOT": results.splOT,
+                       
+                        "lgl2": results.lgl2,
+                       
+                        "lgl2OT": results.lgl2OT,
+                       
+                        "lgl1": results.lgl1,
+                       
+                        "nightDiff": results.nightDiff,
+                       
+                        "adjustment": results.adjustment
+
+
+                    
+                    }
+                    # for x in results
+                ]
+    
+    
+       
+
+            return templates.TemplateResponse("tvi/tvi_update_payroll.html", {"request":request,"payrollData":payrollData}) 
+
+        # error message if not autorized for this transaction
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail= "Not Authorized",
+               
+                )   
+
+
+@employee_user.put("/api-update-adan-payroll-tvi/{id}")
+async def api_update_payroll_tvi(id: int,items: TVIPayroll,username: str = Depends(EmployeevalidateLogin)):
+    """This function is to update employee Details"""
+    today = datetime.now()
+    update_payroll_tvi(transDate=items.transDate,employee_id=items.employee_id,
+                    first_name=items.first_name,last_name=items.last_name,salaryRate=items.salaryRate,
+                    addOnRate=items.addOnRate,
+                    regDay=items.regDay,regDayOt=items.regDayOt,sunday=items.sunday,sundayOT=items.sundayOT,
+                    spl=items.spl,splOT=items.splOT,lgl2=items.lgl2,lgl2OT=items.lgl2OT,
+                    nightDiff=items.nightDiff,adjustment=items.adjustment,lgl1=items.lgl1,
+                    user=username,date_updated=today,item_id=id)
+                        
+    # print(insertTonnageRizal())
+    return  {'Messeges':'Data has been Save'}
 
 @employee_user.get("/tvi-diesel-update-employeeLogin/", response_class=HTMLResponse)
 async def api_login(request: Request, username: str = Depends(EmployeevalidateLogin)): # this is for GRC transaction
