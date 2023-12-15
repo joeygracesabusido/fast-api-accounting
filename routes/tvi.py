@@ -716,9 +716,9 @@ async def updateTVIdiesel(id: int,items:TVIDiesel,username: str = Depends(valida
     return  {'Messeges':'Data has been Updated'}
 
 
-@tviProject.get("/tvi-13month-transaction/", response_class=HTMLResponse)
-async def api_login(request: Request, username: str = Depends(validateLogin)):
-    return templates.TemplateResponse("tvi/13month.html", {"request":request}) 
+# @tviProject.get("/tvi-13month-transaction/", response_class=HTMLResponse)
+# async def api_login(request: Request, username: str = Depends(validateLogin)):
+#     return templates.TemplateResponse("tvi/13month.html", {"request":request}) 
 
 
 # @tviProject.get('/tvi-13month-list/')
