@@ -41,7 +41,7 @@ const  display_13month =  async () => {
         document.getElementById('total_amount_13thmonth').value = data.totalAmount
         // var test = 1000
         // document.getElementById("fter_totalBillinglTons").value = test;
-        sumtoTalAmountDiesel()
+        // sumtoTalAmountDiesel()
     }else if (responce.status === 401){
         window.alert("Unauthorized Credentials Please Log in")
     }
